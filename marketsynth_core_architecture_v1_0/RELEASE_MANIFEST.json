@@ -1,0 +1,13 @@
+{
+  "release": "marketsynth-core-architecture-v1.0.0",
+  "status": "FROZEN",
+  "files": [
+    "docs/architecture/ARCHITECTURE_CORE.md",
+    "docs/runtime/RUNTIME_INVARIANTS.md",
+    "docs/runtime/RUNTIME_MODEL.md",
+    "docs/domain/DOMAIN_MODEL.md",
+    "docs/engineering/AI_DEVELOPMENT_RULES.md",
+    "docs/contracts/CONTRACT_GUIDELINES.md"
+  ],
+  "authority": "Derived from PROJECT_CONSTITUTION.md v1.0.0"
+}

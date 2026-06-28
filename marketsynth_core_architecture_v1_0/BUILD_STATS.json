@@ -1,0 +1,32 @@
+{
+  "docs/architecture/ARCHITECTURE_CORE.md": {
+    "chars": 7666,
+    "chapters_or_headings": 22,
+    "articles_or_sections": 0
+  },
+  "docs/runtime/RUNTIME_INVARIANTS.md": {
+    "chars": 10214,
+    "chapters_or_headings": 6,
+    "articles_or_sections": 60
+  },
+  "docs/runtime/RUNTIME_MODEL.md": {
+    "chars": 5550,
+    "chapters_or_headings": 20,
+    "articles_or_sections": 0
+  },
+  "docs/domain/DOMAIN_MODEL.md": {
+    "chars": 4879,
+    "chapters_or_headings": 15,
+    "articles_or_sections": 21
+  },
+  "docs/engineering/AI_DEVELOPMENT_RULES.md": {
+    "chars": 3350,
+    "chapters_or_headings": 13,
+    "articles_or_sections": 0
+  },
+  "docs/contracts/CONTRACT_GUIDELINES.md": {
+    "chars": 2939,
+    "chapters_or_headings": 13,
+    "articles_or_sections": 0
+  }
+}
