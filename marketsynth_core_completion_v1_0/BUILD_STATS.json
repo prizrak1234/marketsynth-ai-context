@@ -1,0 +1,47 @@
+{
+  "PROJECT_INDEX.md": {
+    "chars": 3431,
+    "h1": 7,
+    "h2": 4
+  },
+  "docs/governance/DOCUMENT_GOVERNANCE.md": {
+    "chars": 2535,
+    "h1": 9,
+    "h2": 7
+  },
+  "docs/governance/ADR_RFC_GOVERNANCE.md": {
+    "chars": 2347,
+    "h1": 12,
+    "h2": 16
+  },
+  "docs/runtime/APPROVAL_MODEL.md": {
+    "chars": 2517,
+    "h1": 13,
+    "h2": 0
+  },
+  "docs/runtime/EXECUTION_MODEL.md": {
+    "chars": 2573,
+    "h1": 12,
+    "h2": 0
+  },
+  "docs/knowledge/KNOWLEDGE_MODEL.md": {
+    "chars": 2207,
+    "h1": 11,
+    "h2": 0
+  },
+  "docs/security/SECURITY_MODEL.md": {
+    "chars": 2108,
+    "h1": 11,
+    "h2": 0
+  },
+  "docs/migration/BOTFAZER_TO_MARKETSYNTH_MIGRATION.md": {
+    "chars": 1948,
+    "h1": 10,
+    "h2": 0
+  },
+  "docs/engineering/CURSOR_AUDIT_PLAYBOOK.md": {
+    "chars": 2157,
+    "h1": 8,
+    "h2": 8
+  }
+}

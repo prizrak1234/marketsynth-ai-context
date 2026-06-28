@@ -1,0 +1,17 @@
+{
+  "release": "marketsynth-core-completion-v1.0.0",
+  "status": "FROZEN",
+  "purpose": "Completes Marketsynth governance/architecture core after Constitution and first core architecture pack.",
+  "files": [
+    "PROJECT_INDEX.md",
+    "docs/engineering/CURSOR_AUDIT_PLAYBOOK.md",
+    "docs/governance/ADR_RFC_GOVERNANCE.md",
+    "docs/governance/DOCUMENT_GOVERNANCE.md",
+    "docs/knowledge/KNOWLEDGE_MODEL.md",
+    "docs/migration/BOTFAZER_TO_MARKETSYNTH_MIGRATION.md",
+    "docs/runtime/APPROVAL_MODEL.md",
+    "docs/runtime/EXECUTION_MODEL.md",
+    "docs/security/SECURITY_MODEL.md"
+  ],
+  "upload_note": "Upload this ZIP contents to repository root. Package folder may remain temporarily; final repository normalization can be done later through Cursor/git."
+}
