@@ -1,0 +1,72 @@
+{
+  "CORE_FINALIZATION_AUDIT_README.md": {
+    "chars": 1092,
+    "h1": 4,
+    "h2": 0
+  },
+  "docs/context/CONTEXT_MODEL.md": {
+    "chars": 3308,
+    "h1": 12,
+    "h2": 5
+  },
+  "docs/memory/MEMORY_MODEL.md": {
+    "chars": 2532,
+    "h1": 16,
+    "h2": 0
+  },
+  "docs/events/EVENT_ARCHITECTURE.md": {
+    "chars": 1943,
+    "h1": 11,
+    "h2": 0
+  },
+  "docs/observability/OBSERVABILITY_MODEL.md": {
+    "chars": 2132,
+    "h1": 12,
+    "h2": 0
+  },
+  "docs/errors/ERROR_HANDLING_MODEL.md": {
+    "chars": 2049,
+    "h1": 11,
+    "h2": 0
+  },
+  "docs/integrations/INTEGRATION_ARCHITECTURE.md": {
+    "chars": 1935,
+    "h1": 10,
+    "h2": 0
+  },
+  "docs/data/DATA_MODEL.md": {
+    "chars": 1887,
+    "h1": 11,
+    "h2": 0
+  },
+  "docs/api/API_ARCHITECTURE.md": {
+    "chars": 1746,
+    "h1": 11,
+    "h2": 0
+  },
+  "docs/testing/TESTING_ARCHITECTURE.md": {
+    "chars": 2099,
+    "h1": 11,
+    "h2": 0
+  },
+  "docs/quality/QUALITY_MODEL.md": {
+    "chars": 1695,
+    "h1": 9,
+    "h2": 0
+  },
+  "docs/contracts/CORE_CONTRACT_DEFINITIONS.md": {
+    "chars": 4732,
+    "h1": 21,
+    "h2": 0
+  },
+  "docs/operations/SCALABILITY_MODEL.md": {
+    "chars": 1764,
+    "h1": 11,
+    "h2": 0
+  },
+  "docs/operations/MULTI_AGENT_COLLABORATION_MODEL.md": {
+    "chars": 1695,
+    "h1": 10,
+    "h2": 0
+  }
+}
