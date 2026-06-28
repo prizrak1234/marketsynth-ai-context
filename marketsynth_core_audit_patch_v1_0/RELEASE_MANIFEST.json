@@ -1,0 +1,9 @@
+{
+  "release": "marketsynth-core-audit-patch-v1.0",
+  "status": "READY_TO_APPLY",
+  "findings_addressed": [
+    "Remove global_candidate from KnowledgeCandidate.scope",
+    "Clarify Source of Truth hierarchy for Project Index and Decision Registry"
+  ],
+  "next_step": "Upload/apply patch, then proceed to repository normalization."
+}
