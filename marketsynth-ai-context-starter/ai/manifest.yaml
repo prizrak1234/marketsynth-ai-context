@@ -1,0 +1,22 @@
+project: Marketsynth
+status: active
+entrypoints:
+  - AI_MANIFEST.md
+  - docs/constitution/PROJECT_CONSTITUTION.md
+  - docs/constitution/RUNTIME_INVARIANTS.md
+  - docs/architecture/ARCHITECTURE_CORE.md
+  - DECISION_REGISTRY.md
+  - CURRENT_PHASE.md
+document_statuses:
+  frozen:
+    - docs/constitution/PROJECT_CONSTITUTION.md
+    - docs/constitution/RUNTIME_INVARIANTS.md
+  active:
+    - docs/architecture/ARCHITECTURE_CORE.md
+    - DECISION_REGISTRY.md
+    - CURRENT_PHASE.md
+cursor_rules:
+  - .cursor/rules/00_project_constitution.mdc
+  - .cursor/rules/01_architecture_guardrails.mdc
+  - .cursor/rules/02_runtime_invariants.mdc
+  - .cursor/rules/03_coding_rules.mdc
