@@ -1,0 +1,19 @@
+{
+  "batch": "02",
+  "purpose": "implementation rules, knowledge base, contracts and level-2 runtime docs",
+  "files": [
+    "AI_ONBOARDING.md",
+    "DOCUMENT_INDEX.md",
+    "docs/implementation/AI_IMPLEMENTATION_RULES.md",
+    "docs/knowledge-base/KNOWLEDGE_BASE_POLICY.md",
+    "docs/knowledge-base/ENGINEERING_KNOWLEDGE.md",
+    "docs/knowledge-base/DOMAIN_KNOWLEDGE.md",
+    "docs/contracts/CONTRACT_CATALOG.md",
+    "docs/level-2/EXECUTION_RUNTIME.md",
+    "docs/level-2/KNOWLEDGE_RUNTIME.md",
+    "docs/level-2/APPROVAL_RUNTIME.md",
+    "docs/adr/ADR-001-ai-context-repository.md",
+    ".cursor/rules/04_knowledge_base_rules.mdc",
+    ".cursor/rules/05_contract_rules.mdc"
+  ]
+}
