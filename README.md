@@ -43,30 +43,41 @@ Every architectural decision must eventually be represented inside this reposito
 
 # Repository Structure
 
-```
-AI_MANIFEST.md
-CURRENT_PHASE.md
-DECISION_REGISTRY.md
+```text
+/
+  README.md
+  PROJECT_CONSTITUTION.md
+  PROJECT_INDEX.md
 
-docs/
-    constitution/
+  docs/
     architecture/
-    level-1/
-    level-2/
+    runtime/
+    domain/
     contracts/
-    adr/
-    rfc/
-    roadmap/
-    audits/
-    glossary/
+    engineering/
+    governance/
+    knowledge/
+    security/
+    context/
+    memory/
+    events/
+    observability/
+    errors/
+    integrations/
+    data/
+    api/
+    testing/
+    quality/
+    operations/
+    migration/
 
-.cursor/
-    rules/
-
-ai/
-    context.json
-    manifest.yaml
+  archive/
+    imported-packs/   # historical uploaded packs (not deleted)
 ```
+
+Canonical FROZEN documents live under `docs/` and at the repository root.
+
+Historical package uploads (e.g. `marketsynth-runtime-pack/`, `marketsynth_core_*_v1_0/`) are preserved under `archive/imported-packs/`.
 
 ---
 
@@ -74,12 +85,15 @@ ai/
 
 Every AI agent working on Marketsynth should begin here:
 
-1. AI_MANIFEST.md
-2. docs/constitution/PROJECT_CONSTITUTION.md
-3. docs/constitution/RUNTIME_INVARIANTS.md
-4. docs/architecture/ARCHITECTURE_CORE.md
-5. DECISION_REGISTRY.md
-6. CURRENT_PHASE.md
+1. `PROJECT_CONSTITUTION.md`
+2. `PROJECT_INDEX.md`
+3. `docs/architecture/ARCHITECTURE_CORE.md`
+4. `docs/runtime/RUNTIME_INVARIANTS.md`
+5. `docs/runtime/RUNTIME_MODEL.md`
+6. `docs/domain/DOMAIN_MODEL.md`
+7. `docs/engineering/AI_DEVELOPMENT_RULES.md`
+
+Full reading order and loading profiles: see `PROJECT_INDEX.md`.
 
 Only after reading these documents may an AI modify or generate implementation.
 
@@ -224,4 +238,3 @@ Implementation must never redefine the architecture.
 # Project Motto
 
 > **Stable architecture. Controlled evolution. Auditable intelligence.**
-
