@@ -254,7 +254,7 @@ KnowledgeCandidate:
   outcome_id:
   evidence_id:
   claim:
-  scope: session | project | tenant | global_candidate
+  scope: session | project | tenant
   status: proposed | validating | promoted | rejected | archived
   validation_result:
   created_at:
@@ -262,6 +262,10 @@ KnowledgeCandidate:
 ```
 
 KnowledgeCandidate MUST NOT cross tenant boundary.
+
+Global knowledge is not a KnowledgeCandidate scope.
+
+Global knowledge may only be created through explicit promotion after tenant policy check, validation, anonymization where required, and audit record.
 
 # 17. MemoryItem
 
