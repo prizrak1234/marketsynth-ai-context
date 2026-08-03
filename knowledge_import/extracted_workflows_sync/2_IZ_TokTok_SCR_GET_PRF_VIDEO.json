@@ -1,0 +1,637 @@
+{
+  "name": "2_IZ_TokTok_SCR_GET_PRF_VIDEO",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "username"
+            },
+            {
+              "name": "Limit"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -192,
+        -64
+      ],
+      "id": "850570a9-d6c5-4eb2-ac86-64f46ceb75a8",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "tiktok",
+        "operation": "getTikTokProfileVideos",
+        "handle": "={{ $json.username }}",
+        "limit": "={{ $json.Limit }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        64,
+        -64
+      ],
+      "id": "3c4490f8-4abe-4c77-89c4-00bf75991b0d",
+      "name": "Get a tik tok profile s videos",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "XNzkdQFgWnEu59Bh",
+          "name": "Scrape Creators account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "aweme_list",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        288,
+        -64
+      ],
+      "id": "ef012641-8ac8-413c-98d9-100fcacd9588",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "3EspYMW6735e0ztN",
+          "mode": "list",
+          "cachedResultName": "2_TikTok_GET_PRF_VIDEO_",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/3EspYMW6735e0ztN"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "aweme_id": "={{ $json.aweme_id }}",
+            "Desk": "={{ $json.desc }}",
+            "play_count": "={{ $json.statistics.play_count }}",
+            "digg_count": "={{ $json.statistics.digg_count }}",
+            "comment_count": "={{ $json.statistics.comment_count }}",
+            "share_count": "={{ $json.statistics.share_count }}",
+            "collect_count": "={{ $json.statistics.collect_count }}",
+            "URL": "={{ $json.url }}",
+            "nickname": "={{ $json.author.unique_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "nickname",
+              "displayName": "nickname",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Desk",
+              "displayName": "Desk",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "aweme_id",
+              "displayName": "aweme_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "play_count",
+              "displayName": "play_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "digg_count",
+              "displayName": "digg_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "comment_count",
+              "displayName": "comment_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "share_count",
+              "displayName": "share_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "collect_count",
+              "displayName": "collect_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -64
+      ],
+      "id": "a2785110-259b-44f4-9229-9696b85e6fec",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Собираем строки из таблицы\nconst rows = items.map(i => i.json);\n\n// Хелпер: вытащить @handle из URL\nfunction extractHandleFromUrl(url) {\n  if (!url) return null;\n  const m = String(url).match(/tiktok\\.com\\/@([^/]+)/i);\n  return m ? m[1] : null;\n}\n\n// Нормализуем поля и считаем ER\nconst normalized = rows.map(r => {\n  const play  = Number(r.play_count)    || 0;\n  const like  = Number(r.digg_count)    || 0;\n  const comm  = Number(r.comment_count) || 0;\n  const share = Number(r.share_count)   || 0;\n  const coll  = Number(r.collect_count) || 0;\n  const er = play > 0 ? ((like + comm + share) / play) * 100 : 0;\n\n  return {\n    // важно: ссылка на видео\n    link: r.URL || r.link || r.url || null,\n    desc: r.Desk || r.desc || \"\",\n    duration_ms: Number(r.duration_ms) || Number(r.duration) || null,\n    play, like, comm, share, collect: coll,\n    created_at: r.createdAt || r.created_at || r.publish_time || null,\n    er: Number(er.toFixed(2)) // в %\n  };\n});\n\n// Сортировка: по просмотрам ↓, затем по лайкам ↓, затем по репостам ↓\nnormalized.sort((a, b) =>\n  (b.play - a.play) || (b.like - a.like) || (b.share - a.share)\n);\n\n// Топ-3\nconst top3 = normalized.slice(0, 3);\n\n// Единая информация о профиле (берём из первой строки, если есть)\nconst first = rows[0] || {};\nconst inferredHandle =\n  first.username ||\n  first.unique_id ||\n  extractHandleFromUrl(first.URL) ||\n  extractHandleFromUrl(first.link) ||\n  $json.username || null;\n\nconst profile = {\n  username: inferredHandle ? `@${inferredHandle.replace(/^@/, '')}` : null,\n  nickname: first.nickname || null\n};\n\n// Итоговый ответ одним объектом\nreturn [{\n  json: {\n    profile,\n    total: rows.length,\n    top3\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -64
+      ],
+      "id": "bc8f44ff-dbfb-432f-83c6-a6018757dca9",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Получаем данные из входящего item\nconst inputData = $input.all()[0].json;\n\n// Извлекаем username\nconst username = inputData.profile.username;\n\n// Извлекаем ссылки из top3\nconst videoLinks = inputData.top3.map(video => video.link);\n\n// Формируем результирующий JSON\nconst result = {\n  message: `Анализ контента пользователя ${username} выполнен успешно`,\n  username: username,\n  top_videos: {\n    description: \"3 самых популярных видео пользователя\",\n    links: videoLinks\n  }\n};\n\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -64
+      ],
+      "id": "f52d72d8-5f99-4f81-9b2a-2384ac4758e9",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        -400
+      ],
+      "id": "e5c04c08-00b5-4a52-b9b4-e23c298b270b",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "3EspYMW6735e0ztN",
+          "mode": "list",
+          "cachedResultName": "2_TikTok_GET_PRF_VIDEO_",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/3EspYMW6735e0ztN"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -400
+      ],
+      "id": "611ff9b9-fbdc-460d-90b9-1d1f0ec814ab",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1RVWZPUL5r8Lp9Aq9jrs2qREa0QOGpO1ojrkpoljYVjQ",
+          "mode": "list",
+          "cachedResultName": "TikTok AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RVWZPUL5r8Lp9Aq9jrs2qREa0QOGpO1ojrkpoljYVjQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "TikTok_profile_video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RVWZPUL5r8Lp9Aq9jrs2qREa0QOGpO1ojrkpoljYVjQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nickname": "={{ $json.nickname }}",
+            "Desk": "={{ $json.Desk }}",
+            "URL": "={{ $json.URL }}",
+            "aweme_id": "={{ $json.aweme_id }}",
+            "digg_count": "={{ $json.digg_count }}",
+            "play_count": "={{ $json.play_count }}",
+            "comment_count": "={{ $json.comment_count }}",
+            "share_count": "={{ $json.share_count }}",
+            "collect_count": "={{ $json.collect_count }}",
+            "createdAt": "={{ $json.createdAt }}",
+            "updatedAt": "={{ $json.updatedAt }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "nickname",
+              "displayName": "nickname",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Desk",
+              "displayName": "Desk",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "aweme_id",
+              "displayName": "aweme_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "play_count",
+              "displayName": "play_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "digg_count",
+              "displayName": "digg_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "comment_count",
+              "displayName": "comment_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "share_count",
+              "displayName": "share_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "collect_count",
+              "displayName": "collect_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        -400
+      ],
+      "id": "b3da6e37-eecd-4e29-98da-f1ef89e8828f",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Синхронизация данных в таблице в Google",
+        "height": 304,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -512
+      ],
+      "id": "36b46d55-549d-4bca-93ce-abe802137dd3",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "3EspYMW6735e0ztN",
+          "mode": "list",
+          "cachedResultName": "2_TikTok_GET_PRF_VIDEO_",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/3EspYMW6735e0ztN"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "nickname",
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        608,
+        -400
+      ],
+      "id": "10b31034-eb00-4c5e-a9fc-34b214c6ddbb",
+      "name": "Delete row(s)1"
+    },
+    {
+      "parameters": {
+        "content": "## Get a tik tok profile s videos",
+        "height": 288,
+        "width": 1488,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "eeeb4f59-4ee7-461e-84c9-25dd0f5ee4cc",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: DATA TABLE в n8n: https://youtu.be/FD1HyYR3EP0\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 132,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        480,
+        -704
+      ],
+      "typeVersion": 1,
+      "id": "d0c504c0-60ee-4438-bb72-d1aa3b51b778",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        176
+      ],
+      "typeVersion": 1,
+      "id": "2cd28166-7fdf-4a4c-8991-c3bf3aeb0e1f",
+      "name": "Sticky Note16",
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "username": "zuevich_ai",
+          "Limit": "30",
+          "chat_id": "190190068",
+          "correlation_id": "corr_1759340723510_1k1u51"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get a tik tok profile s videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a tik tok profile s videos": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3a91a94f-f43a-4c96-af4f-f234ba46f8b0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "RKZLhaDyigONdfx8",
+  "tags": []
+}

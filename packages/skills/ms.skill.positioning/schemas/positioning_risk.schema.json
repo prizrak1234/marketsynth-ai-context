@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.positioning/positioning_risk/0.1.0",
+  "title": "PositioningRisk",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "risk_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "customer_mismatch",
+        "weak_differentiation",
+        "unsupported_claim",
+        "proof_gap",
+        "category_confusion",
+        "over_narrowing",
+        "over_broadening",
+        "competitor_imitation",
+        "compliance",
+        "brand_conflict",
+        "channel_mismatch",
+        "execution_complexity",
+        "evidence"
+      ]
+    },
+    "description": { "type": "string", "maxLength": 4000 },
+    "likelihood": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "impact": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "major", "minor", "unknown"]
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 256 },
+      "maxItems": 20
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 10
+    },
+    "mitigation": { "type": "string", "maxLength": 4000 },
+    "residual_risk": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "blocking": { "type": "boolean" },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "const": "ms.skill.positioning" },
+        "skill_version": { "type": "string", "pattern": "^0\\.1\\.\\d+$" }
+      },
+      "required": ["skill_id", "skill_version"]
+    }
+  },
+  "required": [
+    "risk_id",
+    "domain",
+    "description",
+    "likelihood",
+    "impact",
+    "severity",
+    "evidence_references",
+    "assumptions",
+    "mitigation",
+    "residual_risk",
+    "blocking",
+    "provenance"
+  ]
+}

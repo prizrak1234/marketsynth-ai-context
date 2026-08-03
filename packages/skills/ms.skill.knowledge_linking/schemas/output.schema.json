@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.knowledge_linking/output/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "linking_report_id": { "type": "string" },
+    "skill_id": { "type": "string", "const": "ms.skill.knowledge_linking" },
+    "skill_version": { "type": "string" },
+    "analyzed_artifact_count": { "type": "integer", "minimum": 0 },
+    "valid_existing_links": {
+      "type": "array",
+      "items": { "$ref": "schemas/knowledge-link.schema.json" }
+    },
+    "proposed_links": {
+      "type": "array",
+      "items": { "$ref": "schemas/knowledge-link.schema.json" }
+    },
+    "broken_links": {
+      "type": "array",
+      "items": { "$ref": "schemas/broken-link.schema.json" }
+    },
+    "orphan_artifacts": {
+      "type": "array",
+      "items": { "$ref": "schemas/orphan-artifact.schema.json" }
+    },
+    "duplicate_candidates": {
+      "type": "array",
+      "items": { "$ref": "schemas/duplicate-candidate.schema.json" }
+    },
+    "supersession_candidates": {
+      "type": "array",
+      "items": { "$ref": "schemas/supersession-candidate.schema.json" }
+    },
+    "contradiction_candidates": {
+      "type": "array",
+      "items": { "$ref": "schemas/contradiction-candidate.schema.json" }
+    },
+    "index_recommendations": {
+      "type": "array",
+      "items": { "$ref": "schemas/index-recommendation.schema.json" }
+    },
+    "rejected_cross_tenant_links": { "type": "array", "items": { "type": "object" } },
+    "unresolved_ambiguities": { "type": "array", "items": { "type": "string" } },
+    "evidence_gaps": { "type": "array", "items": { "type": "string" }, "maxItems": 30 },
+    "coverage": {
+      "type": "string",
+      "enum": ["full", "partial", "minimal", "unknown"]
+    },
+    "evidence_quality": {
+      "type": "string",
+      "enum": ["comprehensive", "partial", "insufficient", "conflicted", "unknown"]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partially_complete",
+        "insufficient_sources",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "human_review_required": { "type": "boolean" },
+    "provenance": { "type": "object" },
+    "input_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "output_hash": { "type": "string", "minLength": 64, "maxLength": 64 }
+  },
+  "required": [
+    "linking_report_id", "skill_id", "skill_version", "analyzed_artifact_count",
+    "valid_existing_links", "proposed_links", "broken_links", "orphan_artifacts",
+    "duplicate_candidates", "supersession_candidates", "contradiction_candidates",
+    "index_recommendations", "rejected_cross_tenant_links", "unresolved_ambiguities",
+    "evidence_gaps", "coverage", "evidence_quality", "research_status", "human_review_required",
+    "provenance", "input_hash", "output_hash"
+  ]
+}

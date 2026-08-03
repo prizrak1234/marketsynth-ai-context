@@ -1,0 +1,70 @@
+{
+  "practice_id": "quality_gate_before_handoff",
+  "title": "Quality gate before handoff",
+  "domain": "ai_integration",
+  "context": "LLM-generated content before publication or CRM write.",
+  "problem": "Invalid generated output propagates to external systems.",
+  "recommended_practice": "Validate structured output against schema; block handoff on failure; route to human_review or revision loop.",
+  "rationale": "Archive ai-agents structured output handling; catalog outputParserStructured usage.",
+  "prerequisites": [],
+  "implementation_pattern": "generate → validate → pass|block|revise",
+  "failure_modes": [],
+  "security_notes": [],
+  "provider_version_scope": [
+    {
+      "provider": "n8n",
+      "component": "workflow_platform",
+      "documented_version": "source_archive_methodology",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Archive methodology; not re-executed in pilot hardening.",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "scope-n8n",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "tested_environment": "archive_metadata_only",
+  "verification_status": "source_documented",
+  "source_references": [
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/ai-agents.md",
+      "content_hash": "453a415870a0c9cbef2accddecd5e19fd833b05c741099fd82df421e5e5a3620",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-ai-agents-core",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/methodology.md",
+      "content_hash": "727666fe4bb10519fe05561f2a938336b11df28718e472bc39c4e7fc52acd8e3",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-methodology-core",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "related_pattern_ids": [
+    "quality_gate_after_generation"
+  ],
+  "tenant_scope": "tenant_scoped",
+  "provenance": {
+    "source_type": "practice_lineage_pilot",
+    "archive_id": "arc-skills-dlya-peredachi",
+    "source_id": "quality_gate_before_handoff",
+    "program_phase": "KB-WPL-01.3B"
+  }
+}

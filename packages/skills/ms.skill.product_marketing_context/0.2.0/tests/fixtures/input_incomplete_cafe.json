@@ -1,0 +1,17 @@
+{
+  "raw_task": "Help structure context for a neighborhood café considering delivery expansion.",
+  "product_name": {
+    "value": "Corner Brew Café",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "product_description": {
+    "value": "Independent café with specialty coffee and pastries",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "user_priorities": ["Understand if delivery is worth pursuing"],
+  "user_risk_tolerance": "low"
+}

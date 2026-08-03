@@ -1,0 +1,16 @@
+{
+  "schema": {
+    "user_id": "string",
+    "birth_date": "YYYY-MM-DD",
+    "sex": "female",
+    "height_cm": "number",
+    "weight_kg": "number",
+    "is_breastfeeding": "boolean",
+    "goals": [
+      "string"
+    ],
+    "allergies": [
+      "string"
+    ]
+  }
+}

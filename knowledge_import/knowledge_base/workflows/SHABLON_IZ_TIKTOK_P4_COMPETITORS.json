@@ -1,0 +1,961 @@
+{
+  "name": "SHABLON_IZ_TIKTOK_P4_COMPETITORS",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://tiktok-api23.p.rapidapi.com/api/search/general",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "={{ $json.search_query }}"
+            },
+            {
+              "name": "cursor",
+              "value": "0"
+            },
+            {
+              "name": "search_id",
+              "value": "0"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "ВАШ API КЛЮЧ"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "tiktok-api23.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -780,
+        340
+      ],
+      "id": "aa259b12-8401-47b7-8b6e-c0366b52e768",
+      "name": "Get Top Posts"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "708556bf-e566-4939-a154-bbac439ae667",
+              "name": "Username",
+              "value": "={{ $json.item.author.uniqueId }}",
+              "type": "string"
+            },
+            {
+              "id": "2d61ce80-eb6a-4b79-ae23-5716e34365da",
+              "name": "Bio",
+              "value": "={{ $json.item.author.signature }}",
+              "type": "string"
+            },
+            {
+              "id": "66bd2825-f22a-4dae-af8f-3ae2a48576af",
+              "name": "Followers",
+              "value": "={{ $json.item.authorStats.followerCount }}",
+              "type": "number"
+            },
+            {
+              "id": "512a0f87-4410-40d6-81f5-334c9f2525fa",
+              "name": "Hearts",
+              "value": "={{ $json.item.authorStats.heartCount }}",
+              "type": "number"
+            },
+            {
+              "id": "bf05b262-4b58-4d42-a6cf-359ba67af521",
+              "name": "IDvid",
+              "value": "={{ $json.item.video.id }}",
+              "type": "string"
+            },
+            {
+              "id": "dd155e6b-d350-4971-9735-0a10b829f277",
+              "name": "item.author.secUid",
+              "value": "={{ $json.item.author.secUid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        340
+      ],
+      "id": "493ff25e-b981-4688-ab5a-9afd4a69b7c2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        580,
+        340
+      ],
+      "id": "bfee7daf-3c29-4b7a-9829-401cfb2a7dc6",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "const seen = new Set();\n\nreturn items\n  .filter(item => {\n    const username = item.json.Username;\n    if (seen.has(username)) {\n      return false;\n    }\n    seen.add(username);\n    return true;\n  })\n  .map(item => {\n    const username = item.json.Username;\n    const videoId = item.json.IDvid;\n    const tiktokURL = `https://www.tiktok.com/@${username}`;\n    const videoURL = `https://www.tiktok.com/@${username}/video/${videoId}`;\n    \n    return {\n      json: {\n        ...item.json,\n        tiktokURL,\n        videoURL\n      }\n    };\n  });"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1220,
+        340
+      ],
+      "id": "a9a17452-f107-4bc2-a6f8-438cb013cb29",
+      "name": "Get URLs"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tbl7V6L6E6GwpFHfU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Your search term": "={{ $('When Executed by Another Workflow').first().json.search_query }}",
+            "Username": "={{ $json.Username }}",
+            "Followers": "={{ Number($json.Followers) }}",
+            "Bio": "={{ $json.Bio }}",
+            "Account URL": "={{ $json.tiktokURL }}",
+            "Total likes": "={{ Number($json.Hearts) }}",
+            "Best Performing Vid (For this search term)": "={{ $json.videoURL }}",
+            "secUid": "={{ $json.item.author.secUid }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Your search term",
+              "displayName": "Your search term",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Followers",
+              "displayName": "Followers",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Total likes",
+              "displayName": "Total likes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Bio",
+              "displayName": "Bio",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Account URL",
+              "displayName": "Account URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Best Performing Vid (For this search term)",
+              "displayName": "Best Performing Vid (For this search term)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "secUid",
+              "displayName": "secUid",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1440,
+        340
+      ],
+      "id": "cc08ca51-d39f-4ca9-b5d8-41be69d31248",
+      "name": "Send to Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        300,
+        140
+      ],
+      "id": "b2b0bdf8-64fd-4478-bd42-c3e14acf023b",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e5a89998-bb55-467e-b79a-5b9123dee12e",
+              "leftValue": "={{ $json.Username }}",
+              "rightValue": "null",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "d6101972-9ac0-4500-a8bd-a7f08bdbac88",
+              "leftValue": "={{ $json.Followers }}",
+              "rightValue": 4000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        980,
+        340
+      ],
+      "id": "163ccce8-4098-4715-9433-e21814152324",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "https://tiktok-api23.p.rapidapi.com/api/search/general",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "={{ $('When Executed by Another Workflow').item.json.search_query }}"
+            },
+            {
+              "name": "cursor",
+              "value": "={{ $json.cursor }}"
+            },
+            {
+              "name": "search_id",
+              "value": "={{ $json.log_pb.impr_id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "ВАШ API КЛЮЧ"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "tiktok-api23.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -580,
+        340
+      ],
+      "id": "adc18a76-e213-40b9-9173-c446888e62e4",
+      "name": "Get MORE Top Users"
+    },
+    {
+      "parameters": {
+        "url": "https://tiktok-api23.p.rapidapi.com/api/search/general",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "={{ $('When Executed by Another Workflow').item.json.search_query }}"
+            },
+            {
+              "name": "cursor",
+              "value": "={{ $json.cursor }}"
+            },
+            {
+              "name": "search_id",
+              "value": "={{ $json.log_pb.impr_id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "ВАШ API КЛЮЧ"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "tiktok-api23.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -380,
+        340
+      ],
+      "id": "0ebc4a13-b0e4-447b-93bb-b0c9d57a88e7",
+      "name": "I SAID MORE"
+    },
+    {
+      "parameters": {
+        "url": "https://tiktok-api23.p.rapidapi.com/api/search/general",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "={{ $('When Executed by Another Workflow').item.json.search_query }}"
+            },
+            {
+              "name": "cursor",
+              "value": "={{ $json.cursor }}"
+            },
+            {
+              "name": "search_id",
+              "value": "={{ $json.log_pb.impr_id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "ВАШ API КЛЮЧ"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "tiktok-api23.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -180,
+        340
+      ],
+      "id": "8d027c65-d2d9-497c-b165-5c0d66f462cb",
+      "name": "MORE DANG IT"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "search_query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1020,
+        340
+      ],
+      "id": "cea087b9-cc58-4465-ba52-ee08a54c36d6",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "# Получить Данные об Аккаунтах TikTok",
+        "height": 80,
+        "width": 780,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -40,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "9c837bca-d11c-4d88-9cbe-5f31a9ec4a8e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      query: \"Task has completed successfully.\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        340
+      ],
+      "id": "8b4ed327-d403-42e5-b4fb-03fde96a7e9b",
+      "name": "Success"
+    },
+    {
+      "parameters": {
+        "url": "https://tiktok-api23.p.rapidapi.com/api/search/general",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "={{ $('When Executed by Another Workflow').item.json.search_query }}"
+            },
+            {
+              "name": "cursor",
+              "value": "={{ $json.cursor }}"
+            },
+            {
+              "name": "search_id",
+              "value": "={{ $json.log_pb.impr_id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "ВАШ API КЛЮЧ"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "tiktok-api23.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        20,
+        340
+      ],
+      "id": "53b05b64-cdea-464e-966f-fa73d2b89c9c",
+      "name": "MORE DANG IT1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tbl7V6L6E6GwpFHfU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record ID": "={{ $json.id }}",
+            "Username": "={{ $json.fields.Username }}"
+          },
+          "matchingColumns": [
+            "Username"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Your search term",
+              "displayName": "Your search term",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Followers",
+              "displayName": "Followers",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Total likes",
+              "displayName": "Total likes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Bio",
+              "displayName": "Bio",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Account URL",
+              "displayName": "Account URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Best Performing Vid (For this search term)",
+              "displayName": "Best Performing Vid (For this search term)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "secUid",
+              "displayName": "secUid",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "updateAllMatches": false
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1680,
+        340
+      ],
+      "id": "c564195f-c1ce-4450-8102-8880895b0809",
+      "name": "Send to Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Создайте свой API ключ в TikTok тут: \n\n## Ссылка: https://rapidapi.com/Lundehund/api/tiktok-api23",
+        "width": 880
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        740
+      ],
+      "typeVersion": 1,
+      "id": "cdd080d6-60ff-491e-9962-6c931852f71c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Подключите Airtable таблицы\n",
+        "height": 80,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1440,
+        600
+      ],
+      "typeVersion": 1,
+      "id": "0620f8e9-1727-43fe-b276-b4d57546f711",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## @igorzuevich \n**Автор** на [YouTube](https://www.youtube.com/@igorzuevich)",
+        "height": 240,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3260,
+        -2580
+      ],
+      "typeVersion": 1,
+      "id": "209e1e1d-34a0-4aa8-8422-3f958fdc8ac3",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "search_query": "SEO"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Get Top Posts": {
+      "main": [
+        [
+          {
+            "node": "Get MORE Top Users",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get URLs": {
+      "main": [
+        [
+          {
+            "node": "Send to Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Airtable": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send to Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get MORE Top Users": {
+      "main": [
+        [
+          {
+            "node": "I SAID MORE",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "I SAID MORE": {
+      "main": [
+        [
+          {
+            "node": "MORE DANG IT",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "MORE DANG IT": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          },
+          {
+            "node": "MORE DANG IT1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Top Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MORE DANG IT1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Send to Airtable1": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "591b446c-028b-48db-8ac6-9d43327c06ca",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "WNswVI1SAzkduMau",
+  "tags": [
+    {
+      "createdAt": "2025-03-21T05:05:36.109Z",
+      "updatedAt": "2025-03-21T05:05:36.109Z",
+      "id": "O7fQsEJqI16T5o0y",
+      "name": "Сделано"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.icp_segmentation/decision_role/0.1.0",
+  "title": "DecisionRole",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "role_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "role_type": {
+      "type": "string",
+      "enum": [
+        "user",
+        "initiator",
+        "influencer",
+        "evaluator",
+        "decision_maker",
+        "buyer",
+        "approver",
+        "blocker",
+        "administrator",
+        "champion",
+        "unknown"
+      ]
+    },
+    "description": { "type": "string", "maxLength": 2000 },
+    "objectives": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 20
+    },
+    "concerns": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 20
+    },
+    "influence_level": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "decision_authority": {
+      "type": "string",
+      "enum": ["final", "shared", "advisory", "none", "unknown"]
+    },
+    "information_needs": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 20
+    },
+    "objections": {
+      "type": "array",
+      "items": { "$ref": "schemas/customer_claim.schema.json" },
+      "maxItems": 20
+    },
+    "trust_requirements": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 20
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 20
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 20
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "provenance": { "$ref": "schemas/provenance_stub.schema.json" }
+  },
+  "required": ["role_id", "role_type", "description", "confidence"]
+}

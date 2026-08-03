@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.offer_builder/input/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "source_cim_reference": {
+      "type": "object"
+    },
+    "source_positioning_reference": {
+      "type": "object"
+    },
+    "source_market_validation_reference": {
+      "type": "object"
+    },
+    "source_meaning_reference": {
+      "type": "object"
+    },
+    "source_claim_substantiation_reference": {
+      "type": "object"
+    },
+    "market_validation_verdict": {
+      "type": "string"
+    },
+    "positioning_hypothesis_id": {
+      "type": "string"
+    },
+    "substantiated_claim_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cim_claim_catalog": {
+      "type": "object"
+    },
+    "inherited_conditions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "inherited_blockers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "required": [
+    "source_cim_reference",
+    "source_positioning_reference",
+    "source_market_validation_reference",
+    "source_claim_substantiation_reference",
+    "market_validation_verdict",
+    "positioning_hypothesis_id",
+    "substantiated_claim_ids"
+  ]
+}

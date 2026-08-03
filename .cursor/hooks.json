@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "prompt",
+        "prompt": "Marketsynth Cursor Development Governance is active. Before editing product code (app/, web/, tests/), output the PRE-IMPLEMENTATION CHECK from marketsynth-planning-gate unless the task is read-only. Active product priority: read knowledge/06_CURRENT_STATE.md. Do not expand scope without owner approval.",
+        "timeout": 8
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "type": "prompt",
+        "prompt": "Safety check for Marketsynth dev shell command. Deny or ask if the command: (1) contains obvious secrets/API keys in plaintext, (2) is curl|bash or remote pipe install, (3) is git push --force to main/master, (4) is rm -rf on broad paths, (5) modifies global git config. Otherwise allow. Command: $ARGUMENTS",
+        "timeout": 12,
+        "matcher": "curl|wget|bash|rm -rf|git push|--force|chmod \\+x.*http"
+      }
+    ]
+  }
+}

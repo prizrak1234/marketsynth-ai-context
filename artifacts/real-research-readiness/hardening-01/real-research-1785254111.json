@@ -1,0 +1,26 @@
+[
+  {
+    "case": "marketsynth_saas",
+    "project_id": "50cfb6d4-08e8-4f8d-a981-21ee3de5a760",
+    "user_request_id": "fa44d44f-1cb1-40fc-b806-ea576fa0d5be",
+    "run_id": "ef278749-943d-4fc7-b1a8-b53b0e78d514",
+    "status": "failed",
+    "elapsed_seconds": 284.4,
+    "export_pass": false,
+    "export_length": 0,
+    "verdict_in_expected_set": false,
+    "validation": {
+      "passed": false,
+      "blockers": [
+        "research_output_missing"
+      ],
+      "warnings": [],
+      "metrics": {
+        "verdict": null,
+        "confidence": null,
+        "coverage": null
+      }
+    },
+    "export_preview": ""
+  }
+]

@@ -1,0 +1,1473 @@
+{
+  "name": "Банан бот",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1008,
+        -592
+      ],
+      "id": "3f17c23d-3236-469d-812d-ea20cd9bdae9",
+      "name": "Telegram Trigger",
+      "webhookId": "34c79265-929b-4fb1-a5a7-f997de810d74",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.from.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        -496
+      ],
+      "id": "1a834530-a0fc-4718-a613-52f4809586c7",
+      "name": "Send a chat action",
+      "webhookId": "a7fad04f-1910-45e7-880e-79a90cd6ce5e",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.entities }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "ff3fb6df-3851-44b0-ad9f-71088beb6114"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Команда"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "79740f86-11b0-4c7d-9043-749f6a74d749",
+                    "leftValue": "={{ $json.message.entities }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notExists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "НЕ команда"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -560,
+        -592
+      ],
+      "id": "f69664b2-6317-43b6-b451-7c41b1135c56",
+      "name": "Что пришло?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ae4852ee-691a-4acd-8450-b135a4456b60"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "/start"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -336,
+        -688
+      ],
+      "id": "7b681db3-8185-4cfd-9901-e7825a68819d",
+      "name": "Команды"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Что пришло?').item.json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "b52d5cb9-5072-4eeb-8042-48e35b58bef9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Текст"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bac2dc83-e059-42c5-97a7-2a4827c288c5",
+                    "leftValue": "={{ $('Что пришло?').item.json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Голосовое"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2e1f3042-b3c6-4b48-81c7-df40dc9805ca",
+                    "leftValue": "={{ $('Что пришло?').item.json.message.caption }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Текст с фото"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        2608,
+        -608
+      ],
+      "id": "38f8a11d-66a3-494d-ab3b-fbf4a8b3aba3",
+      "name": "Что пришло"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.from.id }}",
+        "text": "*Привет\\!* 👋  \nЯ — бот, который умеет создавать и редактировать изображения от *Халина Николая*\\. 🎨🤖\n\n*Я умею:*  \n\\- Создавать картинки по текстовому описанию ✍️🖼️  \n\\- Редактировать картинку \\(если ты пришлёшь изображение и текст одним сообщением\\) 🛠️✨  \n\\- Объединять картинки \\(пришли 2 или 3 изображения вместе с подписью\\) 🔗🖼️🖼️\n\n*Я не умею:*  \n\\- Работать с голосовыми, потому что они не нравятся моему создателю 🎧❌  \n\\- Работать без текста — даже если ты пришлёшь 1, 2 или 3 картинки\\.  \nНет текста — нет картинки\\. 🚫📝\n\nИногда я присылаю тебе ошибки — это значит, что нужно отправить запрос заново, или в твоём запросе есть запрещёнка \\(скорее всего, второе\\)\\. ⚠️🔁\n\n*Помни\\!*  \nЕсли у тебя есть доступ к этому боту, ты входишь в особый круг доверия *Николая*\\.  \nБереги это и не делись ботом ни с кем\\! 🔒🤝✨\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "MarkdownV2"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -112,
+        -688
+      ],
+      "id": "c8cbb161-ed41-46a4-8bb3-60733e70a932",
+      "name": "Приветствие",
+      "webhookId": "98e8e76c-7b26-4b97-8479-65f26e0566bc",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Что пришло?').item.json.message.from.id }}",
+        "text": "❗ *Ошибка\\!*    \nТы прислал изображение без текста\\.   \nЯ так не работаю 🙅‍♂️    \n\n📌 Чтобы я смог помочь, обязательно добавь *текстовое описание* к изображению\\.    \n\nНет текста — нет результата\\. 🚫📝   \nОтправь картинку *вместе с текстом* и попробуй снова 👌",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "MarkdownV2"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2896,
+        -384
+      ],
+      "id": "9483596a-224d-45dc-8414-c6c74bc6e1eb",
+      "name": "Ошибка",
+      "webhookId": "98e8e76c-7b26-4b97-8479-65f26e0566bc",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"{{ $json.output[0].content[0].text.enhanced_prompt }}\"\n        }\n      ]\n    }\n  ],\n  \n  \"generationConfig\": {\n    \"responseModalities\": [\n      \"TEXT\",\n      \"IMAGE\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3184,
+        -832
+      ],
+      "id": "015d8076-c3ef-44ef-a02e-2b672e5feb69",
+      "name": "HTTP Request1",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "gl5TGmCzvonqxHSK",
+          "name": "Gemini web.reklaman"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "candidates[0].content.parts[0].inlineData.data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        3472,
+        -832
+      ],
+      "id": "ee0fe1dc-7ffd-4d60-91fc-c595de863f50",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Что пришло?').item.json.message.from.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3760,
+        -832
+      ],
+      "id": "8b1e4a49-a64b-4065-9055-28bf4c6d655f",
+      "name": "Send a photo message1",
+      "webhookId": "4085a216-4696-47d5-a802-6bbf6fc95fa0",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "48740040-6d61-43ff-9ee9-bc2fd0026fac",
+              "leftValue": "={{ $('Что пришло?').item.json.message.photo }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2896,
+        -576
+      ],
+      "id": "b8521cc6-f006-497c-b798-31777c0f8de7",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Что пришло?').item.json.message?.photo?.slice(-1)?.[0]?.file_id || '' }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3184,
+        -576
+      ],
+      "id": "58a2f8c1-9a4e-4c98-a959-afe32aba6926",
+      "name": "Get a file1",
+      "webhookId": "1a61decd-115a-43c7-8d00-dcf011cfdf48",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"{{ $('Что пришло?').item.json.message.caption }}\"\n        },{\"inline_data\": {\"mime_type\":\"image/png\", \"data\": \"{{ $json.data }}\"}}\n      ]\n    }\n  ],\n  \n  \"generationConfig\": {\n    \"responseModalities\": [\n      \"TEXT\",\n      \"IMAGE\"\n    ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        4208,
+        -576
+      ],
+      "id": "1cc21695-e45a-4a44-883c-c9da6270a571",
+      "name": "HTTP Request2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "gl5TGmCzvonqxHSK",
+          "name": "Gemini web.reklaman"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        3984,
+        -576
+      ],
+      "id": "f1512d72-d076-4b52-a820-d17c676d2a97",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "candidates[0].content.parts[0].inlineData.data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        4432,
+        -576
+      ],
+      "id": "c734967c-e11e-49ae-8c32-b78d5dc11add",
+      "name": "Convert to File2"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Что пришло?').item.json.message.from.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4656,
+        -576
+      ],
+      "id": "aba6f413-0c06-4ed2-bf3d-bc7cb13fbc8a",
+      "name": "Send a photo message2",
+      "webhookId": "4085a216-4696-47d5-a802-6bbf6fc95fa0",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f07f2800-61b7-49d6-bba3-926577d2d980",
+              "leftValue": "={{ $json.message.from.id }}",
+              "rightValue": 237324167,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -784,
+        -592
+      ],
+      "id": "70893358-1bd9-4d93-bcd3-1c71496a13be",
+      "name": "Фильтр по ID"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output[0].content[0].text.decision }}",
+                    "rightValue": "SAFE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c5f66640-a5df-4fce-bcf8-ce97d96cdf69"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SAFE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a645fd09-9afb-4652-ad86-a3ce216790f0",
+                    "leftValue": "={{ $json.output[0].content[0].text.decision }}",
+                    "rightValue": "AMBIGUOUS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AMBIGUOUS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e53e7e97-5be5-4c8a-94ff-c8632bd9f082",
+                    "leftValue": "={{ $json.output[0].content[0].text.decision }}",
+                    "rightValue": "BLOCK",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "BLOCK"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1136,
+        -512
+      ],
+      "id": "40f10c34-4414-4cb6-b107-8ba342846b38",
+      "name": "Результат модерации"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=Ты — специализированный модуль фильтрации и классификации пользовательских текстовых промптов\nперед генерацией изображений через Gemini API.\n\nТВОЯ РОЛЬ\nТы не генерируешь изображения, не переписываешь промпты и не предлагаешь альтернативы.\nТвоя единственная задача — КЛАССИФИЦИРОВАТЬ входной ТЕКСТОВЫЙ промпт на соответствие правилам\nгенерации изображений Google Gemini и вернуть структурированный JSON-ответ.\n\nВАЖНО ПРО КОНТЕКСТ ИЗОБРАЖЕНИЙ\n\n* Ты модерируешь ТОЛЬКО текст промпта.\n* Ты НЕ видишь и НЕ анализируешь изображения.\n* Ссылки на изображение или человека («этот человек», «человек на фото», «как на изображении»)\n  САМИ ПО СЕБЕ не являются нарушением и не повышают риск.\n* Оценивается только то, ЧТО просят сделать, а не то, что может быть на изображении.\n\nТВОЯ ЦЕЛЬ\nКорректно разделять:\n\n* допустимые промпты (SAFE)\n* пограничные, потенциально рискованные (AMBIGUOUS)\n* явно запрещённые (BLOCK)\n\nAMBIGUOUS — это НОРМАЛЬНОЕ и ОЖИДАЕМОЕ решение для художественных, чувствительных,\nдвусмысленных или рискованных формулировок, которые НЕ содержат прямых нарушений.\n\n---\n\nФОРМАТ ВЫХОДА (СТРОГО):\n\n{\n\"decision\": \"SAFE | AMBIGUOUS | BLOCK\",\n\"category\": \"название категории нарушения или SAFE\",\n\"risk_level\": \"LOW | MEDIUM | HIGH\",\n\"problem_fragments\": \"фрагмент или фрагменты исходного промпта\",\n\"recommendation\": \"пользовательская рекомендация по исправлению промпта\"\n}\n\n---\n\nЗНАЧЕНИЯ КЛЮЧЕЙ\n\n1. decision\n\n* SAFE — текст допустим для генерации изображений\n* AMBIGUOUS — текст содержит рискованные или двусмысленные элементы, возможна блокировка Gemini\n* BLOCK — текст явно нарушает правила и должен быть заблокирован\n\n2. category\n   Одно из:\n\nCHILD_SAFETY\nSEXUAL_CONTENT\nVIOLENCE\nHATE\nEXTREMISM\nILLEGAL_ACTIVITY\nSELF_HARM\nDECEPTION\nPRIVACY\nMEDICAL\nSURVEILLANCE\nFRAUD\nAI_SAFETY_BYPASS\nREGULATED_DOMAIN\nIMAGE_POLICY_VIOLATION\nSAFE\n\n3. risk_level\n\nLOW — безопасно\nMEDIUM — риск блокировки\nHIGH — гарантированная блокировка\n\n4. problem_fragments\n\n* ОДНА строка\n* Если фрагментов несколько — через запятую\n* Использовать ТОЛЬКО фрагменты исходного промпта\n* НЕ добавлять интерпретации\n\n5. recommendation\n\n* Обращение к пользователю\n* Простым человеческим языком\n* Объясняет, как снизить риск\n* НЕ переписывать промпт\n* НЕ использовать юридический или технический стиль\n\n---\n\nКЛЮЧЕВОЕ ПРАВИЛО ПО СЕКСУАЛЬНОМУ КОНТЕНТУ\n\nBLOCK применяется ТОЛЬКО при ЯВНЫХ признаках запрещённого сексуального контента, включая хотя бы одно из нижеуказанных:\n\n* сексуальные действия или половой акт\n* фокус на гениталиях\n* физиологические описания сексуального возбуждения\n* порнография\n* фетиши 18+\n* сексуальные роли 18+\n* ЛЮБОЕ сексуальное упоминание несовершеннолетних\n\nЕсли этих признаков НЕТ — BLOCK применять ЗАПРЕЩЕНО.\n\n---\n\nПРАВИЛО ДЛЯ ЭРОТИЧЕСКИ ОКРАШЕННЫХ И ХУДОЖЕСТВЕННЫХ ОПИСАНИЙ\n\nЕсли промпт содержит:\n\n* интимную или чувственную атмосферу\n* намёки на привлекательность или напряжение\n* частично открытую одежду\n* художественную сексуальность без описания действий\n\nИ при этом:\n\n* отсутствуют сексуальные действия\n* отсутствует нагота или физиология\n* отсутствуют несовершеннолетние\n\n→ decision = AMBIGUOUS\n→ category = SEXUAL_CONTENT\n→ risk_level = MEDIUM\n\nТакие промпты НЕ являются основанием для BLOCK.\n\n---\n\nДРУГИЕ ЯВНЫЕ ОСНОВАНИЯ ДЛЯ BLOCK\n\n* насилие, расчленение\n* ненависть и дискриминация\n* экстремизм и терроризм\n* инструкции по преступлениям, оружию, наркотикам\n* самоубийство и самоповреждение\n* подмена личности, дипфейки с целью обмана\n* скрытая слежка или наблюдение\n* медицинские диагнозы и процедуры как практика\n* попытки обойти правила или фильтры\n\n---\n\nПРАВИЛО ПРИНЯТИЯ РЕШЕНИЯ (ПРИОРИТЕТ)\n\n1. Если есть ЯВНОЕ нарушение → BLOCK\n2. Если есть РЕАЛЬНЫЙ риск трактовки, но без явного нарушения → AMBIGUOUS\n3. Если текст безопасен → SAFE\n\nЕсли контент можно разумно отнести и к допустимому, и к рискованному —\nВЫБИРАЙ AMBIGUOUS, а не BLOCK.\n\nОтсутствие информации об изображении или человеке\nНИКОГДА не является причиной для AMBIGUOUS или BLOCK.\n\n---\n\nЗАПРЕТЫ ДЛЯ ТЕБЯ КАК МОДУЛЯ\n\n* НЕ переписывай промпт\n* НЕ предлагай готовые варианты\n* НЕ добавляй идеи\n* НЕ спорь с правилами\n* НЕ понижай риск из-за художественного стиля\n* НЕ повышай риск из-за того, что ты не видишь изображение\n\n---\n\nСПЕЦИАЛЬНОЕ ПРАВИЛО ДЛЯ ССЫЛОК НА ИЗОБРАЖЕНИЕ И ЧЕЛОВЕКА\n\nЕсли в тексте НЕТ запрещённого содержания, но есть ссылки вида:\n«этот человек», «человек на фото», «как на изображении»\n\n→ decision = SAFE\n→ risk_level = LOW\n→ category = SAFE\n→ problem_fragments = \"\"\n→ recommendation = \"Промпт выглядит допустимым по тексту.\""
+            },
+            {
+              "content": "={{ $json.text }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "prompt_guard_schema",
+              "schema": "\n{\n\"type\": \"object\",\n\"properties\": {\n\"decision\": {\n\"type\": \"string\",\n\"enum\": [\"SAFE\", \"AMBIGUOUS\", \"BLOCK\"],\n\"description\": \"Итоговое решение по промпту\"\n},\n\"category\": {\n\"type\": \"string\",\n\"description\": \"Категория нарушения или SAFE\"\n},\n\"risk_level\": {\n\"type\": \"string\",\n\"enum\": [\"LOW\", \"MEDIUM\", \"HIGH\"],\n\"description\": \"Уровень риска блокировки\"\n},\n\"problem_fragments\": {\n\"type\": \"string\",\n\"description\": \"Фрагмент или фрагменты исходного промпта, вызвавшие проблему (одна строка; если несколько — через запятую). Если проблем нет — пустая строка.\"\n},\n\"recommendation\": {\n\"type\": \"string\",\n\"description\": \"Пользовательская рекомендация по исправлению промпта. Если проблем нет — коротко: что по тексту всё допустимо.\"\n}\n},\n\"required\": [\n\"decision\",\n\"category\",\n\"risk_level\",\n\"problem_fragments\",\n\"recommendation\"\n],\n\"additionalProperties\": false\n}",
+              "description": "Схема ответа GPT-модуля для фильтрации и классификации промптов перед генерацией изображений Gemini",
+              "strict": true
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        784,
+        -496
+      ],
+      "id": "aadc2675-c8e5-4e9b-b1d1-b27b1b131f46",
+      "name": "Модерация",
+      "credentials": {
+        "openAiApi": {
+          "id": "mojuTXeT8AaU4ZpJ",
+          "name": "Reactor n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-5-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=Ты — специализированный GPT-модуль для ПЕРЕПИСЫВАНИЯ пользовательских промптов\nдля генерации изображений, которые были помечены предыдущим модулем фильтрации\nкак AMBIGUOUS или BLOCK.\n\nТВОЯ РОЛЬ  \nТы получаешь:\n1) исходный пользовательский промпт\n2) результат работы guard-модуля (decision, category, risk_level, problem_fragments, recommendation)\n\nТвоя задача:\n— переписать исходный промпт так, чтобы он:\n  • соответствовал правилам генерации изображений Gemini\n  • устранял выявленные нарушения\n  • сохранял исходное намерение пользователя, если это возможно\n  • был безопасен и допустим для генерации\n\nТы НЕ оцениваешь риски и НЕ классифицируешь — это уже сделано.\n\n---\n\nОБЯЗАТЕЛЬНЫЕ ТРЕБОВАНИЯ  \n\n- Все ответы СТРОГО на русском языке\n- Ответ ВСЕГДА должен быть валидным JSON\n- Никакого текста вне JSON\n- Никаких markdown-обёрток\n- Никаких комментариев\n- Никаких объяснений вне структуры\n\n---\n\nФОРМАТ ВЫХОДА (СТРОГО):\n\n{\n  \"rewritten_prompt\": \"исправленный и допустимый промпт\",\n  \"changes_summary\": \"краткое описание того, что было изменено\",\n  \"status\": \"REWRITTEN | IMPOSSIBLE\"\n}\n\n---\n\nЗНАЧЕНИЯ КЛЮЧЕЙ\n\n1) rewritten_prompt  \n- Готовый промпт для генерации изображений\n- Безопасный\n- Нейтральный\n- Без запрещённых тем\n- Подходит для Gemini Image Generation\n- НЕ должен содержать:\n  • сексуального контента\n  • намёков на эротику\n  • несовершеннолетних\n  • насилия\n  • экстремизма\n  • медицинских процедур\n  • слежки\n  • обмана\n  • дипфейков\n\n2) changes_summary  \n- Короткое человеческое описание\n- Что именно было удалено / смягчено / заменено\n- Без упоминаний внутренних политик\n- Без технических терминов\n\n3) status  \n- REWRITTEN — если промпт удалось безопасно адаптировать\n- IMPOSSIBLE — если исходное намерение невозможно реализовать без нарушения правил\n\n---\n\nПРАВИЛА ПЕРЕПИСЫВАНИЯ\n\n1. Удаляй ТОЛЬКО проблемные элементы  \n2. НЕ добавляй новые идеи  \n3. НЕ расширяй сцену  \n4. НЕ делай промпт более «креативным», чем он был  \n5. НЕ меняй жанр, если это не требуется для безопасности  \n6. При сексуальном или насильственном контенте:\n   — полностью убирай сексуализацию\n   — переводите в нейтральный художественный стиль ИЛИ\n   — возвращай status = IMPOSSIBLE\n\n---\n\nПРАВИЛА ДЛЯ IMPOSSIBLE\n\nИспользуй status = IMPOSSIBLE если:\n- основной смысл промпта — сексуальный контент\n- промпт целиком строится вокруг насилия\n- запрос связан с несовершеннолетними\n- запрос направлен на обман, слежку или подмену личности\n- переписывание уничтожит исходное намерение пользователя\n\nВ этом случае:\n- rewritten_prompt должен быть пустой строкой\n- changes_summary кратко объясняет, почему переписывание невозможно\n\nПример:\n{\n  \"rewritten_prompt\": \"\",\n  \"changes_summary\": \"Запрос полностью основан на запрещённой теме и не может быть адаптирован без потери смысла.\",\n  \"status\": \"IMPOSSIBLE\"\n}\n\n---\n\nПРИНЦИП ПРИНЯТИЯ РЕШЕНИЯ\n\nЕсли можно сделать безопасно — переписывай  \nЕсли нельзя сделать безопасно — отказывай  \n\nЛучше IMPOSSIBLE, чем скрытое нарушение.\n"
+            },
+            {
+              "content": "=Промпт: {{ $('Входящий промпт').item.json.text }}\n\n{{ $('Модерация').item.json.output[0].content[0].text }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "prompt_rewrite_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"rewritten_prompt\": {\n      \"type\": \"string\",\n      \"description\": \"Переписанный пользовательский промпт, приведённый в соответствие с правилами и ограничениями. Одна строка, человеко-читаемая, без пояснений.\"\n    },\n    \"status\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"rewritten\",\n        \"unchanged\",\n        \"blocked\"\n      ],\n      \"description\": \"Статус обработки: rewritten — промпт был изменён; unchanged — промпт допустим и не изменялся; blocked — промпт невозможно привести в соответствие правилам.\"\n    }\n  },\n  \"required\": [\n    \"rewritten_prompt\",\n    \"status\"\n  ],\n  \"additionalProperties\": false\n}\n",
+              "description": "Модуль переписывает пользовательский промпт на основе результата классификации предыдущего модуля. Если статус позволяет, промпт безопасно переформулируется с сохранением исходного намерения пользователя и приведением в соответствие правилам. Если переписывание не требуется — промпт возвращается без изменений. Если приведение к правилам невозможно — возвращается статус blocked. Модуль не объясняет причины, не добавляет комментариев и всегда возвращает человеко-читаемый однострочный текст.",
+              "strict": true
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        1360,
+        -688
+      ],
+      "id": "3fc477d4-fd66-4559-bd24-762e9bcbd42c",
+      "name": "Переписывание",
+      "credentials": {
+        "openAiApi": {
+          "id": "mojuTXeT8AaU4ZpJ",
+          "name": "Reactor n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "function escapeMarkdownV2(text) {\n  if (typeof text !== 'string') return text;\n  return text.replace(/([_*\\[\\]()~`>#+\\-=|{}.!\\\\])/g, '\\\\$1');\n}\n\n// Берём входной item\nconst item = items[0];\n\n// Путь к данным GPT (по твоему скрину)\nconst data = item.json.output[0].content[0].text;\n\n// Экранируем ВСЕ значения\nconst escaped = {\n  decision: escapeMarkdownV2(data.decision),\n  category: escapeMarkdownV2(data.category),\n  risk_level: escapeMarkdownV2(data.risk_level),\n  problem_fragments: escapeMarkdownV2(data.problem_fragments),\n  recommendation: escapeMarkdownV2(data.recommendation),\n};\n\n// Возвращаем массив items\nreturn [\n  {\n    json: escaped\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        -288
+      ],
+      "id": "48a7cd7f-0e78-4fe1-8210-f38bf4111753",
+      "name": "Экранирование (BLOCK)"
+    },
+    {
+      "parameters": {
+        "jsCode": "function escapeMarkdownV2(text) {\n  if (typeof text !== 'string') return text;\n  return text.replace(/([_*\\[\\]()~`>#+\\-=|{}.!\\\\])/g, '\\\\$1');\n}\n\nfunction escapeAllStrings(value) {\n  if (typeof value === 'string') {\n    return escapeMarkdownV2(value);\n  }\n  if (Array.isArray(value)) {\n    return value.map(escapeAllStrings);\n  }\n  if (value !== null && typeof value === 'object') {\n    const result = {};\n    for (const key in value) {\n      result[key] = escapeAllStrings(value[key]);\n    }\n    return result;\n  }\n  return value;\n}\n\nconst escaped = escapeAllStrings(items[0].json);\n\nreturn [\n  {\n    json: escaped,\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1936,
+        -640
+      ],
+      "id": "9271b8c9-beb9-40f3-b65a-1372b29c0122",
+      "name": "Экранирование (AMBIGUOUS)"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Что пришло?').item.json.message.from.id }}",
+        "text": "=🚫 *Запрос заблокирован\\! АЙ\\-АЙ\\-АЙ*😡\n\n*Причина блокировки:* {{ $json.category }}\n*Пробелемные места:* {{ $json.problem_fragments }}\n*Как исправить:* `{{ $json.recommendation }}`",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "MarkdownV2"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1712,
+        -288
+      ],
+      "id": "f80c3ee0-63c0-4fcc-b8a3-839fa2a7d6b6",
+      "name": "Сообщение о блоке",
+      "webhookId": "095b5f0c-4df6-4810-9353-de58bc45d4de",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Что пришло?').item.json.message.from.id }}",
+        "text": "=⚠️ *У тебя сомнительный промпт\\! Может нарушить правила Банана\\!*\n_Не волнуйся, я его исправил и отправил картинку на генерацию_ 🫶\n\n*Исправленный промпт*: {{ $json.output[0].content[0].text.rewritten_prompt }}\n\n||_Уровень урозы: {{ $json.output[0].content[0].text.risk_level }}\nПроблемные места: {{ $json.output[0].content[0].text.problem_fragments }}\nЧто нужно было сделать: {{ $json.output[0].content[0].text.recommendation }}_||",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "MarkdownV2"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2160,
+        -640
+      ],
+      "id": "c6e55da4-8056-4415-8598-872ceacb49a1",
+      "name": "Сообщение об изменении промпта",
+      "webhookId": "095b5f0c-4df6-4810-9353-de58bc45d4de",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "GPT-5.2"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=You are a prompt enhancement module for Gemini Image Generation.\n\nYour task is to enhance a user-provided image prompt while strictly preserving its original meaning.\n\nRules:\n- Do NOT change the semantic intent or storyline of the prompt.\n- All original entities and actions MUST remain present.\n- You MAY add visual details, context, camera language, style, lighting, composition, or intent if and only if they do not contradict or alter the original prompt.\n- You MAY add new entities or actions only if they logically follow from the original prompt and do not introduce a new narrative.\n- Prioritize predictability over creativity.\n- Do NOT add semantic negative prompts.\n- Iteration is not allowed. One-shot output only.\n- Camera language is allowed without preset restrictions.\n- Text inside the image is allowed if it improves clarity.\n- Normalize the prompt for Gemini / Imagen best practices when beneficial.\n\nOutput rules:\n- Return ONLY valid JSON.\n- Do NOT include any text outside the JSON.\n- Follow EXACTLY this structure:\n\n{\n  \"enhanced_prompt\": \"...\",\n  \"enhancements\": [\"...\"],\n  \"rationale\": [\"...\"]\n}"
+            },
+            {
+              "content": "={{ $('Модерированный промпт').item.json.prompt }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "prompt_enhancer_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"enhanced_prompt\": {\n      \"type\": \"string\",\n      \"description\": \"Итоговый усиленный промпт для генерации изображения в Gemini. Смысл исходного промпта полностью сохранён.\"\n    },\n    \"enhancements\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\": \"Список добавленных или уточнённых элементов (стиль, свет, камера, контекст и т.д.).\"\n    },\n    \"rationale\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\": \"Обоснование каждого усиления с точки зрения улучшения качества генерации и best practices Gemini.\"\n    }\n  },\n  \"required\": [\n    \"enhanced_prompt\",\n    \"enhancements\",\n    \"rationale\"\n  ],\n  \"additionalProperties\": false\n}\n",
+              "description": "Strict JSON schema for Gemini image prompt enhancement. Preserves original meaning, improves visual clarity and predictability according to Gemini image generation best practices.",
+              "strict": true
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        2832,
+        -832
+      ],
+      "id": "1ffffa83-4b40-4e85-b0f3-839ff8365082",
+      "name": "Усилитель промпта (text-to-image)",
+      "credentials": {
+        "openAiApi": {
+          "id": "mojuTXeT8AaU4ZpJ",
+          "name": "Reactor n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "GPT-5.2"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=You are an image-grounded prompt enhancement module for Gemini Image Generation.\n\nYou receive:\n- a user-provided image\n- a user-provided text prompt describing that image\n\nYour task is to enhance the text prompt to improve image-to-image generation quality, while strictly preserving the original meaning and intent of the text prompt.\n\nRules:\n\n1. Semantic integrity:\n- You MUST NOT change the meaning, intent, or storyline of the original text prompt.\n- All entities and actions explicitly mentioned in the original text prompt MUST remain present.\n- The text prompt has absolute priority over the image if there is any conflict.\n\n2. Use of the image:\n- You MAY extract visual details from the image only to improve clarity, specificity, and visual grounding of the existing prompt.\n- You MAY add new entities or details ONLY if they are clearly visible in the image and do not introduce a new narrative.\n- The image must be used strictly to enhance the text, not to reinterpret it.\n\n3. Style and composition:\n- Preserve the original visual style as closely as possible.\n- Camera language (angle, focal length, depth of field, framing) MAY be inferred from the image and added.\n- Composition and framing should be preserved approximately, not reimagined.\n\n4. Text inside the image:\n- If there is readable text inside the image, it MUST be included in the enhanced prompt.\n- That text MUST be written in the original language in which it appears in the image or prompt.\n- Do not translate or paraphrase visible text.\n\n5. Language rules:\n- The enhanced prompt MUST be written in English.\n- Any text that is explicitly meant to appear inside the image must remain in its original language.\n- The \"enhancements\" and \"rationale\" fields MUST be written in Russian.\n\n6. Prompt optimization:\n- You MAY normalize the prompt according to Gemini / Imagen best practices if it improves output quality.\n- Prefer clear, concrete, visually descriptive phrasing.\n- Do NOT add semantic negative prompts.\n- Do NOT add safety disclaimers or moderation-related language.\n\n7. Output constraints:\n- Return ONLY valid JSON.\n- Do NOT include any text outside the JSON.\n- Do NOT include markdown.\n- Follow EXACTLY this JSON structure:\n\n{\n  \"enhanced_prompt\": \"...\",\n  \"enhancements\": [\"...\"],\n  \"rationale\": [\"...\"]\n}\n\n8. Execution model:\n- One-shot execution only.\n- No iteration.\n- No self-references.\n- No explanations outside the JSON.\n"
+            },
+            {
+              "type": "image",
+              "imageType": "base64"
+            },
+            {
+              "content": "={{ $('Модерированный промпт').item.json.prompt }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "include": [
+            "message.input_image.image_url"
+          ],
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "image_prompt_enhancer_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"enhanced_prompt\": {\n      \"type\": \"string\",\n      \"description\": \"Усиленный текстовый промпт для image-to-image генерации в Gemini с учётом входного изображения и исходного текста.\"\n    },\n    \"enhancements\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\": \"Что именно было добавлено или уточнено на основе изображения и текста.\"\n    },\n    \"rationale\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      },\n      \"description\": \"Почему каждое усиление улучшает качество генерации согласно best practices Gemini.\"\n    }\n  },\n  \"required\": [\n    \"enhanced_prompt\",\n    \"enhancements\",\n    \"rationale\"\n  ],\n  \"additionalProperties\": false\n}\n",
+              "description": "Strict JSON schema for image-grounded prompt enhancement for Gemini image-to-image generation.",
+              "strict": true
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        3408,
+        -640
+      ],
+      "id": "1e73090a-e0d2-4e09-8523-d1e36160f66d",
+      "name": "Усилитель промпта (image-to-image)",
+      "credentials": {
+        "openAiApi": {
+          "id": "mojuTXeT8AaU4ZpJ",
+          "name": "Reactor n8n"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3760,
+        -576
+      ],
+      "id": "5a780eca-5298-44f8-b528-7e03e1c88c92",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "content": "## Модерация\n",
+        "height": 848,
+        "width": 1760
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        752,
+        -928
+      ],
+      "id": "e6ec85ed-a0fe-42a3-8628-5ef069be8a58",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Усиление и генерация\n",
+        "height": 848,
+        "width": 2288,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2544,
+        -928
+      ],
+      "id": "585ae0dd-d00e-43a1-b523-bf1203c8e678",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c0773225-3271-4910-9864-330dcf94f52d",
+              "leftValue": "={{ $('Что пришло?').item.json.message.voice }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -112,
+        -496
+      ],
+      "id": "a38566a3-fa22-4a55-809e-545fe7819258",
+      "name": "Голосовое?"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Что пришло?').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        112,
+        -576
+      ],
+      "id": "5317fe15-06f0-4343-bb09-930dc2840eb9",
+      "name": "Скачать голосовое",
+      "webhookId": "491210ef-3c1f-4f69-ab08-e0a2c037135d",
+      "credentials": {
+        "telegramApi": {
+          "id": "eRRR4o4OLQwyku7s",
+          "name": "@bananakhalinbot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        -576
+      ],
+      "id": "500b3595-bd89-4360-ad4d-48b1cdcb2070",
+      "name": "Голосовое в текст",
+      "credentials": {
+        "openAiApi": {
+          "id": "mojuTXeT8AaU4ZpJ",
+          "name": "Reactor n8n"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "40ffcda5-8c3e-44c1-8a57-dc92c983f0d4",
+              "name": "text",
+              "value": "={{ \n  $if(\n    $('Голосовое в текст').isExecuted,\n    $('Голосовое в текст').item.json.text,\n    $if(\n      $('Что пришло?').item.json.message.caption,\n      $('Что пришло?').item.json.message.caption,\n      $('Что пришло?').item.json.message.text\n    )\n  )\n}}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        -496
+      ],
+      "id": "c79355de-04e8-4a77-b5f1-8ba08b9524f6",
+      "name": "Входящий промпт"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1712,
+        -640
+      ],
+      "id": "69dbfe90-8726-4b75-b317-af02f8e06633",
+      "name": "Модерация + переписанный тест"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bd0466ab-4fb0-4c2e-b6bb-46b15303a9d0",
+              "name": "prompt",
+              "value": "={{ \n  $if(\n    $('Модерация + переписанный тест').isExecuted,\n    $('Модерация + переписанный тест').item.json.output[0].content[0].text.rewritten_prompt,\n    $('Входящий промпт').item.json.text\n  )\n}}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2384,
+        -576
+      ],
+      "id": "e25129e4-12e9-4226-9aa4-e730b1c964bf",
+      "name": "Модерированный промпт"
+    },
+    {
+      "parameters": {
+        "content": "## Получение данных и текста промпта",
+        "height": 848,
+        "width": 1792,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1072,
+        -928
+      ],
+      "id": "00d626e5-26ed-4d91-b906-e6bdadc00e63",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Фильтр по ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a chat action": {
+      "main": [
+        [
+          {
+            "node": "Голосовое?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Что пришло?": {
+      "main": [
+        [
+          {
+            "node": "Команды",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a chat action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Команды": {
+      "main": [
+        [
+          {
+            "node": "Приветствие",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Что пришло": {
+      "main": [
+        [
+          {
+            "node": "Усилитель промпта (text-to-image)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Усилитель промпта (text-to-image)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ошибка",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Send a photo message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Get a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file1": {
+      "main": [
+        [
+          {
+            "node": "Усилитель промпта (image-to-image)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Convert to File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File2": {
+      "main": [
+        [
+          {
+            "node": "Send a photo message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Фильтр по ID": {
+      "main": [
+        [
+          {
+            "node": "Что пришло?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Результат модерации": {
+      "main": [
+        [
+          {
+            "node": "Модерированный промпт",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Переписывание",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Модерация + переписанный тест",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Экранирование (BLOCK)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Модерация": {
+      "main": [
+        [
+          {
+            "node": "Результат модерации",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Экранирование (BLOCK)": {
+      "main": [
+        [
+          {
+            "node": "Сообщение о блоке",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Переписывание": {
+      "main": [
+        [
+          {
+            "node": "Модерация + переписанный тест",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Экранирование (AMBIGUOUS)": {
+      "main": [
+        [
+          {
+            "node": "Сообщение об изменении промпта",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Сообщение об изменении промпта": {
+      "main": [
+        [
+          {
+            "node": "Модерированный промпт",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Усилитель промпта (text-to-image)": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Усилитель промпта (image-to-image)": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Голосовое?": {
+      "main": [
+        [
+          {
+            "node": "Скачать голосовое",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Входящий промпт",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Скачать голосовое": {
+      "main": [
+        [
+          {
+            "node": "Голосовое в текст",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Голосовое в текст": {
+      "main": [
+        [
+          {
+            "node": "Входящий промпт",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Входящий промпт": {
+      "main": [
+        [
+          {
+            "node": "Модерация",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Модерация + переписанный тест": {
+      "main": [
+        [
+          {
+            "node": "Экранирование (AMBIGUOUS)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Модерированный промпт": {
+      "main": [
+        [
+          {
+            "node": "Что пришло",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "qcsUSLPSOPcskNDU"
+  },
+  "versionId": "0fd569d7-c757-4712-ac24-c8214bd99606",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7151157eed556e80ee3087fb84953a9d7c4aa353f61b4bedb75b8e4812fe8597"
+  },
+  "id": "EtOELnezgizr7lGA",
+  "tags": []
+}

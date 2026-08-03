@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/error-pattern.schema.json",
+  "title": "ErrorPattern",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "error_pattern_id": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "component": {
+      "type": "string"
+    },
+    "symptom": {
+      "type": "string"
+    },
+    "probable_causes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "diagnostic_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "remediation_candidates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prevention": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "affected_versions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "claimed",
+        "source_documented",
+        "reproduced",
+        "regression_tested",
+        "contradicted",
+        "obsolete",
+        "unknown"
+      ]
+    },
+    "related_practices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sensitive_data_warning": {
+      "type": "boolean"
+    },
+    "tenant_scope": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "error_pattern_id",
+    "platform",
+    "symptom",
+    "probable_causes",
+    "remediation_candidates",
+    "verification_status",
+    "tenant_scope",
+    "provenance"
+  ]
+}

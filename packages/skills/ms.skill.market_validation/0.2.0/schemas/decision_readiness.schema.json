@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_validation/decision_readiness/0.2.0",
+  "title": "MarketValidationDecisionReadiness",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "readiness": {
+      "type": "string",
+      "enum": [
+        "ready_for_decision",
+        "partially_ready",
+        "insufficient_evidence",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "supporting_reasons": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 30
+    },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 30
+    },
+    "missing_inputs": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 30
+    },
+    "unresolved_conflicts": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 30
+    },
+    "evidence_coverage": {
+      "type": "string",
+      "enum": ["full", "partial", "minimal", "unknown"]
+    },
+    "provenance": { "$ref": "#/$defs/provenance_stub" }
+  },
+  "required": [
+    "readiness",
+    "supporting_reasons",
+    "blockers",
+    "missing_inputs",
+    "unresolved_conflicts",
+    "evidence_coverage",
+    "provenance"
+  ],
+  "$defs": {
+    "provenance_stub": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "maxLength": 128 },
+        "skill_version": { "type": "string", "maxLength": 32 },
+        "methodology_ref": { "type": "string", "maxLength": 256 }
+      }
+    }
+  }
+}

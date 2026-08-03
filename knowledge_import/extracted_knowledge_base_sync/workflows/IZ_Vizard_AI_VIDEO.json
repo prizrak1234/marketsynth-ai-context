@@ -1,0 +1,948 @@
+{
+  "name": "IZ_Vizard_AI_VIDEO",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCO85GRCGUWMH08jjBZwdq7g",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        -640
+      ],
+      "id": "8acaceb8-dd2c-4819-b6c8-32f565dd550c",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "maxItems": 2
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        760,
+        -640
+      ],
+      "id": "5a054610-52d7-40e1-97d2-90400e41bb38",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "videos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -160
+      ],
+      "id": "afa92652-adc9-4a9d-8758-90a9642c20d2",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -240,
+        -160
+      ],
+      "id": "4d8f2e46-f8ef-4888-bce6-ca1635224874",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A",
+          "mode": "list",
+          "cachedResultName": "IZ_SHOORTS_VIZARD",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1124514592,
+          "mode": "list",
+          "cachedResultName": "Shoorts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A/edit#gid=1124514592"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Caption": "={{ $json.message.content.caption }}",
+            "viralScore": "={{ $('Split Out').item.json.viralScore }}",
+            "relatedTopic ": "={{ $('Split Out').item.json.relatedTopic }}",
+            "transcript ": "={{ $('Split Out').item.json.transcript }}",
+            "videoUrl": "={{ $('Split Out').item.json.videoUrl }}",
+            "clipEditorUrl ": "={{ $('Split Out').item.json.clipEditorUrl }}",
+            "videoMsDuration": "={{ $('Split Out').item.json.videoMsDuration }}",
+            "videoId": "={{ $('Split Out').item.json.videoId }}",
+            "title": "={{ $('Split Out').item.json.title }}",
+            "viralReason": "={{ $('Split Out').item.json.viralReason }}",
+            "projectId": "={{ $('Извлекаем Клипы').item.json.projectId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "videoId",
+              "displayName": "videoId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "projectId",
+              "displayName": "projectId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoUrl",
+              "displayName": "videoUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoMsDuration",
+              "displayName": "videoMsDuration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "transcript ",
+              "displayName": "transcript ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "viralScore",
+              "displayName": "viralScore",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "viralReason",
+              "displayName": "viralReason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "relatedTopic ",
+              "displayName": "relatedTopic ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "clipEditorUrl ",
+              "displayName": "clipEditorUrl ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Caption",
+              "displayName": "Caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        520,
+        -60
+      ],
+      "id": "e2dcc3d6-117c-4703-84f3-0302adbf0bf5",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        840,
+        -60
+      ],
+      "id": "40e57286-e8f1-4adc-9ac8-24d7cbf94ade",
+      "name": "Wait",
+      "webhookId": "3ddb48b9-7f04-40e9-9121-1cabb9b52eb5"
+    },
+    {
+      "parameters": {
+        "chatId": "190190068",
+        "text": "=Видео по проекту: {{ $('Извлекаем Клипы').item.json.projectId }} готовы. И доступны в таблице: https://docs.google.com/spreadsheets/d/1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A/edit?gid=1124514592#gid=1124514592",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        -300
+      ],
+      "id": "a4aa48a1-f210-4a8c-85c1-4f8316e89338",
+      "name": "Send a text message",
+      "webhookId": "31238017-d0de-4cbf-a161-68508093d39e",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# ПОМОЩНИК:\n\n## РАЗВЕРНУТЬ n8n на сервере: https://railway.com?referralCode=XgLzYp\n\n### Vizard: https://vizard.ai/api\n### Языки: https://docs.vizard.ai/docs/supported-languages\n\n###  unixtimestamp.com\n\n### https://www.reddit.com/r/selfhosted/comments/mgnsyg/quicktip_youtube_channels_have_an_rss_feed/\n\nhttps://www.youtube.com/feeds/videos.xml?channel_id=(channel id)",
+        "height": 400,
+        "width": 720,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1580,
+        -660
+      ],
+      "typeVersion": 1,
+      "id": "b29331e7-df4a-4464-8ec7-522424fbf640",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f0c9ad07-869e-4bea-811d-66b33379f1bb",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        -160
+      ],
+      "id": "66c08201-fdef-44a8-a330-5325b2490e33",
+      "name": "Webhook",
+      "webhookId": "f0c9ad07-869e-4bea-811d-66b33379f1bb"
+    },
+    {
+      "parameters": {
+        "url": "=https://elb-api.vizard.ai/hvizard-server-front/open-api/v1/project/query/{{ $json.projectId\n }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -760,
+        -160
+      ],
+      "id": "dcf777fc-b5d5-4ee8-ad03-d8d9f68641a1",
+      "name": "Извлекаем Клипы",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JPqrUWgNbSTJvOtS",
+          "name": "VIZARDAI(VIDEO)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://elb-api.vizard.ai/hvizard-server-front/open-api/v1/project/create",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"lang\": \"ru\",\n  \"preferLength\": [\n    0\n  ],\n  \"videoUrl\": \"{{ $json.link }}\",\n  \"videoType\": 2\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        540,
+        -640
+      ],
+      "id": "38b18211-0fb6-456e-b674-9f3eb425713a",
+      "name": "Отправка на обработку",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "JPqrUWgNbSTJvOtS",
+          "name": "VIZARDAI(VIDEO)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You're a helpful, intelligent social media assistant. You make captions for Instagram and TikTok.",
+              "role": "system"
+            },
+            {
+              "content": "=Your task is to generate high-quality, engaging captions for Instagram and TikTok.\n\nReturn your captions in JSON using this format:\n{\"caption\":\"\"}\n\nRules:\n– Keep captions to ~70 words.\n– Use a spartan tone of voice, favoring the classic Western style (though still a fit for Instagram and TikTok).\n– Write conversationally, i.e. as if I were doing the writing myself (in first person).\n– Use emojis, but sparingly.\n– Ensure each sentence is over 5 words long. Write for a University reading level."
+            },
+            {
+              "content": "={{ $json.transcript }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        100,
+        -60
+      ],
+      "id": "19c262aa-904d-41b0-87b7-31f3014c45ad",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Фильтруем только обычные видео (исключаем Shorts)\nconst filteredItems = items.filter(item => {\n  const link = item.json.link;\n  \n  // Исключаем Shorts (они содержат /shorts/ в ссылке)\n  return !link.includes('/shorts/');\n});\n\n// Возвращаем отфильтрованные элементы\nreturn filteredItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        -640
+      ],
+      "id": "b64d07b3-bd39-4bcf-992a-8bc48291d89b",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A",
+          "mode": "list",
+          "cachedResultName": "IZ_SHOORTS_VIZARD",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Original Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ $json.title }}",
+            "link": "={{ $json.link }}",
+            "pubDate": "={{ $json.pubDate }}",
+            "author": "={{ $json.author }}"
+          },
+          "matchingColumns": [
+            "link"
+          ],
+          "schema": [
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pubDate",
+              "displayName": "pubDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "author",
+              "displayName": "author",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Статус",
+              "displayName": "Статус",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        0,
+        -640
+      ],
+      "id": "c2fca8ad-5e73-4556-9796-941c54b5737e",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A",
+          "mode": "list",
+          "cachedResultName": "IZ_SHOORTS_VIZARD",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Original Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Статус",
+              "lookupValue": "="
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        280,
+        -640
+      ],
+      "id": "df9a34f8-bdc0-4a34-b754-21afd5326c0f",
+      "name": "Get row(s) in sheet1",
+      "executeOnce": false,
+      "retryOnFail": false,
+      "notesInFlow": false,
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A",
+          "mode": "list",
+          "cachedResultName": "IZ_SHOORTS_VIZARD",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Original Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rTkT4Y8ckyxLffIN2v3g1ps4hT1uDX6kyKHGjRRWZ-A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "link": "={{ $('Get row(s) in sheet1').item.json.link }}",
+            "Статус": "СДЕЛАНО"
+          },
+          "matchingColumns": [
+            "link"
+          ],
+          "schema": [
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pubDate",
+              "displayName": "pubDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "author",
+              "displayName": "author",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Статус",
+              "displayName": "Статус",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        980,
+        -640
+      ],
+      "id": "49d44bc8-31b8-4fbf-a0d1-d09d8acdfe70",
+      "name": "Append or update row in sheet1",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# ЧАСТЬ 1. ПОИСК И ОБРАБОТКА ВИДЕО",
+        "height": 360,
+        "width": 2200,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -940,
+        -760
+      ],
+      "typeVersion": 1,
+      "id": "4345d88f-2f28-4995-84ec-48f575bd8cc9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# ЧАСТЬ 2. ВЫГРУЗКА REELS",
+        "height": 620,
+        "width": 2420,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1040,
+        -360
+      ],
+      "typeVersion": 1,
+      "id": "f55ce684-fa3b-4f0f-a466-d08beb72fb9a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -740,
+        -640
+      ],
+      "id": "3cfadd8a-b5f8-418c-b1b0-5794e3438a62",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -880,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "7c4a1257-7f5f-4065-af89-90b2cb982702",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Telegram n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        460,
+        -300
+      ],
+      "typeVersion": 1,
+      "id": "ebaf8bb2-4fc3-4347-96a3-354c9102dc3a",
+      "name": "Sticky Note9",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1020,
+        -920
+      ],
+      "typeVersion": 1,
+      "id": "817ffe19-8380-42f7-8e86-0071d614ff17",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/yyj9Hyr86ag",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        -860
+      ],
+      "typeVersion": 1,
+      "id": "8a2a5dc7-4c7a-46e5-b05c-05c6733d7606",
+      "name": "Sticky Note21",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        60,
+        200
+      ],
+      "typeVersion": 1,
+      "id": "26bf1ac5-1066-4335-adc0-5bf9891eb9c8",
+      "name": "Sticky Note23",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: WEBHOOK: https://youtu.be/CVSyM3NHyLI",
+        "height": 100,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1180,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "39305415-e6f8-4f24-a277-532e459e1d8b",
+      "name": "Sticky Note25",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Извлекаем Клипы",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Извлекаем Клипы": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Отправка на обработку": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Отправка на обработку",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "24bf049c-d239-491c-9c3f-1559dec16cb5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "Ma3hmhXXECmP1uyc",
+  "tags": []
+}

@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/marketing-claims/0.1.0/marketing-claim.schema.json",
+  "title": "MarketingClaim",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": [
+        "product_capability",
+        "customer_benefit",
+        "outcome",
+        "time_to_value",
+        "comparative",
+        "pricing",
+        "savings",
+        "income_or_financial",
+        "safety",
+        "performance",
+        "service",
+        "convenience",
+        "availability",
+        "guarantee",
+        "testimonial",
+        "statistical",
+        "unknown"
+      ]
+    },
+    "statement": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "target_segment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 128
+      }
+    },
+    "product_capability_reference": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "customer_need_reference": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 256
+      }
+    },
+    "proof_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 256
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "inferences": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "jurisdiction_context": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "regulated_domain": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "partially_verified",
+        "verified",
+        "contradicted",
+        "unknown"
+      ]
+    },
+    "substantiation_status": {
+      "type": "string",
+      "enum": [
+        "unsupported",
+        "partially_supported",
+        "supported",
+        "support_conflicted",
+        "prohibited",
+        "requires_review"
+      ]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "human_review_required": {
+      "type": "boolean"
+    },
+    "legal_review_required": {
+      "type": "boolean"
+    },
+    "prohibited": {
+      "type": "boolean"
+    },
+    "prohibition_reason": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "claim_id",
+    "claim_type",
+    "statement",
+    "target_segment_ids",
+    "evidence_references",
+    "proof_requirements",
+    "assumptions",
+    "inferences",
+    "limitations",
+    "conditions",
+    "verification_status",
+    "substantiation_status",
+    "risk_level",
+    "human_review_required",
+    "legal_review_required",
+    "prohibited",
+    "provenance"
+  ]
+}

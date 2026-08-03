@@ -1,0 +1,15 @@
+eval_cases:
+  - id: package_structure_valid
+    description: Package layout conforms to RFC-SKILL-002 skeleton.
+  - id: output_contract_type_research
+    description: Manifest declares output_contract_type research.
+  - id: no_commercial_verdict
+    description: Output schema has no verdict, readiness, or execution_status.
+  - id: pmc_020_dependency
+    description: Input rejects PMC 0.1.x; requires >=0.2.0 context reference.
+  - id: market_research_dependency
+    description: Input requires market_research output reference with hash.
+  - id: competitor_type_finite
+    description: Competitor types use finite enum including unknown.
+  - id: differentiation_gap_not_positioning
+    description: Differentiation gaps are downstream inputs, not positioning statements.

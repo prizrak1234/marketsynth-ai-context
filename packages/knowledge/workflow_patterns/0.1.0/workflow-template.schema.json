@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/workflow-template.schema.json",
+  "title": "WorkflowTemplate",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "workflow_template_id": {
+      "type": "string"
+    },
+    "original_name": {
+      "type": "string"
+    },
+    "normalized_name": {
+      "type": "string"
+    },
+    "source_archive_id": {
+      "type": "string"
+    },
+    "source_path_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "workflow_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "topology_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "description": {
+      "type": "string"
+    },
+    "use_case": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trigger_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "node_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "credential_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "credential_type": {
+            "type": "string"
+          },
+          "credential_id_ref": {
+            "type": "string"
+          },
+          "node_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "credential_type",
+          "credential_id_ref"
+        ]
+      }
+    },
+    "environment_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "side_effects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "publication_actions": {
+      "type": "boolean"
+    },
+    "billing_actions": {
+      "type": "boolean"
+    },
+    "destructive_actions": {
+      "type": "boolean"
+    },
+    "personal_data_risk": {
+      "type": "string",
+      "enum": [
+        "none",
+        "low",
+        "elevated",
+        "high",
+        "unknown"
+      ]
+    },
+    "code_nodes": {
+      "type": "boolean"
+    },
+    "shell_nodes": {
+      "type": "boolean"
+    },
+    "database_nodes": {
+      "type": "boolean"
+    },
+    "AI_nodes": {
+      "type": "boolean"
+    },
+    "external_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "security_findings": {
+      "type": "array",
+      "items": {
+        "$ref": "security-finding.schema.json"
+      }
+    },
+    "provider_constraints": {
+      "type": "array",
+      "items": {
+        "$ref": "provider-constraint.schema.json"
+      }
+    },
+    "deprecated_components": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "adaptation_status": {
+      "type": "string",
+      "enum": [
+        "catalog_only",
+        "reusable_pattern_candidate",
+        "requires_rewrite",
+        "rejected",
+        "deferred",
+        "superseded"
+      ]
+    },
+    "quarantine_status": {
+      "type": "string",
+      "enum": [
+        "quarantined",
+        "reviewed",
+        "rejected"
+      ]
+    },
+    "tenant_scope": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "workflow_template_id",
+    "original_name",
+    "normalized_name",
+    "source_archive_id",
+    "source_path_hash",
+    "workflow_hash",
+    "topology_hash",
+    "categories",
+    "trigger_types",
+    "node_types",
+    "adaptation_status",
+    "quarantine_status",
+    "tenant_scope",
+    "provenance"
+  ]
+}

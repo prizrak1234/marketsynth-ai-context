@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.n8n_workflow_architecture/output/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "architecture_id": { "type": "string" },
+    "skill_id": { "type": "string", "const": "ms.skill.n8n_workflow_architecture" },
+    "skill_version": { "type": "string" },
+    "objective_summary": { "type": "string" },
+    "workflow_boundaries": { "type": "object" },
+    "trigger_plan": { "type": "object" },
+    "node_role_plan": { "type": "array", "items": { "type": "object" } },
+    "subworkflow_plan": { "type": "array", "items": { "type": "object" } },
+    "data_contracts": { "type": "object" },
+    "pattern_references": {
+      "type": "array",
+      "items": { "$ref": "schemas/pattern-selection-reference.schema.json" }
+    },
+    "practice_references": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "patterns_consulted": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "practices_consulted": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "catalog_records_consulted": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "connector_requirements": { "type": "array", "items": { "type": "object" } },
+    "tool_requirements": { "type": "array", "items": { "type": "object" } },
+    "credential_binding_requirements": { "type": "array", "items": { "type": "string" } },
+    "approval_gates": { "type": "array", "items": { "type": "object" } },
+    "evidence_requirements": { "type": "object" },
+    "idempotency_plan": { "type": "object" },
+    "retry_plan": { "type": "object" },
+    "timeout_plan": { "type": "object" },
+    "rate_limit_plan": { "type": "object" },
+    "error_paths": { "type": "array", "items": { "type": "string" } },
+    "rollback_or_recovery_plan": { "type": "object" },
+    "monitoring_plan": { "type": "object" },
+    "logging_and_redaction_plan": { "type": "object" },
+    "tenant_boundary_requirements": { "type": "object" },
+    "security_findings": { "type": "array", "items": { "type": "object" } },
+    "provider_constraints": {
+      "type": "array",
+      "items": { "$ref": "schemas/provider-version-scope.schema.json" }
+    },
+    "deployment_prerequisites": { "type": "array", "items": { "type": "string" } },
+    "test_plan": { "type": "object" },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "unknowns": { "type": "array", "items": { "type": "string" } },
+    "blockers": { "type": "array", "items": { "type": "string" } },
+    "limitations": { "type": "array", "items": { "type": "string" } },
+    "architecture_readiness": {
+      "type": "string",
+      "enum": [
+        "ready_for_implementation_review",
+        "partially_ready",
+        "blocked",
+        "insufficient_information",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "publication_context": { "type": "object" },
+    "retry_requirements": { "type": "object" },
+    "provider_reverification_required": { "type": "boolean" },
+    "evidence_gaps": { "type": "array", "items": { "type": "string" }, "maxItems": 30 },
+    "coverage": {
+      "type": "string",
+      "enum": ["full", "partial", "minimal", "unknown"]
+    },
+    "evidence_quality": {
+      "type": "string",
+      "enum": ["comprehensive", "partial", "insufficient", "conflicted", "unknown"]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partially_complete",
+        "insufficient_sources",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "human_review_required": { "type": "boolean" },
+    "provenance": { "type": "object" },
+    "input_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "output_hash": { "type": "string", "minLength": 64, "maxLength": 64 }
+  },
+  "required": [
+    "architecture_id",
+    "skill_id",
+    "skill_version",
+    "objective_summary",
+    "workflow_boundaries",
+    "trigger_plan",
+    "node_role_plan",
+    "data_contracts",
+    "pattern_references",
+    "practice_references",
+    "patterns_consulted",
+    "practices_consulted",
+    "approval_gates",
+    "error_paths",
+    "architecture_readiness",
+    "limitations",
+    "provider_reverification_required",
+    "evidence_gaps",
+    "coverage",
+    "evidence_quality",
+    "research_status",
+    "human_review_required",
+    "provenance",
+    "input_hash",
+    "output_hash"
+  ]
+}

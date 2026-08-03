@@ -1,0 +1,25 @@
+{
+  "validation_id": "mv-lineage-001",
+  "parents": [
+    {
+      "skill_id": "ms.skill.product_marketing_context",
+      "version": "0.2.0",
+      "hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    },
+    {
+      "skill_id": "ms.skill.market_research",
+      "version": "0.1.0",
+      "hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    },
+    {
+      "skill_id": "ms.skill.competitor_analysis",
+      "version": "0.1.0",
+      "hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    },
+    {
+      "skill_id": "ms.skill.icp_segmentation",
+      "version": "0.1.0",
+      "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ]
+}

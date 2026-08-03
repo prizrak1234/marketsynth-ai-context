@@ -1,0 +1,43 @@
+{
+  "product_marketing_context": {
+    "source_skill_id": "ms.skill.product_marketing_context",
+    "source_skill_version": "0.2.0"
+  },
+  "market_research_output": {
+    "source_skill_id": "ms.skill.market_research",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_evidence_references": [
+      "finding-cs-001"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "segment",
+        "description": "Segment size unverified"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "competitor_analysis_output": {
+    "source_skill_id": "ms.skill.competitor_analysis",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_evidence_references": [
+      "comp-linear"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "competitor",
+        "description": "Indirect set incomplete"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "segmentation_objectives": [
+    "Identify primary ICP for async SaaS"
+  ],
+  "provenance": {
+    "submitted_by": "fixture-generator",
+    "submitted_at": "2026-07-23T12:00:00Z"
+  }
+}

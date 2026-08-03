@@ -1,0 +1,57 @@
+{
+  "practice_id": "workflow_backup_and_source_control",
+  "title": "Workflow backup and source control",
+  "domain": "operations",
+  "context": "Scheduled export of workflow definitions to storage_provider.",
+  "problem": "Live workflow drift without versioned backup complicates recovery.",
+  "recommended_practice": "Schedule trigger → list/export definitions → write snapshot to storage_provider → record backup evidence; never treat backup as executable activation.",
+  "rationale": "Methodology §9 requires re-export snapshots after confirmed working state; catalog backup workflows use n8n/GitLab schedule patterns.",
+  "prerequisites": [],
+  "implementation_pattern": "schedule → export → storage_write → evidence",
+  "failure_modes": [],
+  "security_notes": [],
+  "provider_version_scope": [
+    {
+      "provider": "n8n",
+      "component": "workflow_platform",
+      "documented_version": "source_archive_methodology",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Archive methodology; not re-executed in pilot hardening.",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "scope-n8n",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "tested_environment": "archive_metadata_only",
+  "verification_status": "source_documented",
+  "source_references": [
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/methodology.md",
+      "content_hash": "727666fe4bb10519fe05561f2a938336b11df28718e472bc39c4e7fc52acd8e3",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-methodology",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "related_pattern_ids": [
+    "workflow_backup"
+  ],
+  "tenant_scope": "tenant_scoped",
+  "provenance": {
+    "source_type": "practice_lineage_pilot",
+    "archive_id": "arc-skills-dlya-peredachi",
+    "source_id": "workflow_backup_and_source_control",
+    "program_phase": "KB-WPL-01.3A.1"
+  }
+}

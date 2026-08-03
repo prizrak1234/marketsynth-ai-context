@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.icp_segmentation/input/0.1.0",
+  "title": "IcpSegmentationSkillInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "product_marketing_context": { "$ref": "#/$defs/pmc_dependency_reference" },
+    "market_research_output": { "$ref": "#/$defs/research_dependency_reference" },
+    "competitor_analysis_output": { "$ref": "#/$defs/competitor_dependency_reference" },
+    "segmentation_objectives": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "market_scope": { "$ref": "#/$defs/scalar_claim" },
+    "geography": { "$ref": "#/$defs/scalar_claim" },
+    "candidate_segments": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 50
+    },
+    "existing_customer_data": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/customer_data_item" },
+      "maxItems": 100
+    },
+    "interview_or_survey_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_item" },
+      "maxItems": 100
+    },
+    "behavioral_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_item" },
+      "maxItems": 100
+    },
+    "transaction_or_sales_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_item" },
+      "maxItems": 100
+    },
+    "channel_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_item" },
+      "maxItems": 100
+    },
+    "research_constraints": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "required_depth": {
+      "type": "string",
+      "enum": ["overview", "standard", "deep", "unknown"]
+    },
+    "language": { "type": "string", "maxLength": 32 },
+    "provenance": { "$ref": "#/$defs/input_provenance" }
+  },
+  "required": [
+    "product_marketing_context",
+    "market_research_output",
+    "competitor_analysis_output",
+    "segmentation_objectives",
+    "provenance"
+  ],
+  "$defs": {
+    "pmc_dependency_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "const": "ms.skill.product_marketing_context" },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "context_id": { "type": "string", "maxLength": 128 },
+        "readiness": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ],
+      "not": {
+        "properties": {
+          "source_skill_version": { "pattern": "^0\\.1\\." }
+        },
+        "required": ["source_skill_version"]
+      }
+    },
+    "research_dependency_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "const": "ms.skill.market_research" },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "research_id": { "type": "string", "maxLength": 128 },
+        "research_status": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ]
+    },
+    "competitor_dependency_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "const": "ms.skill.competitor_analysis" },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "analysis_id": { "type": "string", "maxLength": 128 },
+        "research_status": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ]
+    },
+    "scalar_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "string", "maxLength": 4000 },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "document",
+            "external_source",
+            "prior_skill_output",
+            "system_inference",
+            "unknown"
+          ]
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "partially_verified",
+            "verified",
+            "contradicted",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        }
+      },
+      "required": ["value", "source_type", "verification_status", "confidence"]
+    },
+    "customer_data_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "data_id": { "type": "string", "maxLength": 128 },
+        "data_type": {
+          "type": "string",
+          "enum": [
+            "crm_export",
+            "sales_notes",
+            "support_tickets",
+            "analytics",
+            "user_statement",
+            "unknown"
+          ]
+        },
+        "reference": { "type": "string", "maxLength": 2000 },
+        "notes": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["data_id", "data_type"]
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": { "type": "string", "maxLength": 128 },
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "interview",
+            "survey",
+            "behavioral",
+            "transaction",
+            "channel",
+            "document",
+            "user_statement",
+            "unknown"
+          ]
+        },
+        "reference": { "type": "string", "maxLength": 2000 },
+        "notes": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["evidence_id", "evidence_type"]
+    },
+    "unknown_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["domain", "description"]
+    },
+    "conflict_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "conflicting_claims": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 10
+        }
+      },
+      "required": ["domain", "description"]
+    },
+    "input_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "submitted_by": { "type": "string", "maxLength": 256 },
+        "submitted_at": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string", "maxLength": 2000 }
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/knowledge-artifact.schema.json",
+  "title": "KnowledgeArtifact",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "artifact_type": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "source_reference": {
+      "$ref": "source-reference.schema.json"
+    },
+    "content_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "language": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trust_status": {
+      "type": "string",
+      "enum": [
+        "untrusted",
+        "quarantined",
+        "statically_validated",
+        "methodology_approved",
+        "rejected"
+      ]
+    },
+    "tenant_scope": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "artifact_type",
+    "title",
+    "summary",
+    "source_reference",
+    "content_hash",
+    "trust_status",
+    "tenant_scope",
+    "provenance"
+  ]
+}

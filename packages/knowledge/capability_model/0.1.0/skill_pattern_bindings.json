@@ -1,0 +1,626 @@
+[
+  {
+    "pattern_id": "human_approval_before_publication",
+    "capability_id": "marketing.distribution",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs marketing.distribution architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "human_approval_before_publication",
+    "capability_id": "deliverables.publication_handoff",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs deliverables.publication_handoff architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "human_approval_before_publication",
+    "capability_id": "engineering.runtime_safety",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.runtime_safety architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "structured_LLM_to_API_request",
+    "capability_id": "engineering.workflow_architecture",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.workflow_architecture architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "structured_LLM_to_API_request",
+    "capability_id": "engineering.connector_integration_design",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.connector_integration_design architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "retry_with_idempotency",
+    "capability_id": "engineering.runtime_safety",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.runtime_safety architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "retry_with_idempotency",
+    "capability_id": "engineering.error_recovery",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.error_recovery architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "evidence_grounded_generation",
+    "capability_id": "deliverables.content_architecture",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs deliverables.content_architecture architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "evidence_grounded_generation",
+    "capability_id": "knowledge.knowledge_quality",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs knowledge.knowledge_quality architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "evidence_grounded_generation",
+    "capability_id": "marketing.market_research",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs marketing.market_research architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "lead_capture_to_qualification",
+    "capability_id": "marketing.distribution",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs marketing.distribution architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "draft_to_human_approval",
+    "capability_id": "deliverables.content_architecture",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs deliverables.content_architecture architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "draft_to_human_approval",
+    "capability_id": "deliverables.publication_handoff",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs deliverables.publication_handoff architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "workflow_backup",
+    "capability_id": "engineering.workflow_backup",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.workflow_backup architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "error_workflow_or_recovery",
+    "capability_id": "engineering.error_recovery",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.error_recovery architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "pagination_and_batching",
+    "capability_id": "engineering.workflow_architecture",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.workflow_architecture architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "pagination_and_batching",
+    "capability_id": "engineering.runtime_safety",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.runtime_safety architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "checkpoint_and_resume",
+    "capability_id": "engineering.error_recovery",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.error_recovery architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "checkpoint_and_resume",
+    "capability_id": "engineering.test_and_replay_design",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.test_and_replay_design architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "dead_letter_queue",
+    "capability_id": "engineering.error_recovery",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.error_recovery architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "dead_letter_queue",
+    "capability_id": "engineering.observability",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.observability architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "provider_rate_limit_handling",
+    "capability_id": "engineering.connector_integration_design",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.connector_integration_design architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "provider_rate_limit_handling",
+    "capability_id": "engineering.runtime_safety",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.runtime_safety architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "quality_gate_after_generation",
+    "capability_id": "deliverables.content_architecture",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs deliverables.content_architecture architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "quality_gate_after_generation",
+    "capability_id": "knowledge.knowledge_quality",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs knowledge.knowledge_quality architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "specialist_subworkflow",
+    "capability_id": "engineering.workflow_architecture",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.workflow_architecture architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "specialist_subworkflow",
+    "capability_id": "platform.professional_task_routing",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs platform.professional_task_routing architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "supervisor_pattern",
+    "capability_id": "platform.professional_task_routing",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs platform.professional_task_routing architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "supervisor_pattern",
+    "capability_id": "engineering.runtime_safety",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.runtime_safety architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "tool_workflow_separation",
+    "capability_id": "engineering.connector_integration_design",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.connector_integration_design architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "tool_workflow_separation",
+    "capability_id": "engineering.runtime_safety",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs engineering.runtime_safety architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "human_edit_then_resume",
+    "capability_id": "deliverables.publication_handoff",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs deliverables.publication_handoff architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "human_edit_then_resume",
+    "capability_id": "deliverables.content_architecture",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs deliverables.content_architecture architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "publication_confirmation",
+    "capability_id": "marketing.distribution",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs marketing.distribution architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "publication_confirmation",
+    "capability_id": "knowledge.provenance_management",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs knowledge.provenance_management architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "source_lineage_preservation",
+    "capability_id": "knowledge.provenance_management",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs knowledge.provenance_management architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "source_lineage_preservation",
+    "capability_id": "knowledge.lineage_integrity",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs knowledge.lineage_integrity architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "customer_feedback_to_learning_candidate",
+    "capability_id": "marketing.learning_and_feedback",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs marketing.learning_and_feedback architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "customer_feedback_to_learning_candidate",
+    "capability_id": "knowledge.knowledge_candidate_review",
+    "library_version": "0.1.0-frozen",
+    "applicability": "Pattern informs knowledge.knowledge_candidate_review architecture boundaries.",
+    "limitations": [
+      "Read-only reference — does not grant execution or tool permission.",
+      "runtime_authorized=false"
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  }
+]

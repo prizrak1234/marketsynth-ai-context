@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "$id": "https://schemas.marketsynth.ai/capability-model/0.1.0/professional-task-route.schema.json",
+  "required": [
+    "route_id",
+    "task_summary",
+    "runtime_authorized",
+    "provenance"
+  ]
+}

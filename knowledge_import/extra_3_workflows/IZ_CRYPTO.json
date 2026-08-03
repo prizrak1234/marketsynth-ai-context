@@ -1,0 +1,1107 @@
+{
+  "name": "IZ_CRYPTO",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "subreddit": "CryptoCurrency",
+        "limit": 30,
+        "filters": {
+          "category": "hot"
+        }
+      },
+      "id": "f94ff27c-525a-4710-a135-157a88280f69",
+      "name": "Reddit Crypto Scanner",
+      "type": "n8n-nodes-base.reddit",
+      "typeVersion": 1,
+      "position": [
+        640,
+        1380
+      ],
+      "note": "Configure Reddit OAuth2 credentials",
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "VunGR4GJJpCi9nbb",
+          "name": "Reddit account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "skip-send-check",
+              "leftValue": "={{ $json.skip_send }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "message-length-check",
+              "leftValue": "={{ $json.telegram_message.length }}",
+              "rightValue": 10,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5c93443f-666c-4b80-9f02-85a8d4ddfff0",
+      "name": "Should Send Message?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2960,
+        1480
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Load configuration\nconst config = {\n  // Hot tokens to monitor\n  hotTokens: ['ATOM', 'ARB', 'DOT', 'SOL', 'XCH', 'ZK', 'APT'],\n\n// Twitter configuration for Apify\n  twitterHandles: [\n    'inversebrah',      // DeFi analyst\n    'DefiIgnas',        // DeFi educator\n    'CryptoHayes',      // Arthur Hayes\n    'lookonchain',      // On-chain analytics\n    '0xSisyphus',       // DeFi researcher\n    'Tetranode',        // Crypto investor\n    'GCRClassic',       // Crypto trader\n    'blknoiz06',        // Crypto analyst\n  ],\n  \n  twitterSearchTerms: [\n    'crypto airdrop',\n    'new listing binance',\n    'exploit hack',\n    'DeFi gem',\n    'whale alert',\n    '$PEPE $WIF $BONK',\n    'breaking crypto'\n  ],\n  \n  // VIP wallets (known smart money)\n  vipWallets: [\n    '0xae2Fc483527B8EF99EB5D9B44875F005ba1FaE13', // jaredfromsubway.eth\n    '0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503', // Binance 2\n    '0x8894E0a0c962CB723c1976a4421c95949bE2D4E3', // Binance Hot Wallet 6\n    '0x4976A4A02f38326660D17bf34b4aF2D0d5C2C7CD', // Smart DEX Trader\n  ],\n  \n  // Pattern detection keywords\n  patterns: {\n    new_listing: /listing|listed|trading.*live|launching|available/i,\n    exploit_alert: /hack|exploit|drain|rug|vulnerability|attack/i,\n    accumulation: /accumulating|buying|loading|aping/i,\n    dump_warning: /dump|sell.*off|exit|bearish/i,\n    partnership: /partnership|collab|integration|announce/i,\n    airdrop: /airdrop|eligibility|snapshot|claim/i\n  },\n  \n  // Sentiment keywords with weights\n  sentiment: {\n    bullish: {\n      keywords: ['moon', 'pump', 'breakout', 'bullish', 'buy', 'long', 'gem', 'alpha'],\n      weight: 1\n    },\n    bearish: {\n      keywords: ['dump', 'sell', 'crash', 'rug', 'exit', 'short', 'bearish'],\n      weight: -1\n    },\n    urgent: {\n      keywords: ['now', 'immediate', 'breaking', 'confirmed', 'live', 'urgent'],\n      weight: 2\n    }\n  },\n  \n  // Thresholds\n  thresholds: {\n    whaleMove: 500000,        // USD\n    dexVolume: 100000,        // USD\n    minLiquidity: 50000,      // USD\n    twitterEngagement: 100,   // likes + RT\n    numberOfTweets: 5,        // number of tweets to fetch,\n    onlyVerified: false,\n    onlyBlueMark: false,\n    redditScore: 50,          // upvotes\n    priceChange1h: 10,        // percentage\n    priceChange24h: 20        // percentage\n  },\n  \n  // Enable/disable features\n  features: {\n    onChainData: true,\n    twitterMonitoring: false,  // Disabled by default (requires setup)\n    redditMonitoring: true,\n    whaleTracking: true,\n    dexMonitoring: true,\n    patternDetection: true\n  },\n  \n  // Session tracking (in memory only)\n  sessionId: Date.now().toString(),\n  seenSignals: new Set()\n};\n\n// Pass config to all downstream nodes\nreturn {\n  config,\n  timestamp: new Date().toISOString()\n};"
+      },
+      "id": "f8333aa3-6168-4b2d-8021-369c5c4329eb",
+      "name": "Load Configuration1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.etherscan.io/api",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "module",
+              "value": "account"
+            },
+            {
+              "name": "action",
+              "value": "tokentx"
+            },
+            {
+              "name": "address",
+              "value": "={{ $json['config.vipWallets'] }}"
+            },
+            {
+              "name": "startblock",
+              "value": "0"
+            },
+            {
+              "name": "endblock",
+              "value": "99999999"
+            },
+            {
+              "name": "page",
+              "value": "1"
+            },
+            {
+              "name": "offset",
+              "value": "10"
+            },
+            {
+              "name": "sort",
+              "value": "desc"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ad621a57-7126-42fb-8736-1c313e8a1f0c",
+      "name": "Fetch Whale Moves1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1060,
+        1180
+      ],
+      "note": "Add your Etherscan API key in credentials",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "GaIVigm8q6JdwVPV",
+          "name": "EthScan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Enhanced Advanced Filtering & Pattern Detection\n// Now with deeper cross-referencing, whale intelligence, and trend detection\n\n// ── 1. GATHER ALL INPUT BRANCHES ────────────────────────────────Cannot read properties of undefined (reading 'toLowerCase') [line 175]────────────\nconst allBranches = $input.all();\nconst config = allBranches.find(b => b.json.config)?.json.config || {};\n\n// Initialize data collections\nlet twitterData = [], etherscanData = [], redditData = [], dexPairs = [], poolObjs = [];\n\n// ── 2. IDENTIFY AND EXTRACT DATA FROM EACH BRANCH ────────────────────────────\nfor (const branch of allBranches) {\n  const data = branch.json;\n  \n  if (data.config) continue;\n  \n  if (Array.isArray(data) && data.length > 0 && data[0].tweetId) {\n    twitterData.push(...data);\n  }\n  else if (Array.isArray(data.posts)) {\n    redditData.push(...data.posts);\n  }\n  else if (Array.isArray(data.transactions)) {\n    etherscanData.push(...data.transactions.flat());\n  }\n  else if (data.pairs && Array.isArray(data.pairs)) {\n    dexPairs.push(...data.pairs);\n  }\n  else if (data.data && Array.isArray(data.data)) {\n    poolObjs.push(...data.data);\n  }\n}\n\n// ── 3. CONVERT GECKOTERMINAL TO STANDARD FORMAT ──────────────────────────────\nfunction poolToDexToken(pool) {\n  const attrs = pool.attributes || {};\n  const [symbol] = (attrs.name || '').split('/');\n  \n  return {\n    pairAddress: attrs.address,\n    pairCreatedAt: attrs.pool_created_at,\n    baseToken: { \n      symbol: symbol.trim(),\n      name: attrs.base_token_name || symbol.trim()\n    },\n    priceUsd: parseFloat(attrs.base_token_price_usd) || 0,\n    priceChange: {\n      m5: parseFloat(attrs.price_change_percentage?.m5) || 0,\n      h1: parseFloat(attrs.price_change_percentage?.h1) || 0,\n      h24: parseFloat(attrs.price_change_percentage?.h24) || 0\n    },\n    volume: { \n      h24: parseFloat(attrs.volume_usd?.h24) || 0 \n    },\n    liquidity: { \n      usd: parseFloat(attrs.reserve_in_usd) || 0 \n    },\n    transactions: {\n      h24: {\n        buys: parseInt(attrs.transactions?.h24?.buys) || 0,\n        sells: parseInt(attrs.transactions?.h24?.sells) || 0\n      }\n    }\n  };\n}\n\ndexPairs.push(...poolObjs.map(poolToDexToken));\n\n// ── 4. ENHANCED DATA STRUCTURES ───────────────────────────────────────────────\nconst now = Date.now();\nconst NEW_TOKEN_AGE_MS = 24 * 60 * 60 * 1000;\nconst newTokens = dexPairs.filter(t => \n  now - new Date(t.pairCreatedAt).getTime() < NEW_TOKEN_AGE_MS\n);\nconst dexUpdates = dexPairs.filter(t => !newTokens.includes(t));\n\n// Enhanced tracking structures\nconst tokenIntelligence = {};  // Deep token analysis\nconst whaleActivity = {};      // Whale behavior per token\nconst socialSentiment = {};    // Social sentiment per token\nconst emergingTrends = {};     // Trend detection\n\n// ── 5. HELPER FUNCTIONS ───────────────────────────────────────────────────────\nconst allSignals = [];\nconst seenUrls = new Set();\nconst seenHashes = new Set();\n\nfunction generateId(prefix, key) {\n  return `${prefix}_${key}_${config.sessionId || Date.now()}`;\n}\n\nfunction calculateSentiment(text) {\n  const lowerText = text.toLowerCase();\n  let score = 0;\n  \n  for (const [type, data] of Object.entries(config.sentiment || {})) {\n    for (const keyword of (data.keywords || [])) {\n      if (lowerText.includes(keyword)) {\n        score += data.weight || 0;\n      }\n    }\n  }\n  \n  return {\n    score,\n    category: score > 0 ? 'bullish' : score < 0 ? 'bearish' : 'neutral',\n    strength: Math.abs(score)\n  };\n}\n\nfunction detectPatterns(text) {\n  const found = [];\n  for (const [name, pattern] of Object.entries(config.patterns || {})) {\n    if (pattern && pattern.test && pattern.test(text)) {\n      found.push(name);\n    }\n  }\n  return found;\n}\n\nfunction extractTokens(text) {\n  const tokens = new Set();\n  \n  const dollarSymbols = text.match(/\\$[A-Za-z0-9]{2,10}/g) || [];\n  dollarSymbols.forEach(symbol => tokens.add(symbol.slice(1).toUpperCase()));\n  \n  // Also extract potential tokens without $ (for whale txs)\n  const potentialTokens = text.match(/\\b[A-Z]{2,10}\\b/g) || [];\n  potentialTokens.forEach(token => {\n    if (token.length >= 2 && token.length <= 10 && token === token.toUpperCase()) {\n      tokens.add(token);\n    }\n  });\n  \n  for (const hotToken of (config.hotTokens || [])) {\n    if (text.toUpperCase().includes(hotToken)) {\n      tokens.add(hotToken);\n    }\n  }\n  \n  return Array.from(tokens);\n}\n\n// Initialize token intelligence\nfunction initTokenIntel(symbol) {\n  if (!tokenIntelligence[symbol]) {\n    tokenIntelligence[symbol] = {\n      mentions: { twitter: 0, reddit: 0, total: 0 },\n      sentiment: { bullish: 0, bearish: 0, neutral: 0 },\n      whaleActivity: { buys: 0, sells: 0, totalVolume: 0 },\n      dexActivity: { priceChange: 0, volume: 0, buyPressure: 0 },\n      patterns: new Set(),\n      firstSeen: Date.now(),\n      signals: []\n    };\n  }\n  return tokenIntelligence[symbol];\n}\n\n// ── 6. PROCESS WHALE TRANSACTIONS WITH INTELLIGENCE ───────────────────────────\nfor (const tx of etherscanData) {\n  if (seenHashes.has(tx.hash)) continue;\n  \n  const value = parseFloat(tx.value) / Math.pow(10, parseInt(tx.tokenDecimal || 18));\n  const usdValue = value * parseFloat(tx.tokenPrice || 1);\n  \n  if (usdValue < (config.thresholds?.whaleMove || 500000)) continue;\n  \n  seenHashes.add(tx.hash);\n  \n  const tokenSymbol = tx.tokenSymbol || 'UNKNOWN';\n  const intel = initTokenIntel(tokenSymbol);\n  \n  // Determine if buy or sell (simplified - you'd want more sophisticated logic)\n  const isBuy = tx.to.toLowerCase() === tx.contractAddress?.toLowerCase();\n  \n  // Update whale activity tracking\n  if (isBuy) {\n    intel.whaleActivity.buys += 1;\n  } else {\n    intel.whaleActivity.sells += 1;\n  }\n  intel.whaleActivity.totalVolume += usdValue;\n  \n  // Check if VIP wallet\n  const isVip = config.vipWallets?.some(wallet => \n    [tx.from, tx.to].map(addr => (addr || '').toLowerCase()).includes(wallet.toLowerCase())\n  );\n  \n  // Enhanced priority scoring\n  let priority = usdValue > 1000000 ? 8 : 5;\n  if (isVip) priority += 5;\n  if (config.hotTokens?.includes(tokenSymbol)) priority += 5;\n  \n  // Check if whale is accumulating new tokens\n  const isNewToken = newTokens.some(t => t.baseToken.symbol === tokenSymbol);\n  if (isNewToken && isBuy) {\n    priority += 7;\n    intel.patterns.add('whale_buying_new');\n  }\n  \n  const signal = {\n    id: generateId('whale', tx.hash),\n    type: 'whale_move',\n    source: 'Etherscan',\n    content: `${isVip ? '🔥 VIP ' : ''}Whale ${isBuy ? 'bought' : 'sold'} ${value.toFixed(2)} ${tokenSymbol} ($${(usdValue/1000000).toFixed(2)}M)`,\n    url: `https://etherscan.io/tx/${tx.hash}`,\n    timestamp: new Date(parseInt(tx.timeStamp) * 1000).toISOString(),\n    value: {\n      amount: value,\n      usd: usdValue,\n      token: tokenSymbol\n    },\n    analysis: {\n      vip: isVip,\n      priority,\n      tokens: [tokenSymbol],\n      patterns: isNewToken ? ['whale_new_token'] : [],\n      action: isBuy ? 'accumulation' : 'distribution'\n    },\n    raw: tx\n  };\n  \n  allSignals.push(signal);\n  intel.signals.push(signal.id);\n}\n\n// ── 7. PROCESS SOCIAL DATA WITH SENTIMENT TRACKING ────────────────────────────\n// Process Twitter\nfor (const tweet of twitterData) {\n  const url = tweet.tweetUrl || `https://twitter.com/${tweet.author?.username}/status/${tweet.tweetId}`;\n  if (seenUrls.has(url)) continue;\n  seenUrls.add(url);\n  \n  const text = tweet.text || tweet.tweetText || '';\n  const sentiment = calculateSentiment(text);\n  const patterns = detectPatterns(text);\n  const tokens = extractTokens(text);\n  \n  // Update token intelligence\n  tokens.forEach(token => {\n    const intel = initTokenIntel(token);\n    intel.mentions.twitter += 1;\n    intel.mentions.total += 1;\n    intel.sentiment[sentiment.category] += sentiment.strength;\n    patterns.forEach(p => intel.patterns.add(p));\n  });\n  \n  const likes = tweet.likeCount || tweet.likes || 0;\n  const retweets = tweet.retweetCount || tweet.retweets || 0;\n  const replies = tweet.replyCount || tweet.replies || 0;\n  const engagement = likes + (retweets * 2) + replies;\n  \n  let priority = 0;\n  if (patterns.includes('exploit_alert')) priority += 10;\n  if (patterns.includes('new_listing')) priority += 8;\n  if (patterns.includes('bullish_signal')) priority += 5;\n  if (engagement > (config.thresholds?.twitterEngagement || 100)) priority += 5;\n  if (tokens.some(t => config.hotTokens?.includes(t))) priority += 5;\n  if (sentiment.score > 2) priority += 2;\n  \n  const vipAuthors = ['elonmusk', 'cz_binance', 'VitalikButerin'];\n  if (vipAuthors.includes(tweet.author?.username?.toLowerCase())) priority += 5;\n  \n  const signal = {\n    id: generateId('tw', tweet.tweetId),\n    type: 'twitter',\n    source: 'Twitter',\n    content: text.slice(0, 280),\n    url,\n    author: tweet.author?.username || tweet.author?.name || 'Unknown',\n    timestamp: tweet.createdAt || new Date().toISOString(),\n    metrics: {\n      engagement,\n      likes,\n      retweets,\n      replies\n    },\n    analysis: {\n      sentiment,\n      patterns,\n      tokens,\n      priority\n    },\n    raw: tweet\n  };\n  \n  allSignals.push(signal);\n  tokens.forEach(token => initTokenIntel(token).signals.push(signal.id));\n}\n\n// Process Reddit (similar enhancement)\nfor (const post of redditData) {\n  const url = `https://reddit.com${post.permalink || ''}`;\n  if (seenUrls.has(url)) continue;\n  seenUrls.add(url);\n  \n  const text = `${post.title} ${post.selftext || ''}`;\n  const sentiment = calculateSentiment(text);\n  const patterns = detectPatterns(text);\n  const tokens = extractTokens(text);\n  \n  // Update token intelligence\n  tokens.forEach(token => {\n    const intel = initTokenIntel(token);\n    intel.mentions.reddit += 1;\n    intel.mentions.total += 1;\n    intel.sentiment[sentiment.category] += sentiment.strength;\n    patterns.forEach(p => intel.patterns.add(p));\n  });\n  \n  let priority = 0;\n  if (post.score > (config.thresholds?.redditScore || 50)) priority += 3;\n  priority += patterns.length * 2;\n  if (tokens.length > 0) priority += 2;\n  if (tokens.some(t => config.hotTokens?.includes(t))) priority += 4;\n  \n  const signal = {\n    id: generateId('reddit', post.id),\n    type: 'reddit',\n    source: 'Reddit',\n    content: post.title.slice(0, 200),\n    url,\n    author: post.author,\n    timestamp: new Date(post.created_utc * 1000).toISOString(),\n    metrics: {\n      score: post.score,\n      comments: post.num_comments || 0,\n      upvote_ratio: post.upvote_ratio || 0\n    },\n    analysis: {\n      sentiment,\n      patterns,\n      tokens,\n      priority\n    },\n    raw: post\n  };\n  \n  allSignals.push(signal);\n  tokens.forEach(token => initTokenIntel(token).signals.push(signal.id));\n}\n\n// ── 8. PROCESS DEX DATA WITH TREND DETECTION ──────────────────────────────────\nfor (const token of dexUpdates) {\n  const symbol = token.baseToken.symbol;\n  const intel = initTokenIntel(symbol);\n  \n  const priceChange1h = token.priceChange?.h1 || 0;\n  const priceChange24h = token.priceChange?.h24 || 0;\n  const volume24h = token.volume?.h24 || 0;\n  const liquidity = token.liquidity?.usd || 0;\n  \n  // Calculate buy pressure\n  const buys = token.transactions?.h24?.buys || 0;\n  const sells = token.transactions?.h24?.sells || 0;\n  const buyPressure = buys + sells > 0 ? buys / (buys + sells) : 0.5;\n  \n  intel.dexActivity.priceChange = priceChange24h;\n  intel.dexActivity.volume = volume24h;\n  intel.dexActivity.buyPressure = buyPressure;\n  \n  let priority = 0;\n  if (Math.abs(priceChange1h) > (config.thresholds?.priceChange1h || 10)) priority += 5;\n  if (Math.abs(priceChange24h) > (config.thresholds?.priceChange24h || 20)) priority += 3;\n  if (volume24h > (config.thresholds?.dexVolume || 100000)) priority += 4;\n  if (config.hotTokens?.includes(symbol)) priority += 5;\n  \n  // Detect pumps with high buy pressure\n  if (priceChange1h > 20 && buyPressure > 0.7) {\n    priority += 5;\n    intel.patterns.add('pump_detected');\n  }\n  \n  if (priority <= 0) continue;\n  \n  const signal = {\n    id: generateId('dex', token.pairAddress),\n    type: 'dex_update',\n    source: 'DEXScreener',\n    content: `${symbol} ${priceChange1h > 0 ? '📈' : '📉'} ${priceChange1h.toFixed(1)}% | Vol $${(volume24h/1000).toFixed(0)}k | Buy pressure: ${(buyPressure*100).toFixed(0)}%`,\n    url: `https://dexscreener.com/ethereum/${token.pairAddress}`,\n    timestamp: new Date().toISOString(),\n    metrics: {\n      priceChange1h,\n      priceChange24h,\n      volume24h,\n      liquidity,\n      buyPressure\n    },\n    analysis: {\n      tokens: [symbol],\n      priority,\n      patterns: []\n    },\n    raw: token\n  };\n  \n  allSignals.push(signal);\n  intel.signals.push(signal.id);\n}\n\n// ── 9. ENHANCED NEW TOKEN DETECTION ───────────────────────────────────────────\nfor (const token of newTokens) {\n  const symbol = token.baseToken.symbol;\n  const intel = initTokenIntel(symbol);\n  \n  const liquidity = token.liquidity?.usd || 0;\n  const volume24h = token.volume?.h24 || 0;\n  \n  let priority = 6;\n  if (liquidity > 100000) priority += 2;\n  if (volume24h > 50000) priority += 2;\n  \n  // Check if whales are buying this new token\n  if (intel.whaleActivity.buys > 0) {\n    priority += 5;\n    intel.patterns.add('whale_interest_new_token');\n  }\n  \n  // Check social mentions\n  if (intel.mentions.total > 0) {\n    priority += 3;\n    intel.patterns.add('socially_mentioned_new_token');\n  }\n  \n  const signal = {\n    id: generateId('new', token.pairAddress),\n    type: 'new_token',\n    source: 'DEXScreener',\n    content: `🆕 NEW: ${symbol} | Liq $${(liquidity/1000).toFixed(0)}k | Mentions: ${intel.mentions.total} | Whales: ${intel.whaleActivity.buys}`,\n    url: `https://dexscreener.com/ethereum/${token.pairAddress}`,\n    timestamp: new Date().toISOString(),\n    metrics: {\n      liquidity,\n      volume24h,\n      age_hours: Math.floor((Date.now() - new Date(token.pairCreatedAt).getTime()) / (1000 * 60 * 60))\n    },\n    analysis: {\n      tokens: [symbol],\n      priority,\n      patterns: Array.from(intel.patterns)\n    },\n    raw: token\n  };\n  \n  allSignals.push(signal);\n  intel.signals.push(signal.id);\n}\n\n// ── 10. ADVANCED CROSS-REFERENCING & TREND DETECTION ─────────────────────────\nconst trendingTokens = [];\nconst alphaOpportunities = [];\n\nfor (const [symbol, intel] of Object.entries(tokenIntelligence)) {\n  // Calculate composite score\n  let compositeScore = 0;\n  \n  // Social momentum\n  if (intel.mentions.total > 3) compositeScore += 5;\n  if (intel.sentiment.bullish > intel.sentiment.bearish * 2) compositeScore += 3;\n  \n  // Whale interest\n  if (intel.whaleActivity.buys > intel.whaleActivity.sells) compositeScore += 5;\n  if (intel.whaleActivity.totalVolume > 1000000) compositeScore += 3;\n  \n  // DEX activity\n  if (intel.dexActivity.volume > 500000) compositeScore += 3;\n  if (intel.dexActivity.buyPressure > 0.6) compositeScore += 2;\n  \n  // Pattern matching\n  if (intel.patterns.has('whale_buying_new')) compositeScore += 10;\n  if (intel.patterns.has('exploit_alert')) compositeScore = 0; // Kill score\n  \n  // Hot token bonus\n  if (config.hotTokens?.includes(symbol)) compositeScore += 7;\n  \n  // Identify trends\n  if (compositeScore >= 15) {\n    trendingTokens.push({\n      symbol,\n      score: compositeScore,\n      intelligence: intel\n    });\n  }\n  \n  // Identify alpha opportunities\n  if (intel.patterns.has('whale_buying_new') && intel.mentions.total < 5) {\n    alphaOpportunities.push({\n      symbol,\n      reason: 'Whale accumulation before social discovery',\n      intelligence: intel\n    });\n  }\n  \n  // Boost priority of related signals\n  intel.signals.forEach(signalId => {\n    const signal = allSignals.find(s => s.id === signalId);\n    if (signal) {\n      signal.analysis.compositeScore = compositeScore;\n      signal.analysis.priority += Math.floor(compositeScore / 5);\n    }\n  });\n}\n\n// ── 11. FINAL SORTING & FILTERING ─────────────────────────────────────────────\n// Apply user filters\nlet filteredSignals = allSignals;\n\nif (config.alertFilters) {\n  if (config.alertFilters.minPriority > 0) {\n    filteredSignals = filteredSignals.filter(s => \n      (s.analysis?.priority || 0) >= config.alertFilters.minPriority\n    );\n  }\n  \n  if (config.alertFilters.onlyUrgent) {\n    filteredSignals = filteredSignals.filter(s => \n      (s.analysis?.priority || 0) >= 8 ||\n      s.analysis?.patterns?.includes('exploit_alert') ||\n      s.analysis?.patterns?.includes('new_listing') ||\n      s.analysis?.compositeScore >= 20\n    );\n  }\n}\n\n// Sort by priority and composite score\nfilteredSignals.sort((a, b) => {\n  const priorityDiff = (b.analysis.priority || 0) - (a.analysis.priority || 0);\n  if (priorityDiff !== 0) return priorityDiff;\n  \n  const compositeDiff = (b.analysis.compositeScore || 0) - (a.analysis.compositeScore || 0);\n  if (compositeDiff !== 0) return compositeDiff;\n  \n  return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();\n});\n\nconst topSignals = filteredSignals.slice(0, 25);\n\n// ── 12. ENHANCED OUTPUT ───────────────────────────────────────────────────────\nreturn {\n  signals: topSignals,\n  intelligence: {\n    trending: trendingTokens.slice(0, 10),\n    alphaOpportunities: alphaOpportunities.slice(0, 5),\n    tokenDetails: tokenIntelligence\n  },\n  stats: {\n    total: topSignals.length,\n    byType: {\n      twitter: topSignals.filter(s => s.type === 'twitter').length,\n      whale_move: topSignals.filter(s => s.type === 'whale_move').length,\n      reddit: topSignals.filter(s => s.type === 'reddit').length,\n      dex_update: topSignals.filter(s => s.type === 'dex_update').length,\n      new_token: topSignals.filter(s => s.type === 'new_token').length\n    },\n    highPriority: topSignals.filter(s => s.analysis.priority > 7).length,\n    sources: {\n      twitter: twitterData.length,\n      reddit: redditData.length,\n      whale: etherscanData.length,\n      dex: dexPairs.length\n    },\n    crossReferenced: Object.keys(tokenIntelligence).length\n  },\n  config,\n  timestamp: new Date().toISOString()\n};"
+      },
+      "id": "f68d7c5c-1898-4bab-a889-47dbbd8bbc6b",
+      "name": "Advanced Filtering & Pattern Detection1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        1480
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an elite crypto analyst specializing in identifying alpha opportunities through cross-source intelligence.\n\nВАЖНО: Отвечай ТОЛЬКО на русском языке. Все анализы, summaries и описания должны быть на русском.\n\nAnalyze signals and output a JSON object with a 'signals' array.\n\nEach signal must have these keys:\n- summary: actionable insight under 25 words focusing on WHY this matters\n- risk: LOW, MEDIUM, HIGH, or EXTREME\n- category: DeFi, Memecoins, L1/L2, NFTs, Whale Activity, Breaking News, Governance, Airdrops, Exploits, New Tokens, DEX Updates\n- entities: array of relevant tokens, amounts, wallets\n- action: URGENT, RESEARCH, WATCH, or AVOID\n\nPrioritization Framework:\n1. **Cross-validation**: Tokens appearing in whale buys + social mentions = highest priority\n2. **Smart money**: VIP wallets buying + low social awareness = early alpha\n3. **Trend emergence**: High buy pressure + increasing mentions = momentum building\n4. **Risk signals**: Whale selling + negative sentiment = potential dump\n5. **New opportunities**: New tokens with whale interest or unusual volume\n\nFocus on:\n- WHY whales are moving (accumulation vs distribution)\n- WHAT social sentiment indicates (FOMO, FUD, or genuine interest)\n- WHERE trends are emerging (tokens gaining traction across sources)\n- WHEN to act (time-sensitive opportunities)\n\nOutput format:\n{\n  \"signals\": [\n    {\n      \"summary\": \"VIP whales accumulating PEPE before social discovery\",\n      \"risk\": \"MEDIUM\",\n      \"category\": \"Whale Activity\",\n      \"entities\": [\"PEPE\", \"$2.5M\", \"3 VIP wallets\"],\n      \"action\": \"RESEARCH\"\n    }\n  ]\n}",
+              "role": "system"
+            },
+            {
+              "content": "=Analyze these signals with enhanced intelligence:\n\nSignals: {{JSON.stringify($json.signals, null, 2)}}\n\nTrending Tokens (high composite score): {{JSON.stringify($json.intelligence?.trending?.slice(0,5).map(t => ({token: t.symbol, score: t.score, whales: t.intelligence.whaleActivity, social: t.intelligence.mentions})), null, 2)}}\n\nAlpha Opportunities: {{JSON.stringify($json.intelligence?.alphaOpportunities, null, 2)}}\n\nKey Insights:\n- Hot tokens configured: {{($json.config?.hotTokens || []).join(', ')}}\n- Total cross-referenced tokens: {{$json.stats?.crossReferenced || 0}}\n\nProvide actionable analysis focusing on cross-source patterns and early opportunities."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "id": "634264ee-a6f1-44a6-b208-5fd08688fe1b",
+      "name": "AI Alpha Analysis1",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        2340,
+        1480
+      ],
+      "note": "Configure your OpenAI API credentials",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "190190068",
+        "text": "={{ $json.telegram_message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "1fd24c03-2b99-49b4-a973-28389e0b9eb8",
+      "name": "Send to Telegram1",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3240,
+        1460
+      ],
+      "note": "Replace chatId with your Telegram chat/channel ID and configure bot credentials",
+      "webhookId": "6b300c2f-0c01-4e1f-8d97-66525e990941",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "config.vipWallets",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        700,
+        1060
+      ],
+      "id": "f8212343-0dcf-4f4a-868b-1fab58ae87eb",
+      "name": "Split Out",
+      "notesInFlow": true,
+      "notes": "Splits VIP wallet array into individual items for processing"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        880,
+        1040
+      ],
+      "id": "e6d8b507-b9bf-4508-90d2-2377ca991521",
+      "name": "Loop Over Items",
+      "notesInFlow": true,
+      "notes": "Processes wallets one by one to avoid rate limits"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "posts",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        1420
+      ],
+      "id": "30bea13f-bd12-4e8e-8cdb-200837a7c6ed",
+      "name": "Reddit Aggregate"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "result",
+              "renameField": true,
+              "outputFieldName": "transactions"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        1040
+      ],
+      "id": "f6e92a29-019e-4746-8e0a-6a155d674cf2",
+      "name": "Whale Aggregate"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.dexscreener.com/latest/dex/search?q={{ $json.config.hotTokens.join('+') }}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "3cfdc268-d1a1-4b94-9ef7-ccdcdc24fe29",
+      "name": "DexScreener My Tokens Monitor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        920,
+        1860
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.geckoterminal.com/api/v2/networks/eth/trending_pools",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "2827f1cf-8a89-4110-a5e6-5a400ff4a0be",
+      "name": "Discover Trending Tokens",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        920,
+        2180
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.geckoterminal.com/api/v2/networks/eth/new_pools",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "34666eaf-13d4-4d60-aceb-980c85939b83",
+      "name": "Discover New Tokens",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        920,
+        2020
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1700,
+        1360
+      ],
+      "id": "5cf7d466-5099-4d78-a861-72721f8f5d57",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "twitterHandles",
+              "value": "={{ $json.config.twitterHandles ?? '[]' }}"
+            },
+            {
+              "name": "searchTerms",
+              "value": "={{ $json.config.twitterSearchTerms }}"
+            },
+            {
+              "name": "maxItems",
+              "value": "={{ $json.config.thresholds.numberOfTweets }}"
+            },
+            {
+              "name": "onlyTwitterBlue",
+              "value": "={{ $json.config.thresholds.onlyBlueMark }}"
+            },
+            {
+              "name": "onlyVerifiedUsers",
+              "value": "={{ $json.config.thresholds.onlyVerified }}"
+            },
+            {
+              "name": "start",
+              "value": "={{ $now.format('yyyy-MM-dd') }}"
+            },
+            {
+              "name": "sort",
+              "value": "Latest"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        560
+      ],
+      "id": "1278232b-edcc-4e57-8764-b244d35bcb15",
+      "name": "Get Tweets",
+      "notesInFlow": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -40,
+        1440
+      ],
+      "id": "b63817f0-5534-469d-8917-b310596df38c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "## Начните здесь!\nВоркфлоу настроен на запуск каждые 30 минут, но это настраивается. Общая стоимость использования не высокая, Twitter API самый дорогой, но вы можете его отключить или использовать каждый 3-й запуск например",
+        "width": 500,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -580,
+        1160
+      ],
+      "typeVersion": 1,
+      "id": "9fa19622-ac52-49db-8239-f8e356e591a1",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 🎯 КАК ЭТО РАБОТАЕТ\n\n### Сбор данных\n1. **Отслеживание китов**: Мониторит VIP кошельки на крупные транзакции\n2. **DEX мониторинг**: Отслеживает цену/объем на DEXScreener\n3. **Социальное сканирование**: Посты Reddit (Twitter опционально)\n4. **Новые токены**: Обнаруживает запуски <24ч\n\n### Движок аналитики\n- Обнаруживает паттерны (взломы, листинги, пампы)\n- Вычисляет оценки настроений\n- Перекрестно сверяет токены по источникам\n- Определяет альфа возможности\n\n### AI Анализ\n- Резюмирует ключевые инсайты\n- Назначает уровни риска\n- Рекомендует действия (СРОЧНО/ИЗУЧИТЬ/НАБЛЮДАТЬ/ИЗБЕГАТЬ)\n\n### Telegram уведомления\n- Трендовые токены с оценками\n- Альфа возможности\n- Категоризированные сигналы\n- Сводка аналитики\n\n### Что делает это особенным\n- **Перекрестная проверка**: Больше уверенности\n- **Киты + Социальные сети**: Ловит токены рано\n- **Обнаружение паттернов**: Находит взломы/рагпулы\n- **Умная приоритизация**: Только важные уведомления",
+        "height": 920,
+        "width": 400,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -860,
+        1480
+      ],
+      "typeVersion": 1,
+      "id": "61ccc400-9513-4149-8de1-d308e3a8c750",
+      "name": "How It Works"
+    },
+    {
+      "parameters": {
+        "content": "## 🛠️ УСТРАНЕНИЕ НЕПОЛАДОК\n\n### Частые проблемы\n\n**❌ Нет сообщений в Telegram**\n- Проверьте правильность chat ID\n- Убедитесь что бот в канале\n- Тестируйте с ручным триггером\n\n**❌ Ошибки Etherscan**\n- Проверьте валидность API ключа\n- Возможны лимиты (5/сек)\n- Попробуйте уменьшить количество кошельков\n\n**❌ Сигналы не обнаружены**\n- Понизьте пороговые значения в конфиге\n- Добавьте больше активных токенов\n- Проверьте возвращают ли API данные\n\n**❌ Ошибки OpenAI**\n- Проверьте API ключ и кредиты\n- Возможно нужно добавить биллинг\n- Попробуйте gpt-3.5-turbo если дешевле\n\n**❌ Reddit не работает**\n- Нужна настройка OAuth2\n- Проверьте redirect URI\n- Переавторизуйтесь если истек срок\n\n### Советы по отладке\n- Кликайте на ноды чтобы увидеть вывод\n- Проверяйте логи выполнения\n- Тестируйте каждую ветку отдельно\n- Используйте ручной триггер для тестов\n\n### Нужна помощь?\n- Присоединяйтесь к нашему Discord\n- Проверьте документацию\n- Email поддержки",
+        "height": 980,
+        "width": 340,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -420,
+        1480
+      ],
+      "typeVersion": 1,
+      "id": "161d5441-31f8-41e1-afe1-fea1928e950b",
+      "name": "Troubleshooting"
+    },
+    {
+      "parameters": {
+        "content": "## 📊 ПОНИМАНИЕ УВЕДОМЛЕНИЙ\n\n### Уровни риска\n\n🟢 **НИЗКИЙ**: Установленные проекты, нормальная активность\n🟡 **СРЕДНИЙ**: Новые возможности, умеренная волатильность\n🟠 **ВЫСОКИЙ**: Непроверенная информация, высокая волатильность\n🔴 **ЭКСТРЕМАЛЬНЫЙ**: Потенциальные скамы, экстремальный риск\n### Действия\n⚡ **СРОЧНО**: Чувствительно ко времени, действуйте быстро\n🔍 **ИЗУЧИТЬ**: Исследуйте дальше\n👀 **НАБЛЮДАТЬ**: Следите за развитием\n❌ **ИЗБЕГАТЬ**: Высокий риск потерь\n### Категории\n🐋 **Активность китов**: Движения крупных кошельков\n🆕 **Новые токены**: Недавно запущенные (<24ч)\n📊 **Обновления DEX**: Изменения цены/объема\n📰 **Новости**: Важные объявления\n🚨 **Взломы**: Хаки или уязвимости\n\n### Оценки аналитики\n\n**Трендовый счет**: Популярность по источникам\n**Давление покупок**: % покупок против продаж\n**Социальные настроения**: Соотношение бычьих/медвежьих\n**Статус китов**: Накопление/распределение",
+        "height": 800,
+        "width": 400,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3080,
+        620
+      ],
+      "typeVersion": 1,
+      "id": "375ca0f0-fe27-433a-befa-109c0f01b09a",
+      "name": "Understanding Alerts"
+    },
+    {
+      "parameters": {
+        "content": "## 🚀 РУКОВОДСТВО ПО БЫСТРОМУ СТАРТУ\n### 1️⃣ **Обязательная настройка** (5 мин)\n\n- **Etherscan API**: Бесплатно на etherscan.io/apis\n- **Telegram Бот**: Создайте с @BotFather\n- **OpenAI API**: Получите на platform.openai.com\n\n### 2️⃣ **Опциональная настройка**\n\n- **Reddit OAuth**: Бесплатно, улучшает надежность\n- **Twitter/Apify**: $49/мес для мониторинга Twitter\n\n### 3️⃣ Конфигурация\n\n- Отредактируйте ноду \"Load Configuration\"\n- Добавьте ваши токены в hotTokens\n- Добавьте кошельки китов в vipWallets\n- Настройте пороговые значения по необходимости\n\n### 4️⃣ **Тестирование**\n\n- Кликните \"Execute Workflow\" для теста\n- Проверьте Telegram на уведомления\n- Запускается автоматически каждые 30 мин\n\n### 💰 **Примерная стоимость**\n\n- OpenAI: ~$0.50-2/день\n- Twitter (опционально): $49/мес\nВсе остальное: БЕСПЛАТНО\n\n### ⚡ **Профи советы**\n\n- Начните без Twitter для теста\n- Ниже пороги = больше уведомлений\n- Добавьте кошельки топ трейдеров",
+        "height": 960,
+        "width": 480,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "dca17e5b-b15b-46b5-babd-70e3366d87ce",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 🐦 НАСТРОЙКА TWITTER (опционально):\n\n– **Зарегистрируйтесь** на apify ( https://apify.com?fpr=n37o9w )\n– **Подпишитесь** на Tweet Scraper ($0.4/1000 твитов)\n– **Получите** API токен в настройках Apify\n– **Замените** токен в URL\n– **Установите twitterMonitoring**: true в конфиге\n\n⚠️ ОТКЛЮЧЕНО ПО УМОЛЧАНИЮ из-за стоимости\n💡 Мониторит аккаунты + поисковые термы из конфига",
+        "height": 280,
+        "width": 600,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        780,
+        260
+      ],
+      "typeVersion": 1,
+      "id": "a34dcce8-8bef-4430-bb99-577dd6a0c6ad",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## ⚙️ ОСНОВНАЯ КОНФИГУРАЦИЯ:\n\n– **hotTokens**: Добавьте токены которые хотите мониторить\n– **twitterHandles**: Крипто инфлюенсеры для отслеживания\n– **vipWallets**: Кошельки умных денег (киты, VC)\n– **thresholds**: Настройте чувствительность\n\n– **whaleMove**: Мин USD для уведомлений китов\n– **dexVolume**: Мин объем для отчета\n– **twitterEngagement**: Мин лайки+RT\n\n💡 ФУНКЦИИ:\n\n– **twitterMonitoring**: false по умолчанию (требует Apify)\n– **Другие** функции можно включать/выключать",
+        "height": 340,
+        "width": 460,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        980
+      ],
+      "typeVersion": 1,
+      "id": "8e5ae78c-7f4f-4726-9e25-01a3c86fee8b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## 🐋 НАСТРОЙКА ETHERSCAN:\n\n– **Получите** API ключ на etherscan.io/apis\n– **Добавьте** HTTP Query Auth credential:\n\n– **Имя ключа**: apikey\n– **Значение ключа**: ВАШ_API_КЛЮЧ\n\n### 💡 Получает последние 10 транзакций на кошелек\n– **Настройте** 'offset' чтобы получать больше/меньше транзакций",
+        "height": 300,
+        "width": 420,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        820,
+        700
+      ],
+      "typeVersion": 1,
+      "id": "5cf6cde0-c10f-400e-9096-5d86e5c4e6a1",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## 📌 НАСТРОЙКА REDDIT:\n\n– **Создайте** Reddit приложение на reddit.com/prefs/apps\n– **Добавьте** OAuth2 credentials в n8n с Client ID & Secret\n\n**💡 СОВЕТ:** Измените сабреддит или добавьте больше отредактировав эту ноду",
+        "height": 200,
+        "width": 480,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        720,
+        1580
+      ],
+      "typeVersion": 1,
+      "id": "b20f011e-1b0e-49aa-a30d-9812d81b6ceb",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "📊 Мониторит ваши горячие токены на DEXScreener\n\nAPI ключ не нужен - это бесплатно!\nИщет все токены в вашем списке hotTokens\n",
+        "height": 140,
+        "width": 360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        280,
+        1880
+      ],
+      "typeVersion": 1,
+      "id": "d3a69884-9f66-4136-9580-b9473489f6c6",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "🆕 Обнаруживает недавно запущенные токены (<24ч)\n\nAPI ключ не нужен!\nОтлично для поимки токенов до их взлетаs before they moon",
+        "height": 140,
+        "width": 360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        280,
+        2040
+      ],
+      "typeVersion": 1,
+      "id": "75c19039-790c-49bd-a2ee-5250656e12e4",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "🔥 Получает трендовые токены из GeckoTerminal\n\nAPI ключ не нужен!\nНаходит токены набирающие обороты на Ethereum",
+        "height": 140,
+        "width": 360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        280,
+        2200
+      ],
+      "typeVersion": 1,
+      "id": "2e8a43bb-2c8e-4fff-ba8a-5ee6bb15ba2e",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "🔀 Объединяет все источники данных:\n\n– Twitter (если включен)\n– Транзакции китов\n– Посты Reddit\n– DEX горячие токены\n– Новые токены\n– Трендовые токены\n\nПередает все в движок аналитики",
+        "height": 220,
+        "width": 360,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1580,
+        1660
+      ],
+      "typeVersion": 1,
+      "id": "d403380b-5e06-47b4-b229-1a4b599151c3",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "### 🧠 ДВИЖОК АНАЛИТИКИ:\nЭта нода выполняет тяжелую работу:\n\n– Объединяет все источники данных\n– Обнаруживает паттерны (взломы, листинги и т.д.)\n– Отслеживает поведение китов\n– Вычисляет оценки настроений\n– Перекрестно сверяет токены по источникам\n– Определяет альфа возможности\n\n### 💎 Выходы:\n\n– Топ 25 приоритетных сигналов\n– Трендовые токены\n– Альфа возможности\n– Данные токен аналитики",
+        "height": 380,
+        "width": 420,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1840,
+        1040
+      ],
+      "typeVersion": 1,
+      "id": "6e9bacab-45ad-4c85-a777-040293a2a344",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "📨 Эта нода форматирует все сигналы в красивое Telegram сообщение с:\n\n– Альфа возможностями\n– Трендовыми токенами\n– Уровнями риска\n– Рекомендациями действий\n\n💡 Форматирование настраивается в коде",
+        "height": 200,
+        "width": 540,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2680,
+        1940
+      ],
+      "typeVersion": 1,
+      "id": "3716ef35-ab09-4689-baab-9c153f08e033",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "✅ Предотвращает отправку пустых сообщений в Telegram\n\nОтправляет только если:\n- skip_send равно false\n- Сообщение имеет содержимое (>10 символов)",
+        "height": 140,
+        "width": 400,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2960,
+        1660
+      ],
+      "typeVersion": 1,
+      "id": "c86a0aea-63b7-4036-a64f-559a9b95172b",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ──────────────────────────────────────────────────────────────────────────────\n//  ИСПРАВЛЕННЫЙ TELEGRAM ФОРМАТТЕР - КРАСИВОЕ ФОРМАТИРОВАНИЕ\n//  Возвращает оригинальный красивый вид сообщений\n// ──────────────────────────────────────────────────────────────────────────────\n\n// ── 1. ЭМОДЗИ И ПЕРЕВОДЫ ─────────────────────────────────────────────────────────\nconst RISK_EMOJI = { \n  LOW: '🟢', \n  MEDIUM: '🟡', \n  HIGH: '🟠', \n  EXTREME: '🔴' \n};\n\nconst ACTION_EMOJI = { \n  URGENT: '⚡', \n  RESEARCH: '🔍', \n  WATCH: '👀', \n  AVOID: '❌' \n};\n\nconst CATEGORY_EMOJI = { \n  'DeFi': '🏦',\n  'Memecoins': '🐸',\n  'L1/L2': '⛓️',\n  'NFTs': '🎨',\n  'Whale Activity': '🐋',\n  'Breaking News': '📰',\n  'Governance': '🗳️',\n  'Airdrops': '🎁',\n  'Exploits': '🚨',\n  'New Tokens': '🆕',\n  'DEX Updates': '📊',\n  'Other': '📌'\n};\n\n// Переводы категорий на русский\nconst CATEGORY_TRANSLATIONS = {\n  'DeFi': 'DeFi',\n  'Memecoins': 'Мемкоины',\n  'L1/L2': 'L1/L2',\n  'NFTs': 'NFT',\n  'Whale Activity': 'Активность китов',\n  'Breaking News': 'Новости',\n  'Governance': 'Управление',\n  'Airdrops': 'Аирдропы',\n  'Exploits': 'Взломы',\n  'New Tokens': 'Новые токены',\n  'DEX Updates': 'Обновления DEX',\n  'Other': 'Прочее'\n};\n\n// Переводы действий\nconst ACTION_TRANSLATIONS = {\n  'URGENT': 'НАБЛЮДАТЬ',\n  'RESEARCH': 'ИЗУЧИТЬ', \n  'WATCH': 'НАБЛЮДАТЬ',\n  'AVOID': 'ИЗБЕГАТЬ'\n};\n\n// ── 2. ИЗВЛЕЧЕНИЕ ДАННЫХ ───────────────────────────────────────────────────────\nconst allInputs = $input.all();\nconsole.log('Получено входов:', allInputs.length);\n\n// Найти данные от AI и фильтра\nlet aiSignals = [];\nlet filterData = {};\n\nfor (const input of allInputs) {\n  const data = input.json;\n  \n  // Проверяем разные структуры AI ответа\n  if (data.signals && Array.isArray(data.signals)) {\n    aiSignals = data.signals;\n    console.log('Найдены прямые сигналы:', aiSignals.length);\n  }\n  else if (data.message?.content?.signals) {\n    aiSignals = data.message.content.signals;\n    console.log('Найдены сигналы в message.content:', aiSignals.length);\n  }\n  else if (data.choices?.[0]?.message?.content) {\n    try {\n      const content = typeof data.choices[0].message.content === 'string' \n        ? JSON.parse(data.choices[0].message.content) \n        : data.choices[0].message.content;\n      if (content.signals) {\n        aiSignals = content.signals;\n        console.log('Найдены сигналы в choices:', aiSignals.length);\n      }\n    } catch (e) {\n      console.error('Ошибка парсинга choices:', e.message);\n    }\n  }\n  \n  // Данные от фильтра/аналитики\n  if (data.intelligence || data.stats) {\n    filterData = data;\n    console.log('Найдены данные фильтра');\n  }\n}\n\n// Проверка что у нас есть сигналы\nif (!Array.isArray(aiSignals) || aiSignals.length === 0) {\n  console.log('Сигналы не найдены');\n  \n  // Проверяем есть ли хотя бы данные от фильтра\n  if (filterData.intelligence?.trending?.length > 0 || filterData.intelligence?.alphaOpportunities?.length > 0) {\n    console.log('Найдены данные аналитики без AI сигналов');\n  } else {\n    // Действительно ничего не найдено\n    return { \n      telegram_message: '⚠️ Сигналы не обнаружены в этом сканировании\\n\\n_Сканер работает, но значимой активности не найдено_', \n      skip_send: false\n    };\n  }\n}\n\n// Извлечение данных аналитики\nconst intelligence = filterData.intelligence || {};\nconst trending = intelligence.trending || [];\nconst alphaOps = intelligence.alphaOpportunities || [];\nconst tokenDetails = intelligence.tokenDetails || {};\nconst stats = filterData.stats || {};\n\nconsole.log(`Обработка: ${aiSignals.length} сигналов, ${trending.length} трендовых, ${alphaOps.length} альфа`);\n\n// ── 3. СОЗДАНИЕ СООБЩЕНИЯ В ОРИГИНАЛЬНОМ СТИЛЕ ────────────────────────────────\nconst moscowTime = new Date().toLocaleString('ru-RU', {\n  timeZone: 'Europe/Moscow',\n  hour12: false,\n  hour: '2-digit',\n  minute: '2-digit'\n});\n\nlet message = `🚨 КРИПТОСКАННЕР АЛЬФА\\n⏰ ${moscowTime} MSK\\n\\n`;\n\n// ── ГРУППИРОВКА СИГНАЛОВ КАК В ОРИГИНАЛЕ ──────────────────────────────────────\nif (aiSignals.length > 0) {\n  // Группировка по категориям\n  const grouped = {};\n  aiSignals.forEach(signal => {\n    const category = signal.category || 'Other';\n    if (!grouped[category]) grouped[category] = [];\n    grouped[category].push(signal);\n  });\n\n  // Приоритет категорий как в оригинале\n  const categoryOrder = ['Whale Activity', 'New Tokens', 'Breaking News', 'DEX Updates', 'Memecoins', 'DeFi', 'Governance'];\n  \n  for (const category of categoryOrder) {\n    if (!grouped[category] || grouped[category].length === 0) continue;\n    \n    const categorySignals = grouped[category];\n    const emoji = CATEGORY_EMOJI[category] || '📊';\n    const categoryRus = CATEGORY_TRANSLATIONS[category] || category;\n    \n    message += `${emoji} ${categoryRus} (${categorySignals.length})\\n\\n`;\n    \n    // Сортировка по приоритету\n    categorySignals.sort((a, b) => {\n      const actionRank = { URGENT: 4, RESEARCH: 3, WATCH: 2, AVOID: 1 };\n      return (actionRank[b.action] || 0) - (actionRank[a.action] || 0);\n    });\n    \n    // Отображение сигналов в стиле оригинала\n    categorySignals.forEach(signal => {\n      const riskEmoji = RISK_EMOJI[signal.risk] || '🟡';\n      const actionEmoji = ACTION_EMOJI[signal.action] || '👀';\n      \n      message += `${riskEmoji} ${actionEmoji} ${signal.summary}\\n`;\n      \n      // Токены и суммы\n      if (signal.entities && signal.entities.length > 0) {\n        const tokens = signal.entities.filter(e => /^[A-Z]{2,10}$/.test(e));\n        const amounts = signal.entities.filter(e => e.includes('$'));\n        \n        if (tokens.length > 0) {\n          message += `├─ 🪙 ${tokens.join(', ')}\\n`;\n        }\n        if (amounts.length > 0) {\n          message += `├─ 💰 ${amounts.join(', ')}\\n`;\n        }\n      }\n      \n      const actionRus = ACTION_TRANSLATIONS[signal.action] || 'НАБЛЮДАТЬ';\n      message += `└─ Действие: ${actionRus}\\n\\n`;\n    });\n  }\n}\n\n// ── АЛЬФА ВОЗМОЖНОСТИ В СТИЛЕ ОРИГИНАЛА ───────────────────────────────────────\nif (alphaOps.length > 0) {\n  message += `💎 Альфа возможности: ${alphaOps.length}\\n`;\n  alphaOps.slice(0, 3).forEach(alpha => {\n    message += `├─ $${alpha.symbol}: ${alpha.reason}\\n`;\n  });\n  message += '\\n';\n}\n\n// ── ТРЕНДОВЫЕ ТОКЕНЫ ──────────────────────────────────────────────────────────\nif (trending.length > 0) {\n  message += `📈 Трендовые токены: ${trending.length}\\n`;\n  trending.slice(0, 3).forEach(trend => {\n    message += `├─ $${trend.symbol} (${trend.score} очков)\\n`;\n  });\n  message += '\\n';\n}\n\n// ── СТАТИСТИКА КАК В ОРИГИНАЛЕ ────────────────────────────────────────────────\nmessage += `📊 СВОДКА АНАЛИТИКИ\\n`;\nmessage += `├─ Проанализировано сигналов: ${aiSignals.length}\\n`;\nmessage += `├─ Отслеживается токенов: ${Object.keys(tokenDetails).length}\\n`;\nmessage += `├─ Перекрестные ссылки: ${trending.length} трендовых\\n`;\nmessage += `├─ Альфа возможности: ${alphaOps.length}\\n`;\nmessage += `└─ Высокий приоритет: ${aiSignals.filter(s => ['HIGH', 'EXTREME'].includes(s.risk)).length}\\n`;\n\n// ── ИСТОЧНИКИ ДАННЫХ ──────────────────────────────────────────────────────────\nif (stats.sources) {\n  message += `\\n📡 Источники данных:\\n`;\n  const sources = stats.sources;\n  \n  const sourceList = [];\n  if (sources.reddit > 0) sourceList.push(`Reddit (${sources.reddit})`);\n  if (sources.whale > 0) sourceList.push(`Киты (${sources.whale})`);\n  if (sources.dex > 0) sourceList.push(`DEX (${sources.dex})`);\n  \n  sourceList.forEach((source, index) => {\n    const isLast = index === sourceList.length - 1;\n    message += `${isLast ? '└─' : '├─'} ${source}\\n`;\n  });\n}\n\n// ── 4. ВОЗВРАТ ────────────────────────────────────────────────────────────────\nreturn {\n  telegram_message: message,\n  skip_send: false,\n  stats: {\n    total_signals: aiSignals.length,\n    trending_count: trending.length,\n    alpha_count: alphaOps.length\n  },\n  debug: {\n    ai_signals_found: aiSignals.length,\n    trending_found: trending.length,\n    alpha_found: alphaOps.length\n  }\n};"
+      },
+      "id": "f7f31779-f119-4c12-a495-db40367c0567",
+      "name": "Format for Telegram",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2740,
+        1480
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 💡 РУКОВОДСТВО ПО НАСТРОЙКЕ\n\n### Добавить больше токенов\nОтредактируйте `hotTokens` в конфигурации:\n\n```javascript\nhotTokens: ['PEPE', 'WIF', 'ВАШ_ТОКЕН']\n```\n### Добавить больше кошельков\nНайдите на Etherscan/Arkham:\n```javascript\nvipWallets: [\n  '0x...', // Умный трейдер\n  '0x...'  // VC кошелек\n]\n```\n\n### Настроить чувствительность\n```javascript\nthresholds: {\n  whaleMove: 100000,    // Ниже = больше уведомлений\n  dexVolume: 50000,     // Ниже = больше токенов\n  priceChange1h: 5      // Ниже = больше сигналов\n}\n```\n\n### Добавить сабреддиты\nОтредактируйте ноду Reddit Scanner:\n- Измените параметр subreddit\n- Или добавьте несколько через +\n- Пример: CryptoCurrency+ethtrader\n\n\n### Изменить частоту уведомлений\nОтредактируйте Schedule Trigger:\n- Каждые 5 мин: Больше уведомлений, выше стоимость\n- Каждый час: Меньше уведомлений, ниже стоимость\n\n### Фильтровать специфические паттерны\nОтредактируйте паттерны в конфиге:\n```javascript\nexploit_alert: /hack|drain|exploit/i\n```",
+        "height": 1080,
+        "width": 520,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -580,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "f9fd9644-d7f0-431e-818b-5fc72a0f0f9a",
+      "name": "Customization Guide1"
+    },
+    {
+      "parameters": {
+        "content": "## 📋 ПОЛНЫЙ ЧЕКЛИСТ НАСТРОЙКИ\n\n### ✅ **Настройка Etherscan**\n- [ ] Идите на etherscan.io/apis\n- [ ] Создайте бесплатный аккаунт\n- [ ] Сгенерируйте API ключ\n- [ ] Добавьте HTTP Query Auth credential:\n  - Имя: EthScan\n  - Имя ключа: apikey\n  - Значение ключа: ВАШ_API_КЛЮЧ\n\n### ✅ **Настройка Telegram**\n- [ ] Напишите @BotFather\n- [ ] Отправьте /newbot\n- [ ] Выберите имя и username бота\n- [ ] Скопируйте токен бота\n- [ ] Добавьте бота в ваш канал/группу\n- [ ] Получите chat ID из api.telegram.org/bot<TOKEN>/getUpdates\n- [ ] Замените chatId в ноде Telegram\n\n### ✅ **Настройка OpenAI**\n- [ ] Идите на platform.openai.com\n- [ ] Создайте аккаунт и добавьте кредиты\n- [ ] Сгенерируйте API ключ\n- [ ] Добавьте OpenAI credential в n8n\n\n### ✅ **Настройка Reddit (Опционально)**\n- [ ] Идите на reddit.com/prefs/apps\n- [ ] Создайте приложение (тип script)\n- [ ] Добавьте OAuth2 credential с Client ID/Secret\n\n### ✅ **Конфигурация**\n- [ ] Отредактируйте список hotTokens\n- [ ] Добавьте кошельки умных денег\n- [ ] Настройте пороговые значения\n- [ ] Протестируйте воркфлоу\n- [ ] Включите триггер расписания",
+        "height": 960,
+        "width": 500,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1140,
+        20
+      ],
+      "typeVersion": 1,
+      "id": "cc1f2aa5-02f4-437a-97b4-4ebbc1644aaf",
+      "name": "Setup Checklist"
+    },
+    {
+      "parameters": {
+        "content": "🤖 НАСТРОЙКА OPENAI:\n\n– Получите API ключ на platform.openai.com\n– Добавьте OpenAI credentials в n8n\n– Выберите gpt-4o-mini (дешевле) или gpt-4o (лучше)\n\n💰 СТОИМОСТЬ:\n\n– gpt-4o-mini: ~$0.01-0.02 за запуск\n– gpt-4o: ~$0.10-0.20 за запуск\n\n💡 AI резюмирует и приоритизирует сигналы",
+        "height": 280,
+        "width": 400,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2240,
+        1960
+      ],
+      "typeVersion": 1,
+      "id": "e5444943-a94e-4237-99ff-b27c211746d7",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3620,
+        1040
+      ],
+      "typeVersion": 1,
+      "id": "0c1502b6-28b6-47d1-8d3b-ea0762afaa5b",
+      "name": "Sticky Note23",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 120,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3620,
+        840
+      ],
+      "typeVersion": 1,
+      "id": "c2d6c8fd-b0ca-4d7c-8214-ae7572c6d879",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Telegram n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3620,
+        1220
+      ],
+      "typeVersion": 1,
+      "id": "6da1ea8c-b616-4d6f-95ed-2a2bbdcb92ec",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3620,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "e5dc4ad2-9e05-4d16-b08b-4320eb3470ea",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Основные функции:\n\n– Отслеживание китов - мониторит крупные транзакции известных кошельков\n– Анализ социальных сетей - сканирует Twitter и Reddit на предмет упоминаний токенов\n– DEX мониторинг - отслеживает цены, объемы и новые листинги на децентрализованных биржах\n– Обнаружение новых токенов - находит токены младше 24 часов\n– Паттерн-детекция - выявляет взломы, памп-дампы, листинги\n– ИИ-анализ - использует OpenAI для приоритизации сигналов",
+        "height": 240,
+        "width": 720,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2080,
+        520
+      ],
+      "typeVersion": 1,
+      "id": "e7f228cc-600e-41b3-b906-62c4062c1079",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "content": "## 💎 DexScreener My Tokens Monitor\nЗадача: Мониторит ваши токены на DEX биржах\n\nОтслеживает токены из списка hotTokens\nПолучает цены, объемы, изменения\nБесплатный API, ключ не нужен",
+        "height": 220,
+        "width": 340,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1420,
+        2020
+      ],
+      "typeVersion": 1,
+      "id": "c8887865-ae01-43c4-b8de-10134616211a",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "## 🆕 Discover New Tokens\nЗадача: Находит новые токены (младше 24 часов)\n\nИспользует GeckoTerminal API\nИщет токены, которые только запустились\nПомогает поймать токены до их популярности",
+        "height": 200,
+        "width": 360,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1420,
+        2260
+      ],
+      "typeVersion": 1,
+      "id": "b42617a7-9ff9-4007-bddc-91653f7becf2",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "## 🔥 Discover Trending Tokens\nЗадача: Находит трендовые токены на Ethereum\n\nИспользует GeckoTerminal API\nПоказывает токены, набирающие популярность\nБесплатный API",
+        "height": 240,
+        "width": 300,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1440,
+        2480
+      ],
+      "typeVersion": 1,
+      "id": "43a2f90c-c327-46b8-aef6-eb3fe3abed48",
+      "name": "Sticky Note20"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Reddit Crypto Scanner": {
+      "main": [
+        [
+          {
+            "node": "Reddit Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Should Send Message?": {
+      "main": [
+        [
+          {
+            "node": "Send to Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Configuration1": {
+      "main": [
+        [
+          {
+            "node": "DexScreener My Tokens Monitor",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Discover New Tokens",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Discover Trending Tokens",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Reddit Crypto Scanner",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Tweets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Whale Moves1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Advanced Filtering & Pattern Detection1": {
+      "main": [
+        [
+          {
+            "node": "AI Alpha Analysis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Alpha Analysis1": {
+      "main": [
+        [
+          {
+            "node": "Format for Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Whale Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fetch Whale Moves1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Whale Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "DexScreener My Tokens Monitor": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Discover Trending Tokens": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Discover New Tokens": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Advanced Filtering & Pattern Detection1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Tweets": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Load Configuration1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format for Telegram": {
+      "main": [
+        [
+          {
+            "node": "Should Send Message?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1e09a3a0-14ab-4f06-97cb-a3aa1ce6a33c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "lgeYRT866EWkkRCD",
+  "tags": []
+}

@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "limitations": [
+    "No Knowledge Core persistence",
+    "No live Registry API integration",
+    "No API/UI for discovery or linking",
+    "No vector search or LLM routing",
+    "No runtime execution or Connector activation",
+    "No external Skill search or Skill Generator",
+    "No platform-adapted Pattern maturity beyond reviewed",
+    "No n8n deployment gateway",
+    "No presentation renderer",
+    "No graph DB",
+    "Legacy app/knowledge/linking/ remains (no new imports)",
+    "Provider advice requires reverification",
+    "Quarantine security scanner may contain false positives",
+    "Discovery alias catalog is finite and manually governed"
+  ]
+}

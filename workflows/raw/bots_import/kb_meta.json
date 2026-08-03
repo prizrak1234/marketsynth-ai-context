@@ -1,0 +1,222 @@
+{
+  "name": "RU_Diet_Bot_KB",
+  "version": "1.0.0",
+  "generated_at": "2025-10-13T23:05:59+00:00",
+  "jurisdiction": "RU",
+  "language": "ru",
+  "files": [
+    {
+      "file": "kb_meta.json",
+      "sha256": "8bfb907f14e13383118849d1072c5599329b92cd8a0036a263099f2a73b1126a"
+    },
+    {
+      "file": "jurisdiction_ru_norms.json",
+      "sha256": "dc02869b0a675b6087c768a3e652298165bea103b0cebf4ab87ba5c1f87d0e99"
+    },
+    {
+      "file": "energy_equations.json",
+      "sha256": "55c86cd5270f5f6a271422544778e70989546ee2b59bfe6bc46973101daadcf5"
+    },
+    {
+      "file": "goal_protocols.json",
+      "sha256": "9c62141b20227fc91f96ed0f9507d504fac99280cb06bf2d6ec6574a3b24af23"
+    },
+    {
+      "file": "breastfeeding_rules.json",
+      "sha256": "b45062315a4bef0b346b133e5dbb3477e607a48dbb8a672b0a13121218b58a94"
+    },
+    {
+      "file": "contraindications_screening.json",
+      "sha256": "ea979b1b161cccecb6f4c7a4551b16360c972a20c1a26bbc4a0771d7c736cc76"
+    },
+    {
+      "file": "safety_policy.json",
+      "sha256": "be6af57e71248f1e30af77ec87bc62617c636117363bd14d2786f778427d5945"
+    },
+    {
+      "file": "allergens_master.json",
+      "sha256": "8531363760306acc1fe87e0df07d445e66cef01c894f63cd9edf70f9b6b5ec2c"
+    },
+    {
+      "file": "intolerances.json",
+      "sha256": "1fef5d10b7b190f906086c26e1b1c8531960ac43aecc2fe49b398642cede537b"
+    },
+    {
+      "file": "diet_styles.json",
+      "sha256": "ab1510fcaa032e4ac20690561fe4eefd2cd299f50a6f121cffca32517e579ae8"
+    },
+    {
+      "file": "activity_levels.json",
+      "sha256": "e0ec1e0df35fae2e21e7dd4d00d9ba31d86182af6e4c8d7deac0ba8b8215d2a1"
+    },
+    {
+      "file": "portion_sizes_ru.json",
+      "sha256": "3f31af24c779e8502d959d42b7c372f8848fb233503d4ff06223798d4d98cf92"
+    },
+    {
+      "file": "parsing_food_text.json",
+      "sha256": "f49e849727525027376f9ea2f16d19b968d04643f35894ea27066bf3060df60f"
+    },
+    {
+      "file": "photo_estimation_rules.json",
+      "sha256": "c2c62ea92cbd3eff3f3b9d6d02673a535ef0fedccad3258701a5bfaff837e338"
+    },
+    {
+      "file": "user_profile_schema.json",
+      "sha256": "67017c9ec06acf3ed00ef870c2cd271aef20cfb5d95d709ee852229502a686dc"
+    },
+    {
+      "file": "user_diary_schema.json",
+      "sha256": "f1ed055cb1b9f792a0d402f52750ab63457cece0e661cf64d89592289f324d6c"
+    },
+    {
+      "file": "user_photo_schema.json",
+      "sha256": "a85475b6a684c93afb1529775b85f04a797dc73cdacce54dcd5c786aafc2c969"
+    },
+    {
+      "file": "dialog_greeting.json",
+      "sha256": "1525b254d7c8ee2a62d928a396c301e4565d0f0039d86519d4256ffdc336705d"
+    },
+    {
+      "file": "dialog_goal_setting.json",
+      "sha256": "1911ad0214b8276c37c1f4754fc3682f0464b428cc753dc068e271b031471e02"
+    },
+    {
+      "file": "dialog_allergy_check.json",
+      "sha256": "8c3f995b268b0e241ebe140604078b58535577d64ea27ea9edead590c55ea5e9"
+    },
+    {
+      "file": "dialog_breastfeeding_check.json",
+      "sha256": "1713aa2d9d7cde7022751a9481a8312230730fc43bcb5808fbfe529cd3e29ee7"
+    },
+    {
+      "file": "dialog_activity_check.json",
+      "sha256": "ecdf90497e6f9a1c034c62309754f76da0c3e89f067640c76c3aa4ad82303371"
+    },
+    {
+      "file": "dialog_portion_coaching.json",
+      "sha256": "c7db632fd164dab1a5c5775071fa07c8a10908ef94e80c955ceb8fcae06f933d"
+    },
+    {
+      "file": "dialog_plate_method.json",
+      "sha256": "e26d243b7c0f351d6b607c0b2e297caf7465ba0e9325313a543febf6375d3932"
+    },
+    {
+      "file": "dialog_recheck_uncertainty.json",
+      "sha256": "951ffb7be5810d8c46512b20c8296971738695515e2c4d8a32ea4168b2296718"
+    },
+    {
+      "file": "nlp_entities.json",
+      "sha256": "0747ae541b7aea830d522d0ccc9d86ed8e9cdb9502162dafac4c2bea73429d0d"
+    },
+    {
+      "file": "nlp_synonyms_ru.json",
+      "sha256": "8b967da64db2dbcb34632289fcbaa580f5a83c85d68c8419873ef13fe97639ff"
+    },
+    {
+      "file": "nlp_units.json",
+      "sha256": "6ce7416f2bca4603a414b177b4f9cb6aa91f40db34e244d9b163be40ea0cb2e7"
+    },
+    {
+      "file": "nutrients_core.json",
+      "sha256": "6bbca49cfc0d59ee157aa6825a1272ad4ed7a0d28d577316744f880fe68323e4"
+    },
+    {
+      "file": "ru_foods_index.json",
+      "sha256": "3cfb48fa6619eb6afecd7b625f2bca0a5f12b0e799fe1214daccb45a45f52b1a"
+    },
+    {
+      "file": "ru_foods_composition_part_1.json",
+      "sha256": "6f6714926d14b0f81db300074dfc6abad57585315427cfb0101c94af37bfcc40"
+    },
+    {
+      "file": "ru_foods_composition_part_2.json",
+      "sha256": "4583f98d1a4790805438e53298ee1fdac1e7d746d470b0c3fd032697b5f791fd"
+    },
+    {
+      "file": "ru_dishes_recipes.json",
+      "sha256": "69468bd873c7b1ebfcd2a8dc77b6d8fd50db54690c4f5ce7f906b888f2f5274f"
+    },
+    {
+      "file": "cooking_yield_factors.json",
+      "sha256": "555bd4f40423d6433fee15e0746cad5e07a8fbb6e08c53886721bb0e498b03a6"
+    },
+    {
+      "file": "allergens_mapping_ru.json",
+      "sha256": "7919bcd0743a3058d94ef32d05c65034b9e6a9411cdd6be3d963e92d223b75ab"
+    },
+    {
+      "file": "substitutions_safe.json",
+      "sha256": "de7d35616d1573121e7fa0411e190e4fb9c231fbf0d8101aa73905471ddfe1df"
+    },
+    {
+      "file": "meal_plans_examples.json",
+      "sha256": "22a2ad6370e1b406937997061f09e6cfdaea40bc5eb7c46f12efe0cfa12872a5"
+    },
+    {
+      "file": "kcal_estimation_rules.json",
+      "sha256": "fc29134072b18939225acd4b972014a77d9cdfffd59f7013d222dbe032537563"
+    },
+    {
+      "file": "protein_targets_women.json",
+      "sha256": "b1508e21d8af0af5d4e33e7abc47e7530e1f040ae3692a55d1a4191b9abbea64"
+    },
+    {
+      "file": "micronutrient_targets_women.json",
+      "sha256": "a1d3f89ad45c7e0eeb2b57460341ce13d30e5aa0a41e9917f5a609c5ce9f46c6"
+    },
+    {
+      "file": "hydration_rules.json",
+      "sha256": "a82cf12198453e15e9e750d8dad7fa64491d2cc247faaf8492607364d0d6e0b2"
+    },
+    {
+      "file": "weight_tracking_rules.json",
+      "sha256": "22e32b82fd1cb397b7a55955637ea8fadbeddfc7f7751befc06c94e5f0d3ee68"
+    },
+    {
+      "file": "adherence_tips.json",
+      "sha256": "91c2c35d5fb308a46189351af9366003ae8fb066bed483d8433b4ffcfded5acf"
+    },
+    {
+      "file": "uncertainty_policy.json",
+      "sha256": "12a0a691b2437decf52296f0da2df7629dbe604f15ad1b6baef6a5d411e8e23d"
+    },
+    {
+      "file": "photo_prompts_examples.json",
+      "sha256": "262da1a90a764f3c29a4549c5730e37bc7856ade9fc927ddab7ee88742ce4bf3"
+    },
+    {
+      "file": "test_cases_text.json",
+      "sha256": "6d23bb193675fbb039b87a3c13f68b0f88c9eb4987ded46b65c84e9e48ad9496"
+    },
+    {
+      "file": "test_cases_photos.json",
+      "sha256": "11901052690109bf146ace0f5c38fd051ae7544b55bfebb023787ebcd77b5432"
+    },
+    {
+      "file": "make_integration_map.json",
+      "sha256": "2d1bab1302c36a693b1374d1be6860e7455cf8581dc3279bf47aaed39436328c"
+    },
+    {
+      "file": "telemetry_schema.json",
+      "sha256": "e9c01c930963ba19e04193e32ff70f73d356347b3debf1811cd4c4b346e763ef"
+    },
+    {
+      "file": "update_changelog.json",
+      "sha256": "85242fca4783cc8128ce87c0a29303351cb1b5d5bd062ebdf6dc81c3b56edffa"
+    }
+  ],
+  "sources": [
+    {
+      "id": "minzdrav_rf",
+      "title": "Минздрав РФ",
+      "url": "https://minzdrav.gov.ru/"
+    },
+    {
+      "id": "ros_potreb",
+      "title": "Роспотребнадзор",
+      "url": "https://www.rospotrebnadzor.ru/"
+    }
+  ],
+  "disclaimer": "Информация носит справочный характер и не заменяет консультацию врача."
+}

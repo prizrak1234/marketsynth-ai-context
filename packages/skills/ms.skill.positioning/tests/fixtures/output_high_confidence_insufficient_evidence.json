@@ -1,0 +1,227 @@
+{
+  "positioning_analysis_id": "pos-001",
+  "skill_id": "ms.skill.positioning",
+  "skill_version": "0.1.0",
+  "source_cim_reference": {
+    "source_skill_id": "ms.skill.icp_segmentation",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+    "cim_version": "0.1.0",
+    "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "selected_segment_ids": [
+      "seg-remote-eng"
+    ],
+    "source_evidence_references": [
+      "ev-seg-seg-remote-eng"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "budget",
+        "description": "Budget bands unverified",
+        "blocking": false
+      }
+    ],
+    "source_conflicts": []
+  },
+  "source_competitor_reference": {
+    "source_skill_id": "ms.skill.competitor_analysis",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_market_validation_reference": {
+    "source_skill_id": "ms.skill.market_validation",
+    "source_skill_version": "0.2.0",
+    "source_output_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "market_validation_verdict_consumed": "insufficient_evidence",
+  "selected_segment_ids": [
+    "seg-remote-eng"
+  ],
+  "positioning_territories": [
+    {
+      "territory_id": "terr-1",
+      "territory_name": "Async specialist",
+      "territory_type": "niche_specialist",
+      "description": "Territory Async specialist for positioning exploration",
+      "relevant_segment_ids": [
+        "seg-remote-eng"
+      ],
+      "customer_relevance": "High alignment with declared CIM segment pains",
+      "competitive_whitespace": "Competitors emphasize speed over async depth",
+      "defensibility": "Workflow depth and integration moat",
+      "proof_availability": "Partial — needs customer proof points",
+      "market_sophistication_fit": "Solution-aware buyers",
+      "evidence_references": [
+        "src-001"
+      ],
+      "assumptions": [],
+      "unknowns": [],
+      "risks": [],
+      "confidence": "medium",
+      "provenance": {
+        "skill_id": "ms.skill.positioning",
+        "skill_version": "0.1.0"
+      }
+    }
+  ],
+  "positioning_hypotheses": [
+    {
+      "hypothesis_id": "pos-high-conf",
+      "hypothesis_name": "High confidence invalid",
+      "target_segment_ids": [
+        "seg-remote-eng"
+      ],
+      "target_customer_summary": "Remote engineering teams",
+      "market_or_category_frame": "Async collaboration for engineering teams",
+      "primary_customer_problem": "Meeting overload disrupts deep work",
+      "primary_customer_problem_ref": "pain-seg-remote-eng",
+      "desired_outcome": "Coordinate without synchronous meetings",
+      "desired_outcome_ref": "out-seg-remote-eng",
+      "differentiation_basis": "Purpose-built async workflows vs generic project tools",
+      "competitive_alternative": "Linear, Jira, Slack threads",
+      "value_frame": "Protect maker time while keeping teams aligned",
+      "reason_to_believe": [
+        {
+          "statement": "Competitor gap in async-first UX",
+          "trace_type": "evidence",
+          "evidence_references": [
+            "src-001"
+          ]
+        }
+      ],
+      "proof_requirements": [
+        "Case study: reduced meeting hours by 30%"
+      ],
+      "key_message": "Async coordination built for engineering teams",
+      "supporting_messages": [
+        "Fewer meetings, clearer ownership"
+      ],
+      "exclusion_or_boundary": "Not for synchronous-heavy sales teams",
+      "evidence_references": [
+        "ev-seg-seg-remote-eng",
+        "src-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "inferences": [],
+      "unknowns": [],
+      "conflicts": [],
+      "validation_conditions": [],
+      "risks": [],
+      "confidence": "high",
+      "status": "exploratory",
+      "ranking_dimensions": {
+        "customer_relevance": "high",
+        "differentiation_strength": "medium",
+        "evidence_strength": "medium",
+        "defensibility": "medium",
+        "proof_availability": "medium",
+        "category_clarity": "high",
+        "segment_fit": "high",
+        "market_validation_alignment": "high",
+        "condition_compatibility": "high",
+        "brand_fit": "medium",
+        "execution_feasibility": "medium",
+        "risk_level": "low",
+        "confidence": "medium"
+      },
+      "provenance": {
+        "skill_id": "ms.skill.positioning",
+        "skill_version": "0.1.0"
+      }
+    }
+  ],
+  "alternative_hypothesis_ids": [
+    "pos-high-conf"
+  ],
+  "blocked_hypothesis_ids": [],
+  "message_hierarchy": {
+    "primary_message": "Async coordination built for engineering teams",
+    "supporting_messages": [
+      "Reduce meeting load"
+    ],
+    "proof_messages": [
+      "Engineering teams report fewer standups"
+    ],
+    "objection_responses": [
+      {
+        "objection_ref": "obj-seg-remote-eng",
+        "response_framing": "Integrates with existing toolchain",
+        "evidence_references": [
+          "src-001"
+        ]
+      }
+    ],
+    "segment_variants": [
+      {
+        "segment_id": "seg-remote-eng",
+        "primary_message_variant": "Async coordination built for engineering teams",
+        "supporting_messages": [
+          "Built for remote engineering"
+        ]
+      }
+    ],
+    "prohibited_or_unsupported_claims": [],
+    "evidence_references": [
+      "src-001"
+    ],
+    "assumptions": [],
+    "unknowns": [],
+    "provenance": {
+      "skill_id": "ms.skill.positioning",
+      "skill_version": "0.1.0"
+    }
+  },
+  "differentiation_summary": "Competitors optimize speed; whitespace in async-first depth",
+  "reason_to_believe_requirements": [
+    "Customer proof of meeting reduction"
+  ],
+  "proof_gaps": [],
+  "unsupported_claims": [],
+  "conditions_inherited": [],
+  "blockers_inherited": [],
+  "positioning_risks": [],
+  "assumptions": [],
+  "inferences": [],
+  "unknowns": [],
+  "conflicts": [],
+  "evidence_gaps": [],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "positioning_readiness": "exploratory_only",
+  "downstream_offer_inputs": [],
+  "downstream_recommendation": "blocked",
+  "human_approval_required": true,
+  "provenance": {
+    "skill_id": "ms.skill.positioning",
+    "skill_version": "0.1.0",
+    "generated_at": "2026-07-23T00:00:00Z",
+    "methodology_ref": "SKILL-02.7",
+    "source_cim_skill_id": "ms.skill.icp_segmentation",
+    "source_cim_skill_version": "0.1.0",
+    "source_cim_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "source_cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "source_competitor_skill_id": "ms.skill.competitor_analysis",
+    "source_competitor_skill_version": "0.1.0",
+    "source_competitor_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_market_validation_skill_id": "ms.skill.market_validation",
+    "source_market_validation_skill_version": "0.2.0",
+    "source_market_validation_output_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  "input_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+  "output_hash": "2222222222222222222222222222222222222222222222222222222222222222"
+}

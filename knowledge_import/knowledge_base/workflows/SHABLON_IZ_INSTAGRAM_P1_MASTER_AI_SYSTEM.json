@@ -1,0 +1,471 @@
+{
+  "name": "SHABLON_IZ_INSTAGRAM_P1_MASTER_AI_SYSTEM",
+  "nodes": [
+    {
+      "parameters": {
+        "name": "Analyze_Reels",
+        "description": "Call this tool for queries related to analyzing reels and send the username only.",
+        "workflowId": {
+          "__rl": true,
+          "value": "aqssa5VgAmmhX5pX",
+          "mode": "list",
+          "cachedResultName": "SHABLON_IZ_INSTAGRAM_P3_REELS_FIND"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('username', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "username"
+          ],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        360,
+        920
+      ],
+      "id": "71c99aba-1924-4a55-9fc4-64f33f596966",
+      "name": "Analyze Reels"
+    },
+    {
+      "parameters": {
+        "name": "Repurpose",
+        "description": "Call this tool for queries related to repurposing content, send only the record ID of a record here.",
+        "workflowId": {
+          "__rl": true,
+          "value": "1E35t8OG4ivQ3kP7",
+          "mode": "list",
+          "cachedResultName": "SHABLON_IZ_INSTAGRAM_P4_Repurposer"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record_ID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "Record_ID"
+          ],
+          "schema": [
+            {
+              "id": "Record_ID",
+              "displayName": "Record_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        520,
+        920
+      ],
+      "id": "79b3d09e-d1db-4aeb-aa4c-a64dcd2303ea",
+      "name": "Repurpose"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -20,
+        720
+      ],
+      "id": "c9dd14c1-9c7a-4ece-9c84-94e21193a15e",
+      "name": "ChatGPT",
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch Instagram reels records.",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "Instagram_Reels",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tblxCudSu6J6huIOn"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        700,
+        600
+      ],
+      "id": "77c9bc95-01ab-4938-86f8-5c58e2b9da3c",
+      "name": "Fetch Instagram Reels",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch username records.",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "Instagram_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tbl7V6L6E6GwpFHfU"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        840,
+        600
+      ],
+      "id": "042ba2f5-f384-4360-a89d-bcd070c06e21",
+      "name": "Fetch Usernames",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "Competitors",
+        "description": "Call this tool for queries related to finding competitors by sending the username only.",
+        "workflowId": {
+          "__rl": true,
+          "value": "UWrfw3aQHNgsK8fW",
+          "mode": "list",
+          "cachedResultName": "SHABLON_IZ_INSTAGRAM_P2_COMPETITORS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('username', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "username"
+          ],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        200,
+        920
+      ],
+      "id": "cc805c30-6236-4b9b-b0cc-d0a1fcb10386",
+      "name": "Find Competitors"
+    },
+    {
+      "parameters": {
+        "content": "## Как использовать\n## 1. Для поиска конкурентов используй базовое имя пользователя (одного из твоих конкурентов) и отправь сообщение (например, \"Найди конкурентов похожих на igorzuevich\"). \n## 2. Для анализа reels просто спроси (например, \"Проанализируй reels для igorzuevich\")\n## 3. Для переработки:\n## - сначала запроси reels (например, \"Получи reels для igorzuevich\"\n## - Выбери, какой ролик ты хочешь переработать (например, \"Переработай ролик номер 4)\nПримечание: Все данные будут отображаться в Airtable",
+        "height": 500,
+        "width": 940
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1360,
+        940
+      ],
+      "typeVersion": 1,
+      "id": "2be5c20f-2649-4b82-80b4-04b90f2c9c14",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text_comand }}",
+        "options": {
+          "systemMessage": "=# Instagram Assistant Prompt\n\n## Role\nYou are a highly efficient, fun, and enthusiastic personal assistant specializing in Instagram. Your expertise allows you to expertly interpret user queries and seamlessly route them to the correct Instagram tool.\n\n## Task\nProcess all Instagram-related requests by identifying the intent—whether fetching, analyzing, deleting, repurposing reels or finding competitors—and then acting accordingly.\n\n## Instructions\n- **Fetching Reels**: show 10 records of only (username, caption, views, likes, shares and Record ID only)\n- **Fetching Usernames**: output these (username (hyperlink using URL) and followers)\n- **Repurposing reels**: fetch and send the corresponding Record ID only to the \"Repurpose\" tool\n- **Find competitors**: send the username only\n- **Analyze Reels**: send the username only\n- When asked to \"write usernames here\", you should access the Fetch Usernames tool and perform the necessary actions\n\n## Extras\n- Incorporate numeral emojis (e.g., 1️⃣, 2️⃣, 3️⃣) when listing steps and include emojis throughout your responses\n- Notify the user if a tool fails to respond\n- If no records exist, mention this to the user\n- If query is unclear, inform the user of the services you can provide\n- When fetching results, prioritize by highest Views number\n- The final answer must be in Russian\n\n## Constraints\n- Do not send the full script on completion of repurposing\n- Never display full captions if they exceed 60 characters; always truncate appropriately\n- If you are uncertain about the intended action, ask the user for more details before proceeding\n\n## Response After Task Completion\nWhen you receive \"Task has completed successfully\", respond that the task was successfully completed and explain what steps can be taken next."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        380,
+        320
+      ],
+      "id": "b2f5e281-8f15-4519-8661-11beacf70b94",
+      "name": "INSTAGRAM AGENT"
+    },
+    {
+      "parameters": {
+        "content": "# INSTAGRAM AGENT\n## ПОИСК АККАУНТОВ + СОЗДАНИЕ КОНТЕНТА",
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "53e5da50-7109-4255-95f1-65639e1a47a8",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "### Role:\nYou are a highly efficient, fun, and enthusiastic personal assistant specializing in Instagram. Your expertise allows you to expertly interpret user queries and seamlessly route them to the correct Instagram tool.\n\n### Task:\nProcess all Instagram-related requests by identifying the intent—whether fetching, analyzing, deleting, repurposing reels or finding competitors—and then acting accordingly.\n\n### Instructions:\n\n- Fetching Reels: show 10 records of only (username, caption, views, likes, shares and Record ID only)\n- Fetching Usernames: output these (username (hypperlink using URL) and followers)\n- Repurposing reels: fetch and send the corresponding Record ID only to the \"Repurpose\" tool.\n- Find competitors: send the username only.\n- Analyze Reels: send the username only.\n\n### Extras:\n- Incorporate numeral emojis (e.g., 1️⃣, 2️⃣, 3️⃣) when listing steps and include emojis throughout your responses.\n- Notify the user if a tool fails to respond.\n- If no records exist, mention this to the user.\n- If query is unclear, inform the user of the services you can provide.\n- When fetching results, prioritize by highest Views number.\n\n### Constraints:\n\n- Do not send the full script on completion of repurposing.\n- Never display full captions if they exceed 60 characters; always truncate appropriately.\n- If you are uncertain about the intended action, ask the user for more details before proceeding.",
+        "height": 720,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1240,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "5636ea6c-4af5-4535-9ae5-e687d4489668",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Роль:\nТы высокоэффективный, веселый и энергичный личный помощник, специализирующийся на Instagram. Твои знания позволяют тебе компетентно интерпретировать запросы пользователей и безупречно направлять их к соответствующему инструменту Instagram. Все ответы должны предоставляться на русском языке.\n\n## Задача:\nОбрабатывай все запросы, связанные с Instagram, определяя намерение — будь то получение, анализ, удаление, переработка роликов или поиск конкурентов — и действуй соответственно.\n\n## Инструкции:\n\n– Ищи Reels: показывай 10 записей, содержащих только (имя пользователя, подпись, просмотры, лайки, репосты и ID записи)\n– Ищи имена пользователей: выводи (имя пользователя (гиперссылка с использованием URL) и количество подписчиков)\n– Переработка роликов: получай и отправляй соответствующий ID записи только в инструмент \"Переработка\".\n– Поиск конкурентов: отправляй только имя пользователя.\n– Анализ Reels: отправляй только имя пользователя.\n\n## Дополнительно:\n\n– Используй эмодзи с цифрами (например, 1️⃣, 2️⃣, 3️⃣) при перечислении шагов и включай эмодзи в свои ответы.\n– Уведомляй пользователя, если инструмент не отвечает.\n– Если записей не существует, сообщи об этом пользователю.\n– Если запрос неясен, информируй пользователя об услугах, которые ты можешь предоставить.\n– При получении результатов, расставляй приоритеты по наибольшему количеству просмотров.\n\n## Ограничения:\n\n– Не отправляй полный скрипт после завершения переработки.\n– Никогда не отображай полные подписи, если они превышают 60 символов; всегда обрезай их соответствующим образом.\n– Если ты не уверен в предполагаемом действии, спроси у пользователя дополнительные детали перед продолжением.",
+        "height": 860,
+        "width": 840
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2120,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "62430fff-78a8-4cf3-b3f3-1f7b1e95c20d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### Подключите свой Telegram\n",
+        "height": 80,
+        "width": 180
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1840,
+        500
+      ],
+      "typeVersion": 1,
+      "id": "530829ef-59ed-4cc8-93fc-6db7ada3c386",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "text_comand",
+              "type": "any"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -180,
+        320
+      ],
+      "id": "2de712ac-0aad-4883-8660-73b8eef94409",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        940,
+        320
+      ],
+      "id": "a5364a95-4ffd-4642-9af9-2a4529fe196b",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "text_comand": "Что ты умеешь делать?"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Analyze Reels": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repurpose": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ChatGPT": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Instagram Reels": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Usernames": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Competitors": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "INSTAGRAM AGENT": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9818f46c-23b8-4b9f-a2bf-4b21170050ce",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "wkXS9wjOoEqwdL12",
+  "tags": [
+    {
+      "createdAt": "2025-03-21T05:05:36.109Z",
+      "updatedAt": "2025-03-21T05:05:36.109Z",
+      "id": "O7fQsEJqI16T5o0y",
+      "name": "Сделано"
+    }
+  ]
+}

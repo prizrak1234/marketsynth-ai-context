@@ -1,0 +1,37 @@
+{
+  "slice": "VS.2A-R",
+  "title": "Duration Contract Root Cause — VR.3 Paid Smoke Evidence",
+  "contract_decision": "B",
+  "contract_decision_ru": "Provider (glabs-veo-3-1-fast) выдаёт фиксированные ~8 с; UI/API не должны обещать 5 с для этого route.",
+  "smoke_status": "TECHNICAL_PASS_PRODUCT_CONTRACT_FAIL",
+  "vs2a_owner_accepted": false,
+  "evidence": {
+    "clip_request_id": "b3ad1909-dafd-4440-8968-345b3717093b",
+    "result_asset_id": "927583e5-e95c-4cb7-92a8-d480cbdeef24",
+    "provider_job_id": "6a60c04ef9ebac0001413175",
+    "model": "glabs-veo-3-1-fast",
+    "requested_duration_seconds": 5,
+    "provider_payload_duration": null,
+    "provider_reported_duration": 8,
+    "measured_mp4_duration": 8.0,
+    "difference_seconds": 3.0,
+    "difference_percent": 60.0,
+    "duration_validation_status": "mismatch",
+    "owner_playback_observation_seconds": 8.2,
+    "notes": "mvhd probe reports 8.0 s; owner playback observation ~8.2 s — both violate 5 s request."
+  },
+  "root_cause": {
+    "primary": "duration_seconds not sent in GPTunnel media/create payload",
+    "payload_fields": ["model", "prompt", "ar", "images"],
+    "provider_behavior": "Veo family uses model default fixed clip length (~8 s)",
+    "api_ignored_request": true,
+    "post_processing_trim": false
+  },
+  "remediation": {
+    "capabilities": "provider_supported_single_clip_durations_seconds: [8]",
+    "preview_gate": "reject unsupported durations with provider_duration_not_supported",
+    "result_validation": "probe MP4 after download; mismatch -> result_requires_review",
+    "commercial_home_wiring": "blocked until VS.2A product acceptance"
+  },
+  "final_status": "VS.2A READY FOR OWNER ACCEPTANCE — provider capability corrected"
+}

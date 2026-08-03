@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.customer_meaning_extraction/schemas/desire-to-benefit-map.schema.json",
+  "title": "DesireToBenefitMap",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "map_id": {
+      "type": "string"
+    },
+    "customer_meaning_reference": {
+      "type": "string"
+    },
+    "satisfaction_status": {
+      "type": "string",
+      "enum": [
+        "supported",
+        "partially_supported",
+        "unsupported",
+        "unknown",
+        "conflicted"
+      ]
+    },
+    "product_capability_reference": {
+      "type": "string"
+    },
+    "delivery_mechanism_reference": {
+      "type": "string"
+    },
+    "benefit_statement": {
+      "type": "string"
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unsupported_aspects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "map_id",
+    "customer_meaning_reference",
+    "satisfaction_status",
+    "benefit_statement",
+    "evidence_references",
+    "confidence",
+    "provenance"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "product_marketing_context": {
+    "skill_id": "ms.skill.product_marketing_context",
+    "skill_version": "0.1.0",
+    "output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "research_objectives": [
+    "Understand whether delivery expansion is worth pursuing"
+  ],
+  "language": "en",
+  "required_depth": "overview"
+}

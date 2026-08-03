@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "name": "kcal_estimation_rules",
+    "version": "1.0.2",
+    "generated_at": "2025-10-13T23:40:30+00:00",
+    "locale": "ru-RU"
+  },
+  "schema": {
+    "type": "object",
+    "required": [
+      "distribution",
+      "rounding",
+      "validation"
+    ],
+    "properties": {
+      "distribution": {
+        "type": "object",
+        "required": [
+          "breakfast",
+          "lunch",
+          "dinner",
+          "snacks"
+        ],
+        "properties": {
+          "breakfast": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "lunch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "dinner": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "snacks": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      },
+      "rounding": {
+        "type": "object",
+        "required": [
+          "kcal_step"
+        ],
+        "properties": {
+          "kcal_step": {
+            "type": "integer",
+            "enum": [
+              1,
+              5,
+              10
+            ]
+          }
+        }
+      },
+      "validation": {
+        "type": "object",
+        "required": [
+          "sum_must_equal"
+        ],
+        "properties": {
+          "sum_must_equal": {
+            "type": "integer",
+            "enum": [
+              100
+            ]
+          }
+        }
+      },
+      "notes": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "distribution": {
+    "breakfast": 25,
+    "lunch": 35,
+    "dinner": 30,
+    "snacks": 10
+  },
+  "rounding": {
+    "kcal_step": 5
+  },
+  "validation": {
+    "sum_must_equal": 100
+  },
+  "notes": [
+    "Доли заданы в процентах от дневной нормы.",
+    "Сумма распределения должна равняться 100."
+  ]
+}

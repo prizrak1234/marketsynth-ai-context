@@ -1,0 +1,172 @@
+{
+  "generated_at": "2026-06-04",
+  "raw_root": "workflows/raw",
+  "total_files": 1707,
+  "extensions": {
+    ".json": 1660,
+    ".csv": 42,
+    ".xlsx": 5
+  },
+  "categories": {
+    "misc": {
+      "count": 1063,
+      "sample_files": [
+        "1_IZ_Threads_SCR_AI (1).json",
+        "1_IZ_TokTok_SCR_AI.json",
+        "1_NANO_BANANA_PHOTOSHOP_CREATE.json",
+        "2_IZ_Threads_SCR_Get threads user posts.json",
+        "2_IZ_TokTok_SCR_GET_PRF_VIDEO.json",
+        "2_NANO_BANANA_PHOTOSHOP_EDIT.json",
+        "3_IZ_Threads_SCR_Get threads post.json",
+        "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT.json",
+        "3_NANO_BANANA_PHOTOSHOP_CREATE.json",
+        "________________AI_Agent_________________________________.json",
+        "________AI__________ (1).json",
+        "AI Sale_________.json",
+        "AI_ассистент_для_создания_маркетинговых_текстов.json",
+        "AI_видео_по_новостям_на_автопилоте.json",
+        "AirTop_Browser.json"
+      ]
+    },
+    "content_social": {
+      "count": 379,
+      "sample_files": [
+        "1_IZ_Instagram_SCR_AI (1).json",
+        "2_IZ_Instagram_SCR_GET_PRF_REELS.json",
+        "3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT (2).json",
+        "AI_генератор_коротких_видео_для_TikTok.json",
+        "bots_import/1_IZ_Instagram_SCR_AI (1).json",
+        "bots_import/2_IZ_Instagram_SCR_GET_PRF_REELS.json",
+        "bots_import/3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT (2).json",
+        "bots_import/AI_генератор_коротких_видео_для_TikTok.json",
+        "bots_import/Content-Grid view.csv",
+        "bots_import/IGORZUEVICH_SNABLON_RSS_LENTA_TELEGRAM.json",
+        "bots_import/Instagram AI Agent - 3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT.csv",
+        "bots_import/Instagram_COMPETITORS-Grid view.csv",
+        "bots_import/Instagram_Reels-Grid view.csv",
+        "bots_import/IZ_Image_video_TELEGRAM.json",
+        "bots_import/IZ_P1_VIDEO_URL_AI_CONTENT_CHAT.json"
+      ]
+    },
+    "lead_generation": {
+      "count": 119,
+      "sample_files": [
+        "bots_import/client_requests_database.json",
+        "bots_import/client_secret_68741938371-1leiudtt7ppnacavla3icqebi70mbnnq.apps.googleusercontent.com.json",
+        "bots_import/Автоматизация_рабочего_процесса_с_использованием_Lead_Magnet.json",
+        "bots_import/Автоматизированная_обработка_и_отслеживание_отзывов_клиентов_с_помощью.json",
+        "bots_import/Автоматизируйте_сбор_лидов_и_ответы_в_WhatsApp_с_помощью_Whapi,.json",
+        "bots_import/Автоматически_обогащайте_и_оценивайте_потенциальных_клиентов_с_помощью.json",
+        "bots_import/Анализируйте_звонки_клиентам_и_обновляйте_CRM_систему_с_помощью.json",
+        "bots_import/Анализируйте_поисковые_запросы_в_Google_Ads_и_получайте_предложения.json",
+        "bots_import/Анализируйте_списки_потенциальных_клиентов_и_находите_профессиональные.json",
+        "bots_import/Анализируйте_телефонные_звонки_с_клиентами_с_помощью_транскрипции.json",
+        "bots_import/Возобновите_взаимодействие_со_старыми_клиентами_с_помощью_Claude.json",
+        "bots_import/Выявляйте_влияние_новостей_на_портфель_клиентов_с_помощью_Gemini.json",
+        "bots_import/Генерируйте_и_квалифицируйте_B2B_лиды_из_Telegram_с_помощью_Google.json",
+        "bots_import/Генерируйте_и_квалифицируйте_потенциальных_клиентов_из_числа_местных.json",
+        "bots_import/Генерируйте_и_обогащайте_лиды_для_местных_компаний_с_помощью_Decodo.json"
+      ]
+    },
+    "seo_wordstat": {
+      "count": 80,
+      "sample_files": [
+        "4_IZ_Threads_SCR_Search threads.json",
+        "bots_import/4_IZ_Threads_SCR_Search threads.json",
+        "bots_import/9_SearchAndScrapeAndCrawl.json",
+        "bots_import/Google_Forms,_ИИ,_SEO,_географическая_оптимизация,_одобрение_человеком.json",
+        "bots_import/IZ_Research_Agents.json",
+        "bots_import/TheAIAutomators_com___HAL3___SEO_Agent.json",
+        "bots_import/Wordstat.blueprint.json",
+        "bots_import/YT - Google Search.json",
+        "bots_import/Авто_генератор_SEO_блогов_на_основе_AI_новостей.json",
+        "bots_import/Автоматизация_отчетов_Google_Search_Console.json",
+        "bots_import/Автоматизация_публикации_SEO_статей_о_стартапах_в_WordPress.json",
+        "bots_import/Автоматизация_создания_SEO_блога_с_одобрением.json",
+        "bots_import/Автоматический_SEO_копирайтинг_для_блога.json",
+        "bots_import/Генерируйте_подсказки_по_SEO_аннотациям_из_URL_адресов_с_помощью.json",
+        "bots_import/Индексируйте_рабочие_процессы_n8n_и_обеспечьте_семантический_поиск.json"
+      ]
+    },
+    "scraping_data": {
+      "count": 20,
+      "sample_files": [
+        "bots_import/Firecrawl_MCP (1).json",
+        "bots_import/YT - Maps Scraping.json",
+        "bots_import/Анализ_npm_пакетов_с_помощью_Firecrawl,_GitHub,_npm_API,_Gemini.json",
+        "bots_import/Генерация_файлов_llms_txt_для_веб_сайтов_с_помощью_ScrapegraphAI.json",
+        "bots_import/Найдите_контактные_данные_и_адреса_по_именам_с_помощью_ScraperCity.json",
+        "bots_import/Обрабатывайте_объявления_о_недвижимости_Idealista_с_помощью_ScrapeGraph.json",
+        "Firecrawl_MCP (1).json",
+        "workflows/Firecrawl_MCP (1).json",
+        "workflows/Автоматизированный_парсер_объявлений_о_недвижимости_с_помощью_ScrapeGraph.json",
+        "workflows/Отслеживайте_отзывы_в_интернет_магазинах_с_помощью_MrScraper,_GPT.json",
+        "workflows/Превратите_веб_сайты_в_базу_данных_Google_Sheets_с_помощью_MrScraper.json",
+        "workflows/С_помощью_веб_перехватчика_агента_Firecrawl_AI_вы_можете_собирать.json",
+        "workflows/Сбор_и_загрузка_веб_страниц_в_стек_Pinecone_RAG_с_помощью_Firecrawl.json",
+        "workflows/Соберите_отзывы_Trustpilot_с_помощью_ScrapegraphAI_и_анализа_репутации.json",
+        "Автоматизированный_парсер_объявлений_о_недвижимости_с_помощью_ScrapeGraph.json"
+      ]
+    },
+    "offer_sales": {
+      "count": 19,
+      "sample_files": [
+        "bots_import/Анализируйте_еженедельные_звонки_отдела_продаж_Fireflies_с_помощью.json",
+        "bots_import/Извлекайте_фрагменты_обучающих_видеороликов_по_продажам_из_звонков.json",
+        "bots_import/Отправляйте_ежедневный_отчет_о_продажах_в_WhatsApp_из_Google_Таблиц.json",
+        "bots_import/Отслеживайте_объявления_о_продаже_недвижимости_на_Redfin_с_помощью.json",
+        "workflows/Запустите_воронку_продаж_с_использованием_ИИ_специалистов_по_развитию.json",
+        "workflows/Извлекайте_аналитические_данные_о_продажах_из_стенограмм_телефонных.json",
+        "workflows/Искусственный_интеллект_помощник_по_продажам_с_GPT_и_Клодом_квалификация.json",
+        "workflows/Отправляйте_графики_прогнозов_продаж_и_отвечайте_на_вопросы_в_WhatsApp.json",
+        "workflows/Отправляйте_оповещения_о_покупкепродаже_5_самых_популярных_криптовалют.json",
+        "workflows/Проведение_квалификации_и_управление_голосовыми_звонками_для_продаж.json",
+        "workflows/Прогнозируйте_тенденции_продаж_и_получайте_еженедельные_отчеты_с.json",
+        "Запустите_воронку_продаж_с_использованием_ИИ_специалистов_по_развитию.json",
+        "Извлекайте_аналитические_данные_о_продажах_из_стенограмм_телефонных.json",
+        "Искусственный_интеллект_помощник_по_продажам_с_GPT_и_Клодом_квалификация.json",
+        "Отправляйте_графики_прогнозов_продаж_и_отвечайте_на_вопросы_в_WhatsApp.json"
+      ]
+    },
+    "publishing": {
+      "count": 16,
+      "sample_files": [
+        "bots_import/Автоматизация_публикации_RSS_в_социальных_сетях.json",
+        "bots_import/Автоматическая_публикация_популярных_твитов_X_с_использованием_изображений.json",
+        "bots_import/Оптимизируйте_расписание_занятий_и_разрешайте_конфликты_с_помощью.json",
+        "bots_import/Создавайте_вирусные_публикации_в_социальных_сетях_с_помощью_Airtable.json",
+        "bots_import/Создавайте_ежедневные_публикации_в_Facebook_из_Google_Sheets_с_помощью.json",
+        "workflows/Автоматизация_публикации_RSS_в_социальных_сетях.json",
+        "workflows/Генератор_текстовых_видеороликов_и_платформа_для_публикации_в_социальных.json",
+        "workflows/Оптимизируйте_расписание_занятий_и_разрешайте_конфликты_с_помощью.json",
+        "workflows/Преобразуйте_видеозаписи_в_публикации_для_социальных_сетей_на_разных.json",
+        "workflows/Создавайте_публикации_в_социальных_сетях_с_помощью_ИИ,_используя.json",
+        "Автоматизация_публикации_RSS_в_социальных_сетях.json",
+        "Автоматизация_публикаций_в_различных_социальных_сетях_с_использованием.json",
+        "Генератор_текстовых_видеороликов_и_платформа_для_публикации_в_социальных.json",
+        "Оптимизируйте_расписание_занятий_и_разрешайте_конфликты_с_помощью.json",
+        "Преобразуйте_видеозаписи_в_публикации_для_социальных_сетей_на_разных.json"
+      ]
+    },
+    "analytics_metrica": {
+      "count": 11,
+      "sample_files": [
+        "bots_import/Dashboard Control Plane v2.json",
+        "bots_import/metrica-dimensions-knowledge-base.json",
+        "bots_import/metrica.blueprint.json",
+        "workflows/ИИ Маркетолог/metrica-dimensions-knowledge-base.json",
+        "workflows/ИИ Маркетолог/metrica.blueprint.json",
+        "ИИ Маркетолог/metrica-dimensions-knowledge-base.json",
+        "ИИ Маркетолог/metrica.blueprint.json",
+        "Пример_метрики_оценки_категоризация.json",
+        "Пример_метрики_оценки_Корректность_оценивается_ИИ.json",
+        "Пример_метрики_оценки_Проверка,_был_ли_вызван_инструмент.json",
+        "Пример_метрики_оценки_сходство_строк.json"
+      ]
+    }
+  },
+  "notes": [
+    "Archive only — no n8n execution from this index.",
+    "Curated product templates live in app/marketing/workflows/registry.py and workflows/mapped/."
+  ]
+}

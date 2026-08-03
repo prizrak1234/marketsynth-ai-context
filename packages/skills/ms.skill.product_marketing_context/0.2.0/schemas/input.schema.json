@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.product_marketing_context/input/0.2.0",
+  "title": "ProductMarketingContextSkillInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "raw_task": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 8000
+    },
+    "product_name": { "$ref": "#/$defs/claim_value" },
+    "product_description": { "$ref": "#/$defs/claim_value" },
+    "product_type": { "$ref": "#/$defs/claim_value" },
+    "business_stage": { "$ref": "#/$defs/claim_value" },
+    "business_model": { "$ref": "#/$defs/claim_value" },
+    "geography": { "$ref": "#/$defs/claim_value" },
+    "target_customer_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "problem_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "value_proposition_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "pricing_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "competitor_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "channels": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 30
+    },
+    "brand_constraints": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 30
+    },
+    "operational_constraints": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 30
+    },
+    "budget_context": { "$ref": "#/$defs/claim_value" },
+    "timeline": { "$ref": "#/$defs/claim_value" },
+    "available_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_item" },
+      "maxItems": 100
+    },
+    "existing_assets": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 50
+    },
+    "user_priorities": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 20
+    },
+    "user_risk_tolerance": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "unknown"]
+    }
+  },
+  "required": ["raw_task"],
+  "$defs": {
+    "claim_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "string", "maxLength": 4000 },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "document",
+            "external_source",
+            "prior_skill_output",
+            "system_inference",
+            "unknown"
+          ]
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "partially_verified",
+            "verified",
+            "contradicted",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        },
+        "notes": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["value", "source_type", "verification_status", "confidence"]
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": { "type": "string", "maxLength": 128 },
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "market_source",
+            "competitor_source",
+            "demand_signal",
+            "pricing_signal",
+            "audience_signal",
+            "assumption",
+            "inference"
+          ]
+        },
+        "claim": { "type": "string", "maxLength": 4000 },
+        "source_reference": { "type": "string", "maxLength": 2000 },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "partially_verified",
+            "verified",
+            "contradicted",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        },
+        "collected_at": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["evidence_id", "evidence_type", "claim", "verification_status", "confidence"]
+    }
+  }
+}

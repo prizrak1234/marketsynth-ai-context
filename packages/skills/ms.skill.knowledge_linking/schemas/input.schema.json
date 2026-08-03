@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.knowledge_linking/input/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "analysis_id": { "type": "string" },
+    "tenant_id": { "type": "string" },
+    "project_id": { "type": "string" },
+    "artifact_scope": { "type": "string" },
+    "artifacts": {
+      "type": "array",
+      "items": { "$ref": "schemas/knowledge-node-reference.schema.json" }
+    },
+    "existing_links": {
+      "type": "array",
+      "items": { "$ref": "schemas/knowledge-link.schema.json" }
+    },
+    "allowed_relation_types": { "type": "array", "items": { "type": "string" } },
+    "index_policy": { "type": "object" },
+    "duplicate_policy": { "type": "object" },
+    "supersession_policy": { "type": "object" },
+    "contradiction_policy": { "type": "object" },
+    "visibility_policy": { "type": "object" },
+    "required_depth": { "type": "string" },
+    "provenance": { "type": "object" },
+    "capability_map": { "type": "object" },
+    "profession_map": { "type": "object" },
+    "source_archive_index": { "type": "object" },
+    "registry_snapshot": { "type": "object" },
+    "workflow_pattern_library_reference": { "type": "object" }
+  },
+  "required": [
+    "analysis_id", "tenant_id", "project_id", "artifact_scope", "artifacts",
+    "existing_links", "allowed_relation_types", "index_policy", "duplicate_policy",
+    "supersession_policy", "contradiction_policy", "visibility_policy",
+    "required_depth", "provenance"
+  ]
+}

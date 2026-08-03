@@ -1,0 +1,348 @@
+{
+  "name": "26 - YT Data Table",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        -112
+      ],
+      "id": "a0e39bee-2689-4127-ba5c-21fd3257baa8",
+      "name": "When chat message received",
+      "webhookId": "4a550885-7bb3-47ea-ab27-94ca4f941727"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "17QHBHQMqfQRmp_X-lCsQVreDnnvZCQbORzeXOPSuAsM",
+          "mode": "list",
+          "cachedResultName": "TestDT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17QHBHQMqfQRmp_X-lCsQVreDnnvZCQbORzeXOPSuAsM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17QHBHQMqfQRmp_X-lCsQVreDnnvZCQbORzeXOPSuAsM/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        160,
+        -480
+      ],
+      "id": "708687d6-5468-4d1e-9533-fbaec3bdc793",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "enqvyHpWXgCm2XpE",
+          "name": "aiiszdes sheets"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -480
+      ],
+      "id": "0fecd391-56e5-4031-8089-f08f9a3e1540",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "ivSVU1pZhK1G1rMO",
+          "mode": "list",
+          "cachedResultName": "Customers",
+          "cachedResultUrl": "/projects/ftuCLoCRXPcNqtfG/datatables/ivSVU1pZhK1G1rMO"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json['Клиент'] }}",
+            "Account": "={{ $json['Счёт'] }}",
+            "Email": "={{ $json.Email }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Account",
+              "displayName": "Account",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -480
+      ],
+      "id": "e8590728-9c97-44e5-b234-13e74c369575",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Сначала используй tool Table, чтобы найти нужную запись в таблице по имейлу, а потом используй tool Create a contract, чтобы создать контракт. Вставь туда найденные значения из Table."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        -112
+      ],
+      "id": "4890d46a-2241-4997-9766-7e12b5896935",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "content": "## Заполнение таблицы",
+        "height": 352,
+        "width": 976,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        -608
+      ],
+      "typeVersion": 1,
+      "id": "ad8f1f8c-d242-4d6e-88e8-165a02efdbaf",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Чтение таблицы",
+        "height": 496,
+        "width": 976,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "cfe5fe57-33cd-409a-adf8-2ac2cd0eca16",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        32,
+        96
+      ],
+      "id": "ca4586b1-9f45-40d8-a7f1-4892991b3572",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.sendforsign.com/api/contract",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Sendforsign-Key",
+              "value": "sfs_"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"data\":\n  {\n    \"action\": \"create\",\n    \"clientKey\": \"ВСТАВИТЬ\",\t\t\t   \n      \"contract\": {\n        \"name\": \"Новый контракт\",\n        \"templateKey\": \"ВСТАВИТЬ\"\n        },\n      \"placeholders\": [\n            {\n                \"placeholderKey\": \"ВСТАВИТЬ\",\n                \"value\": \"{{ $fromAI('Name') }}\"\n            },\n            {\n                \"placeholderKey\": \"ВСТАВИТЬ\",\n                \"value\": \"{{ $fromAI('Email') }}\"\n            },\n            {\n                \"placeholderKey\": \"ВСТАВИТЬ\",\n                \"value\": \"{{ $fromAI('Account') }}\"\n            }\n        ]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        96
+      ],
+      "id": "ae0c9675-15f0-4a39-bbb9-d22af73152b8",
+      "name": "Create a contract"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ivSVU1pZhK1G1rMO",
+          "mode": "list",
+          "cachedResultName": "Customers",
+          "cachedResultUrl": "/projects/ftuCLoCRXPcNqtfG/datatables/ivSVU1pZhK1G1rMO"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Email",
+              "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions0_Value', ``, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1,
+      "position": [
+        416,
+        96
+      ],
+      "id": "451bf9aa-ac12-47fb-a1e7-c3e7110b5d6e",
+      "name": "Table"
+    },
+    {
+      "parameters": {
+        "content": "## Присоединяйся к Pro-группе\n\n### Это экспертные глубокие знания в ИИ, сообщество ИИ-энтузиастов и автоматизации, которые РЕАЛЬНО работают в бизнесе и продуктах.\n\n### Ищи Pro-группу тут: https://t.me/iishenka_pro_bot",
+        "height": 476,
+        "width": 968,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "d91d0b10-c5af-4fd8-8ccd-2dc134c8504e",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a contract": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Table": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b258a771-fb2e-42dd-b9c5-e218897bea50",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "vTI7Xtv1aGxsIwED",
+  "tags": []
+}

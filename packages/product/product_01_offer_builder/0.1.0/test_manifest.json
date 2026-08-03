@@ -1,0 +1,10 @@
+{
+  "suites": [
+    "tests/test_product_01_offer_builder_cwf.py",
+    "tests/test_cwf_1a_launch_pack_decision.py",
+    "tests/test_skill_02_8_offer_builder.py",
+    "tests/test_product_01_postgres_migration.py"
+  ],
+  "e2e": "web/e2e/product-01-offer-builder.spec.ts",
+  "last_run_status": "backend_green_pending_postgres_and_e2e"
+}

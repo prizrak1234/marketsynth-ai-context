@@ -1,0 +1,138 @@
+id: ms.skill.competitor_analysis
+name: Competitor Analysis
+version: 0.1.0
+description: >
+  Consume Product Marketing Context 0.2.x and Market Research 0.1.x outputs,
+  normalize competitor evidence, classify competitor types, compare offers and
+  market behavior, and produce an evidence-aware competitive landscape — without
+  commercial verdicts, positioning, offers, or external connector execution.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - competitor_identity_normalization
+  - competitor_type_classification
+  - direct_competitor_analysis
+  - indirect_competitor_analysis
+  - substitute_analysis
+  - alternative_solution_analysis
+  - offer_comparison
+  - pricing_comparison
+  - channel_comparison
+  - audience_overlap_analysis
+  - evidence_strength_assessment
+  - competitor_claim_verification
+  - differentiation_gap_detection
+  - market_pressure_assessment
+  - competitive_risk_identification
+  - competitor_unknown_detection
+  - competitive_conflict_detection
+  - research_readiness_assessment
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - market_source
+    - competitor_source
+    - demand_signal
+    - pricing_signal
+    - audience_signal
+    - assumption
+    - inference
+  rules:
+    - id: no_inference_as_fact
+      description: Inferences must not be presented as verified competitor facts.
+    - id: verified_requires_source
+      description: Verified competitor claims require source_reference.
+    - id: no_commercial_verdict
+      description: Output must not issue proceed/stop/viable/unviable verdicts.
+    - id: no_empty_market_claim
+      description: >
+        Absence of competitors cannot be marked verified without explicit
+        supporting evidence.
+    - id: no_autonomous_web_research
+      description: Skeleton package does not fetch external sources autonomously.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.product_marketing_context
+      relationship: required_dependency
+      note: Required >=0.2.0,<1.0.0 — PMC 0.1.0 not compatible (no output_contract_type).
+    - id: ms.skill.market_research
+      relationship: required_dependency
+      note: Required >=0.1.0,<1.0.0 — research output with preserved lineage.
+    - id: ms.skill.icp_segmentation
+      relationship: declared_future_dependency
+      note: Downstream consumer — not a runtime trigger in SKILL-02.3.
+    - id: ms.skill.positioning
+      relationship: declared_future_dependency
+      note: Downstream consumer of differentiation gaps — not positioning output.
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  verdict_presentation:
+    external_side_effects: false
+    approval_required: false
+  launch_or_execution_transition:
+    approval_required: true
+    note: Human approval required before launch, spend, or publication.
+  paid_or_write_actions:
+    approval_required: true
+  publication:
+    governed_by: native_publication_flow
+    skill_bypass_allowed: false
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 1
+  current_state: skeleton_only
+known_limitations:
+  - Non-executable candidate package — no runtime loader in SKILL-02.3.
+  - Does not autonomously search the web or invoke connectors.
+  - Does not issue commercial viability verdicts — research_status only.
+  - Does not produce final positioning or offers — differentiation gaps only.
+  - No connector or tool permissions granted.
+test_suite:
+  manifest: tests/eval_manifest.yaml
+  backend_tests: tests/test_skill_02_3_competitor_analysis.py
+provenance:
+  origin: platform_native
+  methodology:
+    - Internal Marketsynth competitive landscape structuring
+    - Informed by SKILL-R0.1 audit MS-SKILL-003 (Competitor Analysis)
+  external_methodology_references:
+    - audit_card: docs/research/skills/candidates/03-competitor-analysis.md
+      reuse: methodology_only
+      license: MIT
+      note: No direct external Skill installation or executable content reuse.
+  external_code_dependency: false
+  direct_external_skill_install: false
+  audit_research_id: MS-SKILL-003
+runtime_compatibility:
+  - operator_dry_run
+  - assistant_explicit_run
+knowledge_scopes:
+  - competitor_analysis
+  - market_research
+network_policy:
+  default: deny
+  allowed_hosts: []
+  allowed_connectors_only: true
+script_policy:
+  enabled: false
+  reason: SKILL-02.3 skeleton — scripts forbidden.
+resource_limits:
+  max_package_size_mib: 10
+  max_skill_md_kib: 256

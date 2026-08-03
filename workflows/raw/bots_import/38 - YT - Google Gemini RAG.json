@@ -1,0 +1,481 @@
+{
+  "name": "38 - YT - Google Gemini RAG",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fd3949d3-696c-4fd3-9c52-40377a96df05",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/fileSearchStores",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSy_REDACTED"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"displayName\": \"My Store Test\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        192,
+        0
+      ],
+      "id": "34bd50db-eec9-4632-b64b-2952189dfcb2",
+      "name": "CreateStore"
+    },
+    {
+      "parameters": {
+        "url": "https://generativelanguage.googleapis.com/v1beta/fileSearchStores",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSy_REDACTED"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        432,
+        0
+      ],
+      "id": "c78b8680-230e-4e56-8f44-cc14680b47ba",
+      "name": "GetStores"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSy_REDACTED"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        304
+      ],
+      "id": "5c5e5d3a-f03a-4f19-a255-509cba2f4b4c",
+      "name": "UploadFile"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1TS1QAphMQ9Uz5HJYV00BhO6a_ePNr7S9",
+          "mode": "list",
+          "cachedResultName": "tests",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1TS1QAphMQ9Uz5HJYV00BhO6a_ePNr7S9"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        304
+      ],
+      "id": "81f3f4d4-71b5-461b-80c9-06d4a2797f02",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YqZmUpHkVHvg9cdE",
+          "name": "aiiszdes"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        224,
+        304
+      ],
+      "id": "eaca4f8a-c407-4ee8-b3b4-6a7b7237c65b",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YqZmUpHkVHvg9cdE",
+          "name": "aiiszdes"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores/my-store-tva5a8g0mgj3:importFile",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSy_REDACTED"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"fileName\": \"{{ $json.file.name }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        640,
+        304
+      ],
+      "id": "d0fc1105-1a49-4800-9c3b-98c525660c73",
+      "name": "Importfile"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        912
+      ],
+      "id": "c9eacc5c-1ebb-49cd-8b07-8f33c6f3a6ae",
+      "name": "When chat message received",
+      "webhookId": "2a4686cc-9b92-4257-82f5-501d0761b327"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSy_REDACTED"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"contents\": [{\n        \"parts\":[{\"text\": \"{{ $json.chatInput }}\"}]          \n    }],\n    \"tools\": [{\n        \"file_search\": { \n            \"file_search_store_names\":[\"fileSearchStores/my-store-tva5a8g0mgj3\"]\n        }\n    }]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        224,
+        912
+      ],
+      "id": "e3e99897-9992-4e0d-b752-4b88198bacf3",
+      "name": "Chat"
+    },
+    {
+      "parameters": {
+        "url": "https://generativelanguage.googleapis.com/v1beta/fileSearchStores/my-store-tva5a8g0mgj3/documents",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSy_REDACTED"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        608
+      ],
+      "id": "955ce74c-232c-4398-873d-42fe6a3a2378",
+      "name": "GetDocsList"
+    },
+    {
+      "parameters": {
+        "content": "### Add fileSearchStores",
+        "height": 288,
+        "width": 912
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -80,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "6002a9d1-40ee-4971-95d4-1b9bd13dcbb9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### Upload and Import Files",
+        "height": 288,
+        "width": 912
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -80,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "b24dcf9e-38d4-4081-b650-a07691215bab",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### Get Documents",
+        "height": 288,
+        "width": 912
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -80,
+        512
+      ],
+      "typeVersion": 1,
+      "id": "2f249617-b24f-4a5e-aa7c-6f8c447c3b62",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### Chat to the Docs",
+        "height": 288,
+        "width": 912
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -80,
+        816
+      ],
+      "typeVersion": 1,
+      "id": "af4ca92d-38c0-4d06-9ac0-0ff8a51c8882",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "url": "=https://generativelanguage.googleapis.com/v1beta/{{ $json.documents[1].name }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSy_REDACTED"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        224,
+        608
+      ],
+      "id": "40e1e822-14f8-47aa-ae52-8947877a02c9",
+      "name": "GetSpecificDocument"
+    },
+    {
+      "parameters": {
+        "content": "## ⭐️ Присоединяйся к Pro-группе\n\n### Это экспертные глубокие знания в ИИ, сообщество ИИ-энтузиастов и автоматизации, которые РЕАЛЬНО работают в бизнесе и продуктах. Плюс, там есть эта усиленная автоматизация, которая умеет работать с метаданными!\n\n### Ищи Pro-группу тут: https://t.me/iishenka_pro_bot",
+        "height": 288,
+        "width": 528,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        848,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "4f6f8d99-2c72-42b7-b2c0-2fac97d7f7d2",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "CreateStore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "UploadFile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UploadFile": {
+      "main": [
+        [
+          {
+            "node": "Importfile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetDocsList": {
+      "main": [
+        [
+          {
+            "node": "GetSpecificDocument",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateStore": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ca0232a1-9e03-4878-bcb3-9585f0bd2600",
+  "meta": {
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "fmqfKdyJBXPdv2aA",
+  "tags": []
+}

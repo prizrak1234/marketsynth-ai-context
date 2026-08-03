@@ -1,0 +1,93 @@
+id: ms.skill.customer_interview_design
+name: Customer Interview Design
+version: 0.1.0
+description: >
+  Design evidence-aware customer interview guides from CIM segments without inventing respondent answers.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - interview_objective_definition
+  - segment_context_reference
+  - pain_question_design
+  - desired_state_question_design
+  - risk_and_safety_question_design
+  - objection_question_design
+  - evidence_collection_plan
+  - interview_bias_detection
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - market_source
+    - audience_signal
+    - assumption
+    - inference
+  rules:
+    - id: no_runtime_execution
+      description: Skill package is candidate-only; no autonomous execution.
+    - id: no_invented_customer_answers
+      description: Output must not contain fabricated respondent answers.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.icp_segmentation
+      relationship: required_dependency
+      note: "CIM >=0.1.0,<1.0.0"
+    - id: ms.skill.market_research
+      relationship: optional_dependency
+      note: "Optional context"
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  customer_facing_transition:
+    approval_required: true
+    note: Human approval required before customer-facing copy or launch.
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 1
+  current_state: skeleton_only
+known_limitations:
+  - Non-executable candidate package — no runtime loader.
+  - Does not publish, spend, or authorize launch.
+  - Does not override Market Validation verdict.
+test_suite:
+  manifest: tests/eval_manifest.yaml
+provenance:
+  origin: platform_native
+  methodology:
+    - ARCHIVE-MKT-01 adapted methodology (evidence-aware rewrite)
+  external_methodology_references:
+    - audit_card: docs/research/archive-marketer/source-audit.md
+      reuse: methodology_only
+      note: Archive is methodology donor only — not trusted Skill package.
+  external_code_dependency: false
+runtime_compatibility:
+  - operator_dry_run
+  - assistant_explicit_run
+knowledge_scopes:
+  - customer_intelligence
+  - marketing_claims
+network_policy:
+  default: deny
+  allowed_hosts: []
+  allowed_connectors_only: true
+script_policy:
+  enabled: false
+  reason: ARCHIVE-MKT-01 skeleton — scripts forbidden.
+resource_limits:
+  max_package_size_mib: 10
+  max_skill_md_kib: 256

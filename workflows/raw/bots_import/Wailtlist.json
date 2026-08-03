@@ -1,0 +1,928 @@
+{
+  "name": "WailtlistNew",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fb868b84-9497-46fe-87bb-3079a6c22b62",
+      "name": "Telegram Trigger",
+      "webhookId": "22aef338-1df3-47fa-b0c8-82287912fe19",
+      "credentials": {
+        "telegramApi": {
+          "id": "xqvJVOzb4zxXfs1s",
+          "name": "Waitlist"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.message_text }}",
+              "value2": "/start"
+            }
+          ]
+        }
+      },
+      "id": "0bf739ad-5dd2-4a2c-a619-ad6931878c0d",
+      "name": "Is Greeting?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        420,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        580,
+        300
+      ],
+      "id": "b6e2da51-2f39-40e1-9f5b-ed524c400ad8",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "g1FjLHFLVu498Hld",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.output.isEmail }}",
+              "operation": "contains",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "29c74e90-2373-4b26-ba2e-e171a629af9c",
+      "name": "Is email?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        960,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "waitlist_users",
+          "mode": "list",
+          "cachedResultName": "waitlist_users"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "subscribed": false,
+            "user_id": "={{ $('All the data').item.json.user_id }}",
+            "message": "={{ $('All the data').item.json.message_text }}",
+            "user_name": "={{ $('All the data').item.json.user_name }}",
+            "chat_id": "={{ $('All the data').item.json.chat_id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subscribed",
+              "displayName": "subscribed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        840,
+        -100
+      ],
+      "id": "d12ee6a0-9700-4447-a0d7-aef2b1992ec4",
+      "name": "Postgres - Create Row on Start",
+      "credentials": {
+        "postgres": {
+          "id": "nLTNEPRdMbH5iojU",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { \n  chat_id: $input.first().json.message.chat.id, \n  message_text: $input.first().json.message.text, \n  user_id: $input.first().json.message.from.id,\n  user_name: $input.first().json.message.chat.username\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "12aed516-bec0-41b8-88f7-fd31fe36094d",
+      "name": "All the data"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('All the data').item.json.message_text }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Ты ассистент, который записывает пользователей в лист ожидания. Твоя задача прочитать User Message и выяснить, содержится ли внутри сообщения пользователя полноценный имейл (где есть знак @ и точка, и домен в конце).\n\nЕсли полноценный имейл содержится в сообщении, то верни true.\nЕсли полноценный имейл не содержится в сообщении, то верни false.\n\nОтвет верни в формате json, смотри пример."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        620,
+        100
+      ],
+      "id": "85327fb8-0695-4d33-b739-8a77b8a85f4c",
+      "name": "Is there email?",
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"isEmail\": true,\n\t\"email\": \"example@mail.com\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        740,
+        300
+      ],
+      "id": "996bf269-7531-477f-b562-fb1f80b485da",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1340,
+        460
+      ],
+      "id": "26365333-9040-4d9b-82b7-c1bdc455ffae",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "g1FjLHFLVu498Hld",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('All the data').item.json.message_text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Ты ассистент, который записывает пользователей в лист ожидания. Твоя задача попросить имейл от пользователя, чтобы записать его в лист ожидания.\n\nУ тебя может быть 2 ситуации:\n\n1. Если пользователь уже предоставлял свой имейл, то у него будет Is subscribed = true, это значит, что он уже записан в лист. В этом случае просто веди с ним свободную беседу.\n\n2. Если пользователь ещё не предоставлял имейл то у него будет Is subscribed = false, в этом случае дружелюбно и забавно напомни ему, что тебе нужен имейл от него.\n\nChat history: \n{{ $json.formatted_messages }}\n\nIs subscribed = {{ $json.is_subscribed }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1380,
+        220
+      ],
+      "id": "79424edc-bc8b-4812-baf3-d4cad215d8b5",
+      "name": "Give us an email",
+      "retryOnFail": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.chat_id }}",
+        "text": "🚀 *Прокачай свои AI-навыки вместе с сообществом будущего*\n\nТы присоединяешься к месту, где каждый день — шаг к уровню *Pro*. Здесь всё, что нужно, чтобы расти в сфере ИИ и применять знания для бизнеса или карьеры.\n\n👨‍🏫 *Pro — группа, которая не стоит на месте*\n\nПостоянно обновляющийся материал, чтобы ты был(а) на острие технологий.\n\n📆 *Еженедельные живые сессии*\n\nИнтерактив, разборы, разгон по темам — в реальном времени.\n\n💬 *Поддержка 24/7*\n\nЕсть вопрос — пиши. Помогаем в любое время, по любым AI-задачам.\n\n🧠 *Комьюнити первых ИИ-энтузиастов*\n\nВокруг — такие же, как ты. Делимся опытом, кейсами, идеями.\n\n⚙️ *Реальные кейсы и применения*\n\nНикакой воды — только то, что работает в проектах и бизнесе.\n\n📚 *Гайды и инструменты для создания AI-агентов*\n\nПолные пошаговые инструкции, туториалы и лучшие практики.\n\n📦 *Готовые шаблоны и агенты*\n\nНе изобретай заново — бери и используй проверенные решения.\n\nВнутри всё, чтобы ты быстрее вышел(а) на новый уровень.\n\nСтоимость участия в группе — *990 рублей в месяц*, её будем повышать с ростом количества участников.\n\nДоступы рассылаем в несколько волн.\n\n*Присоединяешься?*\n\n📨 *Оставь свою почту в ответном сообщении, пришлём инвайт.*\n\n(надо будет немного подождать своей очереди, это нормально, не переживай 🙃)",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        -100
+      ],
+      "id": "58d4ec8f-21f8-4a46-9e29-498958103fc1",
+      "name": "Telegram Response",
+      "webhookId": "62e50367-1c12-4a5a-a9f1-001525a2c8da",
+      "credentials": {
+        "telegramApi": {
+          "id": "xqvJVOzb4zxXfs1s",
+          "name": "Waitlist"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.chat_id }}",
+        "text": "=Я запомнил твой имейл *{{ $('Is there email?').item.json.output.email }}*! Свяжемся, когда доступ будет готов.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1180,
+        0
+      ],
+      "id": "e639f25c-d9d3-414a-86b1-f046a7b1109d",
+      "name": "Telegram Response1",
+      "webhookId": "62e50367-1c12-4a5a-a9f1-001525a2c8da",
+      "credentials": {
+        "telegramApi": {
+          "id": "xqvJVOzb4zxXfs1s",
+          "name": "Waitlist"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.chat_id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1760,
+        220
+      ],
+      "id": "b550631d-8a06-4701-bb92-27feb894fcea",
+      "name": "Telegram Response2",
+      "webhookId": "62e50367-1c12-4a5a-a9f1-001525a2c8da",
+      "credentials": {
+        "telegramApi": {
+          "id": "xqvJVOzb4zxXfs1s",
+          "name": "Waitlist"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    string_agg(message, E'\\n\\n' ORDER BY created_at DESC) AS formatted_messages,\n    EXISTS (\n        SELECT 1 \n        FROM waitlist_users \n        WHERE chat_id = '{{ $('All the data').item.json.chat_id }}' \n        AND subscribed = TRUE\n    ) AS is_subscribed\nFROM (\n    SELECT message, created_at\n    FROM waitlist_users\n    WHERE chat_id = '{{ $('All the data').item.json.chat_id }}'\n    ORDER BY created_at DESC\n    LIMIT 10\n) subquery;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1160,
+        220
+      ],
+      "id": "10ba221a-617e-4d73-a45c-1e2e668d7a4d",
+      "name": "Get history",
+      "credentials": {
+        "postgres": {
+          "id": "nLTNEPRdMbH5iojU",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "waitlist_users",
+          "mode": "list",
+          "cachedResultName": "waitlist_users"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "subscribed": false,
+            "user_id": "={{ $('All the data').item.json.user_id }}",
+            "user_name": "={{ $('All the data').item.json.user_name }}",
+            "message": "={{ $('All the data').item.json.message_text }}",
+            "chat_id": "={{ $('All the data').item.json.chat_id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subscribed",
+              "displayName": "subscribed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1980,
+        220
+      ],
+      "id": "39e8bf1a-83e1-4a5a-bc19-027df6562957",
+      "name": "Postgres - Response on no",
+      "credentials": {
+        "postgres": {
+          "id": "nLTNEPRdMbH5iojU",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "waitlist_users",
+          "mode": "list",
+          "cachedResultName": "waitlist_users"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "subscribed": true,
+            "user_id": "={{ $('All the data').item.json.user_id }}",
+            "user_name": "={{ $('All the data').item.json.user_name }}",
+            "message": "={{ $('All the data').item.json.message_text }}",
+            "email": "={{ $('Is there email?').item.json.output.email }}",
+            "chat_id": "={{ $('All the data').item.json.chat_id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subscribed",
+              "displayName": "subscribed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1400,
+        0
+      ],
+      "id": "00f09f90-53e3-44b8-ad4c-54d067f9f39c",
+      "name": "Postgres - Create Row on Yes",
+      "retryOnFail": true,
+      "credentials": {
+        "postgres": {
+          "id": "nLTNEPRdMbH5iojU",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "=154972126",
+        "text": "=Новая запись в лист ожидания!\nchatid {{ $('All the data').item.json.chat_id }}\nuserid {{ $('All the data').item.json.user_id }}\nname {{ $('All the data').item.json.user_name }}\nemail {{ $('Is there email?').item.json.output.email }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1620,
+        0
+      ],
+      "id": "bc5aa6a9-bfbb-4bba-8b12-b5ae02c4566c",
+      "name": "Yes Bot",
+      "webhookId": "62e50367-1c12-4a5a-a9f1-001525a2c8da",
+      "retryOnFail": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "CnAFWrd1z64m0fm9",
+          "name": "All the tests"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.chat_id }}",
+        "text": "=Я сломался 😢, напиши ещё разок.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        900,
+        280
+      ],
+      "id": "97abf4c3-a4d5-41c0-a320-915ebdc093db",
+      "name": "Telegram Response3",
+      "webhookId": "62e50367-1c12-4a5a-a9f1-001525a2c8da",
+      "credentials": {
+        "telegramApi": {
+          "id": "xqvJVOzb4zxXfs1s",
+          "name": "Waitlist"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.chat_id }}",
+        "text": "=Я сломался 😢, напиши ещё разок.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1520,
+        440
+      ],
+      "id": "4e02122a-9fd3-480e-9ccf-5064846aa1d9",
+      "name": "Telegram Response4",
+      "webhookId": "62e50367-1c12-4a5a-a9f1-001525a2c8da",
+      "credentials": {
+        "telegramApi": {
+          "id": "xqvJVOzb4zxXfs1s",
+          "name": "Waitlist"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "All the data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Greeting?": {
+      "main": [
+        [
+          {
+            "node": "Telegram Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is there email?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Is there email?",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is email?": {
+      "main": [
+        [
+          {
+            "node": "Telegram Response1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get history",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All the data": {
+      "main": [
+        [
+          {
+            "node": "Is Greeting?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is there email?": {
+      "main": [
+        [
+          {
+            "node": "Is email?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram Response3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Is there email?",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Give us an email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Give us an email": {
+      "main": [
+        [
+          {
+            "node": "Telegram Response2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram Response4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Response": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Create Row on Start",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Response1": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Create Row on Yes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Response2": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Response on no",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get history": {
+      "main": [
+        [
+          {
+            "node": "Give us an email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres - Response on no": {
+      "main": [
+        []
+      ]
+    },
+    "Postgres - Create Row on Yes": {
+      "main": [
+        [
+          {
+            "node": "Yes Bot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e52e61dc-d65d-4812-8b6d-a764cf9b6989",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0cef6823a3059a6c16ad8d6c4b8819eac5a9ea1fab73add434006e674a92255d"
+  },
+  "id": "wFj9bvQ0spyPtx6I",
+  "tags": []
+}

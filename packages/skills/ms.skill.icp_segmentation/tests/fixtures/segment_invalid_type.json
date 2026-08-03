@@ -1,0 +1,26 @@
+{
+  "segment_id": "x",
+  "segment_name": "X",
+  "segment_type": "invalid_type",
+  "inclusion_criteria": [],
+  "confidence": "low",
+  "coverage": "minimal",
+  "priority_assessment": {
+    "strategic_fit": "strong",
+    "problem_intensity": "high",
+    "demand_signal_strength": "moderate",
+    "evidence_quality": "partial",
+    "budget_fit": "moderate",
+    "urgency": "medium",
+    "reachability": "medium",
+    "competitive_pressure": "medium",
+    "switching_difficulty": "medium",
+    "sales_cycle_complexity": "medium",
+    "implementation_complexity": "low",
+    "retention_potential": "high",
+    "confidence": "medium",
+    "blockers": [],
+    "priority_tier": "exploratory",
+    "tier_rationale": "test"
+  }
+}

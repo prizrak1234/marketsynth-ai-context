@@ -1,0 +1,710 @@
+{
+  "domain": "drilling_operations",
+  "version": "1.0",
+  "cases": [
+    {
+      "question": "Что требуется по промышленной безопасности при: flow check before trip?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "долив",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "нельзя пропускать flow check",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: near miss reporting?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "near miss",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "не скрывать происшествия",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: PPE on rig floor?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "СИЗ",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "работа без СИЗ запрещена",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: torque and drag monitoring?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "torque",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "игнорировать рост torque",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: well control barrier?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "барьер",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "один барьер достаточно",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": true,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: H2S alarm response?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "H2S",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "игнорировать сигнализацию",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: permit to work?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "наряд-допуск",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "можно работать без наряда",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: lockout tagout?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "LOTO",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "ремонт под напряжением без LOTO",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: mud properties check?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "раствор",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "не проверять плотность",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: BOP function test?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "ПВО",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "не тестировать ПВО",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": true,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: trip sheet accuracy?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "рейсовый лист",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "заполнять приблизительно",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: gas cut mud?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "газирование",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "не сообщать о газировании",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: kick indicators?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "признаки проявления",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "игнорировать прирост объёма",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: space out procedure?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "space out",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "спешить без процедуры",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: hard shut-in?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "закрытие скважины",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "мягкое закрытие при kick",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": true,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: pit volume totalizer?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "ПВТ",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "отключать сигнализацию ПВТ",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: connection practices?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "соединение",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "не контролировать соединение",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: swabbing risk?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "сваббирование",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "быстрый подъём без учёта",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: cement job barriers?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "цементирование",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "не ждать схватывания",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: hot work permit?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "огневые работы",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "сварка без разрешения",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": true,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: confined space entry?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "замкнутое пространство",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "вход без контроля атмосферы",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: dropped object prevention?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "падающие предметы",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "работать под грузом",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: crane lift plan?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "подъём груза",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "подъём без плана",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: simultaneous operations?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "SIMOPS",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "игнорировать конфликт операций",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: stop work authority?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "право остановить работу",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "нельзя останавливать работу",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": true,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: incident investigation?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "расследование",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "обвинять людей без фактов",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: fatigue management?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "усталость",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "работать сверх нормы без контроля",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: handover quality?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "передача смены",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "устная передача без записи",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: barrier management?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "управление барьерами",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "ослаблять барьер без компенсации",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: emergency muster?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "сбор по тревоге",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "игнорировать учебную тревогу",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": true,
+      "minimum_confidence": "high",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: cutting handling?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "шлам",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "хранить шлам без маркировки",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    },
+    {
+      "question": "Что требуется по промышленной безопасности при: chemical SDS?",
+      "expected_source_ids": [
+        "pack:drilling_operations"
+      ],
+      "expected_key_facts": [
+        "паспорт безопасности",
+        "соблюдение процедуры",
+        "документирование"
+      ],
+      "forbidden_claims": [
+        "использовать реагент без SDS",
+        "можно обойтись без контроля"
+      ],
+      "requires_expert": false,
+      "minimum_confidence": "medium",
+      "acceptable_answer_criteria": [
+        "ссылается на опубликованный источник",
+        "не выдумывает нормы",
+        "при отсутствии данных честно сообщает о пробеле"
+      ]
+    }
+  ]
+}

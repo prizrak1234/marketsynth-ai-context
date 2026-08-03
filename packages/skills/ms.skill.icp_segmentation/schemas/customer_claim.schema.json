@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.icp_segmentation/customer_claim/0.1.0",
+  "title": "CustomerClaimRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "claim_kind": {
+      "type": "string",
+      "enum": [
+        "pain_point",
+        "desired_outcome",
+        "buying_trigger",
+        "buying_barrier",
+        "objection",
+        "trust_driver"
+      ]
+    },
+    "statement": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "category": { "type": "string", "maxLength": 128 },
+    "severity_or_importance": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low", "unknown"]
+    },
+    "frequency_or_relevance": {
+      "type": "string",
+      "enum": ["frequent", "occasional", "rare", "unknown"]
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 30
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "partially_verified",
+        "verified",
+        "contradicted",
+        "unknown"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "assumption": { "type": "boolean", "default": false },
+    "inference": { "type": "boolean", "default": false },
+    "unknown": { "type": "boolean", "default": false },
+    "notes": { "type": "string", "maxLength": 2000 },
+    "provenance": { "$ref": "schemas/provenance_stub.schema.json" }
+  },
+  "required": ["id", "claim_kind", "statement", "verification_status", "confidence"],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "verification_status": { "const": "verified" } },
+        "required": ["verification_status"]
+      },
+      "then": {
+        "required": ["evidence_references"],
+        "properties": {
+          "evidence_references": { "minItems": 1 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "inference": { "const": true } },
+        "required": ["inference"]
+      },
+      "then": {
+        "properties": {
+          "verification_status": { "not": { "const": "verified" } }
+        }
+      }
+    }
+  ]
+}

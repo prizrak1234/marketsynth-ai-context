@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "chart-requirement.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "chart_id": { "type": "string" },
+    "chart_purpose": { "type": "string" },
+    "chart_type": {
+      "type": "string",
+      "enum": [
+        "bar", "line", "area", "scatter", "waterfall", "funnel", "pie", "donut",
+        "table", "timeline", "heatmap", "matrix", "other"
+      ]
+    },
+    "data_reference": { "type": "object" },
+    "measure_fields": { "type": "array", "items": { "type": "string" } },
+    "dimension_fields": { "type": "array", "items": { "type": "string" } },
+    "comparison_basis": { "type": "string" },
+    "required_labels": { "type": "array", "items": { "type": "string" } },
+    "source_note": { "type": "string" },
+    "uncertainty_notes": { "type": "string" },
+    "accessibility_description": { "type": "string" },
+    "prohibited_distortions": { "type": "array", "items": { "type": "string" } },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "chart_id", "chart_purpose", "chart_type", "data_reference", "measure_fields",
+    "dimension_fields", "source_note", "accessibility_description", "provenance"
+  ]
+}

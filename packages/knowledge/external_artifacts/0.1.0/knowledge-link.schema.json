@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/knowledge-link.schema.json",
+  "title": "KnowledgeLink",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "link_id": {
+      "type": "string"
+    },
+    "source_artifact_id": {
+      "type": "string"
+    },
+    "target_artifact_id": {
+      "type": "string"
+    },
+    "relation": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "string"
+    },
+    "tenant_scope": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "link_id",
+    "source_artifact_id",
+    "target_artifact_id",
+    "relation",
+    "reason",
+    "tenant_scope",
+    "provenance"
+  ]
+}

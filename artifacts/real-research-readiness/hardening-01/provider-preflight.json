@@ -1,0 +1,95 @@
+{
+  "overall": "PASS",
+  "research_providers_pass": true,
+  "fetch_contour_pass": true,
+  "provider_decision": "B_fetch_contour_degraded",
+  "fetch_contour_rationale": "Degraded fetch contour operational: jina,trafilatura.",
+  "provider_preflight": {
+    "xmlriver": "PASS",
+    "firecrawl": "FAIL"
+  },
+  "llm": "PASS",
+  "credentials": {
+    "firecrawl": {
+      "present": true,
+      "env": "FIRECRAWL_API_KEY"
+    },
+    "xmlriver": {
+      "present": true,
+      "env": "XMLRIVER_USER_ID + XMLRIVER_API_KEY"
+    },
+    "llm": {
+      "present": true,
+      "env": "OPENAI_API_KEY or ANTHROPIC_API_KEY or ROUTELLM_API_KEY"
+    }
+  },
+  "external_blockers": [
+    {
+      "provider": "firecrawl",
+      "issue": "credits_exhausted",
+      "required_env": "FIRECRAWL_API_KEY",
+      "owner_action": "Top up Firecrawl credits at https://firecrawl.dev/pricing or continue with direct HTTP fallback for this run."
+    }
+  ],
+  "firecrawl": {
+    "provider": "firecrawl",
+    "status": "FAIL",
+    "http_status": 402,
+    "error_class": "credits_exhausted",
+    "retryable": false,
+    "quota_remaining": null,
+    "correlation_id": null,
+    "reachable": true,
+    "authentication_valid": true,
+    "latency_ms": 1104,
+    "adapter_version": "firecrawl_fetch/v1/scrape"
+  },
+  "direct_http": {
+    "provider": "direct_http",
+    "status": "PASS",
+    "http_status": 200,
+    "error_class": null,
+    "retryable": true,
+    "extraction_status": null,
+    "extracted_len": 127,
+    "latency_ms": 752
+  },
+  "probe": {
+    "status": "partially_ready",
+    "mock_providers": false,
+    "providers": {
+      "xmlriver": {
+        "provider": "xmlriver",
+        "state": "ready",
+        "configured": true,
+        "reachable": true,
+        "authentication_valid": true,
+        "read_only_capability": true,
+        "supported_operations": [
+          "search"
+        ],
+        "rate_limit_state": "ok",
+        "safe_error_code": null,
+        "last_checked_at": "2026-07-30T19:16:59.135272",
+        "latency_ms": 2231,
+        "probe_result_count": 1
+      },
+      "firecrawl": {
+        "provider": "firecrawl",
+        "state": "partially_ready",
+        "configured": true,
+        "reachable": true,
+        "authentication_valid": true,
+        "read_only_capability": true,
+        "supported_operations": [
+          "fetch"
+        ],
+        "rate_limit_state": "credits_exhausted",
+        "safe_error_code": "credits_exhausted",
+        "last_checked_at": "2026-07-30T19:17:00.240389",
+        "latency_ms": 1104,
+        "probe_result_count": null
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.n8n_workflow_debugging/input/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "workflow_metadata_reference": { "type": "object" },
+    "failure_symptom": { "type": "string" },
+    "failing_execution_reference": { "type": "string" },
+    "sanitized_execution_logs": { "type": "string" },
+    "node_failure_summary": { "type": "array", "items": { "type": "object" } },
+    "provider_versions": {
+      "type": "array",
+      "items": { "$ref": "schemas/provider-version-scope.schema.json" }
+    },
+    "n8n_version": { "type": "string" },
+    "recent_changes": { "type": "array", "items": { "type": "string" } },
+    "sanitized_test_payload": { "type": "object" },
+    "retry_history": { "type": "object" },
+    "timeout_history": { "type": "object" },
+    "duplicate_event_history": { "type": "object" },
+    "credential_reference_status": { "type": "object" },
+    "webhook_context": { "type": "object" },
+    "database_context": { "type": "object" },
+    "Telegram_or_messaging_context": { "type": "object" },
+    "AI_agent_context": { "type": "object" },
+    "cost_sensitive_steps": { "type": "array", "items": { "type": "string" } },
+    "current_error_handling": { "type": "object" },
+    "existing_pattern_references": {
+      "type": "array",
+      "items": { "$ref": "schemas/pattern-selection-reference.schema.json" }
+    },
+    "workflow_pattern_library_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "workflow_metadata_reference",
+    "failure_symptom",
+    "sanitized_execution_logs",
+    "existing_pattern_references",
+    "workflow_pattern_library_hash",
+    "provenance"
+  ]
+}

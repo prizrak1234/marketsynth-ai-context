@@ -1,0 +1,759 @@
+{
+  "name": "Firecrawl_MCP",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Below is the user’s request.\n1) Decide whether Firecrawl MCP tools (scrape, search, map, crawl, extract, etc.) are needed or if you can answer without web access.\n2) If web data is needed, choose and call the appropriate Firecrawl tools efficiently.\n3) Provide a clear and structured answer IN RUSSIAN:\n   - do not describe your internal steps;\n   - do not show JSON or technical implementation details unless explicitly requested;\n   - start with a short conclusion and then give a list/table.\n\nUser request:\n{{ $json.text }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=You are a specialized Firecrawl assistant running inside n8n.\n\nYour main job is to use Firecrawl MCP tools (scrape, batch_scrape, map, search, crawl, extract, status checks) to retrieve, structure, and analyze web data for the user.\n\nAlways:\n- Answer in RUSSIAN by default, unless the user explicitly asks for another language.\n- Be concise, user-friendly, and avoid unnecessary technical details.\n- Do NOT describe your internal steps (“What I did”, “I used Firecrawl MCP…”) unless the user explicitly asks how you did it.\n- Do NOT offer JSON, schemas, or implementation details unless requested.\n- Use Markdown for structure: short paragraphs, bullet lists, tables when helpful.\n\nИСПОЛЬЗОВАНИЕ FIRECRAWL MCP:\nУ тебя есть доступ к MCP-инструментам Firecrawl (scrape, batch_scrape, map, search, crawl, extract и функции проверки статуса).\n\nВыбирай инструмент по смыслу задачи:\n\n1. **firecrawl_scrape** — когда есть КОНКРЕТНЫЙ URL и нужно:\n   - проанализировать эту страницу;\n   - сделать краткое резюме;\n   - достать важные факты.\n   Стандартно используй:\n   - formats: [\"markdown\"];\n   - onlyMainContent: true;\n   - waitFor около 1000 мс для динамических страниц.\n\n2. **firecrawl_batch_scrape + firecrawl_check_batch_status** — когда нужно обработать НЕСКОЛЬКО URL сразу.\n   Алгоритм:\n   - вызови batch_scrape с массивом ссылок;\n   - получи ID батча;\n   - с этим ID вызови check_batch_status, пока результаты не будут готовы;\n   - затем сделай анализ и выдай пользователю итог.\n\n3. **firecrawl_map** — когда нужно получить СПИСОК страниц сайта:\n   - «найди все страницы сайта»;\n   - «список статей блога / документации».\n   Обычно:\n   - сначала map для получения URL;\n   - затем выборочно scrape или extract по нужным страницам.\n\n4. **firecrawl_search** — когда пользователь НЕ дал URL, а просит «найти в интернете / собрать информацию».\n   Действуй так:\n   - составь запрос из слов пользователя;\n   - используй limit 3–7 (чтобы не тратить лишние ресурсы);\n   - включи scrapeOptions с formats: [\"markdown\"], onlyMainContent: true;\n   - после получения результатов:\n     - отфильтруй нерелевантные;\n     - сделай понятное резюме и список ключевых выводов.\n\n5. **firecrawl_crawl + firecrawl_check_crawl_status** — когда нужно собрать много контента с одного сайта:\n   - сканирование документации;\n   - анализ блога/раздела.\n   Обязательно:\n   - задай разумные ограничения (maxDepth, limit);\n   - сначала запускай crawl и получай ID;\n   - затем проверяй статус через check_crawl_status, пока результаты не готовы;\n   - анализируй итоговый контент и давай выводы.\n\n6. **firecrawl_extract** — когда нужен СТРУКТУРИРОВАННЫЙ результат (таблица, JSON, список объектов: товары, компании, цены, отзывы и т.п.).\n   Алгоритм:\n   - сформулируй понятный prompt и systemPrompt для задачи извлечения;\n   - создай JSON Schema с нужными полями (например: name, url, price, rating);\n   - передай urls, prompt, systemPrompt и schema в firecrawl_extract;\n   - на основе результата:\n     - либо верни JSON (если пользователь просит),\n     - либо покажи человеку удобную таблицу/список.\n\n7. **firecrawl_check_batch_status / firecrawl_check_crawl_status** — всегда используй после batch_scrape и crawl, если операция асинхронная и в ответе есть только ID.\n\nЛОГИКА ПРИНЯТИЯ РЕШЕНИЙ:\n1. Если на вопрос можно ответить без интернета (объяснение теории, работа с текстом, уже данным пользователем) — НЕ вызывай Firecrawl-инструменты.\n2. Если пользователь дал 1 URL — сначала думай про firecrawl_scrape.\n3. Если нужно много страниц с одного домена — комбинируй map/crawl и затем scrape/extract.\n4. Если запрос звучит как «найди / собери в интернете» — сначала используй search.\n5. Если пользователь просит именно структурированный список/таблицу — используй extract.\n\nФОРМАТ ОТВЕТА:\n- Сначала короткий вывод (1–3 предложения).\n- Затем структурированный список / таблица / шаги.\n- Источники можно упомянуть обобщённо (например: «на основе материалов крупных медицинских сайтов») без перечисления каждого названия, если пользователь не просит иначе.\n- Если данных мало или они противоречивые — честно скажи об этом и предложи альтернативу.\n\nВсегда помни: ты помощник для обычного человека. Твоя задача — не показать, какие инструменты ты вызвал, а дать понятный, полезный и аккуратный ответ.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        0,
+        -96
+      ],
+      "id": "7362bd78-60f0-4e73-86ab-9fcfb06f5c6a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "*"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1344,
+        -80
+      ],
+      "id": "250955d1-23f4-4723-9bcf-bd9f5a296be9",
+      "name": "Telegram Trigger",
+      "webhookId": "4a0dbc76-9e1d-4b0c-b18a-c3933ad0c064",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9d8e573-3830-4e93-9f74-4838b5ff49b5",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -272,
+        -96
+      ],
+      "id": "63cbaf35-1fa7-4337-b59f-c62a141c8930",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -720,
+        64
+      ],
+      "id": "108e2476-3021-4262-a6a6-3d8d62910e6c",
+      "name": "Telegram",
+      "webhookId": "d7fe1baf-5e5f-4435-bf27-0b99883ad065",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -496,
+        64
+      ],
+      "id": "58c794a1-cf26-44f1-aa2c-733c3feec802",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ca9cc06c-dcf8-457b-854b-4c03d3d15dcc",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1040,
+        -80
+      ],
+      "id": "994e8ff6-3c72-44da-9ac3-8f0872e1f3d0",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1104,
+        -336
+      ],
+      "id": "1e66eb4b-b65a-4a0c-be20-49801fa7c756",
+      "name": "Telegram2",
+      "webhookId": "8cd99b7a-3eca-4fd9-9b9a-168ea002f4b1",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-5-nano"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        176
+      ],
+      "id": "24fe3a58-05a6-41fe-a3a5-b370e6fdbd84",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "CSm9tzG7OXBEcotW",
+          "name": "n8n_2025_def"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5",
+          "mode": "list",
+          "cachedResultName": "gpt-5"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        208
+      ],
+      "id": "f36ed2e4-387c-4a58-980f-6fbebbcf7fa9",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=Работа выполнена данные в таблице: https://docs.google.com/spreadsheets/d/15oIwf-RCLxF2IZwfHHPJTj7OKbpf4zgZXMX_dvddvrk/edit?gid=0#gid=0",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        -96
+      ],
+      "id": "8adcc018-4d47-44d1-8e74-6470ebbb251e",
+      "name": "Send a text message",
+      "webhookId": "07b6a06a-f9a8-4e78-a8cd-d536e0fa66d2",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "15oIwf-RCLxF2IZwfHHPJTj7OKbpf4zgZXMX_dvddvrk",
+          "mode": "list",
+          "cachedResultName": "Firecrawl_MCP",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15oIwf-RCLxF2IZwfHHPJTj7OKbpf4zgZXMX_dvddvrk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Firecrawl_MCP",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15oIwf-RCLxF2IZwfHHPJTj7OKbpf4zgZXMX_dvddvrk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ответ": "={{ $json.output }}",
+            "Запрос": "={{ $('Edit Fields').item.json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Запрос",
+              "displayName": "Запрос",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ответ",
+              "displayName": "Ответ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        -96
+      ],
+      "id": "7a16e86b-0b03-4464-95a4-07da66ee54cf",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Firecrawl Agent",
+        "height": 428,
+        "width": 940,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        -320
+      ],
+      "id": "4f21d5ab-9215-460b-8021-e7cd512a2ffc",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ",
+        "height": 672,
+        "width": 1312,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1456,
+        -368
+      ],
+      "typeVersion": 1,
+      "id": "50839d1b-d1e6-4069-921b-2fc5cc2290ca",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## n8n – Разбор всех Триггеров:\n## https://youtu.be/jJavEXnfWkM",
+        "height": 128,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1552,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "5010e794-3fc9-41ff-af1d-4f046811502e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по data Table:\n## https://youtu.be/C8GPQqaB7Io\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 144,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        656,
+        -432
+      ],
+      "typeVersion": 1,
+      "id": "163b6a93-7444-417a-8c61-b13cd38af643",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## Защитные ноды для ИИ Агента:\n## https://youtu.be/g8oQ072J82g",
+        "height": 128,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -480,
+        336
+      ],
+      "typeVersion": 1,
+      "id": "be3a9934-3040-4763-b469-f3c762965af2",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -832,
+        -400
+      ],
+      "typeVersion": 1,
+      "id": "0a6d5540-97d3-4224-ad53-6050ef7d599b",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 80,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "6b9a93fc-937f-43ec-b084-8771c781abc4",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: по Нодам и Привязке GEMINI AI: https://youtu.be/XKhqGqe3FBk",
+        "height": 120,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "2e30eb3f-39a9-4cf8-8f6b-f77081d823d7",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/qKh7BTjQoM0",
+        "height": 120,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        -448
+      ],
+      "typeVersion": 1,
+      "id": "81c74c4c-cbfc-4cae-9ad6-2cac42545d40",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 488
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        144,
+        448
+      ],
+      "typeVersion": 1,
+      "id": "1c06381c-0018-421f-8065-bb7504623917",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Что Такое MCP сервер: https://youtu.be/kV2DgfjXZsM",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        496,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "8fb6efb0-593d-4f89-abce-b6c20e9f165b",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "mehaXiXM9DF7bk3S",
+          "mode": "list",
+          "cachedResultName": "Firecrawl_MCP",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/mehaXiXM9DF7bk3S"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Otvet": "={{ $json.output }}",
+            "Zapros": "={{ $('Edit Fields').item.json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Zapros",
+              "displayName": "Zapros",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Otvet",
+              "displayName": "Otvet",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        352,
+        -272
+      ],
+      "id": "b001d4de-9a03-469d-8953-5c56b28a3bc7",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "content": "## МОЗГ",
+        "height": 204,
+        "width": 380,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        128
+      ],
+      "id": "7c904183-112e-4d0b-b7cd-9486430a3398",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        192
+      ],
+      "id": "d441f8ca-b0d5-45fb-9d7d-e36c0128ffde",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://mcp.firecrawl.dev/fc-4bb1883dae84417e80329c44462f3cb9/v2/mcp",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        192
+      ],
+      "id": "d336ee53-ef63-43ae-9692-db7b8db1adfd",
+      "name": "MCP Client"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8756b6ca-f354-4ee1-ab8e-d3ea6296b6b6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "uhxVNTQXPUymjT1E",
+  "tags": []
+}

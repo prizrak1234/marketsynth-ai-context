@@ -1,0 +1,17 @@
+cases:
+  - id: proceed_saas
+    input_fixture: tests/fixtures/input_upstream_refs.json
+    output_fixture: tests/fixtures/output_proceed.json
+    expected_verdict: proceed
+  - id: proceed_with_conditions
+    input_fixture: tests/fixtures/input_upstream_refs.json
+    output_fixture: tests/fixtures/output_proceed_with_conditions.json
+    expected_verdict: proceed_with_conditions
+  - id: stop_fatal
+    input_fixture: tests/fixtures/input_upstream_refs.json
+    output_fixture: tests/fixtures/output_stop.json
+    expected_verdict: stop
+  - id: insufficient_evidence
+    input_fixture: tests/fixtures/input_upstream_refs.json
+    output_fixture: tests/fixtures/output_insufficient_evidence.json
+    expected_verdict: insufficient_evidence

@@ -1,0 +1,439 @@
+{
+  "name": "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "URL"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -32,
+        -64
+      ],
+      "id": "3122bfe1-8143-43fb-82ed-4d8903b1e82a",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "KU9xUYZxPDy0fBIv",
+          "mode": "list",
+          "cachedResultName": "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/KU9xUYZxPDy0fBIv"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_video": "={{ $json.id }}",
+            "URL": "={{ $json.url }}",
+            "transcript": "={{ $json.transcript }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_video",
+              "displayName": "id_video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -64
+      ],
+      "id": "cfb9f4b5-7abf-44c3-938c-c22977d46983",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Получаем входные данные\nconst inputData = $input.all()[0].json;\n\n// Формируем результат\nconst result = {\n  message: \"Транскрибация видео выполнена успешно\",\n  video_id: inputData.id_video,\n  video_url: inputData.URL,\n  status: \"success\"\n};\n\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        -64
+      ],
+      "id": "adc95315-cfe7-4e03-a492-81cfca354ac4",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        -400
+      ],
+      "id": "0f422c44-1c05-4046-9282-413b957c81f7",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "KU9xUYZxPDy0fBIv",
+          "mode": "list",
+          "cachedResultName": "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/KU9xUYZxPDy0fBIv"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -400
+      ],
+      "id": "85d658e8-01a5-41cd-b8de-2dbd7f022837",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1RVWZPUL5r8Lp9Aq9jrs2qREa0QOGpO1ojrkpoljYVjQ",
+          "mode": "list",
+          "cachedResultName": "TikTok AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RVWZPUL5r8Lp9Aq9jrs2qREa0QOGpO1ojrkpoljYVjQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 835011717,
+          "mode": "list",
+          "cachedResultName": "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RVWZPUL5r8Lp9Aq9jrs2qREa0QOGpO1ojrkpoljYVjQ/edit#gid=835011717"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_video": "={{ $json.id_video }}",
+            "URL": "={{ $json.URL }}",
+            "transcript": "={{ $json.transcript }}",
+            "createdAt": "={{ $json.createdAt }}",
+            "updatedAt": "={{ $json.updatedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_video",
+              "displayName": "id_video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        -400
+      ],
+      "id": "68dc7d11-d351-4884-88d5-2da18a3ed3e8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Синхронизация данных в таблице в Google",
+        "height": 304,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -512
+      ],
+      "id": "cddf45b6-288a-4d04-bb4e-ee8257ad5614",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "KU9xUYZxPDy0fBIv",
+          "mode": "list",
+          "cachedResultName": "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/KU9xUYZxPDy0fBIv"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id_video",
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        608,
+        -400
+      ],
+      "id": "55ad6bd3-416b-41b1-903e-151f65a2fdeb",
+      "name": "Delete row(s)1"
+    },
+    {
+      "parameters": {
+        "content": "## Get a tik tok video transcript",
+        "height": 288,
+        "width": 1120,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -144,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "afac593b-b2e3-4eda-af09-caad1e6fc89d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "resource": "tiktok",
+        "operation": "getTikTokVideoTranscript",
+        "url": "={{ $json.URL }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        224,
+        -64
+      ],
+      "id": "837c3011-781c-4963-bc66-4a9b2ca4829f",
+      "name": "Get a tik tok video transcript",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "XNzkdQFgWnEu59Bh",
+          "name": "Scrape Creators account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок: DATA TABLE в n8n: https://youtu.be/FD1HyYR3EP0\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 132,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        -672
+      ],
+      "typeVersion": 1,
+      "id": "fd2730f7-54b2-4429-8761-903b6dbeabda",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "c1ec9854-b572-4c52-8807-1b649b80ec30",
+      "name": "Sticky Note16",
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "URL": "https://www.tiktok.com/@zuevich_ai/video/7554791557757422862"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get a tik tok video transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a tik tok video transcript": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b76b4716-d551-4d0e-94e4-12acc9925ff8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "N5yM8xkiDxQFMMRl",
+  "tags": []
+}

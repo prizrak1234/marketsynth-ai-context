@@ -1,0 +1,58 @@
+{
+  "context_id": "ctx-cafe-001",
+  "skill_id": "ms.skill.product_marketing_context",
+  "skill_version": "0.1.0",
+  "normalized_product": [
+    {
+      "claim_id": "prod-001",
+      "domain": "product_identity",
+      "statement": "Corner Brew Café — independent specialty coffee shop",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "high"
+    }
+  ],
+  "normalized_business_model": [],
+  "normalized_market_scope": [],
+  "normalized_customer_claims": [],
+  "normalized_problem_claims": [],
+  "normalized_value_proposition_claims": [],
+  "normalized_pricing_claims": [],
+  "normalized_competitor_claims": [],
+  "channel_context": [],
+  "brand_constraints": [],
+  "operational_constraints": [],
+  "evidence_inventory": [],
+  "assumptions": [],
+  "unknowns": [
+    {
+      "domain": "business_model",
+      "description": "Business model not declared",
+      "blocking": true
+    },
+    {
+      "domain": "customer_segment",
+      "description": "Target customer not specified",
+      "blocking": true
+    }
+  ],
+  "conflicts": [],
+  "clarification_questions": [
+    "What business model are you considering for delivery expansion?",
+    "Who is the primary customer for delivery — neighborhood residents or office workers?"
+  ],
+  "readiness": "partially_ready",
+  "readiness_blockers": [
+    "Missing business model",
+    "Missing target customer claim",
+    "Missing problem claim"
+  ],
+  "provenance": {
+    "skill_id": "ms.skill.product_marketing_context",
+    "skill_version": "0.1.0",
+    "generated_at": "2026-07-23T12:00:00Z",
+    "methodology_ref": "docs/skills/ms.skill.product_marketing_context.md"
+  },
+  "input_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+}

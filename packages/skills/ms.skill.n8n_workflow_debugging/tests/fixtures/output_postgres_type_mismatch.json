@@ -1,0 +1,41 @@
+{
+  "diagnostic_report_id": "diag-postgres-type-001",
+  "skill_id": "ms.skill.n8n_workflow_debugging",
+  "skill_version": "0.1.0",
+  "failure_summary": "Postgres insert failed with type mismatch on amount field.",
+  "failure_classification": "type_mismatch",
+  "patterns_consulted": [
+    {
+      "pattern_id": "dead_letter_queue",
+      "library_version": "0.1.0-frozen",
+      "library_semantic_hash": "1ddd0d033f6028bd5dcf5ee555186c6be0389a96459615b6221348783d9b1883",
+      "selection_reason": "Terminal failure path after retry exhaustion.",
+      "maturity": "reviewed",
+      "runtime_authorized": false
+    }
+  ],
+  "practices_consulted": ["terminal_dead_letter_handling"],
+  "supporting_evidence": [{ "source": "sanitized_log", "detail": "column amount expects numeric" }],
+  "sandbox_plan": {
+    "isolated_test_input": { "amount": "123.45" },
+    "publication_enabled": false,
+    "billing_enabled": false,
+    "mocked_steps": ["postgres_insert"],
+    "pass_criteria": "insert succeeds with numeric type"
+  },
+  "remediation_candidates": [
+    { "action": "manual_schema_fix", "description": "Coerce amount to numeric before insert" }
+  ],
+  "diagnostic_confidence": "medium",
+  "diagnostic_readiness": "ready_for_sandbox_reproduction",
+  "limitations": ["Sandbox not executed by this Skill."],
+  "provider_reverification_required": true,
+  "evidence_gaps": [],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "human_review_required": true,
+  "provenance": { "program_phase": "KB-WPL-01.4" },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

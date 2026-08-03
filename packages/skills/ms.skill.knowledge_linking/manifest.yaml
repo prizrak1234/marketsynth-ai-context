@@ -1,0 +1,74 @@
+id: ms.skill.knowledge_linking
+name: Knowledge Linking
+version: 0.1.0
+description: >
+  Analyze bounded knowledge metadata and propose deterministic, provenance-preserving
+  links between Skills, Patterns, Practices, RFCs, and related artifacts — no mutation.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - broken_link_detection
+  - orphan_detection
+  - duplicate_candidate_detection
+  - supersession_candidate_detection
+  - contradiction_candidate_detection
+  - index_recommendation_generation
+  - link_proposal
+  - tenant_boundary_enforcement
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - assumption
+    - inference
+  rules:
+    - id: no_runtime_execution
+      description: Non-executable candidate — links proposed, never applied.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.presentation_architecture
+      relationship: optional_dependency
+      note: Linking report consumable by presentation planning
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  deployment_or_publication:
+    approval_required: true
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 8
+  current_state: candidate_evaluated
+known_limitations:
+  - Non-executable candidate — no runtime loader.
+  - Links are proposed only — no filesystem or database mutation.
+  - Duplicate detection does not authorize merge.
+  - Contradiction detection does not auto-resolve truth.
+  - production_eligible=false
+network_policy:
+  default: deny
+  allowed_hosts: []
+script_policy:
+  enabled: false
+provenance:
+  origin: platform_native
+  methodology:
+    - KB-WPL-01.5 Knowledge Linking Skill
+    - KB-WPL-01.3C frozen Workflow Pattern Library
+    - Adapted wiki-link validation methodology (external archive)
+test_suite:
+  manifest: tests/eval_manifest.yaml

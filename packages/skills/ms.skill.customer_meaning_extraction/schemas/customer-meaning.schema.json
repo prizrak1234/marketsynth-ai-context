@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.customer_meaning_extraction/schemas/customer-meaning.schema.json",
+  "title": "CustomerMeaning",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "meaning_id": {
+      "type": "string"
+    },
+    "selected_segment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_statement": {
+      "type": "string"
+    },
+    "normalized_meaning": {
+      "type": "string"
+    },
+    "meaning_type": {
+      "type": "string",
+      "enum": [
+        "desire",
+        "pain",
+        "desired_outcome",
+        "fear",
+        "objection",
+        "barrier",
+        "trigger",
+        "trust_requirement",
+        "service_expectation",
+        "safety_expectation",
+        "price_value_concern",
+        "self_doubt",
+        "previous_negative_experience",
+        "unknown"
+      ]
+    },
+    "customer_language": {
+      "type": "string"
+    },
+    "desired_transformation": {
+      "type": "string"
+    },
+    "underlying_need": {
+      "type": "string"
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inference": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "meaning_id",
+    "selected_segment_ids",
+    "source_statement",
+    "normalized_meaning",
+    "meaning_type",
+    "customer_language",
+    "evidence_references",
+    "confidence",
+    "provenance"
+  ]
+}

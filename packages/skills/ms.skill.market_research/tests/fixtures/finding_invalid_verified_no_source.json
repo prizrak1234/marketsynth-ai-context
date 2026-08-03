@@ -1,0 +1,8 @@
+{
+  "finding_id": "bad-001",
+  "domain": "demand",
+  "claim": "Verified demand without source",
+  "source_type": "external_source",
+  "verification_status": "verified",
+  "confidence": "high"
+}

@@ -1,0 +1,560 @@
+{
+  "name": "Кейс 4 - Готово",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "### 📸 Telegram Новости\n1. Напишите тему в бота.\n2. Perplexity Sonar Pro найдет свежие новости по теме.\n3. Gemini 3 Flash придумает концепцию поста.\n4. Claude 4.5 Haiku напишет финальный текст и промпт для фото.\n5. Seedream сгенерирует фотографию.\n6. Бот отправит новостной пост с картинкой в Telegram (по дефолту вам 🤖, либо можно указать канал 📢).\n7. Готово!",
+        "height": 280,
+        "width": 640,
+        "color": 6
+      },
+      "id": "87023b05-7ebe-4182-b381-a2cbe82f8a47",
+      "name": "⚙️ Инструкция",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Найди самые свежие и важные новости по теме запроса пользователя.\n\nВыдай ответ очень кратко, строго в виде 3 маркированных пунктов:\n1. Главная новость (суть).\n2. Важная цифра или факт.\n3. Короткий вывод.\n"
+        }
+      },
+      "id": "014b9a07-f955-48f1-a3d3-b04841c50816",
+      "name": "1. Исследователь",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        368,
+        352
+      ],
+      "typeVersion": 1.9
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Ты главный редактор и креативный директор Telegram-канала.\nРазверни полученные факты в общую концепцию поста премиум-качества.\nТвой ответ должен быть СТРОГО в виде массива JSON из одного элемента.\n\nПравила для ключей:\n- Theme: О чем конкретно должен быть пост. Опирайся на факты.\n- Hook: Идея для текстового крючка в первом предложении.\n- VisualStyle: Общий стиль картинки к посту. СТРОГО НА АНГЛИЙСКОМ! Пиши в стиле: cinematic, realistic, 8k resolution, premium lighting, professional macro photography.\n- Status: Всегда пиши \"for production\"."
+        }
+      },
+      "id": "428149dd-23c3-42a1-b2bf-0d12efbe2f88",
+      "name": "2. Сценарист-Планировщик",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        672,
+        352
+      ],
+      "typeVersion": 1.9
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n    \"Theme\": \"Рассказ о том, почему налоги отменили и цены растут\",\n    \"Hook\": \"Шокирующий первый абзац с инсайдом\",\n    \"VisualStyle\": \"Cinematic realism, luxurious lighting, hyper-detailed, drone shot style\",\n    \"Status\": \"for production\"\n  }\n]"
+      },
+      "id": "09ef2280-2b4f-4857-a9bd-4bd96fbd9b4d",
+      "name": "Парсер 1",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "position": [
+        816,
+        576
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ JSON.stringify($json.output[0]) }}\n\nНапиши итоговый пост и промпт для фото на основе этих данных.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Ты топовый копирайтер Telegram-каналов.\nТвоя задача — написать вовлекающий текст поста и создать промпт для нейросети Seedream (генерация картинки к посту).\nВыведи результат строго в формате JSON по заданному шаблону.\n\nПравила:\n- TelegramPostText: Готовый текст поста на русском языке. Динамичный, без \"воды\", чистые факты, используй абзацы и уместные эмодзи, которые понимает взрослая аудитория и они не выглядят как будто ИИ сгенерировал текст. КРИТИЧЕСКИ ВАЖНО: Длина текста СТРОГО не должна превышать 1024 символа (включая пробелы и эмодзи) — это системный лимит Telegram для подписи к фото. Для надежности делай текст длиной 800-950 символов.\n- ImagePrompt: Промпт для генерации картинки СТРОГО НА АНГЛИЙСКОМ.\nВ промпте используй стилистику из ключа VisualStyle переданного плана. \nОписывай КОНКРЕТНЫЕ ОБЪЕКТЫ, ОСВЕЩЕНИЕ и КАМЕРУ (например: extreme close-up, macro photography, wide drone shot). \nТвоя цель — кинематографичная, дорогая картинка, привлекающая внимание в Telegram-канале."
+        }
+      },
+      "id": "3ce51033-3d26-4ad5-a4d5-6d63763cde59",
+      "name": "3. Копирайтер Поста",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        960,
+        352
+      ],
+      "typeVersion": 1.9
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"TelegramPostText\": \"⚡️ Налог в Дубае вчера отменили!\\n\\nЭксперты ждут рост цен на 15%. Самое время действовать и инвестировать.\",\n  \"ImagePrompt\": \"Extreme close-up of a luxurious golden contract on a sleek black marble desk, cinematic lighting, photorealistic, 8k\"\n}"
+      },
+      "id": "59cc7826-4dab-4e61-a507-0a8bf7897934",
+      "name": "Парсер 2",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "position": [
+        1104,
+        576
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.polza.ai/api/v1/images/generations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer pza_mDr72JKCrC0EmE6g0iMeXIdRQI8Xe2BU"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"seedream-v4\",\n  \"prompt\": \"{{ $json.output.ImagePrompt }}\",\n  \"size\": \"16:9\"\n}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 2000
+            }
+          }
+        }
+      },
+      "id": "55797501-f784-42d9-a55f-488a5827f0ee",
+      "name": "Создать Фото (Seedream)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1280,
+        352
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "url": "=https://api.polza.ai/api/v1/images/{{ $json.requestId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer pza_mDr72JKCrC0EmE6g0iMeXIdRQI8Xe2BU"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6e52c37e-c73b-4f63-816c-41a843a7eab8",
+      "name": "Статус Фото",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1680,
+        352
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.images[0].url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "54d68f27-a5f8-4c47-af12-e12650c525ea",
+      "name": "Скачать Картинку",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2176,
+        336
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {
+          "caption": "={{ $('3. Копирайтер Поста').item.json.output.TelegramPostText }}"
+        }
+      },
+      "id": "a2f464e6-d4ef-40d0-bb67-38265b6c21f9",
+      "name": "Отправить Фото в Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2480,
+        336
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "d51c7b9c-2e4c-4605-9b42-36e5822549c2",
+      "credentials": {
+        "telegramApi": {
+          "id": "RoxgE0whMZC07DPN",
+          "name": "Telegram Universal Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "f175a594-d3be-49ce-b7f6-aa2765676f0e",
+      "name": "Telegram Trigger1",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        64,
+        352
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "8f79e172-fa9b-4271-a86d-79359429215f",
+      "credentials": {
+        "telegramApi": {
+          "id": "RoxgE0whMZC07DPN",
+          "name": "Telegram Universal Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "google/gemini-3-flash-preview",
+          "mode": "list",
+          "cachedResultName": "google/gemini-3-flash-preview"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        576
+      ],
+      "id": "2f1fe77e-d524-4c17-a731-50c91bc08041",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "bgNXeJL02BE3BPqf",
+          "name": "Кейс 4 - Polza AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "anthropic/claude-haiku-4.5",
+          "mode": "list",
+          "cachedResultName": "anthropic/claude-haiku-4.5"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        928,
+        576
+      ],
+      "id": "e085e16e-731d-41af-861a-e9e028202f41",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "LrUxzbR1ikIRH9jv",
+          "name": "Test Polza AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "perplexity/sonar-pro",
+          "mode": "list",
+          "cachedResultName": "perplexity/sonar-pro"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        560
+      ],
+      "id": "ba488031-3fec-4dc9-a462-55e89a685929",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "bgNXeJL02BE3BPqf",
+          "name": "Кейс 4 - Polza AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "COMPLETED",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2891e378-f04e-42b2-a4fb-c778d1ea96de"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "COMPLETED"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5133af34-e6d4-4c04-9a85-1b8a392369c1",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "PROCESSING",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PROCESSING"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1888,
+        352
+      ],
+      "id": "8a205fa7-1ca0-467a-8d52-7d22588c7b32",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "id": "03e77b86-e5c5-45b2-b502-3b8c63135d37",
+      "name": "Ждать 30 сек",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        1472,
+        352
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "f2a2dfb0-4e67-4db6-a003-f2236b896585"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "1. Исследователь": {
+      "main": [
+        [
+          {
+            "node": "2. Сценарист-Планировщик",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Сценарист-Планировщик": {
+      "main": [
+        [
+          {
+            "node": "3. Копирайтер Поста",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Парсер 1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "2. Сценарист-Планировщик",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Копирайтер Поста": {
+      "main": [
+        [
+          {
+            "node": "Создать Фото (Seedream)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Парсер 2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "3. Копирайтер Поста",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Создать Фото (Seedream)": {
+      "main": [
+        [
+          {
+            "node": "Ждать 30 сек",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Статус Фото": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Скачать Картинку": {
+      "main": [
+        [
+          {
+            "node": "Отправить Фото в Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "1. Исследователь",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "2. Сценарист-Планировщик",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "3. Копирайтер Поста",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "1. Исследователь",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Скачать Картинку",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ждать 30 сек",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ждать 30 сек": {
+      "main": [
+        [
+          {
+            "node": "Статус Фото",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "4e319c3d-9a3a-4a43-9cac-ef2d59c3e27c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "94865d8a2b1819a178f9f14146b14a4a0adf8abf6e7a14d91dfef93deb8e8890"
+  },
+  "id": "Gr6P7NfNYp3GIEe4",
+  "tags": []
+}

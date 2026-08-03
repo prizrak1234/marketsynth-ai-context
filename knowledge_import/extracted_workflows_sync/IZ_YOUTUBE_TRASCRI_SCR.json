@@ -1,0 +1,3690 @@
+{
+  "name": "IZ_YOUTUBE_TRASCRI_SCR",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -512,
+        -144
+      ],
+      "id": "5cb030e4-2699-4a53-a8d1-2b833989ba85",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "youtube",
+        "operation": "getYouTubeChannelVideos",
+        "handle": "={{ $json.Igorzuevich_name }}",
+        "channelId": "={{ $json.Igorzuevich_ID }}",
+        "limit": 1,
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -144
+      ],
+      "id": "8c767e83-5687-4c2c-83bf-859377b3c489",
+      "name": "Get a you tube channel videos",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "XNzkdQFgWnEu59Bh",
+          "name": "Scrape Creators account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "530bfa72-f19a-447c-8ba6-3362bf6c3f9d",
+              "name": "Igorzuevich_ID",
+              "value": "UCO85GRCGUWMH08jjBZwdq7g",
+              "type": "string"
+            },
+            {
+              "id": "2df57e6d-8bfc-47af-9bd1-4a1fe4537d6c",
+              "name": "Igorzuevich_name",
+              "value": "igorzuevich",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -320,
+        -144
+      ],
+      "id": "0256a84c-ba9b-410c-a421-52a8819b9eb5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "videos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -144
+      ],
+      "id": "aad6af79-42c2-4595-88b1-b3b30e4531cc",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "resource": "youtube",
+        "operation": "getYouTubeVideoTranscript",
+        "url": "={{ $('Split Out').item.json.url }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        768,
+        -144
+      ],
+      "id": "c24da0ab-cba6-4e9d-ad44-43881a284989",
+      "name": "Get a you tube video transcript",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "XNzkdQFgWnEu59Bh",
+          "name": "Scrape Creators account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "ilDffka7Ldxcn1d6",
+          "mode": "list",
+          "cachedResultName": "YouTube",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/ilDffka7Ldxcn1d6"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Transcript": "={{ $json.formattedTranscript }}",
+            "transcript_tekst": "={{ $('Get a you tube video transcript').item.json.transcript_only_text }}",
+            "URL": "={{ $('Split Out').item.json.url }}",
+            "id_video": "={{ $('Split Out').item.json.id }}",
+            "Date_published": "={{ $('Split Out').item.json.publishedTime }}",
+            "image": "={{ $('Split Out').item.json.thumbnail }}",
+            "Title": "={{ $('Split Out').item.json.title }}",
+            "channel": "={{ $('Edit Fields').item.json.Igorzuevich_name }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "channel",
+              "displayName": "channel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "id_video",
+              "displayName": "id_video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date_published",
+              "displayName": "Date_published",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "transcript_tekst",
+              "displayName": "transcript_tekst",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        -144
+      ],
+      "id": "1697ccaf-34bd-4734-9621-9b4a3eebc1a7",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Получаем массив транскриптов\nconst transcripts = $input.item.json.transcript;\n\n// Функция для конвертации миллисекунд в формат времени\nfunction msToTime(ms) {\n  const totalSeconds = Math.floor(ms / 1000);\n  const hours = Math.floor(totalSeconds / 3600);\n  const minutes = Math.floor((totalSeconds % 3600) / 60);\n  const seconds = totalSeconds % 60;\n  const milliseconds = ms % 1000;\n  \n  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')},${String(milliseconds).padStart(3, '0')}`;\n}\n\n// Формируем текст транскрипции\nlet formattedTranscript = '';\n\ntranscripts.forEach((item, index) => {\n  const startTime = msToTime(item.startMs);\n  const endTime = msToTime(item.endMs);\n  \n  formattedTranscript += `${startTime} --> ${endTime}\\n`;\n  formattedTranscript += `${item.text}\\n\\n`;\n});\n\n// Возвращаем результат\nreturn {\n  json: {\n    formattedTranscript: formattedTranscript.trim()\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -144
+      ],
+      "id": "567c5432-c96e-4c19-906b-e41a55fb9a39",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.transcript_tekst }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "You are an AI agent specialized in analyzing and creating structured summaries from YouTube video transcriptions.\n\nYOUR TASK:\nAnalyze the provided video transcription and create a structured summary in the following format:\n\n**О ЧЁМ ЭТО ВИДЕО:**\n[Brief description of the main topic and content in 2-3 sentences]\n\n**ОСНОВНЫЕ ТЕМЫ:**\n- [First key topic]\n- [Second key topic]\n- [Third key topic]\n- [Continue listing all important topics covered in the video]\n\n**3 ПРИЧИНЫ ПОСМОТРЕТЬ ЭТО ВИДЕО:**\n1. [Specific benefit or value for the viewer]\n2. [Unique information or practical advice]\n3. [What the viewer will learn or be able to do after watching]\n\n**3 ПРИЧИНЫ НЕ СМОТРЕТЬ ЭТО ВИДЕО:**\n1. [Who this video may not be relevant for]\n2. [What limitations or drawbacks the content has]\n3. [Who this information might not suit]\n\nIMPORTANT RULES:\n- Be objective and honest in your assessment\n- Reasons must be specific, not generic phrases\n- In the \"reasons not to watch\" section, indicate real limitations (e.g., \"if you're already familiar with n8n\", \"if you need a quick solution without detailed breakdown\", \"if you don't work with TikTok\")\n- Do not use emojis\n- Write concisely and to the point\n- Total summary length: 150-250 words\n- **CRITICAL: Always respond in RUSSIAN language, even though this prompt is in English**\n\nInput data: The complete video transcription will be provided to you in the next message."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        224
+      ],
+      "id": "a66fc249-42fb-40bc-8985-232c03ed450e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        416
+      ],
+      "id": "f612086c-f51f-4029-acbf-ef378aa8c884",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        432
+      ],
+      "id": "5c27b924-b6ad-440b-b764-3c16ebedfdd7",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "chatId": "190190068",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        304
+      ],
+      "id": "e4be4eb5-895a-4c22-9c19-5e4da9f0ef75",
+      "name": "Send a text message",
+      "webhookId": "bb62119c-8500-42db-ae39-feb90f242ef2",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Запуск и выбор каналов",
+        "height": 272,
+        "width": 448,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -576,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "c5e768bf-ca32-4db1-8fbc-1cfc5850f7d4",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Проверка и транскрибация видео",
+        "height": 272,
+        "width": 1408,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "7a80db66-c17a-4b2b-aa12-6cd4c226de3c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ilDffka7Ldxcn1d6",
+          "mode": "list",
+          "cachedResultName": "YouTube",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/ilDffka7Ldxcn1d6"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "URL",
+              "keyValue": "={{ $json.url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        352,
+        -144
+      ],
+      "id": "40d28005-88bc-4174-a756-aec109502087",
+      "name": "Filter",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "429b5be4-0770-4fc4-801b-a15d59da9750",
+              "leftValue": "={{ $json.URL }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        528,
+        -144
+      ],
+      "id": "535e44ba-c814-492d-afcc-fd15f7e12bbc",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "## Анализ видео",
+        "height": 528,
+        "width": 816,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "8f7591f9-c9e1-4676-99eb-776969a3566b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        -368
+      ],
+      "typeVersion": 1,
+      "id": "5af4dff0-5e16-4ca2-a83e-a961878e75fd",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 96,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        240,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "cc45dd56-c4a1-47a6-847f-60826befe481",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 116,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "074f7be4-aed1-4128-97cd-dc671b824fb9",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 116,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -464,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "d1758fd0-fb3b-477e-8efd-812960bae88e",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -192,
+        448
+      ],
+      "id": "be1749df-2f99-4267-8634-1cf71e963164",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок: DATA TABLE в n8n: https://youtu.be/FD1HyYR3EP0\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 132,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        -352
+      ],
+      "typeVersion": 1,
+      "id": "3b6f8538-69c2-4739-a444-3e2aa8e77640",
+      "name": "Sticky Note12",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "0f201333-81ea-46b2-b4e0-a92b709b5587",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        928,
+        576
+      ],
+      "id": "1f98e62c-db47-4801-861c-613c1839b2d3",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "KU9xUYZxPDy0fBIv",
+          "mode": "list",
+          "cachedResultName": "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/KU9xUYZxPDy0fBIv"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        576
+      ],
+      "id": "e7b0bcb4-12f6-4d7f-8266-1231b5e91c1c",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1RVWZPUL5r8Lp9Aq9jrs2qREa0QOGpO1ojrkpoljYVjQ",
+          "mode": "list",
+          "cachedResultName": "TikTok AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RVWZPUL5r8Lp9Aq9jrs2qREa0QOGpO1ojrkpoljYVjQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 835011717,
+          "mode": "list",
+          "cachedResultName": "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RVWZPUL5r8Lp9Aq9jrs2qREa0QOGpO1ojrkpoljYVjQ/edit#gid=835011717"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_video": "={{ $json.id_video }}",
+            "URL": "={{ $json.URL }}",
+            "transcript": "={{ $json.transcript }}",
+            "createdAt": "={{ $json.createdAt }}",
+            "updatedAt": "={{ $json.updatedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_video",
+              "displayName": "id_video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1312,
+        576
+      ],
+      "id": "906be66c-0fc2-4e9b-bcb9-550f9183f0ef",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "KU9xUYZxPDy0fBIv",
+          "mode": "list",
+          "cachedResultName": "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/KU9xUYZxPDy0fBIv"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id_video",
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        576
+      ],
+      "id": "8251e1ca-2055-45d7-a53b-4c917e91d001",
+      "name": "Delete row(s)1"
+    },
+    {
+      "parameters": {
+        "content": "## Синхронизация данных в таблице в Google",
+        "height": 304,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        864,
+        464
+      ],
+      "id": "07d1dc0a-94b7-41e1-8a91-0b2678811eae",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {
+    "Get a you tube channel videos": [
+      {
+        "json": {
+          "videos": [
+            {
+              "type": "video",
+              "id": "vmLJcbJxbmc",
+              "url": "https://www.youtube.com/watch?v=vmLJcbJxbmc",
+              "title": "Мощный TikTok AI Агент: ScrapeCreators + n8n",
+              "thumbnail": "https://i9.ytimg.com/vi/vmLJcbJxbmc/hqdefault_custom_2.jpg?sqp=CPS6_sYG-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAxCPzV6daV4BnPwCa_TBqzG65i9A",
+              "channel": {
+                "title": "",
+                "thumbnail": null
+              },
+              "viewCountText": "173 views",
+              "viewCountInt": 173,
+              "publishedTimeText": "14 hours ago",
+              "publishedTime": "2025-10-03T09:57:35.263Z",
+              "lengthText": "48:08",
+              "lengthSeconds": 2888,
+              "badges": []
+            }
+          ]
+        }
+      }
+    ],
+    "Get a you tube video transcript": [
+      {
+        "json": {
+          "videoId": "vmLJcbJxbmc",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=vmLJcbJxbmc",
+          "transcript": [
+            {
+              "text": "привет в этом видео мы с вами создадим тиктока AI Агента  вот так вот будет выглядеть основной шаблон плюс будет у нас",
+              "startMs": "0",
+              "endMs": "5713",
+              "startTimeText": "0:00"
+            },
+            {
+              "text": "несколько под шаблонов n8n которые будут выполнять определенные задачи для работы с этим AI Агентом",
+              "startMs": "6205",
+              "endMs": "11993",
+              "startTimeText": "0:06"
+            },
+            {
+              "text": "значит что может этот Тикток AI Агент созданный на сервисе n8n  значит я буду вам показывать в этом видео",
+              "startMs": "12205",
+              "endMs": "19095",
+              "startTimeText": "0:12"
+            },
+            {
+              "text": "3 его основные функции на самом деле количество функций мы можем увеличить до 10",
+              "startMs": "19224",
+              "endMs": "24135",
+              "startTimeText": "0:19"
+            },
+            {
+              "text": "но нужны либо нужны ли вам эти 3 эти остальные дополнительные функции вы уже решаете сами",
+              "startMs": "24624",
+              "endMs": "30295",
+              "startTimeText": "0:24"
+            },
+            {
+              "text": "значит 1-ая задача которая будет которая будет или может выполнять этот AI агент",
+              "startMs": "30384",
+              "endMs": "35295",
+              "startTimeText": "0:30"
+            },
+            {
+              "text": "он сможет анализировать контент у определенных пользователей в Тикток",
+              "startMs": "35800",
+              "endMs": "40797",
+              "startTimeText": "0:35"
+            },
+            {
+              "text": "делать он это будет с помощью специального инструмента о котором я рассказывал там предыдущих свои видео",
+              "startMs": "41361",
+              "endMs": "46997",
+              "startTimeText": "0:41"
+            },
+            {
+              "text": "инструмент называется scrapecreators.com этот инструмент позволяет вытаскивать из тиктока большое количество информации",
+              "startMs": "47001",
+              "endMs": "54039",
+              "startTimeText": "0:47"
+            },
+            {
+              "text": "то есть это грубо говоря Парсер для тиктока значит что он будет делать сначала",
+              "startMs": "54040",
+              "endMs": "58864",
+              "startTimeText": "0:54"
+            },
+            {
+              "text": "мы можем анализировать определенные профиля для определенных пользователей 2-ая функция 2-ая задача",
+              "startMs": "59375",
+              "endMs": "66196",
+              "startTimeText": "0:59"
+            },
+            {
+              "text": "после того как он проанализировал определённые профиля определённых пользователей пользователи которые мы задали",
+              "startMs": "66203",
+              "endMs": "72636",
+              "startTimeText": "1:06"
+            },
+            {
+              "text": "он нам присылает информацию из 3 популярных популярных типов контента у этого пользователя",
+              "startMs": "72843",
+              "endMs": "80722",
+              "startTimeText": "1:12"
+            },
+            {
+              "text": "я вам покажу чуть дальше как это всё работает сейчас я вам расскажу просто в теории потом продемонстрирую",
+              "startMs": "81117",
+              "endMs": "86322",
+              "startTimeText": "1:21"
+            },
+            {
+              "text": "и потом мы с вами начнём создавать этого AI Агент дальше значит что он может делать с этим контентом",
+              "startMs": "86637",
+              "endMs": "92673",
+              "startTimeText": "1:26"
+            },
+            {
+              "text": "который он проанализировал он может из этого контента вытаскивать полноценно описание скрипты",
+              "startMs": "92727",
+              "endMs": "99555",
+              "startTimeText": "1:32"
+            },
+            {
+              "text": "и информацию об этом ээ видео плюс самое главное он нам будет",
+              "startMs": "100524",
+              "endMs": "106195",
+              "startTimeText": "1:40"
+            },
+            {
+              "text": "вытаскивать субтитры из этого видео субтитры с детальной разбивкой по а секунда",
+              "startMs": "106195",
+              "endMs": "112857",
+              "startTimeText": "1:46"
+            },
+            {
+              "text": "то есть вот субтитры примерно в таком вот формате где написано на какой секунде",
+              "startMs": "112942",
+              "endMs": "118216",
+              "startTimeText": "1:52"
+            },
+            {
+              "text": "что говорит автор для чего это делается основная задача конечно же это создавать похожий вирусный контент",
+              "startMs": "118382",
+              "endMs": "124847",
+              "startTimeText": "1:58"
+            },
+            {
+              "text": "на основе этих субтитров и не превышать там длительность это очень удобно",
+              "startMs": "126072",
+              "endMs": "131047",
+              "startTimeText": "2:06"
+            },
+            {
+              "text": "3-ья его функция это поиск по хэштегам во всём тиктоке",
+              "startMs": "131112",
+              "endMs": "136240",
+              "startTimeText": "2:11"
+            },
+            {
+              "text": "по определенным хэштегам также контента количество контента который мы можем найти за 1 раз",
+              "startMs": "136240",
+              "endMs": "142249",
+              "startTimeText": "2:16"
+            },
+            {
+              "text": "оно не должно превышать 50 по умолчанию там стоит 20 я вам дальше покажу как изменить эти лимит",
+              "startMs": "142390",
+              "endMs": "148409",
+              "startTimeText": "2:22"
+            },
+            {
+              "text": "значит он будет искать по определенным хэштегам тот контент который набрал",
+              "startMs": "148750",
+              "endMs": "154129",
+              "startTimeText": "2:28"
+            },
+            {
+              "text": "большее количество просмотров за последний там какой-то период времени дальше он будет нам также в Телеграм присылать",
+              "startMs": "154390",
+              "endMs": "160890",
+              "startTimeText": "2:34"
+            },
+            {
+              "text": "3 самых популярных информации об об этом контенте а весь основной контент он будет забивать",
+              "startMs": "161149",
+              "endMs": "168290",
+              "startTimeText": "2:41"
+            },
+            {
+              "text": "то есть все основные ссылки Юр ээ показатели лайков репостов ээ показателей вовлеченности",
+              "startMs": "168389",
+              "endMs": "175629",
+              "startTimeText": "2:48"
+            },
+            {
+              "text": "он всё это будет забивать специализированную Гугл таблицу дата Тейбл таблицу а из дата Тейбл таблицы",
+              "startMs": "175770",
+              "endMs": "181550",
+              "startTimeText": "2:55"
+            },
+            {
+              "text": "всё это будет интегрироваться в Гугл таблиц ну и конечно же он сможет создавать контент аа",
+              "startMs": "181730",
+              "endMs": "187567",
+              "startTimeText": "3:01"
+            },
+            {
+              "text": "с теми полученными материалами которые он аа спарсил которые он получил на основе этих субтитров",
+              "startMs": "187872",
+              "endMs": "193847",
+              "startTimeText": "3:07"
+            },
+            {
+              "text": "он сможет создавать там вирусный контент это тоже без вопросов дальше мы можем этому тиктоку AI Агенту",
+              "startMs": "193872",
+              "endMs": "199799",
+              "startTimeText": "3:13"
+            },
+            {
+              "text": "вешать дополнительные функции все они делаются по определенному сценарию я вам в этом видео покажу 3 сценария",
+              "startMs": "200320",
+              "endMs": "206999",
+              "startTimeText": "3:20"
+            },
+            {
+              "text": "а дальше вы уже просто эти 3 сценария адаптируете под те задачи которые вам необходимы мне например нужен анализ профиля",
+              "startMs": "207160",
+              "endMs": "213879",
+              "startTimeText": "3:27"
+            },
+            {
+              "text": "мне нужно вытаскивать из определённых видео субтитры и мне нужно искать по ключевым словам",
+              "startMs": "214000",
+              "endMs": "219819",
+              "startTimeText": "3:34"
+            },
+            {
+              "text": "что ещё можно делать искать по ключевым словам то есть не по хэштегам а по ключевым словам",
+              "startMs": "220140",
+              "endMs": "225618",
+              "startTimeText": "3:40"
+            },
+            {
+              "text": "искать определённых пользователей аа смотреть подписчиков либо смотреть тех на кого подписан этот человек",
+              "startMs": "225980",
+              "endMs": "233997",
+              "startTimeText": "3:45"
+            },
+            {
+              "text": "вытаскивать комментарий из видео вытаскивать транскрибацию это мы с вами будем делать",
+              "startMs": "234362",
+              "endMs": "239077",
+              "startTimeText": "3:54"
+            },
+            {
+              "text": "вытаскивать информацию о самих видео которые размещены у этого пользователя",
+              "startMs": "239402",
+              "endMs": "244437",
+              "startTimeText": "3:59"
+            },
+            {
+              "text": "и аа просто анализировать соответственно профиль без вытаскивания каких-то дополнительных информаций",
+              "startMs": "244904",
+              "endMs": "250935",
+              "startTimeText": "4:04"
+            },
+            {
+              "text": "то есть мы с вами сейчас будем строить вот такого вот AI Агента  у которого 3 задачи",
+              "startMs": "251384",
+              "endMs": "256255",
+              "startTimeText": "4:11"
+            },
+            {
+              "text": "3 основные задачи если вам нужно увеличить количество задач вы просто копируете",
+              "startMs": "256424",
+              "endMs": "261695",
+              "startTimeText": "4:16"
+            },
+            {
+              "text": "нажимаете дубликат а той или иной задачей меняете 1 ноду то есть здесь преимущество в том",
+              "startMs": "261704",
+              "endMs": "267720",
+              "startTimeText": "4:21"
+            },
+            {
+              "text": "что этот шаблон все практически задачи они идентичны здесь нужно будет вам сменить всего 1 ноду",
+              "startMs": "267720",
+              "endMs": "274535",
+              "startTimeText": "4:27"
+            },
+            {
+              "text": "и этот ареагент выполняет большее количество задач я просто не буду показывать как он будет выполнять все 10 задач",
+              "startMs": "274584",
+              "endMs": "281306",
+              "startTimeText": "4:34"
+            },
+            {
+              "text": "потому что на это уйдёт часа 2 наверное видео особенно когда ты снимаешь процесс будет проходить долго",
+              "startMs": "281306",
+              "endMs": "287065",
+              "startTimeText": "4:41"
+            },
+            {
+              "text": "значит давайте посмотрим как он работает сейчас я его временно активирую перейду в Телеграм и задам ему несколько вопросов",
+              "startMs": "287495",
+              "endMs": "294784",
+              "startTimeText": "4:47"
+            },
+            {
+              "text": "например проведи анализ профиля зуеевич эй ай под 30 последним видео",
+              "startMs": "294935",
+              "endMs": "299944",
+              "startTimeText": "4:54"
+            },
+            {
+              "text": "смотрите буквально за несколько секунд он уже провёл анализ пользователь контента зуеевич эй ай и нашёл",
+              "startMs": "300400",
+              "endMs": "307212",
+              "startTimeText": "5:00"
+            },
+            {
+              "text": "3 самых популярных видео у этого пользователя я могу перейти в Тикток",
+              "startMs": "307587",
+              "endMs": "312332",
+              "startTimeText": "5:07"
+            },
+            {
+              "text": "не знаю откроется ли у меня Тикток вип Ян по моему включён да и смотрите",
+              "startMs": "312827",
+              "endMs": "317661",
+              "startTimeText": "5:12"
+            },
+            {
+              "text": "это мой профиль сузевиче я просил попросил его проанализировать именно свой профиль",
+              "startMs": "317938",
+              "endMs": "322940",
+              "startTimeText": "5:17"
+            },
+            {
+              "text": "и вот 1-ое видео а это просто ссылки на видео также в основной Гугл таблицы",
+              "startMs": "323218",
+              "endMs": "329434",
+              "startTimeText": "5:23"
+            },
+            {
+              "text": "есть информация об этом видео то есть мы можем найти сюда он вбил зуеевич эй",
+              "startMs": "329685",
+              "endMs": "335154",
+              "startTimeText": "5:29"
+            },
+            {
+              "text": "и он провел анализ не по 3 последним видео а по 20 или 30 по 20 по умолчанию",
+              "startMs": "335680",
+              "endMs": "341119",
+              "startTimeText": "5:35"
+            },
+            {
+              "text": "если бы мы ему задали например проведи анализ профиля зуеевич эй а по 30 последним видео мы так ему и задавали",
+              "startMs": "341400",
+              "endMs": "349039",
+              "startTimeText": "5:41"
+            },
+            {
+              "text": "давайте его щас про попросим провести анализ аа определенного пользователя например проведи анализ",
+              "startMs": "349480",
+              "endMs": "356260",
+              "startTimeText": "5:49"
+            },
+            {
+              "text": "сейчас мы его попросим провести транскрибацию определённого видео спасибо мне нужна 30 трибация вот этого видео",
+              "startMs": "356800",
+              "endMs": "362691",
+              "startTimeText": "5:56"
+            },
+            {
+              "text": "вот это видео и мне нужно чтобы он провёл транскрибацию после того как он выполнит транскрибацию",
+              "startMs": "363148",
+              "endMs": "368840",
+              "startTimeText": "6:03"
+            },
+            {
+              "text": "он не отпишется что процесс выполнен и да вот транскрибация выполнена успешно",
+              "startMs": "368840",
+              "endMs": "375306",
+              "startTimeText": "6:08"
+            },
+            {
+              "text": "видео такое то такое то текст сохранён базу данных и готов к использованию сейчас я перехожу в базу данных",
+              "startMs": "375733",
+              "endMs": "381945",
+              "startTimeText": "6:15"
+            },
+            {
+              "text": "я могу перейти в Гугл Шорс базу данных могу перейти в дататейбл базу данных и посмотреть",
+              "startMs": "382413",
+              "endMs": "389386",
+              "startTimeText": "6:22"
+            },
+            {
+              "text": "вот он провёл транскрибацию транскрибацию вот этого видео которое мы ему скидывали",
+              "startMs": "389613",
+              "endMs": "397326",
+              "startTimeText": "6:29"
+            },
+            {
+              "text": "и смотрите вот полная транскрибация этого видео что я могу сейчас сделать с этой транскрибацией",
+              "startMs": "397713",
+              "endMs": "403639",
+              "startTimeText": "6:37"
+            },
+            {
+              "text": "я могу его также отправить полностью вот эту транскрибацию либо сказать мне нужно мне нужно сделать по аналогии с этим идентификатором",
+              "startMs": "403640",
+              "endMs": "412199",
+              "startTimeText": "6:43"
+            },
+            {
+              "text": "точно такой же либо похожий я хочу создать похожий контент вот идентификатор видео создай мне сценарий",
+              "startMs": "412760",
+              "endMs": "420242",
+              "startTimeText": "6:52"
+            },
+            {
+              "text": "учитывая те временные рамки которые здесь выставлены и он мне создаст сценарий похожий другими словами",
+              "startMs": "420517",
+              "endMs": "425602",
+              "startTimeText": "7:00"
+            },
+            {
+              "text": "дальше я этот сценарий могу отправить уже HeyGen а AI Агенту и он создаст мне контент видеоконтент на основе",
+              "startMs": "425797",
+              "endMs": "431922",
+              "startTimeText": "7:05"
+            },
+            {
+              "text": "а этого сценария то есть он проговорит всё это и запишет для меня видео мне кажется идеально",
+              "startMs": "432440",
+              "endMs": "438069",
+              "startTimeText": "7:12"
+            },
+            {
+              "text": "идеально для создания контента точно также этот AI Агент будет проводить анализ по хэштегам здесь эта функция добавлена",
+              "startMs": "438429",
+              "endMs": "445090",
+              "startTimeText": "7:18"
+            },
+            {
+              "text": "аа сколько этот AI Агент будет выходить и сколько стоит я вам в предыдущем видео показывал специальный сервис",
+              "startMs": "445680",
+              "endMs": "451820",
+              "startTimeText": "7:25"
+            },
+            {
+              "text": "который называется screppreators обещал делать по этому сервису различных AI Агентов",
+              "startMs": "451821",
+              "endMs": "457261",
+              "startTimeText": "7:31"
+            },
+            {
+              "text": "1-ый у нас как раз Тикток AI Агент смотрите мы затрачиваем 1 кредит для того чтобы провести",
+              "startMs": "457338",
+              "endMs": "464061",
+              "startTimeText": "7:37"
+            },
+            {
+              "text": "аа парсинг либо анализ 1 задачи всего нам даётся 100 кредитов в месяц бесплатно",
+              "startMs": "464945",
+              "endMs": "471080",
+              "startTimeText": "7:44"
+            },
+            {
+              "text": "то есть мы можем проводить та до 100 различных анализов через этого AI Агента ",
+              "startMs": "471080",
+              "endMs": "476366",
+              "startTimeText": "7:51"
+            },
+            {
+              "text": "абсолютно бесплатно причём никакие данные карты даже вводить не требуется поэтому ребят давайте сейчас с вами",
+              "startMs": "476593",
+              "endMs": "482166",
+              "startTimeText": "7:56"
+            },
+            {
+              "text": "начнём создавать вот этого тиктока AI Агента  по шагам полностью с разбором всех нот всех возможностей",
+              "startMs": "482166",
+              "endMs": "487686",
+              "startTimeText": "8:02"
+            },
+            {
+              "text": "всей функцией поехали также вам напоминаю что вы всегда можете скачать",
+              "startMs": "487793",
+              "endMs": "493587",
+              "startTimeText": "8:07"
+            },
+            {
+              "text": "уже готовые настроенные шаблоны в 1-ом закрепленном сообщении либо в разделе с описанием открываете переходите по ссылке",
+              "startMs": "493732",
+              "endMs": "499987",
+              "startTimeText": "8:13"
+            },
+            {
+              "text": "попадаете в Телеграм бота и он вам подробно рассказывает как и где вы сможете скачать не только",
+              "startMs": "500052",
+              "endMs": "504987",
+              "startTimeText": "8:20"
+            },
+            {
+              "text": "этот готовый настроенный шаблон а он состоит внимание из 4 даже из 5 аа различных шаблонов",
+              "startMs": "505172",
+              "endMs": "512046",
+              "startTimeText": "8:25"
+            },
+            {
+              "text": "которые взаимодействуют между собой но также у нас в телеграме есть база из больше чем на сегодняшний день 542",
+              "startMs": "512073",
+              "endMs": "519365",
+              "startTimeText": "8:32"
+            },
+            {
+              "text": "разобранных шаблонов для n8n  м вы просто находите по ключевым словам те задачи которые вам необходимы",
+              "startMs": "519880",
+              "endMs": "526075",
+              "startTimeText": "8:39"
+            },
+            {
+              "text": "то есть здесь полностью описание что делает этот шаблон какие ноды взаимодейственные какие сервисы в взаимоде работают",
+              "startMs": "526164",
+              "endMs": "532714",
+              "startTimeText": "8:46"
+            },
+            {
+              "text": "ключевые слова плюс хэштеги для быстрого и удобного поиска и вы просто скачиваете те шаблоны",
+              "startMs": "532924",
+              "endMs": "539398",
+              "startTimeText": "8:52"
+            },
+            {
+              "text": "которые вам необходимо выгружаете в свой М 8 Н и как бы ничего по шагам создавать не нужно",
+              "startMs": "539398",
+              "endMs": "545438",
+              "startTimeText": "8:59"
+            },
+            {
+              "text": "хорошо мы же сейчас с вами начнём создавать этот шаблон значит в 1-ую очередь что нам необходимо сделать",
+              "startMs": "546338",
+              "endMs": "551261",
+              "startTimeText": "9:06"
+            },
+            {
+              "text": "нам необходимо в 1-ую очередь создать вот такого вот AI Агента  это будет основной либо главный Ai Агент",
+              "startMs": "551458",
+              "endMs": "557381",
+              "startTimeText": "9:11"
+            },
+            {
+              "text": "мы переходим в М восемьн и выбираем в качестве триггера что мы будем использовать в качестве триггера",
+              "startMs": "557538",
+              "endMs": "563676",
+              "startTimeText": "9:17"
+            },
+            {
+              "text": "я рекомендую здесь использовать Телеграм мне удобнее например взаимодействовать с моим эгентом именно через Телеграм",
+              "startMs": "563683",
+              "endMs": "570036",
+              "startTimeText": "9:23"
+            },
+            {
+              "text": "поэтому я выбираю он месседж выбирая бота аа который у меня привязан уже к n8n  либо Н Т",
+              "startMs": "570440",
+              "endMs": "578220",
+              "startTimeText": "9:30"
+            },
+            {
+              "text": "Н главное я ей помощник в данном случае это мой демонстративный бот пожалуйста не отпишите ему сообщение",
+              "startMs": "578220",
+              "endMs": "584084",
+              "startTimeText": "9:38"
+            },
+            {
+              "text": "он вам ничего отвечать не будет значит здесь также можно сразу же включить функцию скачки изображений",
+              "startMs": "584515",
+              "endMs": "590589",
+              "startTimeText": "9:44"
+            },
+            {
+              "text": "чуть позже вам покажу аа что ещё может делать этот агент ну ладно расскажу сразу же",
+              "startMs": "591369",
+              "endMs": "597320",
+              "startTimeText": "9:51"
+            },
+            {
+              "text": "мы можем просто делать скриншоты а например мы смотрим какое-то видео в этом видео есть в Тикток видео",
+              "startMs": "597320",
+              "endMs": "604531",
+              "startTimeText": "9:57"
+            },
+            {
+              "text": "да вот сейчас включу Тикток в этом в Тикток видео есть информация о пользователе да кто создал это Тикток видео",
+              "startMs": "604548",
+              "endMs": "611531",
+              "startTimeText": "10:04"
+            },
+            {
+              "text": "мы можем просто сделать скриншот отправите агенту и он найдёт этого пользователя",
+              "startMs": "611548",
+              "endMs": "616816",
+              "startTimeText": "10:11"
+            },
+            {
+              "text": "этот профиль проведёт его анализ и дальше уже соответственно мы сможем взаимодействовать таким образом",
+              "startMs": "617063",
+              "endMs": "623096",
+              "startTimeText": "10:17"
+            },
+            {
+              "text": "единственное здесь нужно будет подключать аа ноды Google от джемени с в этом видео я это демонстратировать не буду",
+              "startMs": "623223",
+              "endMs": "629696",
+              "startTimeText": "10:23"
+            },
+            {
+              "text": "показывать не буду вы можете посмотреть другие мои видео по поводу анализа",
+              "startMs": "629823",
+              "endMs": "634456",
+              "startTimeText": "10:29"
+            },
+            {
+              "text": "скриншотов от а с помощью n8n  м я же эту функцию включу потому что я обязательно буду",
+              "startMs": "635042",
+              "endMs": "640557",
+              "startTimeText": "10:35"
+            },
+            {
+              "text": "эту функцию делать в свой основной рабочий шаблон n8n значит 2-ая нода которая нам нужна",
+              "startMs": "640882",
+              "endMs": "646324",
+              "startTimeText": "10:40"
+            },
+            {
+              "text": "мы должны сделать также ноду Telegram она нам позволяет просто взаимодействовать интереснее с нашим эйботом",
+              "startMs": "646395",
+              "endMs": "653405",
+              "startTimeText": "10:46"
+            },
+            {
+              "text": "она будет имитировать печать то есть я буду ээ себе",
+              "startMs": "653835",
+              "endMs": "658645",
+              "startTimeText": "10:53"
+            },
+            {
+              "text": "себе показывает что как будто мой бот работает и он сейчас отвечает я выбираю месседж от",
+              "startMs": "659709",
+              "endMs": "665410",
+              "startTimeText": "10:59"
+            },
+            {
+              "text": "месседж экшнс и выбираю вот этот вот сенд чат экшнс то есть отправка",
+              "startMs": "666029",
+              "endMs": "671210",
+              "startTimeText": "11:06"
+            },
+            {
+              "text": "какого либо действия в данном случае в качестве действия будет просто печать выбирать того же самого бота",
+              "startMs": "671709",
+              "endMs": "677291",
+              "startTimeText": "11:11"
+            },
+            {
+              "text": "которого я выбрал в самом начале единственное мне необходимо будет прописать чат айди где мне взять этот идентификатор чата айди",
+              "startMs": "677291",
+              "endMs": "684491",
+              "startTimeText": "11:17"
+            },
+            {
+              "text": "я пока деактивирую ноду и просто отправлю какой-то сторонний запрос этому агенту",
+              "startMs": "684708",
+              "endMs": "690850",
+              "startTimeText": "11:24"
+            },
+            {
+              "text": "напоминаю что у меня 1 и тот же легенд для демонстрации который был поэтому я просто скопирую",
+              "startMs": "691280",
+              "endMs": "697213",
+              "startTimeText": "11:31"
+            },
+            {
+              "text": "вот таким вот образом отправлю этому AI Агенту запрос здесь запрос пришёл",
+              "startMs": "697946",
+              "endMs": "703657",
+              "startTimeText": "11:37"
+            },
+            {
+              "text": "сейчас я активирую эту ноду и всё что мне необходимо сделать это перенести тот чат айди",
+              "startMs": "703982",
+              "endMs": "709177",
+              "startTimeText": "11:43"
+            },
+            {
+              "text": "который здесь указан аа чат айди в основном шаблоне у нас ещё есть возможность",
+              "startMs": "709182",
+              "endMs": "715144",
+              "startTimeText": "11:49"
+            },
+            {
+              "text": "с помощью голосовых команд отправлять запросы нашему агенту сейчас же что в целях экономии времени я не буду",
+              "startMs": "715415",
+              "endMs": "722980",
+              "startTimeText": "11:55"
+            },
+            {
+              "text": "использовать голосовые команды да вы можете скачать настроенные голосовые команды в",
+              "startMs": "722980",
+              "endMs": "728903",
+              "startTimeText": "12:02"
+            },
+            {
+              "text": "1-ом закрепленном сообщении именно с в этом шаблоне n8n либо посмотреть мои видео о том",
+              "startMs": "729256",
+              "endMs": "734580",
+              "startTimeText": "12:09"
+            },
+            {
+              "text": "как настраивать голосовые команды в n8n  Н для работы с телеком для экономии времени я просто создам следующую ноду",
+              "startMs": "734580",
+              "endMs": "742168",
+              "startTimeText": "12:14"
+            },
+            {
+              "text": "нода будет называться сет где куда я буду отправлять данные",
+              "startMs": "742431",
+              "endMs": "748208",
+              "startTimeText": "12:22"
+            },
+            {
+              "text": "по тому запросу который пришёл то есть вот этот текст и здесь просто пропишу слово текст",
+              "startMs": "749400",
+              "endMs": "754998",
+              "startTimeText": "12:29"
+            },
+            {
+              "text": "всё каких-то дополнительных функций использовать не буду когда же мы будем создавать голосовые команды если они нам нужны",
+              "startMs": "755560",
+              "endMs": "761975",
+              "startTimeText": "12:35"
+            },
+            {
+              "text": "мы хотим чтобы все данные сохранялись именно вот в таком вот виде в виде поэтому",
+              "startMs": "761984",
+              "endMs": "766984",
+              "startTimeText": "12:41"
+            },
+            {
+              "text": "мы можем использовать эту ноду для будущей отладки аа либо простых действий в нашем n8n ",
+              "startMs": "767744",
+              "endMs": "775074",
+              "startTimeText": "12:47"
+            },
+            {
+              "text": "хорошо текст пришёл проведи анализ ээ профиля зуеевича по 30 последним видео",
+              "startMs": "775165",
+              "endMs": "780754",
+              "startTimeText": "12:55"
+            },
+            {
+              "text": "можно по 50 ну последним видео но не больше 50 50 видео для анализа мы должны использовать хорошо",
+              "startMs": "780805",
+              "endMs": "788788",
+              "startTimeText": "13:00"
+            },
+            {
+              "text": "значит имитация печати есть сейчас мы создаем нашего реагента то есть мы выбираем реагента",
+              "startMs": "788851",
+              "endMs": "794468",
+              "startTimeText": "13:08"
+            },
+            {
+              "text": "и создаем базового простого реагента можем его назвать как реагент Тикток да",
+              "startMs": "794771",
+              "endMs": "800347",
+              "startTimeText": "13:14"
+            },
+            {
+              "text": "а потому что этот AI Агент будет отвечать за Тикток в качестве сообщения которые ему будет приходить как раз вот из этой ноды",
+              "startMs": "801000",
+              "endMs": "807641",
+              "startTimeText": "13:21"
+            },
+            {
+              "text": "текст текст из этой ноды которая собирает весь текст неважно в голосовом виде пришёл или в текст",
+              "startMs": "807998",
+              "endMs": "815081",
+              "startTimeText": "13:27"
+            },
+            {
+              "text": "там преимущество того что мы будем использовать эту ноду за счёт не неё мы не нарушаем какую-то работу наших клиентов",
+              "startMs": "815118",
+              "endMs": "823361",
+              "startTimeText": "13:35"
+            },
+            {
+              "text": "дальше значит нам необходимо включить фолбек это запасной наш эйгент и включаем грубо",
+              "startMs": "823958",
+              "endMs": "830620",
+              "startTimeText": "13:43"
+            },
+            {
+              "text": "говоря мозг нашего агента я буду в качестве ле модели использовать ChatGPT ",
+              "startMs": "830620",
+              "endMs": "835903",
+              "startTimeText": "13:50"
+            },
+            {
+              "text": "версию наверное 4 и 1 либо можно пятёрку даже потестить",
+              "startMs": "836496",
+              "endMs": "841463",
+              "startTimeText": "13:56"
+            },
+            {
+              "text": "ну давайте 4 1 мне в принципе для этой задачи вполне хватит",
+              "startMs": "841536",
+              "endMs": "846582",
+              "startTimeText": "14:01"
+            },
+            {
+              "text": "4 и 1 в качестве резервной модели я могу использовать здесь уже модели от антропика",
+              "startMs": "847200",
+              "endMs": "853279",
+              "startTimeText": "14:07"
+            },
+            {
+              "text": "например 4 сонет либо 4 и 5 сонет я хочу по нему отдельное видео снять",
+              "startMs": "853280",
+              "endMs": "858519",
+              "startTimeText": "14:13"
+            },
+            {
+              "text": "там очень много классной функций но это будет в качестве дополнительного дополнительного инструмента для наших AI Агентов",
+              "startMs": "858520",
+              "endMs": "865159",
+              "startTimeText": "14:18"
+            },
+            {
+              "text": "значит в качестве инструментов я обязательно сюда добавлю ноду Think нода Think позволяет нашему легенду рассуждать",
+              "startMs": "865671",
+              "endMs": "871928",
+              "startTimeText": "14:25"
+            },
+            {
+              "text": "и когда у него будет большое количество задач позволяет ему не запутаться в том обилии задач",
+              "startMs": "872191",
+              "endMs": "878808",
+              "startTimeText": "14:32"
+            },
+            {
+              "text": "который к нему приходит в качестве инструмента памяти я пока ничего не могу поставить",
+              "startMs": "878808",
+              "endMs": "883968",
+              "startTimeText": "14:38"
+            },
+            {
+              "text": "но я обязательно сюда поставлю ноду рэдис я снимал отдельное видео по этой теме",
+              "startMs": "884071",
+              "endMs": "890141",
+              "startTimeText": "14:44"
+            },
+            {
+              "text": "нода рэдис в чат мемэри значит она будет сохранять всю переписку с моим AI Агентом",
+              "startMs": "890537",
+              "endMs": "897183",
+              "startTimeText": "14:50"
+            },
+            {
+              "text": "вот в таком вот удобном блокноте и где я всегда смогу узнать",
+              "startMs": "897375",
+              "endMs": "902144",
+              "startTimeText": "14:57"
+            },
+            {
+              "text": "о чём я о чём тот или иной пользователь здесь будет информация с дендификатором",
+              "startMs": "902494",
+              "endMs": "907905",
+              "startTimeText": "15:02"
+            },
+            {
+              "text": "общался с тем ильным AI Агентом здесь же у меня просто рэдис демонстративный",
+              "startMs": "907905",
+              "endMs": "913665",
+              "startTimeText": "15:07"
+            },
+            {
+              "text": "я его сейчас как раз и подключу для того чтобы нам подключить инструмент памяти нам мы сначала должны протестировать нашего агента",
+              "startMs": "914174",
+              "endMs": "921278",
+              "startTimeText": "15:14"
+            },
+            {
+              "text": "то есть мы его просто запускаем аа чтобы он хоть как-то ответил потому что он сейчас ещё не понимает как ответить",
+              "startMs": "921401",
+              "endMs": "928598",
+              "startTimeText": "15:21"
+            },
+            {
+              "text": "а дальше мы ему уже после 1-ого запуска мы ему сможем подключить ноду памяти",
+              "startMs": "929001",
+              "endMs": "933878",
+              "startTimeText": "15:29"
+            },
+            {
+              "text": "ноду памяти можно использовать классическую я буду использовать ноду памяти рэдис выбираю аккаунт",
+              "startMs": "934041",
+              "endMs": "939077",
+              "startTimeText": "15:34"
+            },
+            {
+              "text": "который у меня выбран для рэдис по моему вот это вот демо или вот это вот этот",
+              "startMs": "939281",
+              "endMs": "944837",
+              "startTimeText": "15:39"
+            },
+            {
+              "text": "и здесь всё что мне необходимо сделать это выбрать ручной ручную отправку указать",
+              "startMs": "945280",
+              "endMs": "951560",
+              "startTimeText": "15:45"
+            },
+            {
+              "text": "например Телеграм чат айди а в редис особенность в том",
+              "startMs": "952720",
+              "endMs": "958399",
+              "startTimeText": "15:52"
+            },
+            {
+              "text": "что здесь необходимо именно прописывать сначала буквенные выражения а дальше чтобы",
+              "startMs": "958400",
+              "endMs": "963582",
+              "startTimeText": "15:58"
+            },
+            {
+              "text": "память сохранялась по определенному пользователю мы должны ему также дать вот этот вот параметр",
+              "startMs": "964720",
+              "endMs": "970349",
+              "startTimeText": "16:04"
+            },
+            {
+              "text": "либо вот это вот выражение чат айди для этого мы включаем выражение и переносим сюда вот этот вот значение",
+              "startMs": "970349",
+              "endMs": "977005",
+              "startTimeText": "16:10"
+            },
+            {
+              "text": "вот массив данных чат айди всё теперь он будет сохранять именно идентификатор чат айди",
+              "startMs": "977114",
+              "endMs": "982205",
+              "startTimeText": "16:17"
+            },
+            {
+              "text": "также мы можем узнать аа прописать сколько к какому количеству сообщений он должен обращаться",
+              "startMs": "982634",
+              "endMs": "988005",
+              "startTimeText": "16:22"
+            },
+            {
+              "text": "пускай будет обращаться к 10 сообщению всё теперь у нас настроен аа наш редис",
+              "startMs": "988194",
+              "endMs": "993325",
+              "startTimeText": "16:28"
+            },
+            {
+              "text": "можем также его проверить да запустим наш ворк Флоу",
+              "startMs": "993594",
+              "endMs": "998805",
+              "startTimeText": "16:33"
+            },
+            {
+              "text": "и теперь у него есть память в рэдис то есть она уже работает в качестве инструментов мы будем использовать отдельный отдельный ворк флоу",
+              "startMs": "1000337",
+              "endMs": "1007582",
+              "startTimeText": "16:40"
+            },
+            {
+              "text": "и будем дозваниваться либо отправлять запросы в эти ворк Флоу 1-ый инструмент будет в этот инструмент",
+              "startMs": "1008017",
+              "endMs": "1014645",
+              "startTimeText": "16:48"
+            },
+            {
+              "text": "сейчас мы его переименуем и выберем его название для того чтобы мы обращались в отдельную ворфлоу",
+              "startMs": "1014645",
+              "endMs": "1021565",
+              "startTimeText": "16:54"
+            },
+            {
+              "text": "нам как раз нужно создать те самые отдельные ворфло здесь я прописываю в качестве названия например",
+              "startMs": "1021565",
+              "endMs": "1027044",
+              "startTimeText": "17:01"
+            },
+            {
+              "text": "1-ый там Тикток да и пропишу что это черновик и здесь уже начнётся наша работа с паркингом",
+              "startMs": "1027394",
+              "endMs": "1032890",
+              "startTimeText": "17:07"
+            },
+            {
+              "text": "значит в качестве ноды паркинга как я и говорил мы будем использовать скраппер креаторс этот",
+              "startMs": "1033069",
+              "endMs": "1037650",
+              "startTimeText": "17:13"
+            },
+            {
+              "text": "Парсер позволяет нам то есть мы с вами уже создавали различных AI Агентов для социальных сетей",
+              "startMs": "1038149",
+              "endMs": "1043128",
+              "startTimeText": "17:18"
+            },
+            {
+              "text": "но проблема всегда была в том что мы не могли найти адекватный барсел вот этот скрапер creators это реально крутой",
+              "startMs": "1043551",
+              "endMs": "1050808",
+              "startTimeText": "17:23"
+            },
+            {
+              "text": "адекватный pharsion для социальных сетей частности для Тикток мы ищем в Тикток",
+              "startMs": "1050831",
+              "endMs": "1056038",
+              "startTimeText": "17:30"
+            },
+            {
+              "text": "а единственное да этот скрапер креаторс это официальный скрапер креатор соцсервиса скрапер креаторс",
+              "startMs": "1056521",
+              "endMs": "1063997",
+              "startTimeText": "17:36"
+            },
+            {
+              "text": "единственное нам необходимо будет его установить то есть это пользовательская нота в n8n  м мы её устанавливаем",
+              "startMs": "1064001",
+              "endMs": "1069918",
+              "startTimeText": "17:44"
+            },
+            {
+              "text": "после установки у нас появляются все функции которые здесь доступны дальше значит нам необходимо найти Тикток",
+              "startMs": "1069921",
+              "endMs": "1075728",
+              "startTimeText": "17:49"
+            },
+            {
+              "text": "и выбрать те задачи которые мы будем решать с помощью этого скрайперкриаторс 1-ая задача это например анализ профиля",
+              "startMs": "1075911",
+              "endMs": "1082048",
+              "startTimeText": "17:55"
+            },
+            {
+              "text": "анализ профиля анализ видео аа по у определенного пользователя",
+              "startMs": "1082391",
+              "endMs": "1087408",
+              "startTimeText": "18:02"
+            },
+            {
+              "text": "по определенному профилю мы выбираем ГТА Тикток профайл с видео аа мы с помощью этого этой",
+              "startMs": "1087431",
+              "endMs": "1094102",
+              "startTimeText": "18:07"
+            },
+            {
+              "text": "как бы этой ноды будем решать запросы но мы будем решать запросы не здесь",
+              "startMs": "1094536",
+              "endMs": "1099983",
+              "startTimeText": "18:14"
+            },
+            {
+              "text": "всё что нам необходимо сделать это просто грамотно прописать вот это вот имя мы в качестве названия для нашего аа",
+              "startMs": "1100136",
+              "endMs": "1107622",
+              "startTimeText": "18:20"
+            },
+            {
+              "text": "запроса будем прописывать это имя единственное смотрите он здесь поставил единичку поэтому нужно нам и это переименовать",
+              "startMs": "1108257",
+              "endMs": "1114702",
+              "startTimeText": "18:28"
+            },
+            {
+              "text": "например здесь поставить что-то такое а здесь добавить имя а основное почему я использую",
+              "startMs": "1114702",
+              "endMs": "1122013",
+              "startTimeText": "18:34"
+            },
+            {
+              "text": "вот здесь именно это имя да для того чтобы в нашего легенда отправить Промт который будет решать",
+              "startMs": "1122546",
+              "endMs": "1130904",
+              "startTimeText": "18:42"
+            },
+            {
+              "text": "именно ту задачу которая будет выполняться в этом wark flop хорошо значит 1-ая задача которая нам необходима",
+              "startMs": "1131334",
+              "endMs": "1137904",
+              "startTimeText": "18:51"
+            },
+            {
+              "text": "это будет задача для того чтобы наш реагент ээ",
+              "startMs": "1138054",
+              "endMs": "1143557",
+              "startTimeText": "18:58"
+            },
+            {
+              "text": "парсил Тикток определенный Тикток аккаунт который мы ему дадим ээ всё эта нода нам больше не нужна",
+              "startMs": "1144242",
+              "endMs": "1151500",
+              "startTimeText": "19:04"
+            },
+            {
+              "text": "мы её отсюда удаляем и создаем новый ворк Флоу в качестве триггера",
+              "startMs": "1151500",
+              "endMs": "1156506",
+              "startTimeText": "19:11"
+            },
+            {
+              "text": "в этом новом ворфло будет триггер запрос от предыдущей ноды",
+              "startMs": "1156506",
+              "endMs": "1161966",
+              "startTimeText": "19:16"
+            },
+            {
+              "text": "поэтому мы выбираем вот этот вот ВН когда другой ворфлоу будет дозваниваться до нашего основного ворфло",
+              "startMs": "1161966",
+              "endMs": "1168686",
+              "startTimeText": "19:21"
+            },
+            {
+              "text": "здесь мы должны прописать те данные которые мы хотим принимать я хочу принимать юзернейм",
+              "startMs": "1169073",
+              "endMs": "1174406",
+              "startTimeText": "19:29"
+            },
+            {
+              "text": "и я хочу принимать количество то есть лимит откуда я эти данные беру я сюда сразу же опять добавляю эту ноду скраберкриаторс",
+              "startMs": "1174760",
+              "endMs": "1182952",
+              "startTimeText": "19:34"
+            },
+            {
+              "text": "и здесь выбирает Тикток ээ Тикток ээ так не эту ноду",
+              "startMs": "1183247",
+              "endMs": "1188312",
+              "startTimeText": "19:43"
+            },
+            {
+              "text": "не Тикток профайлов Тикток профайлов видео здесь смотрите есть 2 параметра",
+              "startMs": "1188367",
+              "endMs": "1192992",
+              "startTimeText": "19:48"
+            },
+            {
+              "text": "1-ая параметры юзернейм либо хендл он так её называет и лимит значит я хочу собирать лимит",
+              "startMs": "1193440",
+              "endMs": "1199614",
+              "startTimeText": "19:53"
+            },
+            {
+              "text": "поэтому я сюда перехожу здесь прописываю лимит а здесь пропишу просто юзернейм да для более понятного",
+              "startMs": "1199745",
+              "endMs": "1205934",
+              "startTimeText": "19:59"
+            },
+            {
+              "text": "для того чтобы мне было более понятно юзернейм всё сейчас мне необходимо соединить",
+              "startMs": "1206345",
+              "endMs": "1212481",
+              "startTimeText": "20:06"
+            },
+            {
+              "text": "эти 2 warflame между собой я также здесь переименована и могу здесь просто прописать",
+              "startMs": "1212718",
+              "endMs": "1217521",
+              "startTimeText": "20:12"
+            },
+            {
+              "text": "ту задачу которую он будет выполнять например вот эта вот задача кет Тикток профайл с видео ну я просто напишу 2-ой",
+              "startMs": "1217958",
+              "endMs": "1224121",
+              "startTimeText": "20:17"
+            },
+            {
+              "text": "Тикток демо либо там черновик чтобы в своих в своих шаблонах не запутаться",
+              "startMs": "1224760",
+              "endMs": "1230547",
+              "startTimeText": "20:24"
+            },
+            {
+              "text": "всё переходим обратно в нашего 1-ого воркфлоу и здесь мы должны отправить запрос",
+              "startMs": "1231052",
+              "endMs": "1236747",
+              "startTimeText": "20:31"
+            },
+            {
+              "text": "мы должны выбрать тот воркфлоу который мы только что создали вот Тикток 2 Дема",
+              "startMs": "1236972",
+              "endMs": "1241587",
+              "startTimeText": "20:36"
+            },
+            {
+              "text": "после того как мы его выбрали мы видим что здесь необходимо присылать какие-то параметры",
+              "startMs": "1242086",
+              "endMs": "1247433",
+              "startTimeText": "20:42"
+            },
+            {
+              "text": "я ставлю на автоматическую то есть чтобы он сам аа вытаскивал из моего сообщения те параметры",
+              "startMs": "1247606",
+              "endMs": "1253393",
+              "startTimeText": "20:47"
+            },
+            {
+              "text": "которые необходимо единственное для того чтобы было более менее понятно я должен прописать здесь discription здесь discription",
+              "startMs": "1253393",
+              "endMs": "1260507",
+              "startTimeText": "20:53"
+            },
+            {
+              "text": "и должен написать discription то есть описание когда и почему он должен как бы вызывать этого в орклоу",
+              "startMs": "1260932",
+              "endMs": "1267138",
+              "startTimeText": "21:00"
+            },
+            {
+              "text": "эти параметры я сейчас наизусть не помню поэтому я вернусь своего основного реагента",
+              "startMs": "1267462",
+              "endMs": "1273058",
+              "startTimeText": "21:07"
+            },
+            {
+              "text": "основной шаблон и просто скопирую эти данные вы же сможете также скопировать эти данные",
+              "startMs": "1273262",
+              "endMs": "1278538",
+              "startTimeText": "21:13"
+            },
+            {
+              "text": "в 1-ом закрепленном сообщении то есть вот так вот выглядит аа discreption",
+              "startMs": "1279062",
+              "endMs": "1284468",
+              "startTimeText": "21:19"
+            },
+            {
+              "text": "вот так вот выглядит этот discreption и вот так вот выглядит информация по лимитам",
+              "startMs": "1284771",
+              "endMs": "1290628",
+              "startTimeText": "21:24"
+            },
+            {
+              "text": "здесь также сразу же указано что лимит если лимит не задан",
+              "startMs": "1291058",
+              "endMs": "1296199",
+              "startTimeText": "21:31"
+            },
+            {
+              "text": "то есть если мы не провели то есть мы просто хотим провести анализ профиля мы по умолчанию ставим 20",
+              "startMs": "1296199",
+              "endMs": "1301661",
+              "startTimeText": "21:36"
+            },
+            {
+              "text": "можно по умолчанию ставить чуть больше всё теперь наш реагент когда будет получать задачу по",
+              "startMs": "1301858",
+              "endMs": "1308901",
+              "startTimeText": "21:41"
+            },
+            {
+              "text": "тому что провести анализ профиля он будет запрашиваться именно в этот Ворд флоу и нам необходимо настроить сейчас именно этот ворк Фло",
+              "startMs": "1309718",
+              "endMs": "1317642",
+              "startTimeText": "21:49"
+            },
+            {
+              "text": "сюда будет приходить юзернейм и сюда будет приходить информация по лимитам мы можем для того чтобы протестить",
+              "startMs": "1317838",
+              "endMs": "1324721",
+              "startTimeText": "21:57"
+            },
+            {
+              "text": "эту информацию включить то есть мы должны включить и единственное нам необходимо будет отредактировать тот Джейсон",
+              "startMs": "1325317",
+              "endMs": "1332162",
+              "startTimeText": "22:05"
+            },
+            {
+              "text": "который к нам приходит Джейсон который к нам приходит 2 запятые и я сюда веду например свой профиль",
+              "startMs": "1332162",
+              "endMs": "1338704",
+              "startTimeText": "22:12"
+            },
+            {
+              "text": "2-ой свой профиль по тиктоку называется он Игорь зуеевич",
+              "startMs": "1338935",
+              "endMs": "1344584",
+              "startTimeText": "22:18"
+            },
+            {
+              "text": "и лимит поставлю ну давайте сколько 40 да",
+              "startMs": "1345615",
+              "endMs": "1349743",
+              "startTimeText": "22:25"
+            },
+            {
+              "text": "как будто я хочу провести анализ по 40 сообщению всё нажимаю окей",
+              "startMs": "1350853",
+              "endMs": "1356386",
+              "startTimeText": "22:30"
+            },
+            {
+              "text": "и эти данные уже приходят значит здесь мы должны ввести вот этот вот юзернейм который должен прийти",
+              "startMs": "1356693",
+              "endMs": "1362986",
+              "startTimeText": "22:36"
+            },
+            {
+              "text": "смотрите обязательно юзернейм должен быть без вот этого вот знака собака то есть без знака собака это очень важно",
+              "startMs": "1363453",
+              "endMs": "1370106",
+              "startTimeText": "22:43"
+            },
+            {
+              "text": "и дальше лимит лимит у нас тоже динамический который мы забиваем он нестатичный и выбираем лимит",
+              "startMs": "1370617",
+              "endMs": "1377902",
+              "startTimeText": "22:50"
+            },
+            {
+              "text": "то количество сообщений которое здесь пришло значит как создать аккаунт в скрапер креатор",
+              "startMs": "1379164",
+              "endMs": "1384195",
+              "startTimeText": "22:59"
+            },
+            {
+              "text": "вы нажимаете creat new cradital и всё что вам необходимо это ввести сюда свой appy ключ",
+              "startMs": "1384404",
+              "endMs": "1389476",
+              "startTimeText": "23:04"
+            },
+            {
+              "text": "регистрируетесь на скрапер креатор делать я это я например это сделал через Гугл аккаунт перешёл",
+              "startMs": "1389644",
+              "endMs": "1396464",
+              "startTimeText": "23:09"
+            },
+            {
+              "text": "сразу же авторизовался скопировал свой апе ключ вбил его вот сюда",
+              "startMs": "1396575",
+              "endMs": "1401424",
+              "startTimeText": "23:16"
+            },
+            {
+              "text": "так убил его вот сюда нажал сейф и всё у меня аккаунт скраппер креатор аа соответственно активировался и появился",
+              "startMs": "1401775",
+              "endMs": "1408766",
+              "startTimeText": "23:21"
+            },
+            {
+              "text": "вот он 1 мой аккаунт в данном ворплоу хорошо я сейчас могу нажать протестировать",
+              "startMs": "1409033",
+              "endMs": "1415740",
+              "startTimeText": "23:29"
+            },
+            {
+              "text": "и получу данные об этом профиле Игорь зуевич и о 40 его последних постах",
+              "startMs": "1416100",
+              "endMs": "1422540",
+              "startTimeText": "23:36"
+            },
+            {
+              "text": "давайте сделаем это всё данные пришли вот смотрите какое большое количество данных",
+              "startMs": "1422540",
+              "endMs": "1428340",
+              "startTimeText": "23:42"
+            },
+            {
+              "text": "на самом деле я спрашивал в ChatGPT  то есть я копировал все эти данные и отправлял в ChatGPT  и говорил ну слушай у меня столько данных",
+              "startMs": "1428960",
+              "endMs": "1435579",
+              "startTimeText": "23:48"
+            },
+            {
+              "text": "пришло от этого скрабер креатора как помоги мне пожалуйста разбить эти данные и выяснить что из этих данных реально интересно",
+              "startMs": "1435980",
+              "endMs": "1442658",
+              "startTimeText": "23:55"
+            },
+            {
+              "text": "поможет моему продвижению а что нет он мне подсказал какие данные необходимо вытащить они все приходят 1 сплошным массивом мне для этого",
+              "startMs": "1443430",
+              "endMs": "1451249",
+              "startTimeText": "24:03"
+            },
+            {
+              "text": "не для того чтобы вытащить по каждому из 40 видео эту информацию мне необходимо",
+              "startMs": "1451430",
+              "endMs": "1456849",
+              "startTimeText": "24:11"
+            },
+            {
+              "text": "добавить нодо Сплит аут здесь я выбираю смотрю в каком формате они приходят вот 1-ое",
+              "startMs": "1456870",
+              "endMs": "1462682",
+              "startTimeText": "24:16"
+            },
+            {
+              "text": "2-ое 3-ье так до 40 я стягиваю вот эту информацию убираю вот этот 0 и оставляю авенлист",
+              "startMs": "1462682",
+              "endMs": "1469442",
+              "startTimeText": "24:22"
+            },
+            {
+              "text": "нажимаю тест и теперь у меня из 1 1 данных то есть из 1 массива данных приходят 40",
+              "startMs": "1470040",
+              "endMs": "1477082",
+              "startTimeText": "24:30"
+            },
+            {
+              "text": "то есть 40 тем которые мы запрашивали отлично все эти данные пришли мы можем эту ноду запинить",
+              "startMs": "1477117",
+              "endMs": "1482842",
+              "startTimeText": "24:37"
+            },
+            {
+              "text": "для того чтобы данные не слетели мы не проводили несколько раз 1 и те же исследования",
+              "startMs": "1482877",
+              "endMs": "1487842",
+              "startTimeText": "24:42"
+            },
+            {
+              "text": "1 и тот же парсон значит дальше что нам с этими данными нужно сделать мы должны эти данные куда-то записать",
+              "startMs": "1488277",
+              "endMs": "1494914",
+              "startTimeText": "24:48"
+            },
+            {
+              "text": "да для того чтобы не потерялись я в своём основном шаблоне показывал что мы будем записывать",
+              "startMs": "1495166",
+              "endMs": "1500533",
+              "startTimeText": "24:55"
+            },
+            {
+              "text": "эти данные в ноду дата Тейбл вы можете также выбрать ноду детектейбл но если вы забиваете данный в ноду дататейбл",
+              "startMs": "1501106",
+              "endMs": "1508813",
+              "startTimeText": "25:01"
+            },
+            {
+              "text": "всё же необходимо продублировать эти данные например в Гугл таблицу для чего я забываю данные в ноду дататейбл",
+              "startMs": "1509386",
+              "endMs": "1516253",
+              "startTimeText": "25:09"
+            },
+            {
+              "text": "во 1-ых дата Тейбл находится на том же сервере что и n8n  м то есть он не зависит от интернета",
+              "startMs": "1517081",
+              "endMs": "1523757",
+              "startTimeText": "25:17"
+            },
+            {
+              "text": "если я сюда поставлю ноды Гугл и у меня будет какой-то какая-то проблема с Аппе",
+              "startMs": "1524161",
+              "endMs": "1529078",
+              "startTimeText": "25:24"
+            },
+            {
+              "text": "соответственно я не смогу обращаться к этому гуглу выйдет ошибка и я потом буду блин плеваться говорить что как",
+              "startMs": "1529441",
+              "endMs": "1536345",
+              "startTimeText": "25:29"
+            },
+            {
+              "text": "что как исправить соответственно я чтобы рабочий процесс максимально",
+              "startMs": "1536734",
+              "endMs": "1541745",
+              "startTimeText": "25:36"
+            },
+            {
+              "text": "минимизировать риск ошибки я сюда добавил дата тейпа но отдельно я добавил синхронизацию данных в Гугл таблицу",
+              "startMs": "1542854",
+              "endMs": "1550425",
+              "startTimeText": "25:42"
+            },
+            {
+              "text": "здесь я выставляю таймер например раз в там 25 либо в 30",
+              "startMs": "1550654",
+              "endMs": "1556152",
+              "startTimeText": "25:50"
+            },
+            {
+              "text": "минут аа этот запрос будет срабатывать это надо будет срабатывать и будет",
+              "startMs": "1556167",
+              "endMs": "1562392",
+              "startTimeText": "25:56"
+            },
+            {
+              "text": "все данные которые забиты в таблицу переносить в Гугл шит таблицу уже в мою основную таблицу",
+              "startMs": "1562807",
+              "endMs": "1569072",
+              "startTimeText": "26:02"
+            },
+            {
+              "text": "а отсюда её просто удаляться удалять то есть я делаю запрос по определенному пользователю",
+              "startMs": "1569447",
+              "endMs": "1575367",
+              "startTimeText": "26:09"
+            },
+            {
+              "text": "он не без проблем всё это выполняет потому что в нём стоит безопасная нода дата Тейбл дальше",
+              "startMs": "1575632",
+              "endMs": "1581767",
+              "startTimeText": "26:15"
+            },
+            {
+              "text": "значит через 30 минут либо через определенное количество времени можете там на своё время поставить",
+              "startMs": "1581872",
+              "endMs": "1586887",
+              "startTimeText": "26:21"
+            },
+            {
+              "text": "он эту таблицу вот эта таблица сейчас вам покажу её а это таблица Парсер да",
+              "startMs": "1586992",
+              "endMs": "1594085",
+              "startTimeText": "26:26"
+            },
+            {
+              "text": "вот это таблица видите она сейчас очистилась потому что сработала автоматизация",
+              "startMs": "1594515",
+              "endMs": "1600648",
+              "startTimeText": "26:34"
+            },
+            {
+              "text": "по очистке и переносу этих данных непосредственно в Гугл шитс таблицу",
+              "startMs": "1600831",
+              "endMs": "1605728",
+              "startTimeText": "26:40"
+            },
+            {
+              "text": "в чём преимущество Гугл шиц в данном случае преимущество в том что они будут храниться в более удобном формате",
+              "startMs": "1606400",
+              "endMs": "1611912",
+              "startTimeText": "26:46"
+            },
+            {
+              "text": "чем в дата тэйбл но преимущество дата тэйбл в том что они аа",
+              "startMs": "1612048",
+              "endMs": "1616672",
+              "startTimeText": "26:52"
+            },
+            {
+              "text": "не сломаются эти таблицы то есть они всегда будут работать и мы всегда сможем провести этот анализ",
+              "startMs": "1617208",
+              "endMs": "1622272",
+              "startTimeText": "26:57"
+            },
+            {
+              "text": "поэтому здесь я тоже выберу дата Тейбл instard Rose и единственное я здесь уже не буду создавать отдельное",
+              "startMs": "1622703",
+              "endMs": "1629576",
+              "startTimeText": "27:02"
+            },
+            {
+              "text": "отдельную таблицу для того чтобы не затягивать это видео я выберу уже готовую таблицу сейчас я вам её покажу значит какие",
+              "startMs": "1630504",
+              "endMs": "1637536",
+              "startTimeText": "27:10"
+            },
+            {
+              "text": "основные значения мне нужны мне нужно никнейм то есть информация об о аккаунте по которому мы будем проводить анализ",
+              "startMs": "1638544",
+              "endMs": "1646943",
+              "startTimeText": "27:18"
+            },
+            {
+              "text": "я просто вобью в поиске грызуевич для того чтобы найти этот самый никнейм",
+              "startMs": "1647016",
+              "endMs": "1652343",
+              "startTimeText": "27:27"
+            },
+            {
+              "text": "в этом Джейсон файле либо здесь он где-то идёт в самом самом конце",
+              "startMs": "1652696",
+              "endMs": "1658983",
+              "startTimeText": "27:32"
+            },
+            {
+              "text": "вот Юник айди мы берём и добавляем вот сюда окей значит дальше что мы desk desk это описание",
+              "startMs": "1659256",
+              "endMs": "1668738",
+              "startTimeText": "27:39"
+            },
+            {
+              "text": "дальше значит статистику необходимую статистику Avent ID это идентификатор этого видео",
+              "startMs": "1669661",
+              "endMs": "1675818",
+              "startTimeText": "27:49"
+            },
+            {
+              "text": "юурел юурел в самом конце мы его чуть позже добавим Плэй аккаунт это количество просмотров",
+              "startMs": "1675981",
+              "endMs": "1681338",
+              "startTimeText": "27:55"
+            },
+            {
+              "text": "Плэй аккаунт а дальше ээ диккаунт это количество лайков",
+              "startMs": "1681741",
+              "endMs": "1686468",
+              "startTimeText": "28:01"
+            },
+            {
+              "text": "дальше значит коммент аккаунт это количество комментариев дальше значит количество",
+              "startMs": "1687051",
+              "endMs": "1692708",
+              "startTimeText": "28:07"
+            },
+            {
+              "text": "поделенных по поделившихся этим контентом shar cound и ээ коллект аккаунт",
+              "startMs": "1692971",
+              "endMs": "1699988",
+              "startTimeText": "28:12"
+            },
+            {
+              "text": "коллект count это количество сохранений если я не ошибаюсь единственное нам сюда ещё необходимо вбить юэрэл",
+              "startMs": "1701920",
+              "endMs": "1708080",
+              "startTimeText": "28:21"
+            },
+            {
+              "text": "бьюэрэл он где-то в самом конце этого видео да в самом конце юэрэл этого видео",
+              "startMs": "1708718",
+              "endMs": "1713361",
+              "startTimeText": "28:28"
+            },
+            {
+              "text": "всё эти значения у нас будут переходить в таблицу таблица будет выглядеть таким образом то есть у нас указан никнейм",
+              "startMs": "1713998",
+              "endMs": "1719881",
+              "startTimeText": "28:33"
+            },
+            {
+              "text": "у нас указан дээск описание у нас указан указанный дентификатор юэрэл",
+              "startMs": "1720038",
+              "endMs": "1725361",
+              "startTimeText": "28:40"
+            },
+            {
+              "text": "количество просмотров количество лайков количество комментариев количество поделившихся",
+              "startMs": "1725918",
+              "endMs": "1732037",
+              "startTimeText": "28:45"
+            },
+            {
+              "text": "аа коллекций аккаунт это количество сохранений и дата создания всё нас эти данные устраивает",
+              "startMs": "1732482",
+              "endMs": "1739317",
+              "startTimeText": "28:52"
+            },
+            {
+              "text": "мы все эти данные вбили выбрали ту таблицу которая нам необходима дата Тейбл",
+              "startMs": "1739402",
+              "endMs": "1744533",
+              "startTimeText": "28:59"
+            },
+            {
+              "text": "можете прямо отсюда создать таблицу креативную дату Тейбл и нажимаем протестировать",
+              "startMs": "1744986",
+              "endMs": "1750266",
+              "startTimeText": "29:04"
+            },
+            {
+              "text": "всё все данные основные нам выпали сюда если вам нужны какие-то дополнительные данные",
+              "startMs": "1750506",
+              "endMs": "1755573",
+              "startTimeText": "29:10"
+            },
+            {
+              "text": "если же вам нужны какие-то дополнительные данные которые мне например не нужны которые я не показываю вы всегда их можете добавить",
+              "startMs": "1756485",
+              "endMs": "1762834",
+              "startTimeText": "29:16"
+            },
+            {
+              "text": "в качестве новой колонки хорошо значит мы забили эти данные сейчас нам необходимо сделать небольшой анализ",
+              "startMs": "1763445",
+              "endMs": "1770601",
+              "startTimeText": "29:23"
+            },
+            {
+              "text": "анализ мы будем делать с помощью нод и код для того чтобы просто прислать нам 3 самых популярных например публикации",
+              "startMs": "1770637",
+              "endMs": "1777962",
+              "startTimeText": "29:30"
+            },
+            {
+              "text": "3 самых популярных видео у этого пользователя мы выбираем ноду код так как я не разбираюсь и не понимаю что такое код",
+              "startMs": "1778437",
+              "endMs": "1785608",
+              "startTimeText": "29:38"
+            },
+            {
+              "text": "я обращался к ChatGPT  для того чтобы создать вот такой вот универсальный код",
+              "startMs": "1785951",
+              "endMs": "1791048",
+              "startTimeText": "29:45"
+            },
+            {
+              "text": "который будет анализировать все те 40 запросов которые пришли ко мне",
+              "startMs": "1791048",
+              "endMs": "1796608",
+              "startTimeText": "29:51"
+            },
+            {
+              "text": "и 40 видео которые пришли и выставлять их в определенном рейтинге",
+              "startMs": "1796831",
+              "endMs": "1801688",
+              "startTimeText": "29:56"
+            },
+            {
+              "text": "в определенном рейтинге и выдавать на выходе топ 3 самых аа самых аа вирусных контента у этого пользователя",
+              "startMs": "1801991",
+              "endMs": "1809774",
+              "startTimeText": "30:01"
+            },
+            {
+              "text": "из его 40 последних аа в данном случае видео вот он выбрал топ 3 самых аа",
+              "startMs": "1809905",
+              "endMs": "1816614",
+              "startTimeText": "30:09"
+            },
+            {
+              "text": "топовых постов по рейтингу аа по тем параметрам которые необходимо и отправляют их дальше",
+              "startMs": "1817577",
+              "endMs": "1823462",
+              "startTimeText": "30:17"
+            },
+            {
+              "text": "и сейчас нам необходимо дать ответ нашему AI Агенту что всё анализ был проведён и вот соответственно",
+              "startMs": "1823737",
+              "endMs": "1830102",
+              "startTimeText": "30:23"
+            },
+            {
+              "text": "3 вирусных видео которые мы получили тоже самое мы используем ноду код код также я скопирую с моего уже готового шаблона",
+              "startMs": "1830497",
+              "endMs": "1838026",
+              "startTimeText": "30:30"
+            },
+            {
+              "text": "здесь просто будет приходить ответ вот в таком вот виде смотрите анализ контента пользователя",
+              "startMs": "1838413",
+              "endMs": "1844866",
+              "startTimeText": "30:38"
+            },
+            {
+              "text": "здесь указывается пользователь который здесь указан про по которому проводили анализ",
+              "startMs": "1844893",
+              "endMs": "1850106",
+              "startTimeText": "30:44"
+            },
+            {
+              "text": "выполнено успешно аа юзерным пользователя и 3 самых популярных видео и ссылки вот эти вот линки ссылки на эти 3",
+              "startMs": "1850440",
+              "endMs": "1858475",
+              "startTimeText": "30:50"
+            },
+            {
+              "text": "самых популярных видео всё эти данные отправятся то есть это сообщение",
+              "startMs": "1858684",
+              "endMs": "1863914",
+              "startTimeText": "30:58"
+            },
+            {
+              "text": "отправиться в наш а в наш основной шаблон наш основного реагента",
+              "startMs": "1864512",
+              "endMs": "1870607",
+              "startTimeText": "31:04"
+            },
+            {
+              "text": "то есть сюда идёт запрос он обратно приходит отправляет нам ответ",
+              "startMs": "1870712",
+              "endMs": "1876757",
+              "startTimeText": "31:10"
+            },
+            {
+              "text": "и наш реагент нам в Телеграм уже пишет что он провёл анализ по",
+              "startMs": "1877122",
+              "endMs": "1881797",
+              "startTimeText": "31:17"
+            },
+            {
+              "text": "этому пользователю все данные забиты в таблицу и вот 3 самых популярных ээ",
+              "startMs": "1882162",
+              "endMs": "1887397",
+              "startTimeText": "31:22"
+            },
+            {
+              "text": "единицы контента у этого пользователя с этим единицым контентом мы с вами дальше уже будем работать",
+              "startMs": "1888360",
+              "endMs": "1893403",
+              "startTimeText": "31:28"
+            },
+            {
+              "text": "сейчас же мы должны отправить это сообщение мы выбираем Телеграм Сент текст месседж",
+              "startMs": "1893876",
+              "endMs": "1899003",
+              "startTimeText": "31:33"
+            },
+            {
+              "text": "и отправляем сообщение вот этот аутпут будет использоваться в качестве текста а в качестве чат ай ди будет использоваться чат ай ди",
+              "startMs": "1899870",
+              "endMs": "1907640",
+              "startTimeText": "31:39"
+            },
+            {
+              "text": "с нашей 1-ой ноты выбираем того же самого эйбота главный ей помощник всё единственное мы отключаем также рекламу от n8n ",
+              "startMs": "1907640",
+              "endMs": "1916704",
+              "startTimeText": "31:47"
+            },
+            {
+              "text": "niteen и парсим формат ответа аштимель это самый удобный на мой взгляд",
+              "startMs": "1917135",
+              "endMs": "1923984",
+              "startTimeText": "31:57"
+            },
+            {
+              "text": "формат ответа от нашего игента всё 1-ую задачу мы выполнили",
+              "startMs": "1924055",
+              "endMs": "1928805",
+              "startTimeText": "32:04"
+            },
+            {
+              "text": "единственное что мы ещё не сделали мы не прописали пром нашему айгенту то есть мы не прописали",
+              "startMs": "1929273",
+              "endMs": "1934686",
+              "startTimeText": "32:09"
+            },
+            {
+              "text": "что он должен делать мы в входим своего айогента нажимаем систем месседж",
+              "startMs": "1935193",
+              "endMs": "1940406",
+              "startTimeText": "32:15"
+            },
+            {
+              "text": "и здесь в качестве системного сообщения мы должны детально прописать аа задачу которую он должен выполнять",
+              "startMs": "1940673",
+              "endMs": "1947019",
+              "startTimeText": "32:20"
+            },
+            {
+              "text": "в данном случае задача будет когда к тебе приходит запрос на анализ какого-то профиля",
+              "startMs": "1947260",
+              "endMs": "1952339",
+              "startTimeText": "32:27"
+            },
+            {
+              "text": "с определенным количеством определенным количеством лимитов то есть по определенным количеству видео",
+              "startMs": "1952580",
+              "endMs": "1958599",
+              "startTimeText": "32:32"
+            },
+            {
+              "text": "ты должен этот запрос отправить вот в этот инструмент дождаться ответа этот инструмент тебе пришлет ответ",
+              "startMs": "1958680",
+              "endMs": "1964878",
+              "startTimeText": "32:38"
+            },
+            {
+              "text": "и ты должен этот ответ отправить в этому пользователю в телеканал значит",
+              "startMs": "1964960",
+              "endMs": "1970563",
+              "startTimeText": "32:44"
+            },
+            {
+              "text": "как прописывается этот пром пром достаточно большой и дальше когда у нас будет несколько",
+              "startMs": "1970563",
+              "endMs": "1975716",
+              "startTimeText": "32:50"
+            },
+            {
+              "text": "различных инструментов мы их должны забивать в этот пром то есть 1-ый",
+              "startMs": "1975963",
+              "endMs": "1981243",
+              "startTimeText": "32:55"
+            },
+            {
+              "text": "1-ая роль 1-ый инструмент это когда тебе приходит задача по",
+              "startMs": "1982130",
+              "endMs": "1986869",
+              "startTimeText": "33:02"
+            },
+            {
+              "text": "анализу этого профиля вот этот 1-ый Промт и как ты должен действовать как ты должен отвечать",
+              "startMs": "1988210",
+              "endMs": "1994109",
+              "startTimeText": "33:08"
+            },
+            {
+              "text": "2-ой Промт то есть 2-ая задача когда к тебе приходит задача транскрибировать видео",
+              "startMs": "1994370",
+              "endMs": "1999748",
+              "startTimeText": "33:14"
+            },
+            {
+              "text": "вот твоя инструкция 3-ья задача когда тебе нужно найти по ключевым определенным ключевым словам по хэштегам",
+              "startMs": "1999970",
+              "endMs": "2007101",
+              "startTimeText": "33:19"
+            },
+            {
+              "text": "аа пользователю вот 3-ья задача я сейчас скопирую промб для всех 3 задач сразу же",
+              "startMs": "2007578",
+              "endMs": "2013332",
+              "startTimeText": "33:27"
+            },
+            {
+              "text": "для того чтобы ну не тратить время на создание я же когда создавал с этого AI Агента ",
+              "startMs": "2013347",
+              "endMs": "2019252",
+              "startTimeText": "33:33"
+            },
+            {
+              "text": "я по очереди каждую задачу в него вбивал то есть я сначала сделал 1-ую задачу протестировал",
+              "startMs": "2019307",
+              "endMs": "2024971",
+              "startTimeText": "33:39"
+            },
+            {
+              "text": "всё работало дальше значит сделал 2-ую задачу протестировал всё работал",
+              "startMs": "2025107",
+              "endMs": "2029816",
+              "startTimeText": "33:45"
+            },
+            {
+              "text": "и прописывал соответственно в Тикток здесь указано что ты должен отправлять без собаки",
+              "startMs": "2030223",
+              "endMs": "2036511",
+              "startTimeText": "33:50"
+            },
+            {
+              "text": "что ты должен отправлять именно то что к тебе приходит то есть ээ в те данные что в тебя приходят",
+              "startMs": "2036688",
+              "endMs": "2042671",
+              "startTimeText": "33:56"
+            },
+            {
+              "text": "и в качестве входящего сообщения здесь также указано это входящее сообщение всё значит у нас этот и легенд сейчас понимает",
+              "startMs": "2043128",
+              "endMs": "2051480",
+              "startTimeText": "34:03"
+            },
+            {
+              "text": "куда нужно обращаться мы также можем его протестировать нажимаем тест и смотрите сейчас он обращается уже в эту ноду",
+              "startMs": "2052120",
+              "endMs": "2059720",
+              "startTimeText": "34:12"
+            },
+            {
+              "text": "для анализа того профиля который нам необходим единственное в этой ноде сейчас ээ запинен",
+              "startMs": "2060120",
+              "endMs": "2065754",
+              "startTimeText": "34:20"
+            },
+            {
+              "text": "запененные данные мы можем просто распинить их для того чтобы ээ ответ приходил в vrd",
+              "startMs": "2065964",
+              "endMs": "2072075",
+              "startTimeText": "34:25"
+            },
+            {
+              "text": "всё данные пришли сейчас он и эти данные обрабатывает формирует свой ответ и отправляет нам ответ",
+              "startMs": "2072564",
+              "endMs": "2080549",
+              "startTimeText": "34:32"
+            },
+            {
+              "text": "а сломался у нас чак Джи 5 потому что я создал агента но не сохранил его",
+              "startMs": "2081127",
+              "endMs": "2086030",
+              "startTimeText": "34:41"
+            },
+            {
+              "text": "и смотрите да вот мы переходим в выполнение и видим что отработала всего лишь 2 ноды",
+              "startMs": "2086487",
+              "endMs": "2092608",
+              "startTimeText": "34:46"
+            },
+            {
+              "text": "они все ноды потому что я не сохранил этот ворк Фло видите только 2 ноды отработала",
+              "startMs": "2092830",
+              "endMs": "2097689",
+              "startTimeText": "34:52"
+            },
+            {
+              "text": "а не все ноды в итоге пришло пришёл пришло большое количество данных и он не смог с этими данными справиться",
+              "startMs": "2097950",
+              "endMs": "2104530",
+              "startTimeText": "34:57"
+            },
+            {
+              "text": "вы видели да сколько там данных приходит от моды скрапер креатор поэтому обязательно нужно резать",
+              "startMs": "2104790",
+              "endMs": "2110250",
+              "startTimeText": "35:04"
+            },
+            {
+              "text": "те те параметры которые нам необходимы ещё раз давайте запустим и сейчас он уже должен",
+              "startMs": "2111110",
+              "endMs": "2116410",
+              "startTimeText": "35:11"
+            },
+            {
+              "text": "обратиться и получить да единственное он у меня наверное визуально",
+              "startMs": "2117030",
+              "endMs": "2122730",
+              "startTimeText": "35:17"
+            },
+            {
+              "text": "отключился нет всё визуально стал работать",
+              "startMs": "2123989",
+              "endMs": "2129410",
+              "startTimeText": "35:23"
+            },
+            {
+              "text": "то есть опять идёт запрос но так как мы не нажали кнопку сохранить",
+              "startMs": "2129469",
+              "endMs": "2133410",
+              "startTimeText": "35:29"
+            },
+            {
+              "text": "данных приходит меньше и уже он без проблем справляется с этими данными и отправляет нам информацию",
+              "startMs": "2136515",
+              "endMs": "2142324",
+              "startTimeText": "35:36"
+            },
+            {
+              "text": "вот я проанализировал контент пользователя нашёл 3 самых популярных видео плюс в нашу память",
+              "startMs": "2142395",
+              "endMs": "2148540",
+              "startTimeText": "35:42"
+            },
+            {
+              "text": "вот наша память сохранились сохранилась информация о том что пришло у этого игента какие у него были запросы",
+              "startMs": "2148860",
+              "endMs": "2155580",
+              "startTimeText": "35:48"
+            },
+            {
+              "text": "всё значит с 1-ой задачей с 1-ым направлением мы справились единственное ещё раз говорю можно",
+              "startMs": "2156380",
+              "endMs": "2161580",
+              "startTimeText": "35:56"
+            },
+            {
+              "text": "распенить те ноды которые нам необходимы значит следующая задача следующая задача",
+              "startMs": "2162897",
+              "endMs": "2169302",
+              "startTimeText": "36:02"
+            },
+            {
+              "text": "следующая задача которую мы также можем выбрать мы также выбираем скрапер скрапер креатор",
+              "startMs": "2170866",
+              "endMs": "2175692",
+              "startTimeText": "36:10"
+            },
+            {
+              "text": "и выбираем какую мы будем решать следующую задачу с помощью этого ikeand я предлагаю",
+              "startMs": "2176826",
+              "endMs": "2182053",
+              "startTimeText": "36:16"
+            },
+            {
+              "text": "что он будет анализировать наше видео ищем аа Тикток",
+              "startMs": "2182146",
+              "endMs": "2187552",
+              "startTimeText": "36:22"
+            },
+            {
+              "text": "видео транс крипт то есть полная транскрибация видео и название также мы прописываем копируем",
+              "startMs": "2187767",
+              "endMs": "2194272",
+              "startTimeText": "36:27"
+            },
+            {
+              "text": "сюда добавляем какие-то цифры здесь добавляем новый инструмент он будет обращаться к следующему ворк Флоу",
+              "startMs": "2194647",
+              "endMs": "2201709",
+              "startTimeText": "36:34"
+            },
+            {
+              "text": "называем этот ворк Флоу он у нас в памяти то есть в промте уже забит этот инструмент",
+              "startMs": "2202250",
+              "endMs": "2208269",
+              "startTimeText": "36:42"
+            },
+            {
+              "text": "и вот эту вот ноду мы просто удаляем единственное мы сейчас должны создать нечто похожее для этого ворфло",
+              "startMs": "2208690",
+              "endMs": "2214922",
+              "startTimeText": "36:48"
+            },
+            {
+              "text": "как это сделать проще всего мы можем просто сохранить и нажать дубликайт то есть для того чтобы заново эти ноды не писать",
+              "startMs": "2215197",
+              "endMs": "2221881",
+              "startTimeText": "36:55"
+            },
+            {
+              "text": "мы выбираем номер 3 это будет аа Тикток демо также останется и нажимаем дупликет",
+              "startMs": "2222397",
+              "endMs": "2228510",
+              "startTimeText": "37:02"
+            },
+            {
+              "text": "всё сюда будут приходить аа то есть это уже грубо говоря практически настроена",
+              "startMs": "2229010",
+              "endMs": "2233950",
+              "startTimeText": "37:09"
+            },
+            {
+              "text": "настроенная автоматизация для того чтобы он проанализировал профиль единственное мы выбираем аа вариант",
+              "startMs": "2234450",
+              "endMs": "2240175",
+              "startTimeText": "37:14"
+            },
+            {
+              "text": "что нам необходимо нам необходимо чтобы он проанализировал сделал видео транскрибацию видео",
+              "startMs": "2240624",
+              "endMs": "2246575",
+              "startTimeText": "37:20"
+            },
+            {
+              "text": "и здесь необходимо указать юэрэл этого видео мы должны во входящих данных убрать лимит а",
+              "startMs": "2246864",
+              "endMs": "2254272",
+              "startTimeText": "37:26"
+            },
+            {
+              "text": "убрать юзернейм и вместо юзернейма прописать просто you RL что сюда будут приходить urail данны",
+              "startMs": "2254272",
+              "endMs": "2260285",
+              "startTimeText": "37:34"
+            },
+            {
+              "text": "нажимаем протестировать антен ен тест данные пустые мы их редактируем",
+              "startMs": "2260434",
+              "endMs": "2265484",
+              "startTimeText": "37:40"
+            },
+            {
+              "text": "и добавляем какую нибудь ссылку на какое-то видео которое например он нам прислал давайте я со своего",
+              "startMs": "2265914",
+              "endMs": "2271085",
+              "startTimeText": "37:45"
+            },
+            {
+              "text": "телеграмма возьму 1-ое попавшееся видео вот из тех ссылок которые он мне прислал",
+              "startMs": "2271944",
+              "endMs": "2277135",
+              "startTimeText": "37:51"
+            },
+            {
+              "text": "я вбиваю сюда эти значения вот в таком вот виде нажимая save",
+              "startMs": "2277664",
+              "endMs": "2282597",
+              "startTimeText": "37:57"
+            },
+            {
+              "text": "и теперь у меня эти значения есть я просто удаляю вот эту ссылку которая стоит по умолчанию",
+              "startMs": "2283042",
+              "endMs": "2288637",
+              "startTimeText": "38:03"
+            },
+            {
+              "text": "и сюда вбиваю динамическую ссылку всё он будет присылать мне именно информацию об этом видео",
+              "startMs": "2288762",
+              "endMs": "2295589",
+              "startTimeText": "38:08"
+            },
+            {
+              "text": "могу протестировать и посмотреть какие данные по этому видео мне приходят здесь будут приходить",
+              "startMs": "2296009",
+              "endMs": "2301150",
+              "startTimeText": "38:16"
+            },
+            {
+              "text": "здесь придёт описание то есть здесь меньшее количество данных идентификатор видео юрэл видео и транскрибация",
+              "startMs": "2301569",
+              "endMs": "2307790",
+              "startTimeText": "38:21"
+            },
+            {
+              "text": "поэтому я могу эти данные даже не разбивать с помощью Сплит аута я могу их просто отдельно себе забить каждое",
+              "startMs": "2308266",
+              "endMs": "2315573",
+              "startTimeText": "38:28"
+            },
+            {
+              "text": "либо могу их ээ автоматом просто вбить сразу же в таблицу которая у меня есть",
+              "startMs": "2316026",
+              "endMs": "2321933",
+              "startTimeText": "38:36"
+            },
+            {
+              "text": "значит 2-ая таблица это будет уже не таблица с этими параметрами это будет таблица номер 3",
+              "startMs": "2322400",
+              "endMs": "2327998",
+              "startTimeText": "38:42"
+            },
+            {
+              "text": "значит как будет выглядеть эта таблица я вам сейчас покажу здесь всего есть 3 параметры ай ди",
+              "startMs": "2328400",
+              "endMs": "2333439",
+              "startTimeText": "38:48"
+            },
+            {
+              "text": "то есть идентификатор видео есть ээ юарел значение юарела адреса этого видео",
+              "startMs": "2333720",
+              "endMs": "2339220",
+              "startTimeText": "38:53"
+            },
+            {
+              "text": "и транскрибация то есть транскрибация по этому видео и она будет эти все данные также будут забиваться",
+              "startMs": "2339500",
+              "endMs": "2346140",
+              "startTimeText": "38:59"
+            },
+            {
+              "text": "вот сюда в специализированную таблицу здесь же мы также с вами пропишем так это номер 3 у нас",
+              "startMs": "2346260",
+              "endMs": "2353440",
+              "startTimeText": "39:06"
+            },
+            {
+              "text": "также с вами создадим синхронизацию данных из дата Тейбл таблицу в Гугл таблицу",
+              "startMs": "2353799",
+              "endMs": "2359400",
+              "startTimeText": "39:13"
+            },
+            {
+              "text": "да для того чтобы у нас всё сохранялось в Гугле а ненужную информацию с даты Тейбл мы удаляли",
+              "startMs": "2359559",
+              "endMs": "2365000",
+              "startTimeText": "39:19"
+            },
+            {
+              "text": "но при этом чтобы всё работало через дату Тейбл и всё то есть мы эти данные забьём в таблицу",
+              "startMs": "2365199",
+              "endMs": "2371248",
+              "startTimeText": "39:25"
+            },
+            {
+              "text": "то есть этот и легенд у нас выходит проще мы эти все данные забьём специализированную таблицу",
+              "startMs": "2371271",
+              "endMs": "2377128",
+              "startTimeText": "39:31"
+            },
+            {
+              "text": "и дальше нам необходимо просто отправить ответ что работа проведена поэтому мы",
+              "startMs": "2377591",
+              "endMs": "2382807",
+              "startTimeText": "39:37"
+            },
+            {
+              "text": "аа лишние ноды код сейчас уберём убираем 1 ноды код а во 2-ой нодик код у нас будет аа",
+              "startMs": "2383360",
+              "endMs": "2389897",
+              "startTimeText": "39:43"
+            },
+            {
+              "text": "информация о том что он провел транскрибацию и забил все данные в таблицу и в это будет приходить в качестве ответа",
+              "startMs": "2390747",
+              "endMs": "2398013",
+              "startTimeText": "39:50"
+            },
+            {
+              "text": "мы удаляем всё это и прописываем получаем входные данные такие то такие то формируем результат",
+              "startMs": "2398467",
+              "endMs": "2404172",
+              "startTimeText": "39:58"
+            },
+            {
+              "text": "транскрибация видео в виде выполнена успешно нажимаем тест и он приходит",
+              "startMs": "2404667",
+              "endMs": "2409984",
+              "startTimeText": "40:04"
+            },
+            {
+              "text": "отправляет нашему регенту основному именно уже эту информацию что транскрибация видео выполнена успешно",
+              "startMs": "2410214",
+              "endMs": "2416905",
+              "startTimeText": "40:10"
+            },
+            {
+              "text": "так давайте сразу же сохраним всё чтобы у нас ничего не слетало и всё работало",
+              "startMs": "2417474",
+              "endMs": "2422045",
+              "startTimeText": "40:17"
+            },
+            {
+              "text": "и распиним вот эту вот ноду не вовремя сохранил да и распиним вот эту ноду так сейчас",
+              "startMs": "2422634",
+              "endMs": "2428765",
+              "startTimeText": "40:22"
+            },
+            {
+              "text": "да хочу сохранить и распиним вот эту вот ноту чтобы она не мешалась",
+              "startMs": "2430362",
+              "endMs": "2435677",
+              "startTimeText": "40:30"
+            },
+            {
+              "text": "и в главном нашем аэгенте мы должны сейчас да я я изменил",
+              "startMs": "2436202",
+              "endMs": "2441882",
+              "startTimeText": "40:36"
+            },
+            {
+              "text": "в соседнем ворфлоу не в 3 а в 2 и здесь я должен",
+              "startMs": "2443122",
+              "endMs": "2447917",
+              "startTimeText": "40:43"
+            },
+            {
+              "text": "также в 3 чтоб не запутаться да я обычно закрываю здесь мы с вами в демонстративном режиме здесь",
+              "startMs": "2449971",
+              "endMs": "2456308",
+              "startTimeText": "40:49"
+            },
+            {
+              "text": "ноду запускаю ещё раз то есть с теми параметрами которые пришли",
+              "startMs": "2457051",
+              "endMs": "2461451",
+              "startTimeText": "40:57"
+            },
+            {
+              "text": "вот статус саксеста транскрибация видео выполнена успешно это номер 3 я в номере 2 сначала изменил код",
+              "startMs": "2462108",
+              "endMs": "2468771",
+              "startTimeText": "41:02"
+            },
+            {
+              "text": "сейчас я всё это поправил на место и сохранил значит хорошо нам придёт",
+              "startMs": "2469148",
+              "endMs": "2474225",
+              "startTimeText": "41:09"
+            },
+            {
+              "text": "ответ нашему айгенту именно с этой информации так у меня уже много вкладок я начинаю теряться",
+              "startMs": "2474425",
+              "endMs": "2478894",
+              "startTimeText": "41:14"
+            },
+            {
+              "text": "здесь мы ещё не настроили нашего наш инструмент в качестве инструмента мы выбираем тот эйгент",
+              "startMs": "2479505",
+              "endMs": "2485400",
+              "startTimeText": "41:19"
+            },
+            {
+              "text": "это 3 Тикток демо и аа здесь наш же ньюзерный",
+              "startMs": "2485400",
+              "endMs": "2490214",
+              "startTimeText": "41:25"
+            },
+            {
+              "text": "да мне сохранили что ли опять 3 Тикток демо и здесь только юэрэл",
+              "startMs": "2491025",
+              "endMs": "2497143",
+              "startTimeText": "41:31"
+            },
+            {
+              "text": "всё верно нажимаем обновить да и вот юэрэл то есть здесь он должен прописать будет юэрэл",
+              "startMs": "2497576",
+              "endMs": "2504343",
+              "startTimeText": "41:37"
+            },
+            {
+              "text": "нужно также прописать дискрипшин и дискрипшин для нашего AI Агента  чтобы он понимал когда в эту надо обращаться",
+              "startMs": "2505016",
+              "endMs": "2511623",
+              "startTimeText": "41:45"
+            },
+            {
+              "text": "я эти данные скопирую со своего главного агента то есть вот Тикток видеотранскрипт",
+              "startMs": "2512051",
+              "endMs": "2519268",
+              "startTimeText": "41:52"
+            },
+            {
+              "text": "копирую вот discreption сюда и копирую",
+              "startMs": "2519971",
+              "endMs": "2524388",
+              "startTimeText": "41:59"
+            },
+            {
+              "text": "discription по url то есть в каком формате он должен выдавать мне ural",
+              "startMs": "2526091",
+              "endMs": "2532960",
+              "startTimeText": "42:06"
+            },
+            {
+              "text": "так у меня становится много ссылок хорошо всё значит сейчас он это понимает",
+              "startMs": "2533159",
+              "endMs": "2538400",
+              "startTimeText": "42:13"
+            },
+            {
+              "text": "так как у него в системных в системном промте есть и 2-ая инструкция то есть ты должна",
+              "startMs": "2538799",
+              "endMs": "2544520",
+              "startTimeText": "42:18"
+            },
+            {
+              "text": "когда к тебе приходит задача транскрибировать видео в Тикток видео ты обращаешься",
+              "startMs": "2544759",
+              "endMs": "2549827",
+              "startTimeText": "42:24"
+            },
+            {
+              "text": "ко 2-ому AI Агенту то есть ко 2-ому инструменту вот название этого инструмента если у вас не будет совпадать",
+              "startMs": "2550332",
+              "endMs": "2556187",
+              "startTimeText": "42:30"
+            },
+            {
+              "text": "название этого инструмента здесь в промте и вот здесь вот то он не сможет к нему обращаться",
+              "startMs": "2556252",
+              "endMs": "2561547",
+              "startTimeText": "42:36"
+            },
+            {
+              "text": "это важно знать хорошо и 3-ий инструмент который нам необходим",
+              "startMs": "2561932",
+              "endMs": "2566920",
+              "startTimeText": "42:41"
+            },
+            {
+              "text": "это инструмент будет ээ запроса по определенному линку",
+              "startMs": "2567040",
+              "endMs": "2572906",
+              "startTimeText": "42:47"
+            },
+            {
+              "text": "то есть по хештегу здесь мы выполняем все те же самые действия единственное сюда мы дополнительно добавляем",
+              "startMs": "2573213",
+              "endMs": "2579306",
+              "startTimeText": "42:53"
+            },
+            {
+              "text": "нодо edit fills здесь будет в 1-ой ноде у нас информация по хэштегу",
+              "startMs": "2579733",
+              "endMs": "2584725",
+              "startTimeText": "42:59"
+            },
+            {
+              "text": "и по лимиту по количеству постов по по хэштегу дальше значит мы должны вытащить эти данные хэштеги",
+              "startMs": "2585153",
+              "endMs": "2591846",
+              "startTimeText": "43:05"
+            },
+            {
+              "text": "лимит я вам дальше покажу почему дальше значит мы выбираем моду Тикток Сердж Тикток бай хэштег либо кей Ворлд",
+              "startMs": "2591873",
+              "endMs": "2599442",
+              "startTimeText": "43:11"
+            },
+            {
+              "text": "в зависимости от той задачи которая вам необходима в качестве хэштега мы указываем хэштег",
+              "startMs": "2599557",
+              "endMs": "2605042",
+              "startTimeText": "43:19"
+            },
+            {
+              "text": "и в качестве лимита мы указываем лимит также по умолчанию если лимит не задан он будет задуваться автоматически",
+              "startMs": "2605397",
+              "endMs": "2610922",
+              "startTimeText": "43:25"
+            },
+            {
+              "text": "20 дальше значит нам приходят все эти данные мы разбиваем эти данные",
+              "startMs": "2611037",
+              "endMs": "2615401",
+              "startTimeText": "43:31"
+            },
+            {
+              "text": "в данном случае было 30 видео 30 ээ 30 видео с хэштегом n8n  по моему Н Т",
+              "startMs": "2617038",
+              "endMs": "2625201",
+              "startTimeText": "43:37"
+            },
+            {
+              "text": "забиваем всё это в 3-ью таблицу 3-ья таблица она чем то похожа на нашу основную таблицу",
+              "startMs": "2625758",
+              "endMs": "2630881",
+              "startTimeText": "43:45"
+            },
+            {
+              "text": "единственное здесь добавляется информация по хэштегу по хэштегу информацию мы берём как раз из этой ноды",
+              "startMs": "2630881",
+              "endMs": "2638260",
+              "startTimeText": "43:50"
+            },
+            {
+              "text": "то есть здесь нам Серж Тикток бай хэштег он не пропишет этот хэштег",
+              "startMs": "2638579",
+              "endMs": "2643620",
+              "startTimeText": "43:58"
+            },
+            {
+              "text": "мы этот хэштег должны взять именно вот с этой ноды и добавить сюда да но мы знаем",
+              "startMs": "2643899",
+              "endMs": "2649220",
+              "startTimeText": "44:03"
+            },
+            {
+              "text": "что мы проводим анализ именно по этому хэштегу и дальше все данные забиваются",
+              "startMs": "2649220",
+              "endMs": "2653787",
+              "startTimeText": "44:09"
+            },
+            {
+              "text": "в таблицу где указан никнейм количество а описание видео количество просмотров юрелл количество",
+              "startMs": "2654371",
+              "endMs": "2661468",
+              "startTimeText": "44:14"
+            },
+            {
+              "text": "лайков комментариев чего там дальше то есть все те же самые",
+              "startMs": "2662515",
+              "endMs": "2667925",
+              "startTimeText": "44:22"
+            },
+            {
+              "text": "данные что и в 1-ом видео забивается всё это в таблицу дальше идёт дополнительным условием",
+              "startMs": "2668555",
+              "endMs": "2674845",
+              "startTimeText": "44:28"
+            },
+            {
+              "text": "что мы делаем топ 3 самых популярных поста а и отправляем эти трио топ 3 самых популярных поста",
+              "startMs": "2674915",
+              "endMs": "2681324",
+              "startTimeText": "44:34"
+            },
+            {
+              "text": "нашему AI Агент наш AI Агент уже отправляет нам информацию о том что я провёл анализ по этому хэштегу вот 3 популярных",
+              "startMs": "2681395",
+              "endMs": "2689484",
+              "startTimeText": "44:41"
+            },
+            {
+              "text": "видео по этой теме в Тикток и отправляет нам все эти видео а все остальные видео он забивает специализированную",
+              "startMs": "2689915",
+              "endMs": "2696839",
+              "startTimeText": "44:49"
+            },
+            {
+              "text": "сначала дататейбл таблицу а дальше синхронизируется с Гугл таблицы как сделать Гугл дататейбл таблица",
+              "startMs": "2697160",
+              "endMs": "2703960",
+              "startTimeText": "44:57"
+            },
+            {
+              "text": "чтобы они синхронизировались с таким образом во 1-ых я вам рекомендую посмотреть вообще видео",
+              "startMs": "2703960",
+              "endMs": "2708920",
+              "startTimeText": "45:03"
+            },
+            {
+              "text": "о дата Тейбл у меня во 2-ом видео где мы рассказывали с примерами там есть информация о том как сделать синхронизацию нам",
+              "startMs": "2709919",
+              "endMs": "2717601",
+              "startTimeText": "45:09"
+            },
+            {
+              "text": "наша основная сдача это выставить таймер выбрать ээ ноду гетроус от дата Тейбл гетроус",
+              "startMs": "2717718",
+              "endMs": "2724120",
+              "startTimeText": "45:17"
+            },
+            {
+              "text": "вытащить все данные с таблицы выбрать ноду аа в Google shits",
+              "startMs": "2724158",
+              "endMs": "2729604",
+              "startTimeText": "45:24"
+            },
+            {
+              "text": "а проект rove an shits то есть забить данные в таблицу и вот эти вот все данные которые мы вытащим",
+              "startMs": "2729755",
+              "endMs": "2736044",
+              "startTimeText": "45:29"
+            },
+            {
+              "text": "они все также сюда отправятся а дальше мы выбираем моду делит Роуз и выбираем",
+              "startMs": "2736155",
+              "endMs": "2741431",
+              "startTimeText": "45:36"
+            },
+            {
+              "text": "по какой колонке нужно ориентироваться в данном случае по колонке никнейм для того чтобы очистить эту таблицу",
+              "startMs": "2742528",
+              "endMs": "2748791",
+              "startTimeText": "45:42"
+            },
+            {
+              "text": "всё таблица будет заполняться таблица будет очищаться лишних данных не будет и наш Тикток AI Агент будет работать",
+              "startMs": "2749288",
+              "endMs": "2755987",
+              "startTimeText": "45:49"
+            },
+            {
+              "text": "ещё раз говорю мы здесь можем добавить до 10 различных инструментов то есть все те различные инструменты которые есть",
+              "startMs": "2756532",
+              "endMs": "2762667",
+              "startTimeText": "45:56"
+            },
+            {
+              "text": "при работе с Тикток вот они Гэт профиль Гэт профил видео Гэт Тикток видео",
+              "startMs": "2763253",
+              "endMs": "2768706",
+              "startTimeText": "46:03"
+            },
+            {
+              "text": "Гэт Тикток транскрибэйта то есть все данные все запросы которые есть здесь в Тикток",
+              "startMs": "2768773",
+              "endMs": "2774220",
+              "startTimeText": "46:08"
+            },
+            {
+              "text": "мы по каждому сможем создать отдельный Ворд Фло отдельный инструмент если вам это необходимо",
+              "startMs": "2774220",
+              "endMs": "2780866",
+              "startTimeText": "46:14"
+            },
+            {
+              "text": "также сюда я рекомендую вам поставить ещё 1 ноду с инструментами",
+              "startMs": "2781329",
+              "endMs": "2787109",
+              "startTimeText": "46:21"
+            },
+            {
+              "text": "которая будет обращаться для выполнения каких-то задач пример она будет обращаться",
+              "startMs": "2787289",
+              "endMs": "2792309",
+              "startTimeText": "46:27"
+            },
+            {
+              "text": "а для того чтобы создать сценарий по транскрибированному видео либо проводить анализ либо что ещё угодно делать",
+              "startMs": "2792730",
+              "endMs": "2799749",
+              "startTimeText": "46:32"
+            },
+            {
+              "text": "то есть вы сюда забиваете отдельную ноду либо вы можете в Тикток AI Агенте забить",
+              "startMs": "2799930",
+              "endMs": "2806229",
+              "startTimeText": "46:39"
+            },
+            {
+              "text": "системное сообщение что когда к тебе приходит информация сделать похоже то есть когда к тебе приходит запрос",
+              "startMs": "2806810",
+              "endMs": "2812430",
+              "startTimeText": "46:46"
+            },
+            {
+              "text": "сделать похожий на эту на этот контент ты должен обращаться здесь уже ставим в качестве инструмента shit с таблицей",
+              "startMs": "2812770",
+              "endMs": "2819750",
+              "startTimeText": "46:52"
+            },
+            {
+              "text": "и он в этих Гугл шит с таблицей которые у нас есть запрос он к ним обращаться обращается",
+              "startMs": "2820440",
+              "endMs": "2825157",
+              "startTimeText": "47:00"
+            },
+            {
+              "text": "и делает на основе этих ээ этой транскрибации делает полноценный контент",
+              "startMs": "2825522",
+              "endMs": "2830476",
+              "startTimeText": "47:05"
+            },
+            {
+              "text": "я же это всё не включил потому что не всем это нужно кто-то хочет просто парить",
+              "startMs": "2830882",
+              "endMs": "2836276",
+              "startTimeText": "47:10"
+            },
+            {
+              "text": "кто-то хочет просто выполнять какие-то задания этот Тикток AI Агент он простой мы с вами вот его с",
+              "startMs": "2836403",
+              "endMs": "2842716",
+              "startTimeText": "47:16"
+            },
+            {
+              "text": "этот Тикток AI Агент он простой и каждый из вас может сам дополнительно навешивать ему тех задач",
+              "startMs": "2843280",
+              "endMs": "2850296",
+              "startTimeText": "47:23"
+            },
+            {
+              "text": "которые вам необходимы может вы просто хотите по аналогии создавать из этих видео",
+              "startMs": "2850296",
+              "endMs": "2855000",
+              "startTimeText": "47:30"
+            },
+            {
+              "text": "сюда прикручиваете например HeyGen  аватар и вам тут же в этом же Тикток агенте будет прикручиваться",
+              "startMs": "2855794",
+              "endMs": "2861085",
+              "startTimeText": "47:35"
+            },
+            {
+              "text": "ваш HeyGen  аватар вы всё это сможете реализовать без проблем без вот такой вот демонстрации",
+              "startMs": "2861474",
+              "endMs": "2866885",
+              "startTimeText": "47:41"
+            },
+            {
+              "text": "посмотрев мои уроки которые выложен также на ютубе либо в нашем Телеграм сообщество ссылка на которое находится",
+              "startMs": "2866954",
+              "endMs": "2872654",
+              "startTimeText": "47:46"
+            },
+            {
+              "text": "в 1-ом закрепленном сообщении ребят я надеюсь что это видео было вам полезно обязательно подпишитесь на канал",
+              "startMs": "2872705",
+              "endMs": "2877694",
+              "startTimeText": "47:52"
+            },
+            {
+              "text": "поставьте мне нравится этому видео напишите что-то в комментариях это реально помогает продвижению видео ну и мотивирует меня снимать",
+              "startMs": "2877745",
+              "endMs": "2883974",
+              "startTimeText": "47:57"
+            },
+            {
+              "text": "подобный контент с шаблонами n8n с вами был Игорь Зуевич пока",
+              "startMs": "2884385",
+              "endMs": "2887414",
+              "startTimeText": "48:04"
+            }
+          ],
+          "transcript_only_text": "привет в этом видео мы с вами создадим тиктока AI Агента  вот так вот будет выглядеть основной шаблон плюс будет у нас несколько под шаблонов n8n которые будут выполнять определенные задачи для работы с этим AI Агентом значит что может этот Тикток AI Агент созданный на сервисе n8n  значит я буду вам показывать в этом видео 3 его основные функции на самом деле количество функций мы можем увеличить до 10 но нужны либо нужны ли вам эти 3 эти остальные дополнительные функции вы уже решаете сами значит 1-ая задача которая будет которая будет или может выполнять этот AI агент он сможет анализировать контент у определенных пользователей в Тикток делать он это будет с помощью специального инструмента о котором я рассказывал там предыдущих свои видео инструмент называется scrapecreators.com этот инструмент позволяет вытаскивать из тиктока большое количество информации то есть это грубо говоря Парсер для тиктока значит что он будет делать сначала мы можем анализировать определенные профиля для определенных пользователей 2-ая функция 2-ая задача после того как он проанализировал определённые профиля определённых пользователей пользователи которые мы задали он нам присылает информацию из 3 популярных популярных типов контента у этого пользователя я вам покажу чуть дальше как это всё работает сейчас я вам расскажу просто в теории потом продемонстрирую и потом мы с вами начнём создавать этого AI Агент дальше значит что он может делать с этим контентом который он проанализировал он может из этого контента вытаскивать полноценно описание скрипты и информацию об этом ээ видео плюс самое главное он нам будет вытаскивать субтитры из этого видео субтитры с детальной разбивкой по а секунда то есть вот субтитры примерно в таком вот формате где написано на какой секунде что говорит автор для чего это делается основная задача конечно же это создавать похожий вирусный контент на основе этих субтитров и не превышать там длительность это очень удобно 3-ья его функция это поиск по хэштегам во всём тиктоке по определенным хэштегам также контента количество контента который мы можем найти за 1 раз оно не должно превышать 50 по умолчанию там стоит 20 я вам дальше покажу как изменить эти лимит значит он будет искать по определенным хэштегам тот контент который набрал большее количество просмотров за последний там какой-то период времени дальше он будет нам также в Телеграм присылать 3 самых популярных информации об об этом контенте а весь основной контент он будет забивать то есть все основные ссылки Юр ээ показатели лайков репостов ээ показателей вовлеченности он всё это будет забивать специализированную Гугл таблицу дата Тейбл таблицу а из дата Тейбл таблицы всё это будет интегрироваться в Гугл таблиц ну и конечно же он сможет создавать контент аа с теми полученными материалами которые он аа спарсил которые он получил на основе этих субтитров он сможет создавать там вирусный контент это тоже без вопросов дальше мы можем этому тиктоку AI Агенту вешать дополнительные функции все они делаются по определенному сценарию я вам в этом видео покажу 3 сценария а дальше вы уже просто эти 3 сценария адаптируете под те задачи которые вам необходимы мне например нужен анализ профиля мне нужно вытаскивать из определённых видео субтитры и мне нужно искать по ключевым словам что ещё можно делать искать по ключевым словам то есть не по хэштегам а по ключевым словам искать определённых пользователей аа смотреть подписчиков либо смотреть тех на кого подписан этот человек вытаскивать комментарий из видео вытаскивать транскрибацию это мы с вами будем делать вытаскивать информацию о самих видео которые размещены у этого пользователя и аа просто анализировать соответственно профиль без вытаскивания каких-то дополнительных информаций то есть мы с вами сейчас будем строить вот такого вот AI Агента  у которого 3 задачи 3 основные задачи если вам нужно увеличить количество задач вы просто копируете нажимаете дубликат а той или иной задачей меняете 1 ноду то есть здесь преимущество в том что этот шаблон все практически задачи они идентичны здесь нужно будет вам сменить всего 1 ноду и этот ареагент выполняет большее количество задач я просто не буду показывать как он будет выполнять все 10 задач потому что на это уйдёт часа 2 наверное видео особенно когда ты снимаешь процесс будет проходить долго значит давайте посмотрим как он работает сейчас я его временно активирую перейду в Телеграм и задам ему несколько вопросов например проведи анализ профиля зуеевич эй ай под 30 последним видео смотрите буквально за несколько секунд он уже провёл анализ пользователь контента зуеевич эй ай и нашёл 3 самых популярных видео у этого пользователя я могу перейти в Тикток не знаю откроется ли у меня Тикток вип Ян по моему включён да и смотрите это мой профиль сузевиче я просил попросил его проанализировать именно свой профиль и вот 1-ое видео а это просто ссылки на видео также в основной Гугл таблицы есть информация об этом видео то есть мы можем найти сюда он вбил зуеевич эй и он провел анализ не по 3 последним видео а по 20 или 30 по 20 по умолчанию если бы мы ему задали например проведи анализ профиля зуеевич эй а по 30 последним видео мы так ему и задавали давайте его щас про попросим провести анализ аа определенного пользователя например проведи анализ сейчас мы его попросим провести транскрибацию определённого видео спасибо мне нужна 30 трибация вот этого видео вот это видео и мне нужно чтобы он провёл транскрибацию после того как он выполнит транскрибацию он не отпишется что процесс выполнен и да вот транскрибация выполнена успешно видео такое то такое то текст сохранён базу данных и готов к использованию сейчас я перехожу в базу данных я могу перейти в Гугл Шорс базу данных могу перейти в дататейбл базу данных и посмотреть вот он провёл транскрибацию транскрибацию вот этого видео которое мы ему скидывали и смотрите вот полная транскрибация этого видео что я могу сейчас сделать с этой транскрибацией я могу его также отправить полностью вот эту транскрибацию либо сказать мне нужно мне нужно сделать по аналогии с этим идентификатором точно такой же либо похожий я хочу создать похожий контент вот идентификатор видео создай мне сценарий учитывая те временные рамки которые здесь выставлены и он мне создаст сценарий похожий другими словами дальше я этот сценарий могу отправить уже HeyGen а AI Агенту и он создаст мне контент видеоконтент на основе а этого сценария то есть он проговорит всё это и запишет для меня видео мне кажется идеально идеально для создания контента точно также этот AI Агент будет проводить анализ по хэштегам здесь эта функция добавлена аа сколько этот AI Агент будет выходить и сколько стоит я вам в предыдущем видео показывал специальный сервис который называется screppreators обещал делать по этому сервису различных AI Агентов 1-ый у нас как раз Тикток AI Агент смотрите мы затрачиваем 1 кредит для того чтобы провести аа парсинг либо анализ 1 задачи всего нам даётся 100 кредитов в месяц бесплатно то есть мы можем проводить та до 100 различных анализов через этого AI Агента  абсолютно бесплатно причём никакие данные карты даже вводить не требуется поэтому ребят давайте сейчас с вами начнём создавать вот этого тиктока AI Агента  по шагам полностью с разбором всех нот всех возможностей всей функцией поехали также вам напоминаю что вы всегда можете скачать уже готовые настроенные шаблоны в 1-ом закрепленном сообщении либо в разделе с описанием открываете переходите по ссылке попадаете в Телеграм бота и он вам подробно рассказывает как и где вы сможете скачать не только этот готовый настроенный шаблон а он состоит внимание из 4 даже из 5 аа различных шаблонов которые взаимодействуют между собой но также у нас в телеграме есть база из больше чем на сегодняшний день 542 разобранных шаблонов для n8n  м вы просто находите по ключевым словам те задачи которые вам необходимы то есть здесь полностью описание что делает этот шаблон какие ноды взаимодейственные какие сервисы в взаимоде работают ключевые слова плюс хэштеги для быстрого и удобного поиска и вы просто скачиваете те шаблоны которые вам необходимо выгружаете в свой М 8 Н и как бы ничего по шагам создавать не нужно хорошо мы же сейчас с вами начнём создавать этот шаблон значит в 1-ую очередь что нам необходимо сделать нам необходимо в 1-ую очередь создать вот такого вот AI Агента  это будет основной либо главный Ai Агент мы переходим в М восемьн и выбираем в качестве триггера что мы будем использовать в качестве триггера я рекомендую здесь использовать Телеграм мне удобнее например взаимодействовать с моим эгентом именно через Телеграм поэтому я выбираю он месседж выбирая бота аа который у меня привязан уже к n8n  либо Н Т Н главное я ей помощник в данном случае это мой демонстративный бот пожалуйста не отпишите ему сообщение он вам ничего отвечать не будет значит здесь также можно сразу же включить функцию скачки изображений чуть позже вам покажу аа что ещё может делать этот агент ну ладно расскажу сразу же мы можем просто делать скриншоты а например мы смотрим какое-то видео в этом видео есть в Тикток видео да вот сейчас включу Тикток в этом в Тикток видео есть информация о пользователе да кто создал это Тикток видео мы можем просто сделать скриншот отправите агенту и он найдёт этого пользователя этот профиль проведёт его анализ и дальше уже соответственно мы сможем взаимодействовать таким образом единственное здесь нужно будет подключать аа ноды Google от джемени с в этом видео я это демонстратировать не буду показывать не буду вы можете посмотреть другие мои видео по поводу анализа скриншотов от а с помощью n8n  м я же эту функцию включу потому что я обязательно буду эту функцию делать в свой основной рабочий шаблон n8n значит 2-ая нода которая нам нужна мы должны сделать также ноду Telegram она нам позволяет просто взаимодействовать интереснее с нашим эйботом она будет имитировать печать то есть я буду ээ себе себе показывает что как будто мой бот работает и он сейчас отвечает я выбираю месседж от месседж экшнс и выбираю вот этот вот сенд чат экшнс то есть отправка какого либо действия в данном случае в качестве действия будет просто печать выбирать того же самого бота которого я выбрал в самом начале единственное мне необходимо будет прописать чат айди где мне взять этот идентификатор чата айди я пока деактивирую ноду и просто отправлю какой-то сторонний запрос этому агенту напоминаю что у меня 1 и тот же легенд для демонстрации который был поэтому я просто скопирую вот таким вот образом отправлю этому AI Агенту запрос здесь запрос пришёл сейчас я активирую эту ноду и всё что мне необходимо сделать это перенести тот чат айди который здесь указан аа чат айди в основном шаблоне у нас ещё есть возможность с помощью голосовых команд отправлять запросы нашему агенту сейчас же что в целях экономии времени я не буду использовать голосовые команды да вы можете скачать настроенные голосовые команды в 1-ом закрепленном сообщении именно с в этом шаблоне n8n либо посмотреть мои видео о том как настраивать голосовые команды в n8n  Н для работы с телеком для экономии времени я просто создам следующую ноду нода будет называться сет где куда я буду отправлять данные по тому запросу который пришёл то есть вот этот текст и здесь просто пропишу слово текст всё каких-то дополнительных функций использовать не буду когда же мы будем создавать голосовые команды если они нам нужны мы хотим чтобы все данные сохранялись именно вот в таком вот виде в виде поэтому мы можем использовать эту ноду для будущей отладки аа либо простых действий в нашем n8n  хорошо текст пришёл проведи анализ ээ профиля зуеевича по 30 последним видео можно по 50 ну последним видео но не больше 50 50 видео для анализа мы должны использовать хорошо значит имитация печати есть сейчас мы создаем нашего реагента то есть мы выбираем реагента и создаем базового простого реагента можем его назвать как реагент Тикток да а потому что этот AI Агент будет отвечать за Тикток в качестве сообщения которые ему будет приходить как раз вот из этой ноды текст текст из этой ноды которая собирает весь текст неважно в голосовом виде пришёл или в текст там преимущество того что мы будем использовать эту ноду за счёт не неё мы не нарушаем какую-то работу наших клиентов дальше значит нам необходимо включить фолбек это запасной наш эйгент и включаем грубо говоря мозг нашего агента я буду в качестве ле модели использовать ChatGPT  версию наверное 4 и 1 либо можно пятёрку даже потестить ну давайте 4 1 мне в принципе для этой задачи вполне хватит 4 и 1 в качестве резервной модели я могу использовать здесь уже модели от антропика например 4 сонет либо 4 и 5 сонет я хочу по нему отдельное видео снять там очень много классной функций но это будет в качестве дополнительного дополнительного инструмента для наших AI Агентов значит в качестве инструментов я обязательно сюда добавлю ноду Think нода Think позволяет нашему легенду рассуждать и когда у него будет большое количество задач позволяет ему не запутаться в том обилии задач который к нему приходит в качестве инструмента памяти я пока ничего не могу поставить но я обязательно сюда поставлю ноду рэдис я снимал отдельное видео по этой теме нода рэдис в чат мемэри значит она будет сохранять всю переписку с моим AI Агентом вот в таком вот удобном блокноте и где я всегда смогу узнать о чём я о чём тот или иной пользователь здесь будет информация с дендификатором общался с тем ильным AI Агентом здесь же у меня просто рэдис демонстративный я его сейчас как раз и подключу для того чтобы нам подключить инструмент памяти нам мы сначала должны протестировать нашего агента то есть мы его просто запускаем аа чтобы он хоть как-то ответил потому что он сейчас ещё не понимает как ответить а дальше мы ему уже после 1-ого запуска мы ему сможем подключить ноду памяти ноду памяти можно использовать классическую я буду использовать ноду памяти рэдис выбираю аккаунт который у меня выбран для рэдис по моему вот это вот демо или вот это вот этот и здесь всё что мне необходимо сделать это выбрать ручной ручную отправку указать например Телеграм чат айди а в редис особенность в том что здесь необходимо именно прописывать сначала буквенные выражения а дальше чтобы память сохранялась по определенному пользователю мы должны ему также дать вот этот вот параметр либо вот это вот выражение чат айди для этого мы включаем выражение и переносим сюда вот этот вот значение вот массив данных чат айди всё теперь он будет сохранять именно идентификатор чат айди также мы можем узнать аа прописать сколько к какому количеству сообщений он должен обращаться пускай будет обращаться к 10 сообщению всё теперь у нас настроен аа наш редис можем также его проверить да запустим наш ворк Флоу и теперь у него есть память в рэдис то есть она уже работает в качестве инструментов мы будем использовать отдельный отдельный ворк флоу и будем дозваниваться либо отправлять запросы в эти ворк Флоу 1-ый инструмент будет в этот инструмент сейчас мы его переименуем и выберем его название для того чтобы мы обращались в отдельную ворфлоу нам как раз нужно создать те самые отдельные ворфло здесь я прописываю в качестве названия например 1-ый там Тикток да и пропишу что это черновик и здесь уже начнётся наша работа с паркингом значит в качестве ноды паркинга как я и говорил мы будем использовать скраппер креаторс этот Парсер позволяет нам то есть мы с вами уже создавали различных AI Агентов для социальных сетей но проблема всегда была в том что мы не могли найти адекватный барсел вот этот скрапер creators это реально крутой адекватный pharsion для социальных сетей частности для Тикток мы ищем в Тикток а единственное да этот скрапер креаторс это официальный скрапер креатор соцсервиса скрапер креаторс единственное нам необходимо будет его установить то есть это пользовательская нота в n8n  м мы её устанавливаем после установки у нас появляются все функции которые здесь доступны дальше значит нам необходимо найти Тикток и выбрать те задачи которые мы будем решать с помощью этого скрайперкриаторс 1-ая задача это например анализ профиля анализ профиля анализ видео аа по у определенного пользователя по определенному профилю мы выбираем ГТА Тикток профайл с видео аа мы с помощью этого этой как бы этой ноды будем решать запросы но мы будем решать запросы не здесь всё что нам необходимо сделать это просто грамотно прописать вот это вот имя мы в качестве названия для нашего аа запроса будем прописывать это имя единственное смотрите он здесь поставил единичку поэтому нужно нам и это переименовать например здесь поставить что-то такое а здесь добавить имя а основное почему я использую вот здесь именно это имя да для того чтобы в нашего легенда отправить Промт который будет решать именно ту задачу которая будет выполняться в этом wark flop хорошо значит 1-ая задача которая нам необходима это будет задача для того чтобы наш реагент ээ парсил Тикток определенный Тикток аккаунт который мы ему дадим ээ всё эта нода нам больше не нужна мы её отсюда удаляем и создаем новый ворк Флоу в качестве триггера в этом новом ворфло будет триггер запрос от предыдущей ноды поэтому мы выбираем вот этот вот ВН когда другой ворфлоу будет дозваниваться до нашего основного ворфло здесь мы должны прописать те данные которые мы хотим принимать я хочу принимать юзернейм и я хочу принимать количество то есть лимит откуда я эти данные беру я сюда сразу же опять добавляю эту ноду скраберкриаторс и здесь выбирает Тикток ээ Тикток ээ так не эту ноду не Тикток профайлов Тикток профайлов видео здесь смотрите есть 2 параметра 1-ая параметры юзернейм либо хендл он так её называет и лимит значит я хочу собирать лимит поэтому я сюда перехожу здесь прописываю лимит а здесь пропишу просто юзернейм да для более понятного для того чтобы мне было более понятно юзернейм всё сейчас мне необходимо соединить эти 2 warflame между собой я также здесь переименована и могу здесь просто прописать ту задачу которую он будет выполнять например вот эта вот задача кет Тикток профайл с видео ну я просто напишу 2-ой Тикток демо либо там черновик чтобы в своих в своих шаблонах не запутаться всё переходим обратно в нашего 1-ого воркфлоу и здесь мы должны отправить запрос мы должны выбрать тот воркфлоу который мы только что создали вот Тикток 2 Дема после того как мы его выбрали мы видим что здесь необходимо присылать какие-то параметры я ставлю на автоматическую то есть чтобы он сам аа вытаскивал из моего сообщения те параметры которые необходимо единственное для того чтобы было более менее понятно я должен прописать здесь discription здесь discription и должен написать discription то есть описание когда и почему он должен как бы вызывать этого в орклоу эти параметры я сейчас наизусть не помню поэтому я вернусь своего основного реагента основной шаблон и просто скопирую эти данные вы же сможете также скопировать эти данные в 1-ом закрепленном сообщении то есть вот так вот выглядит аа discreption вот так вот выглядит этот discreption и вот так вот выглядит информация по лимитам здесь также сразу же указано что лимит если лимит не задан то есть если мы не провели то есть мы просто хотим провести анализ профиля мы по умолчанию ставим 20 можно по умолчанию ставить чуть больше всё теперь наш реагент когда будет получать задачу по тому что провести анализ профиля он будет запрашиваться именно в этот Ворд флоу и нам необходимо настроить сейчас именно этот ворк Фло сюда будет приходить юзернейм и сюда будет приходить информация по лимитам мы можем для того чтобы протестить эту информацию включить то есть мы должны включить и единственное нам необходимо будет отредактировать тот Джейсон который к нам приходит Джейсон который к нам приходит 2 запятые и я сюда веду например свой профиль 2-ой свой профиль по тиктоку называется он Игорь зуеевич и лимит поставлю ну давайте сколько 40 да как будто я хочу провести анализ по 40 сообщению всё нажимаю окей и эти данные уже приходят значит здесь мы должны ввести вот этот вот юзернейм который должен прийти смотрите обязательно юзернейм должен быть без вот этого вот знака собака то есть без знака собака это очень важно и дальше лимит лимит у нас тоже динамический который мы забиваем он нестатичный и выбираем лимит то количество сообщений которое здесь пришло значит как создать аккаунт в скрапер креатор вы нажимаете creat new cradital и всё что вам необходимо это ввести сюда свой appy ключ регистрируетесь на скрапер креатор делать я это я например это сделал через Гугл аккаунт перешёл сразу же авторизовался скопировал свой апе ключ вбил его вот сюда так убил его вот сюда нажал сейф и всё у меня аккаунт скраппер креатор аа соответственно активировался и появился вот он 1 мой аккаунт в данном ворплоу хорошо я сейчас могу нажать протестировать и получу данные об этом профиле Игорь зуевич и о 40 его последних постах давайте сделаем это всё данные пришли вот смотрите какое большое количество данных на самом деле я спрашивал в ChatGPT  то есть я копировал все эти данные и отправлял в ChatGPT  и говорил ну слушай у меня столько данных пришло от этого скрабер креатора как помоги мне пожалуйста разбить эти данные и выяснить что из этих данных реально интересно поможет моему продвижению а что нет он мне подсказал какие данные необходимо вытащить они все приходят 1 сплошным массивом мне для этого не для того чтобы вытащить по каждому из 40 видео эту информацию мне необходимо добавить нодо Сплит аут здесь я выбираю смотрю в каком формате они приходят вот 1-ое 2-ое 3-ье так до 40 я стягиваю вот эту информацию убираю вот этот 0 и оставляю авенлист нажимаю тест и теперь у меня из 1 1 данных то есть из 1 массива данных приходят 40 то есть 40 тем которые мы запрашивали отлично все эти данные пришли мы можем эту ноду запинить для того чтобы данные не слетели мы не проводили несколько раз 1 и те же исследования 1 и тот же парсон значит дальше что нам с этими данными нужно сделать мы должны эти данные куда-то записать да для того чтобы не потерялись я в своём основном шаблоне показывал что мы будем записывать эти данные в ноду дата Тейбл вы можете также выбрать ноду детектейбл но если вы забиваете данный в ноду дататейбл всё же необходимо продублировать эти данные например в Гугл таблицу для чего я забываю данные в ноду дататейбл во 1-ых дата Тейбл находится на том же сервере что и n8n  м то есть он не зависит от интернета если я сюда поставлю ноды Гугл и у меня будет какой-то какая-то проблема с Аппе соответственно я не смогу обращаться к этому гуглу выйдет ошибка и я потом буду блин плеваться говорить что как что как исправить соответственно я чтобы рабочий процесс максимально минимизировать риск ошибки я сюда добавил дата тейпа но отдельно я добавил синхронизацию данных в Гугл таблицу здесь я выставляю таймер например раз в там 25 либо в 30 минут аа этот запрос будет срабатывать это надо будет срабатывать и будет все данные которые забиты в таблицу переносить в Гугл шит таблицу уже в мою основную таблицу а отсюда её просто удаляться удалять то есть я делаю запрос по определенному пользователю он не без проблем всё это выполняет потому что в нём стоит безопасная нода дата Тейбл дальше значит через 30 минут либо через определенное количество времени можете там на своё время поставить он эту таблицу вот эта таблица сейчас вам покажу её а это таблица Парсер да вот это таблица видите она сейчас очистилась потому что сработала автоматизация по очистке и переносу этих данных непосредственно в Гугл шитс таблицу в чём преимущество Гугл шиц в данном случае преимущество в том что они будут храниться в более удобном формате чем в дата тэйбл но преимущество дата тэйбл в том что они аа не сломаются эти таблицы то есть они всегда будут работать и мы всегда сможем провести этот анализ поэтому здесь я тоже выберу дата Тейбл instard Rose и единственное я здесь уже не буду создавать отдельное отдельную таблицу для того чтобы не затягивать это видео я выберу уже готовую таблицу сейчас я вам её покажу значит какие основные значения мне нужны мне нужно никнейм то есть информация об о аккаунте по которому мы будем проводить анализ я просто вобью в поиске грызуевич для того чтобы найти этот самый никнейм в этом Джейсон файле либо здесь он где-то идёт в самом самом конце вот Юник айди мы берём и добавляем вот сюда окей значит дальше что мы desk desk это описание дальше значит статистику необходимую статистику Avent ID это идентификатор этого видео юурел юурел в самом конце мы его чуть позже добавим Плэй аккаунт это количество просмотров Плэй аккаунт а дальше ээ диккаунт это количество лайков дальше значит коммент аккаунт это количество комментариев дальше значит количество поделенных по поделившихся этим контентом shar cound и ээ коллект аккаунт коллект count это количество сохранений если я не ошибаюсь единственное нам сюда ещё необходимо вбить юэрэл бьюэрэл он где-то в самом конце этого видео да в самом конце юэрэл этого видео всё эти значения у нас будут переходить в таблицу таблица будет выглядеть таким образом то есть у нас указан никнейм у нас указан дээск описание у нас указан указанный дентификатор юэрэл количество просмотров количество лайков количество комментариев количество поделившихся аа коллекций аккаунт это количество сохранений и дата создания всё нас эти данные устраивает мы все эти данные вбили выбрали ту таблицу которая нам необходима дата Тейбл можете прямо отсюда создать таблицу креативную дату Тейбл и нажимаем протестировать всё все данные основные нам выпали сюда если вам нужны какие-то дополнительные данные если же вам нужны какие-то дополнительные данные которые мне например не нужны которые я не показываю вы всегда их можете добавить в качестве новой колонки хорошо значит мы забили эти данные сейчас нам необходимо сделать небольшой анализ анализ мы будем делать с помощью нод и код для того чтобы просто прислать нам 3 самых популярных например публикации 3 самых популярных видео у этого пользователя мы выбираем ноду код так как я не разбираюсь и не понимаю что такое код я обращался к ChatGPT  для того чтобы создать вот такой вот универсальный код который будет анализировать все те 40 запросов которые пришли ко мне и 40 видео которые пришли и выставлять их в определенном рейтинге в определенном рейтинге и выдавать на выходе топ 3 самых аа самых аа вирусных контента у этого пользователя из его 40 последних аа в данном случае видео вот он выбрал топ 3 самых аа топовых постов по рейтингу аа по тем параметрам которые необходимо и отправляют их дальше и сейчас нам необходимо дать ответ нашему AI Агенту что всё анализ был проведён и вот соответственно 3 вирусных видео которые мы получили тоже самое мы используем ноду код код также я скопирую с моего уже готового шаблона здесь просто будет приходить ответ вот в таком вот виде смотрите анализ контента пользователя здесь указывается пользователь который здесь указан про по которому проводили анализ выполнено успешно аа юзерным пользователя и 3 самых популярных видео и ссылки вот эти вот линки ссылки на эти 3 самых популярных видео всё эти данные отправятся то есть это сообщение отправиться в наш а в наш основной шаблон наш основного реагента то есть сюда идёт запрос он обратно приходит отправляет нам ответ и наш реагент нам в Телеграм уже пишет что он провёл анализ по этому пользователю все данные забиты в таблицу и вот 3 самых популярных ээ единицы контента у этого пользователя с этим единицым контентом мы с вами дальше уже будем работать сейчас же мы должны отправить это сообщение мы выбираем Телеграм Сент текст месседж и отправляем сообщение вот этот аутпут будет использоваться в качестве текста а в качестве чат ай ди будет использоваться чат ай ди с нашей 1-ой ноты выбираем того же самого эйбота главный ей помощник всё единственное мы отключаем также рекламу от n8n  niteen и парсим формат ответа аштимель это самый удобный на мой взгляд формат ответа от нашего игента всё 1-ую задачу мы выполнили единственное что мы ещё не сделали мы не прописали пром нашему айгенту то есть мы не прописали что он должен делать мы в входим своего айогента нажимаем систем месседж и здесь в качестве системного сообщения мы должны детально прописать аа задачу которую он должен выполнять в данном случае задача будет когда к тебе приходит запрос на анализ какого-то профиля с определенным количеством определенным количеством лимитов то есть по определенным количеству видео ты должен этот запрос отправить вот в этот инструмент дождаться ответа этот инструмент тебе пришлет ответ и ты должен этот ответ отправить в этому пользователю в телеканал значит как прописывается этот пром пром достаточно большой и дальше когда у нас будет несколько различных инструментов мы их должны забивать в этот пром то есть 1-ый 1-ая роль 1-ый инструмент это когда тебе приходит задача по анализу этого профиля вот этот 1-ый Промт и как ты должен действовать как ты должен отвечать 2-ой Промт то есть 2-ая задача когда к тебе приходит задача транскрибировать видео вот твоя инструкция 3-ья задача когда тебе нужно найти по ключевым определенным ключевым словам по хэштегам аа пользователю вот 3-ья задача я сейчас скопирую промб для всех 3 задач сразу же для того чтобы ну не тратить время на создание я же когда создавал с этого AI Агента  я по очереди каждую задачу в него вбивал то есть я сначала сделал 1-ую задачу протестировал всё работало дальше значит сделал 2-ую задачу протестировал всё работал и прописывал соответственно в Тикток здесь указано что ты должен отправлять без собаки что ты должен отправлять именно то что к тебе приходит то есть ээ в те данные что в тебя приходят и в качестве входящего сообщения здесь также указано это входящее сообщение всё значит у нас этот и легенд сейчас понимает куда нужно обращаться мы также можем его протестировать нажимаем тест и смотрите сейчас он обращается уже в эту ноду для анализа того профиля который нам необходим единственное в этой ноде сейчас ээ запинен запененные данные мы можем просто распинить их для того чтобы ээ ответ приходил в vrd всё данные пришли сейчас он и эти данные обрабатывает формирует свой ответ и отправляет нам ответ а сломался у нас чак Джи 5 потому что я создал агента но не сохранил его и смотрите да вот мы переходим в выполнение и видим что отработала всего лишь 2 ноды они все ноды потому что я не сохранил этот ворк Фло видите только 2 ноды отработала а не все ноды в итоге пришло пришёл пришло большое количество данных и он не смог с этими данными справиться вы видели да сколько там данных приходит от моды скрапер креатор поэтому обязательно нужно резать те те параметры которые нам необходимы ещё раз давайте запустим и сейчас он уже должен обратиться и получить да единственное он у меня наверное визуально отключился нет всё визуально стал работать то есть опять идёт запрос но так как мы не нажали кнопку сохранить данных приходит меньше и уже он без проблем справляется с этими данными и отправляет нам информацию вот я проанализировал контент пользователя нашёл 3 самых популярных видео плюс в нашу память вот наша память сохранились сохранилась информация о том что пришло у этого игента какие у него были запросы всё значит с 1-ой задачей с 1-ым направлением мы справились единственное ещё раз говорю можно распенить те ноды которые нам необходимы значит следующая задача следующая задача следующая задача которую мы также можем выбрать мы также выбираем скрапер скрапер креатор и выбираем какую мы будем решать следующую задачу с помощью этого ikeand я предлагаю что он будет анализировать наше видео ищем аа Тикток видео транс крипт то есть полная транскрибация видео и название также мы прописываем копируем сюда добавляем какие-то цифры здесь добавляем новый инструмент он будет обращаться к следующему ворк Флоу называем этот ворк Флоу он у нас в памяти то есть в промте уже забит этот инструмент и вот эту вот ноду мы просто удаляем единственное мы сейчас должны создать нечто похожее для этого ворфло как это сделать проще всего мы можем просто сохранить и нажать дубликайт то есть для того чтобы заново эти ноды не писать мы выбираем номер 3 это будет аа Тикток демо также останется и нажимаем дупликет всё сюда будут приходить аа то есть это уже грубо говоря практически настроена настроенная автоматизация для того чтобы он проанализировал профиль единственное мы выбираем аа вариант что нам необходимо нам необходимо чтобы он проанализировал сделал видео транскрибацию видео и здесь необходимо указать юэрэл этого видео мы должны во входящих данных убрать лимит а убрать юзернейм и вместо юзернейма прописать просто you RL что сюда будут приходить urail данны нажимаем протестировать антен ен тест данные пустые мы их редактируем и добавляем какую нибудь ссылку на какое-то видео которое например он нам прислал давайте я со своего телеграмма возьму 1-ое попавшееся видео вот из тех ссылок которые он мне прислал я вбиваю сюда эти значения вот в таком вот виде нажимая save и теперь у меня эти значения есть я просто удаляю вот эту ссылку которая стоит по умолчанию и сюда вбиваю динамическую ссылку всё он будет присылать мне именно информацию об этом видео могу протестировать и посмотреть какие данные по этому видео мне приходят здесь будут приходить здесь придёт описание то есть здесь меньшее количество данных идентификатор видео юрэл видео и транскрибация поэтому я могу эти данные даже не разбивать с помощью Сплит аута я могу их просто отдельно себе забить каждое либо могу их ээ автоматом просто вбить сразу же в таблицу которая у меня есть значит 2-ая таблица это будет уже не таблица с этими параметрами это будет таблица номер 3 значит как будет выглядеть эта таблица я вам сейчас покажу здесь всего есть 3 параметры ай ди то есть идентификатор видео есть ээ юарел значение юарела адреса этого видео и транскрибация то есть транскрибация по этому видео и она будет эти все данные также будут забиваться вот сюда в специализированную таблицу здесь же мы также с вами пропишем так это номер 3 у нас также с вами создадим синхронизацию данных из дата Тейбл таблицу в Гугл таблицу да для того чтобы у нас всё сохранялось в Гугле а ненужную информацию с даты Тейбл мы удаляли но при этом чтобы всё работало через дату Тейбл и всё то есть мы эти данные забьём в таблицу то есть этот и легенд у нас выходит проще мы эти все данные забьём специализированную таблицу и дальше нам необходимо просто отправить ответ что работа проведена поэтому мы аа лишние ноды код сейчас уберём убираем 1 ноды код а во 2-ой нодик код у нас будет аа информация о том что он провел транскрибацию и забил все данные в таблицу и в это будет приходить в качестве ответа мы удаляем всё это и прописываем получаем входные данные такие то такие то формируем результат транскрибация видео в виде выполнена успешно нажимаем тест и он приходит отправляет нашему регенту основному именно уже эту информацию что транскрибация видео выполнена успешно так давайте сразу же сохраним всё чтобы у нас ничего не слетало и всё работало и распиним вот эту вот ноду не вовремя сохранил да и распиним вот эту ноду так сейчас да хочу сохранить и распиним вот эту вот ноту чтобы она не мешалась и в главном нашем аэгенте мы должны сейчас да я я изменил в соседнем ворфлоу не в 3 а в 2 и здесь я должен также в 3 чтоб не запутаться да я обычно закрываю здесь мы с вами в демонстративном режиме здесь ноду запускаю ещё раз то есть с теми параметрами которые пришли вот статус саксеста транскрибация видео выполнена успешно это номер 3 я в номере 2 сначала изменил код сейчас я всё это поправил на место и сохранил значит хорошо нам придёт ответ нашему айгенту именно с этой информации так у меня уже много вкладок я начинаю теряться здесь мы ещё не настроили нашего наш инструмент в качестве инструмента мы выбираем тот эйгент это 3 Тикток демо и аа здесь наш же ньюзерный да мне сохранили что ли опять 3 Тикток демо и здесь только юэрэл всё верно нажимаем обновить да и вот юэрэл то есть здесь он должен прописать будет юэрэл нужно также прописать дискрипшин и дискрипшин для нашего AI Агента  чтобы он понимал когда в эту надо обращаться я эти данные скопирую со своего главного агента то есть вот Тикток видеотранскрипт копирую вот discreption сюда и копирую discription по url то есть в каком формате он должен выдавать мне ural так у меня становится много ссылок хорошо всё значит сейчас он это понимает так как у него в системных в системном промте есть и 2-ая инструкция то есть ты должна когда к тебе приходит задача транскрибировать видео в Тикток видео ты обращаешься ко 2-ому AI Агенту то есть ко 2-ому инструменту вот название этого инструмента если у вас не будет совпадать название этого инструмента здесь в промте и вот здесь вот то он не сможет к нему обращаться это важно знать хорошо и 3-ий инструмент который нам необходим это инструмент будет ээ запроса по определенному линку то есть по хештегу здесь мы выполняем все те же самые действия единственное сюда мы дополнительно добавляем нодо edit fills здесь будет в 1-ой ноде у нас информация по хэштегу и по лимиту по количеству постов по по хэштегу дальше значит мы должны вытащить эти данные хэштеги лимит я вам дальше покажу почему дальше значит мы выбираем моду Тикток Сердж Тикток бай хэштег либо кей Ворлд в зависимости от той задачи которая вам необходима в качестве хэштега мы указываем хэштег и в качестве лимита мы указываем лимит также по умолчанию если лимит не задан он будет задуваться автоматически 20 дальше значит нам приходят все эти данные мы разбиваем эти данные в данном случае было 30 видео 30 ээ 30 видео с хэштегом n8n  по моему Н Т забиваем всё это в 3-ью таблицу 3-ья таблица она чем то похожа на нашу основную таблицу единственное здесь добавляется информация по хэштегу по хэштегу информацию мы берём как раз из этой ноды то есть здесь нам Серж Тикток бай хэштег он не пропишет этот хэштег мы этот хэштег должны взять именно вот с этой ноды и добавить сюда да но мы знаем что мы проводим анализ именно по этому хэштегу и дальше все данные забиваются в таблицу где указан никнейм количество а описание видео количество просмотров юрелл количество лайков комментариев чего там дальше то есть все те же самые данные что и в 1-ом видео забивается всё это в таблицу дальше идёт дополнительным условием что мы делаем топ 3 самых популярных поста а и отправляем эти трио топ 3 самых популярных поста нашему AI Агент наш AI Агент уже отправляет нам информацию о том что я провёл анализ по этому хэштегу вот 3 популярных видео по этой теме в Тикток и отправляет нам все эти видео а все остальные видео он забивает специализированную сначала дататейбл таблицу а дальше синхронизируется с Гугл таблицы как сделать Гугл дататейбл таблица чтобы они синхронизировались с таким образом во 1-ых я вам рекомендую посмотреть вообще видео о дата Тейбл у меня во 2-ом видео где мы рассказывали с примерами там есть информация о том как сделать синхронизацию нам наша основная сдача это выставить таймер выбрать ээ ноду гетроус от дата Тейбл гетроус вытащить все данные с таблицы выбрать ноду аа в Google shits а проект rove an shits то есть забить данные в таблицу и вот эти вот все данные которые мы вытащим они все также сюда отправятся а дальше мы выбираем моду делит Роуз и выбираем по какой колонке нужно ориентироваться в данном случае по колонке никнейм для того чтобы очистить эту таблицу всё таблица будет заполняться таблица будет очищаться лишних данных не будет и наш Тикток AI Агент будет работать ещё раз говорю мы здесь можем добавить до 10 различных инструментов то есть все те различные инструменты которые есть при работе с Тикток вот они Гэт профиль Гэт профил видео Гэт Тикток видео Гэт Тикток транскрибэйта то есть все данные все запросы которые есть здесь в Тикток мы по каждому сможем создать отдельный Ворд Фло отдельный инструмент если вам это необходимо также сюда я рекомендую вам поставить ещё 1 ноду с инструментами которая будет обращаться для выполнения каких-то задач пример она будет обращаться а для того чтобы создать сценарий по транскрибированному видео либо проводить анализ либо что ещё угодно делать то есть вы сюда забиваете отдельную ноду либо вы можете в Тикток AI Агенте забить системное сообщение что когда к тебе приходит информация сделать похоже то есть когда к тебе приходит запрос сделать похожий на эту на этот контент ты должен обращаться здесь уже ставим в качестве инструмента shit с таблицей и он в этих Гугл шит с таблицей которые у нас есть запрос он к ним обращаться обращается и делает на основе этих ээ этой транскрибации делает полноценный контент я же это всё не включил потому что не всем это нужно кто-то хочет просто парить кто-то хочет просто выполнять какие-то задания этот Тикток AI Агент он простой мы с вами вот его с этот Тикток AI Агент он простой и каждый из вас может сам дополнительно навешивать ему тех задач которые вам необходимы может вы просто хотите по аналогии создавать из этих видео сюда прикручиваете например HeyGen  аватар и вам тут же в этом же Тикток агенте будет прикручиваться ваш HeyGen  аватар вы всё это сможете реализовать без проблем без вот такой вот демонстрации посмотрев мои уроки которые выложен также на ютубе либо в нашем Телеграм сообщество ссылка на которое находится в 1-ом закрепленном сообщении ребят я надеюсь что это видео было вам полезно обязательно подпишитесь на канал поставьте мне нравится этому видео напишите что-то в комментариях это реально помогает продвижению видео ну и мотивирует меня снимать подобный контент с шаблонами n8n с вами был Игорь Зуевич пока",
+          "language": "Russian"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get a you tube channel videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a you tube channel videos": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a you tube video transcript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get a you tube video transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c62831b9-5cf9-4092-b64a-8137d5d25e8f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "CauqyaS70K40RnHv",
+  "tags": []
+}

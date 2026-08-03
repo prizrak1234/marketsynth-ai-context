@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/tool-requirement.schema.json",
+  "title": "ToolRequirement",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "tool_id": {
+      "type": "string"
+    },
+    "tool_action": {
+      "type": "string"
+    },
+    "required": {
+      "type": "boolean"
+    },
+    "approval_required": {
+      "type": "boolean"
+    },
+    "security_class": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "write_internal",
+        "publication",
+        "billing",
+        "destructive",
+        "elevated_review"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tool_id",
+    "tool_action",
+    "required",
+    "security_class"
+  ]
+}

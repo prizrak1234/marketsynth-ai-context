@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/quality-gate.schema.json",
+  "title": "QualityGate",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "gate_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "blocking"
+      ]
+    },
+    "applies_to": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "claimed",
+        "source_documented",
+        "reproduced",
+        "regression_tested",
+        "contradicted",
+        "obsolete",
+        "unknown"
+      ]
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "gate_id",
+    "title",
+    "severity",
+    "verification_status",
+    "provenance"
+  ]
+}

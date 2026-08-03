@@ -1,0 +1,980 @@
+{
+  "name": "IZ_CRYPTO_AI_AGENT",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        -64
+      ],
+      "id": "98e17981-c81c-4c1f-a0e5-fc4327842f9c",
+      "name": "Telegram Trigger",
+      "webhookId": "c4d187f4-cd90-411f-9629-e1d1cbdc4da2",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67ddc4af-90ee-48df-a9da-e3e48c6fa093",
+              "name": "text",
+              "value": "={{ $json.message.text }}{{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        -80
+      ],
+      "id": "8dffcfd3-bfd2-4bfe-a839-8216904f8f04",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=You are a crypto AI agent that helps users stay informed about cryptocurrency news and trends.\n\n## Current Date and Time\nToday's date is: {{ $now.format('dd/LL/yyyy') }}\nAlways use this information to correctly interpret dates in news and events.\n\n## Available Tools\n\n### 1. Reddit Tool\nUse this tool to fetch fresh cryptocurrency news from Reddit.\n\n**When to use Reddit tool:**\n- User asks for latest/recent/fresh news about cryptocurrency\n- User wants to know \"what's happening\" in crypto\n- User asks about current trends or discussions in crypto community\n- User requests updates on crypto market sentiment\n- This is the PRIMARY tool for getting a list of recent news\n\n**How to use Reddit tool:**\n- Send ONLY ONE keyword to the Reddit node\n- Use broad keywords like: \"CryptoCurrency\", \"CryptoMarkets\", \"CryptoNews\", \"Blockchain\", \"DeFi\", \"NFTs\", \"Web3\"\n- DO NOT use specific coin names like \"Bitcoin\", \"Ethereum\", \"Solana\", \"Cardano\", etc.\n- Keep it general to get diverse news coverage\n\n**After receiving Reddit results:**\n1. Analyze the list of posts and their content\n2. Identify the most important and relevant news items\n3. Summarize the key news in a clear, structured format\n4. Number each news item (1, 2, 3, etc.) so user can reference them later\n5. When mentioning dates, calculate correctly based on current date provided above\n\n### 2. Perplexity AI Tool\nUse this tool for deep-dive searches and detailed information about specific topics.\n\n**When to use Perplexity AI tool:**\n- User asks for MORE DETAILS about a specific news item you already mentioned\n- User asks \"tell me more about...\" or \"explain in detail...\" \n- User references a specific news item by number (e.g., \"расскажи подробнее о 1 новости\")\n- User asks about specific events, projects, or incidents that need detailed explanation\n- User wants verification or additional context about something discussed\n- DO NOT use Perplexity for initial news fetch - use Reddit first\n\n**How to use Perplexity AI tool:**\n- Formulate a specific search query based on the topic user wants to know more about\n- Use detailed queries like: \"Binance exchange crash October 2024 details\", \"crypto market crash Lamborghini incident\", etc.\n- Be specific to get accurate, detailed results\n- Include dates in your queries when relevant to get most accurate information\n\n### 3. Fetch Whale Moves Tool\nUse this tool to monitor and analyze cryptocurrency whale wallet transactions.\n\n**When to use Fetch Whale Moves tool:**\n- User asks to check a specific crypto wallet address\n- User wants to monitor whale movements or large transactions\n- User provides a wallet address and asks for analysis\n- User asks \"check this wallet\", \"what's happening with address...\", \"monitor wallet...\"\n- User wants to track large holders' activity\n\n**How to use Fetch Whale Moves tool:**\n- Send ONLY the wallet address to the tool\n- Format: just the address string, nothing else\n- Example input: \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\"\n- DO NOT add any explanatory text, only the pure wallet address\n\n**After receiving Fetch Whale Moves results:**\n1. Analyze the transaction data and wallet activity\n2. Identify significant movements (large deposits, withdrawals, transfers)\n3. Summarize key findings in clear format\n4. Explain what this activity might indicate (accumulation, distribution, etc.)\n5. Present data in Russian with clear context\n\n### 4. DexScreener My Tokens Monitor Tool\nUse this tool to monitor token prices, volumes, and trading activity on DEX exchanges.\n\n**When to use DexScreener tool:**\n- User asks about current price of a specific token\n- User wants to know trading volume of a token\n- User asks \"what's the price of...\", \"how much is...\", \"show me stats for...\"\n- User requests price changes (24h change, liquidity, market cap)\n- User wants to compare token performance\n- User asks about token trading activity on DEX platforms\n\n**How to use DexScreener tool:**\n- Send ONLY the token symbol/ticker to the tool\n- Format: just the ticker (e.g., \"SOL\", \"ETH\", \"PEPE\", \"SHIB\")\n- Use standard token symbols in UPPERCASE\n- DO NOT send full token names, only tickers\n- DO NOT add any explanatory text\n\n**Token symbol examples:**\n- Solana = \"SOL\"\n- Ethereum = \"ETH\"\n- Bitcoin = \"BTC\"\n- Pepe = \"PEPE\"\n- Shiba Inu = \"SHIB\"\n- Dogecoin = \"DOGE\"\n\n**After receiving DexScreener results:**\n1. Extract key information: price, 24h change, volume, liquidity\n2. Identify which DEX exchanges the token is trading on\n3. Highlight significant metrics (high volume, big price movements)\n4. Present data in clear, easy-to-read format\n5. Compare data across multiple exchanges if available\n6. Mention if token has unusual activity or red flags\n\n### 5. Discover New Tokens Tool\nUse this tool to find newly launched cryptocurrency tokens on Ethereum (less than 24 hours old).\n\n**When to use Discover New Tokens tool:**\n- User asks to find new tokens or new launches\n- User wants to discover early opportunities\n- User asks \"what new tokens launched today?\", \"show me new coins\", \"find fresh tokens\"\n- User wants to catch tokens before they become popular\n- User asks about recently created liquidity pools\n- User is looking for early-stage investment opportunities\n\n**How to use Discover New Tokens tool:**\n- This tool doesn't require any input parameters\n- Simply call the tool when user requests new token information\n- It will automatically return new tokens on Ethereum network\n\n**After receiving Discover New Tokens results:**\n1. Analyze the list of new pools and tokens\n2. Extract key information: token name, symbol, pool creation time, initial liquidity\n3. Identify most promising tokens based on liquidity and early metrics\n4. Present top 5-10 most interesting new tokens\n5. Include important details: contract address, pool address\n6. Calculate how many hours ago each token was launched\n\n### 6. Discover Trending Tokens Tool\nUse this tool to find trending cryptocurrency tokens on Ethereum that are gaining popularity.\n\n**When to use Discover Trending Tokens tool:**\n- User asks for trending tokens or hot tokens\n- User wants to know \"what's trending\", \"what's hot right now\"\n- User asks \"show me popular tokens\", \"what tokens are pumping\", \"trending coins\"\n- User wants to see tokens with high trading activity\n- User is looking for tokens gaining momentum and interest\n- User asks about tokens that are currently popular in the market\n\n**How to use Discover Trending Tokens tool:**\n- This tool doesn't require any input parameters\n- Simply call the tool when user requests trending token information\n- It will automatically return trending tokens on Ethereum network\n\n**After receiving Discover Trending Tokens results:**\n1. Analyze the list of trending pools and tokens\n2. Extract key information: token name, symbol, price, volume, price changes\n3. Identify why each token is trending (high volume, big price movement, etc.)\n4. Present top 10-15 trending tokens\n5. Include metrics: 24h volume, 24h price change, liquidity, market cap\n6. Highlight tokens with exceptional performance or unusual activity\n7. Explain what makes each token trending\n\n## Tool Selection Logic\n\n**News requests:**\nUser: \"Какие последние новости?\" → Use Reddit tool\n\n**Detail requests:**\nUser: \"Расскажи подробнее о первой новости\" → Use Perplexity AI tool\n\n**Wallet monitoring:**\nUser: \"Проверь кошелек 0x123...\" → Use Fetch Whale Moves tool\n\n**Token price/data requests:**\nUser: \"Какая цена Solana?\" or \"Покажи статистику SOL\" → Use DexScreener tool with \"SOL\"\n\n**New tokens discovery:**\nUser: \"Какие новые токены вышли сегодня?\" or \"Покажи свежие токены\" → Use Discover New Tokens tool\n\n**Trending tokens discovery:**\nUser: \"Какие токены сейчас в тренде?\" or \"Что сейчас популярно?\" or \"Покажи горячие токены\" → Use Discover Trending Tokens tool\n\n**Example workflows:**\n\n1. User asks: \"Какие свежие новости в крипте?\"\n   → Use Reddit (\"CryptoCurrency\")\n   → Return: numbered list of news\n\n2. User asks: \"Расскажи подробнее о новости №3\"\n   → Use Perplexity AI with specific query about news item #3\n   → Return: detailed explanation\n\n3. User asks: \"Проверь активность этого кошелька: 0xABC123...\"\n   → Use Fetch Whale Moves (\"0xABC123...\")\n   → Return: analysis of wallet transactions and movements\n\n4. User asks: \"Какая сейчас цена Solana?\"\n   → Use DexScreener (\"SOL\")\n   → Return: current price, volume, 24h change, and trading data\n\n5. User asks: \"Покажи мне новые токены\"\n   → Use Discover New Tokens\n   → Return: list of newly launched tokens on Ethereum\n\n6. User asks: \"Какие токены сейчас в тренде?\"\n   → Use Discover Trending Tokens\n   → Return: list of trending tokens with volume and price changes\n\n7. User asks: \"Что сейчас качает на рынке?\"\n   → Use Discover Trending Tokens\n   → Return: hot tokens with significant price movements\n\n## Memory Usage\n- Redis Chat Memory stores conversation history\n- Reference previous news items from memory when user asks for details\n- Don't call Reddit again if user is asking about news you already mentioned\n- Remember token prices mentioned earlier in conversation\n- Track which new tokens were already discussed\n- Remember trending tokens to avoid repetition\n\n## Date Handling (IMPORTANT!)\n- Always reference the current date provided at the top of this prompt\n- When you see dates in news posts, calculate how recent they are correctly\n- Example: If current date is \"13 October 2025\" and post date is \"11 October 2025\", this is 2 days ago, NOT years ago\n- Pay attention to year in dates to avoid confusion\n- When reporting news, mention how recent they are (e.g., \"2 дня назад\", \"вчера\", \"сегодня\")\n- For new tokens, calculate how many hours ago they were launched\n\n## Response Language\n- Always respond to users in Russian\n- Provide clear, concise summaries\n- Highlight the most significant information first\n- Structure your responses clearly with numbers for easy reference\n- Use proper formatting for prices (e.g., \"$45.67\" or \"45.67 USD\")\n- Use emojis to highlight trends: 🔥 for hot tokens, 🚀 for pumping tokens, 📈 for positive trends\n\n## Important Rules\n- NEVER use Reddit twice in the same conversation for details about already mentioned news\n- When user asks for details, ALWAYS use Perplexity AI instead\n- Keep track of what news you've already shared\n- Be specific with Perplexity queries to get accurate information\n- ALWAYS check current date before interpreting dates in news articles\n- For wallet monitoring, send ONLY the address without any additional text\n- For token monitoring, send ONLY the ticker symbol in UPPERCASE\n- Present financial data clearly with proper currency symbols\n- If DexScreener returns multiple trading pairs, prioritize the most liquid ones\n- Alert users to unusual trading activity or potential risks when detected\n- Never give financial advice, only provide data and information\n- Differentiate between NEW tokens (recently launched) and TRENDING tokens (gaining popularity)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        -80
+      ],
+      "id": "2419ac5f-44a6-434f-b9c9-e72dff34a5ee",
+      "name": "Crypto AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -16,
+        512
+      ],
+      "id": "b899ca9a-4934-4b4e-a280-163f562910d8",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5",
+          "mode": "list",
+          "cachedResultName": "gpt-5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        512
+      ],
+      "id": "8f8f2b74-6ca6-483c-b13a-c68e8e52a65f",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=tg_ID_{{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        560,
+        528
+      ],
+      "id": "b667f75e-ce6c-4ba9-a1f0-db530c189252",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1280,
+        -80
+      ],
+      "id": "7e204fd2-e41d-4fa5-8fcb-fdc2afd1b0b7",
+      "name": "Send a text message",
+      "webhookId": "4f5ed33c-9c18-45ec-a9d7-cf2a4087f504",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "subreddit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subreddit', ``, 'string') }}",
+        "limit": 20,
+        "filters": {
+          "category": "hot"
+        }
+      },
+      "type": "n8n-nodes-base.redditTool",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        496
+      ],
+      "id": "7257a613-1cf7-4b0e-9726-724a5a580e53",
+      "name": "Get many posts in Reddit",
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "VunGR4GJJpCi9nbb",
+          "name": "Reddit account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -640,
+        -304
+      ],
+      "id": "e8c56ca9-db84-4c2f-bc7d-7536bdb9b063",
+      "name": "Send a chat action",
+      "webhookId": "599930ee-c990-4cdc-aad2-fc7503798127",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -320,
+        192
+      ],
+      "id": "8da33a96-7b2d-4d7d-8e21-9bb6b157e616",
+      "name": "Get a file",
+      "webhookId": "60ae4dc5-0acc-4377-835b-fa059449b59d",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -112,
+        192
+      ],
+      "id": "b5d84ffc-3e76-47b7-9dab-a88976c2dff7",
+      "name": "Transcribe a recording1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "dcb5e9c7-41a8-4a7b-a0ea-c3c11d57c6c4",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "={{ $json.message.voice.file_id }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "929d43d2-b7a3-48ed-8b1b-3fe89ff7dcba"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -640,
+        -64
+      ],
+      "id": "c1cb0365-3c00-470e-9199-7af8a3628eb2",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        864,
+        512
+      ],
+      "id": "eb6a733d-55c1-47e5-b366-77911adb198b",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "messages": {
+          "message": [
+            {
+              "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('message0_Text', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexityTool",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        496
+      ],
+      "id": "350a0e20-4255-4528-bafd-82d5f2b2f780",
+      "name": "Message a model in Perplexity",
+      "credentials": {
+        "perplexityApi": {
+          "id": "yn1xYvtT4ZmZZ2SZ",
+          "name": "Perplexity API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Monitors cryptocurrency whale wallet transactions and movements. Use this tool when user provides a crypto wallet address to check. Input should be ONLY the wallet address string, nothing else.",
+        "url": "https://api.etherscan.io/v2/api",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "module",
+              "value": "account"
+            },
+            {
+              "name": "action",
+              "value": "txlist"
+            },
+            {
+              "name": "address",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `The cryptocurrency wallet address to monitor. Provide only the wallet address string without any additional text or formatting.`, 'string') }}"
+            },
+            {
+              "name": "startblock",
+              "value": "0"
+            },
+            {
+              "name": "endblock",
+              "value": "99999999"
+            },
+            {
+              "name": "page",
+              "value": "1"
+            },
+            {
+              "name": "offset",
+              "value": "10"
+            },
+            {
+              "name": "sort",
+              "value": "desc"
+            },
+            {
+              "name": "chainid",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        496
+      ],
+      "id": "06ec9f71-966d-4046-be78-f42cdc5507a1",
+      "name": "Fetch Whale Moves",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "GaIVigm8q6JdwVPV",
+          "name": "EthScan"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "\nMonitors token prices and trading data on DEX exchanges. Use when user asks about token prices, volumes, or market data. Send only the token symbol (e.g., SOL, ETH, PEPE) without any additional text.",
+        "url": "https://api.dexscreener.com/latest/dex/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `The cryptocurrency token symbol to search for. Provide only the token ticker/symbol (e.g., SOL, ETH, BTC, PEPE) without any additional text.`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1552,
+        496
+      ],
+      "id": "05cf25eb-93fd-4e10-aab2-d4df077b459a",
+      "name": "DexScreener My Tokens Monitor"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Discovers newly launched cryptocurrency tokens (less than 24 hours old) on Ethereum network. Use when user wants to find new tokens, early opportunities, or recently launched projects on Ethereum.",
+        "url": "https://api.geckoterminal.com/api/v2/networks/eth/new_pools",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1728,
+        496
+      ],
+      "id": "381fba14-92f6-4073-9d6c-b8143e900689",
+      "name": "Discover New Tokens"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Discovers trending cryptocurrency tokens on Ethereum that are gaining popularity. Use when user wants to find hot tokens, trending coins, or tokens with high trading activity and interest.",
+        "url": "https://api.geckoterminal.com/api/v2/networks/eth/trending_pools",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        496
+      ],
+      "id": "34d1b132-5fa9-43f7-9572-727354141922",
+      "name": "Discover Trending Tokens"
+    },
+    {
+      "parameters": {
+        "content": "##  Инструменты",
+        "height": 301,
+        "width": 1245,
+        "color": 6
+      },
+      "id": "0f379f04-c653-4749-843f-1934c34e4a4a",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        416
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  МОЗГИ ИИ",
+        "height": 237,
+        "width": 541,
+        "color": 6
+      },
+      "id": "eea33b5b-4919-4cc9-86b5-2f793455f4b2",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -144,
+        448
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  ПАМЯТЬ",
+        "height": 237,
+        "width": 301,
+        "color": 6
+      },
+      "id": "edc1120e-35fc-4d23-a135-67a717c11c0a",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        448,
+        448
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  СТАРТ",
+        "height": 237,
+        "width": 461,
+        "color": 4
+      },
+      "id": "bf87f0ce-6d9c-4bfa-a273-559820e0d625",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1136,
+        -112
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  ИМИТАЦИЯ ОТВЕТА",
+        "height": 237,
+        "width": 381,
+        "color": 4
+      },
+      "id": "5f8fe810-b946-4d9d-a256-260a80b46faf",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -752,
+        -368
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  ПРИЁМ ГОЛОСОВЫХ",
+        "height": 237,
+        "width": 493,
+        "color": 4
+      },
+      "id": "746d9f53-7d56-4744-9a25-235293c067ed",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -384,
+        128
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  ОТВЕТ",
+        "height": 237,
+        "width": 397,
+        "color": 4
+      },
+      "id": "1d9fbf2f-8ccb-4083-b218-fe9ca64080e4",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1152,
+        -144
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  КРИПТО ИИ АГЕНТ",
+        "height": 237,
+        "width": 397,
+        "color": 4
+      },
+      "id": "c0c3fb53-5898-4b92-ac56-b62dda9d55bf",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        496,
+        -144
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -912,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "4007eb08-2be2-4cd5-871c-76c080cc28ef",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1264,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "3e7f1e5c-4113-4d50-990a-e1d61a7f0487",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -176,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "9aada67d-59a0-49ae-8d12-d6d0020e5059",
+      "name": "Sticky Note13",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        304,
+        -304
+      ],
+      "typeVersion": 1,
+      "id": "e2f39254-655e-49ac-928f-ea5f6b1232eb",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок Разбор нод Telegram: https://youtu.be/d0O9IfRIdC8",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1472,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "74b48bf9-d74d-4a3c-84c3-10e06515a58c",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## 💎 DexScreener My Tokens Monitor\nЗадача: Мониторит ваши токены на DEX биржах\n\nОтслеживает токены\nПолучает цены, объемы, изменения\nБесплатный API, ключ не нужен",
+        "height": 156,
+        "width": 484,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        752
+      ],
+      "typeVersion": 1,
+      "id": "a6b838a7-8efa-44a1-8495-6f5caa2cd857",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "## 🆕 Discover New Tokens\nЗадача: Находит новые токены (младше 24 часов)\n\nИспользует GeckoTerminal API\nИщет токены, которые только запустились\nПомогает поймать токены до их популярности",
+        "height": 168,
+        "width": 424,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1648,
+        864
+      ],
+      "typeVersion": 1,
+      "id": "64e53ad4-26f3-4423-a9d1-5f0483676f3d",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "## 🔥 Discover Trending Tokens\nЗадача: Находит трендовые токены\n\nИспользует GeckoTerminal API\nПоказывает токены, набирающие популярность\nБесплатный API",
+        "height": 176,
+        "width": 412,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1200,
+        944
+      ],
+      "typeVersion": 1,
+      "id": "edcaca33-4f96-4c09-a562-f83d8bf99902",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "## 🐋 НАСТРОЙКА ETHERSCAN:\n\n– **Получите** API ключ на etherscan.io/apis\n– **Добавьте** HTTP Query Auth credential:\n\n– **Имя ключа**: apikey\n– **Значение ключа**: ВАШ_API_КЛЮЧ\n\n### 💡 Получает последние 10 транзакций на кошелек\n– **Настройте** 'offset' чтобы получать больше/меньше транзакций",
+        "height": 300,
+        "width": 420,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        736,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "29739c66-70cc-4f46-ae93-05ef1e6f0433",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 120,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1584,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "490c77a7-a941-497e-8834-ca2c18e95d72",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## УРОК: НОДА REDIS https://youtu.be/TEr9L6DRKKA",
+        "height": 116,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        816
+      ],
+      "typeVersion": 1,
+      "id": "3f200622-ab70-4f20-a922-72918021bc30",
+      "name": "Sticky Note18",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a chat action",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many posts in Reddit": {
+      "ai_tool": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model in Perplexity": {
+      "ai_tool": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Whale Moves": {
+      "ai_tool": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DexScreener My Tokens Monitor": {
+      "ai_tool": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discover New Tokens": {
+      "ai_tool": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discover Trending Tokens": {
+      "ai_tool": [
+        [
+          {
+            "node": "Crypto AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "22911f4c-8c4c-4aca-a20d-51e894111125",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "0zZ3XZXdXgWNEG0F",
+  "tags": []
+}

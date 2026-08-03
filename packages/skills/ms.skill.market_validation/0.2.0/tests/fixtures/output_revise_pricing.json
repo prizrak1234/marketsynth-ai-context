@@ -1,0 +1,412 @@
+{
+  "validation_id": "mv-020-001",
+  "skill_id": "ms.skill.market_validation",
+  "skill_version": "0.2.0",
+  "source_context_reference": {
+    "source_skill_id": "ms.skill.product_marketing_context",
+    "source_skill_version": "0.2.0",
+    "source_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_research_reference": {
+    "source_skill_id": "ms.skill.market_research",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_competitor_reference": {
+    "source_skill_id": "ms.skill.competitor_analysis",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_cim_reference": {
+    "source_skill_id": "ms.skill.icp_segmentation",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+    "cim_version": "0.1.0",
+    "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "selected_segment_ids": [
+      "seg-remote-eng"
+    ],
+    "source_evidence_references": [
+      "ev-seg-seg-remote-eng"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "budget",
+        "description": "Budget bands unverified"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "decision_readiness": {
+    "readiness": "ready_for_decision",
+    "supporting_reasons": [
+      "Upstream refs complete"
+    ],
+    "blockers": [],
+    "missing_inputs": [],
+    "unresolved_conflicts": [],
+    "evidence_coverage": "full",
+    "provenance": {
+      "skill_id": "ms.skill.market_validation",
+      "skill_version": "0.2.0"
+    }
+  },
+  "verdict": "revise",
+  "verdict_confidence": "high",
+  "executive_summary": "Evidence supports proceeding to positioning for remote engineering SaaS.",
+  "decision_dimensions": [
+    {
+      "dimension": "product_context_quality",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "market_evidence_quality",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "customer_evidence_quality",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "demand_signal_strength",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "competitor_pressure",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "segment_fit",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "reachability",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "budget_fit",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "pricing_plausibility",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "operational_feasibility",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "switching_difficulty",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "evidence_coverage",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "contradiction_severity",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "regulatory_or_external_constraints",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    },
+    {
+      "dimension": "critical_risks",
+      "status": "supportive",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "unknowns": [],
+      "confidence": "medium",
+      "blockers": [],
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "statement": "Market demand signals support remote async collaboration need.",
+      "trace_type": "evidence",
+      "evidence_class": "market_source",
+      "source_reference": "ev-upstream-001"
+    }
+  ],
+  "contradictory_evidence": [],
+  "assumptions": [],
+  "inferences": [],
+  "unknowns": [
+    {
+      "domain": "budget",
+      "description": "Budget bands unverified"
+    }
+  ],
+  "conflicts": [],
+  "evidence_gaps": [],
+  "critical_risks": [],
+  "noncritical_risks": [
+    {
+      "risk_id": "risk-competition",
+      "domain": "competitor",
+      "description": "Risk in competitor domain",
+      "likelihood": "medium",
+      "impact": "moderate",
+      "severity": "moderate",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "assumptions": [],
+      "mitigations": [],
+      "residual_risk": "moderate",
+      "blocking": false,
+      "owner_review_required": false,
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    }
+  ],
+  "conditions": [],
+  "blockers": [
+    {
+      "blocker_id": "blk-hb-006",
+      "blocker_code": "HB-006",
+      "category": "budget_unavailable",
+      "description": "Declared pricing exceeds segment budget sensitivity",
+      "evidence_references": [
+        "ev-upstream-001"
+      ],
+      "contradictory_evidence": [],
+      "remediation_type": "material_change",
+      "remediation_possible": true,
+      "required_change": "",
+      "recommended_verdict_effect": "revise",
+      "severity": "critical",
+      "blocking": true,
+      "owner_review_required": true,
+      "provenance": {
+        "skill_id": "ms.skill.market_validation",
+        "skill_version": "0.2.0"
+      }
+    }
+  ],
+  "required_changes": [
+    "Adjust pricing model to usage-based tiers"
+  ],
+  "next_validation_steps": [
+    "Proceed to positioning with selected segment"
+  ],
+  "recommended_next_stage": "owner_review",
+  "human_approval_required": true,
+  "approval_granted": false,
+  "provenance": {
+    "skill_id": "ms.skill.market_validation",
+    "skill_version": "0.2.0",
+    "methodology_ref": "SKILL-02.6B",
+    "source_context_skill_id": "ms.skill.product_marketing_context",
+    "source_context_skill_version": "0.2.0",
+    "source_context_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_research_skill_id": "ms.skill.market_research",
+    "source_research_skill_version": "0.1.0",
+    "source_research_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_competitor_skill_id": "ms.skill.competitor_analysis",
+    "source_competitor_skill_version": "0.1.0",
+    "source_competitor_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_cim_skill_id": "ms.skill.icp_segmentation",
+    "source_cim_skill_version": "0.1.0",
+    "source_cim_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "input_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+  "output_hash": "2222222222222222222222222222222222222222222222222222222222222222"
+}

@@ -1,0 +1,39 @@
+{
+  "raw_task": "Structure context for a B2B analytics tool with unknown target audience.",
+  "product_name": {
+    "value": "DataLens Analytics",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "product_type": {
+    "value": "B2B SaaS",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "business_model": {
+    "value": "Enterprise subscription",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "medium"
+  },
+  "geography": {
+    "value": "North America",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "medium"
+  },
+  "problem_claims": [
+    {
+      "claim_id": "prob-001",
+      "domain": "problem_statement",
+      "statement": "Marketing teams lack unified campaign attribution",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "user_priorities": ["Identify ICP before sales outreach"],
+  "user_risk_tolerance": "medium"
+}

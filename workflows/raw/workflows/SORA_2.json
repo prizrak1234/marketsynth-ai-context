@@ -1,0 +1,329 @@
+{
+  "name": "SORA_2",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "video",
+        "modelId": {
+          "__rl": true,
+          "value": "sora-2",
+          "mode": "list",
+          "cachedResultName": "SORA-2"
+        },
+        "prompt": "={{ $json.output }}",
+        "seconds": 8,
+        "options": {
+          "binaryPropertyNameReference": "image"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        1728,
+        -272
+      ],
+      "id": "fcbfa6be-fe32-4aad-adff-a057c405de21",
+      "name": "Sora 2",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "resize",
+        "dataPropertyName": "image",
+        "width": 1280,
+        "height": 720,
+        "resizeOption": "ignoreAspectRatio",
+        "options": {
+          "format": "jpeg"
+        }
+      },
+      "type": "n8n-nodes-base.editImage",
+      "typeVersion": 1,
+      "position": [
+        864,
+        -384
+      ],
+      "id": "1d2f6370-1f87-414a-a737-001ac7fbea57",
+      "name": "Edit Image"
+    },
+    {
+      "parameters": {
+        "formTitle": "Sora 2 Generator",
+        "formDescription": "Напиши промпт и выгрузи видео",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Описание для видео"
+            },
+            {
+              "fieldLabel": "image",
+              "fieldType": "file",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        304,
+        -304
+      ],
+      "id": "afcf892e-1db0-4532-a9be-61ec60899afe",
+      "name": "On form submission",
+      "webhookId": "6f0f73e8-ed9d-4963-9d9a-fa32ed85b5c1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['Описание для видео'] }}",
+        "options": {
+          "systemMessage": "=You are an expert at writing cinematic, high-conversion UGC video prompts for Sora 2.  \nYour job is to take the user’s written concept and turn it into a single, production-ready prompt that transforms an uploaded image into a visually realistic short ad.\n\n---\n### 🧠 Your task:\n1. Read the user’s input carefully (description + reference image).  \n2. Interpret the mood, tone, and purpose of the ad (fresh, energetic, elegant, cozy, etc.).  \n3. Write a **cinematic, natural, emotionally engaging UGC-style prompt** that:\n   - Starts directly inside the scene (no intros or titles);\n   - Includes the **environment**, **lighting**, **camera movement**, and **human action** if relevant;\n   - Keeps the tone authentic and product-focused (as if filmed by a real creator);\n   - Uses realistic everyday details and natural light;\n   - Ends with an optional short tagline that fits the tone.\n\n---\n\n### 🧩 Input:\n{{ $json['Описание для видео'] }}\n\n---\n### ⚙️ Rules:\n1. Do **not** include intros, outros, titles, or subtitles — start right in the scene.  \n2. This is a **UGC ad**, so the tone should be **natural, product-focused, emotionally persuasive**.  \n3. Assume the uploaded image will be **reformatted to 1280×720** (horizontal), and make subtle adjustments so the scene looks balanced and proportional.  \n4. Always write in **one cohesive paragraph** describing the full scene and camera flow.  \n5. **Avoid** brand names, copyrighted characters, or people’s likenesses.  \n6. Use **cinematic but realistic** language (avoid over-dramatization).  \n7. Include **camera perspective hints** (e.g., “handheld camera,” “smooth tracking shot,” “natural focus”).  \n8. Mention **lighting** (soft daylight, golden hour, morning sunlight, etc.) to guide Sora 2’s rendering.  \n9. Keep output **under 90 words**, compact and visually descriptive.\n\n---\n### 🎬 Output:\nReturn only the final **Sora 2 prompt**, nothing else.  \nWrite in **English** and describe the full scene as if it were already being filmed.\n\n---\n**Example output:**\n> A bright, modern bathroom. A cheerful young adult stands by the mirror, holding a white toothpaste tube and smiling after brushing their teeth. Close-up of toothpaste on a brush, soft daylight reflecting on tiles, gentle steam from the sink. Smooth handheld camera, natural motion, clean and fresh tone. Tagline: “Gentle care. Confident smile.”\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        816,
+        -144
+      ],
+      "id": "ad4d4a00-7f8e-40f8-ba12-1afbe75e5afc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-5-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        816,
+        80
+      ],
+      "id": "63072a50-49fd-498e-93da-927b9a3d1582",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1472,
+        -272
+      ],
+      "id": "030d12a7-5fbf-4cd8-9002-5eed0b7e302a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "sendVideo",
+        "chatId": "190190068",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2032,
+        -272
+      ],
+      "id": "5b592e75-b94d-4205-8911-039244367f6d",
+      "name": "Send a video",
+      "webhookId": "b090dc0a-8c56-4dde-af7e-66fd9a5b29ba",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1760,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "3c8240d4-3e91-43c6-a255-68b67d76e59d",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1072,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "f28251ce-0a9b-4511-8391-581c1458c249",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Sora 2",
+        "height": 304,
+        "width": 608,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        -352
+      ],
+      "id": "d84b0485-61a9-413e-aeeb-e2f116b53f83",
+      "name": "Sticky Note5",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Подготовка",
+        "height": 592,
+        "width": 816,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -400
+      ],
+      "id": "3a29e152-9c43-46c2-9614-66e290ea931b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        992,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "937f50bd-f960-475b-b202-d0b12ab44114",
+      "name": "Sticky Note13",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Image": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Sora 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sora 2": {
+      "main": [
+        [
+          {
+            "node": "Send a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "70502e1c-43ab-4f27-939f-f4d1eebede8e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "cP5gKQ4KvY2MrxAf",
+  "tags": []
+}

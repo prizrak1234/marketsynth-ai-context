@@ -1,0 +1,19 @@
+{
+  "consumer": "ms.skill.positioning",
+  "cim_fields_consumed": [
+    "primary_icp_candidates",
+    "segments",
+    "jobs_to_be_done",
+    "pain_points",
+    "objections",
+    "trust_drivers"
+  ],
+  "recompute_forbidden": [
+    "jobs_to_be_done",
+    "pain_points",
+    "buying_triggers",
+    "objections",
+    "trust_drivers"
+  ],
+  "sample_cim_ref": "output_complete_saas.json"
+}

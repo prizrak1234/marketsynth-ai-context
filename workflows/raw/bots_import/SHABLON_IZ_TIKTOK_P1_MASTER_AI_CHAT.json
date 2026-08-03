@@ -1,0 +1,529 @@
+{
+  "name": "SHABLON_IZ_TIKTOK_P1_MASTER_AI_CHAT",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Найти конкурентов по поисковому запросу.\n\n## Например, \"найти конкурентов по запросу: дизайн веб-сайта\"",
+        "height": 200,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -360,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "b1bbcce0-fdcb-4a64-afd0-5a25a96aef8d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Лучшие посты\n\n## 1. Сначала извлеките имена пользователей (например, Извлечь имена пользователей для меня)\n## 2. Выберите, от какого пользователя вы хотите получить лучшие посты (например, получить лучшие посты для номера 9 / justinbieber)",
+        "height": 280,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        200,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "34120914-e79d-4e1b-a247-fc1cda4b3e5d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Повторное использование\n\n## 1. Сначала извлеките посты (например, извлеките посты от justinbieber)\n## 2. Выберите, какой пост вы хотите повторно использовать (например, «повторное использование поста номер 4»)",
+        "height": 300,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        920,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "ebdf402c-083e-4649-ab41-5a542fd911c5",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Подключите свои учетные данные Airtable.\n\n## Создайте новую базу и загрузите предоставленный .csv.",
+        "height": 120,
+        "width": 760,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        920,
+        940
+      ],
+      "typeVersion": 1,
+      "id": "484e09ab-ea02-44cc-8057-7a76a6cb82d1",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "# Примечания:\n\n## Помните, что во многих видео Tik Tok люди «танцуют» и делают глупости. Так что дважды проверьте, действительно ли в видео есть говорящие люди, если вы хотите скопировать его.",
+        "height": 280,
+        "width": 680,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        200,
+        1460
+      ],
+      "typeVersion": 1,
+      "id": "134982c9-9059-4240-bd28-4bfd6c7a33ba",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Убедитесь, что «Найти конкурентов», «Лучшие посты» и «Повторное использование» связаны с другими проектами рабочего процесса.",
+        "height": 120,
+        "width": 640,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        220,
+        940
+      ],
+      "typeVersion": 1,
+      "id": "ffd6ea8e-4f5c-4ac0-8f3a-c1ffd194e84b",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## В node \"IF\", введите свой \"Chat ID\",серию цифр, привязанных к вашей учетной записи Telegram.",
+        "height": 180,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -760,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "584c9c25-6256-49e4-a19f-d08861c9d1c5",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## TIKTOK АГЕНТ-ПОМОЩНИК\n\n",
+        "height": 1020,
+        "width": 1360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        60,
+        -580
+      ],
+      "typeVersion": 1,
+      "id": "e9e4dc8a-b981-43e9-87fb-28399d4ad3b3",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        -120
+      ],
+      "id": "37f76cd4-5701-4ea3-be8d-d3ca31dc84b0",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "name": "Posts",
+        "description": "Call this tool for queries related to getting top posts and send the record ID only.",
+        "workflowId": {
+          "__rl": true,
+          "value": "XAMHRNecd9WKnheX",
+          "mode": "list",
+          "cachedResultName": "SHABLON_TIKTOK_P3_TOPUSERS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('record_id', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ],
+          "schema": [
+            {
+              "id": "record_id",
+              "displayName": "record_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        660,
+        260
+      ],
+      "id": "4906f750-57fe-43c1-af67-ceb41faa028d",
+      "name": "Top Posts"
+    },
+    {
+      "parameters": {
+        "name": "usermanes",
+        "description": "Call this tool for queries related to finding competitors by sending the search term only.",
+        "workflowId": {
+          "__rl": true,
+          "value": "QgzcnRarCgs9HYCJ",
+          "mode": "list",
+          "cachedResultName": "SHABLON_TIKTOK_P4_COMPETITORS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "search_query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('search_query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "search_query"
+          ],
+          "schema": [
+            {
+              "id": "search_query",
+              "displayName": "search_query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        460,
+        280
+      ],
+      "id": "b4acc011-2cc6-4539-a697-8f9c60c9e1f5",
+      "name": "Find competitors"
+    },
+    {
+      "parameters": {
+        "name": "Repurpose",
+        "description": "Call this tool for queries related to repurposing content, send only the record ID of a record here.",
+        "workflowId": {
+          "__rl": true,
+          "value": "b7AU2LlOAdIm0QRT",
+          "mode": "list",
+          "cachedResultName": "SHABLON_TIKTOK_P2_REPURPOSE"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('record_id', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ],
+          "schema": [
+            {
+              "id": "record_id",
+              "displayName": "record_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        880,
+        280
+      ],
+      "id": "459be8e5-2f9c-4097-b324-c2a1695956be",
+      "name": "Repurpose"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        -100
+      ],
+      "id": "91351ea7-cbd4-4946-af7e-060ea9d2afa2",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "L72MI6qYBAu3BCux",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch Tik Tok posts.",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_POSTS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tblxCudSu6J6huIOn"
+        },
+        "filterByFormula": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        1000,
+        0
+      ],
+      "id": "e95a0beb-6308-49ca-85d1-4224dcb4ed58",
+      "name": "Fetch Posts",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch username records.",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tbl7V6L6E6GwpFHfU"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        1180,
+        -20
+      ],
+      "id": "661b1b39-d648-4ad3-b170-6afcd4917487",
+      "name": "Fetch usernames",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=### Role:\nYou are a highly efficient, fun, and enthusiastic personal assistant specializing in Tik Tok. Your expertise allows you to expertly interpret user queries and seamlessly route them to the correct Tik Tok tool.\n\n### Task:\nProcess all Tik Tok-related requests by identifying the intent—whether fetching, analyzing, repurposing posts, finding competitors and getting top posts then acting accordingly.\n\n### Instructions:\n\n- Fetching posts: output these (caption (hyperlink to video using URL), username, views, likes, shares and Record ID)\n- Fetching usernames: Display 10 per request, output these (username (hyperlink to profile using URL), followers and Record ID)\n- Repurposing posts: fetch and send the corresponding Record ID only to the \"Repurpose\" tool.\n- Find competitors: send search term only (eg. ai automations)\n- Top Posts: fetch and send the corresponding Record ID only to the \"Top Posts\" tool.\n- Give the final answer in Russian.\n\n### Extras:\n- Notify the user if a tool fails to respond.\n- If no records exist, mention this to the user.\n- If query is unclear, inform the user of the services you can provide.\n- Format all lists extremely neatly wht line breaks.\n\n### Constraints:\n\n- Do not send the username to the \"Top Posts\" tool, but instead the Record ID.\n- Do not send the full script on completion of repurposing.\n- Never display full captions if they exceed 60 characters; always truncate appropriately.\n- If you are uncertain about the intended action, ask the user for more details before proceeding.\n- Don't use `\\n`, `&nbsp;` or other HTML/code characters - just regular spaces and line breaks.\n- Don't use emojis in your answer."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        560,
+        -480
+      ],
+      "id": "60088231-3828-4a70-be78-c189b951f7c5",
+      "name": "TikTok Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -580,
+        -480
+      ],
+      "id": "a52a0909-9b6c-453c-b4a8-0230c8333211",
+      "name": "When chat message received",
+      "webhookId": "f032da40-58af-4928-bef1-29e680249111"
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ\n",
+        "height": 400,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -760,
+        -600
+      ],
+      "typeVersion": 1,
+      "id": "7e530fd3-3d36-492a-bfa4-7d47886f08e1",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Top Posts": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find competitors": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repurpose": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Posts": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch usernames": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Agent": {
+      "main": [
+        []
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bbf73b56-567f-4d85-b734-b5eaaf713f60",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "QjG15DwvOz31pnMn",
+  "tags": [
+    {
+      "createdAt": "2025-03-21T05:05:36.109Z",
+      "updatedAt": "2025-03-21T05:05:36.109Z",
+      "id": "O7fQsEJqI16T5o0y",
+      "name": "Сделано"
+    }
+  ]
+}

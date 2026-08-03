@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.competitor_analysis/competitor/0.1.0",
+  "title": "CompetitorRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "competitor_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "competitor_type": {
+      "type": "string",
+      "enum": [
+        "direct",
+        "indirect",
+        "substitute",
+        "alternative",
+        "emerging",
+        "potential",
+        "unknown"
+      ]
+    },
+    "relationship_to_customer_problem": { "type": "string", "maxLength": 2000 },
+    "product_or_service": { "type": "string", "maxLength": 2000 },
+    "target_segments": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 30
+    },
+    "geographies": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 256 },
+      "maxItems": 30
+    },
+    "pricing_model": { "type": "string", "maxLength": 1000 },
+    "observed_price_points": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/price_point" },
+      "maxItems": 20
+    },
+    "offer_structure": { "type": "string", "maxLength": 2000 },
+    "value_proposition_claims": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "channels": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 30
+    },
+    "proof_points": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "strengths": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/attributed_claim" },
+      "maxItems": 30
+    },
+    "weaknesses": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/attributed_claim" },
+      "maxItems": 30
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 50
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "partially_verified",
+        "verified",
+        "contradicted",
+        "unknown"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 30
+    },
+    "source_last_verified_at": { "type": "string", "format": "date-time" },
+    "provenance": { "$ref": "#/$defs/provenance_stub" }
+  },
+  "required": [
+    "competitor_id",
+    "name",
+    "competitor_type",
+    "relationship_to_customer_problem",
+    "verification_status",
+    "confidence",
+    "evidence_references"
+  ],
+  "$defs": {
+    "price_point": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "amount": { "type": "number" },
+        "currency": { "type": "string", "minLength": 3, "maxLength": 3 },
+        "billing_period": {
+          "type": "string",
+          "enum": ["monthly", "annual", "one_time", "usage", "unknown"]
+        },
+        "observed_at": { "type": "string", "format": "date" },
+        "source_reference": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["source_reference"]
+    },
+    "attributed_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "claim": { "type": "string", "maxLength": 2000 },
+        "source_reference": { "type": "string", "maxLength": 2000 },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "partially_verified",
+            "verified",
+            "contradicted",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        },
+        "inference": { "type": "boolean", "default": false }
+      },
+      "required": ["claim", "verification_status", "confidence"]
+    },
+    "provenance_stub": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "type": "string" },
+        "source_skill_version": { "type": "string" },
+        "source_reference": { "type": "string", "maxLength": 2000 }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "weaknesses": {
+            "contains": {
+              "type": "object",
+              "properties": { "verification_status": { "const": "verified" } },
+              "required": ["verification_status"]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "weaknesses": {
+            "contains": {
+              "type": "object",
+              "required": ["source_reference"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "strengths": {
+            "contains": {
+              "type": "object",
+              "properties": { "verification_status": { "const": "verified" } },
+              "required": ["verification_status"]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "strengths": {
+            "contains": {
+              "type": "object",
+              "required": ["source_reference"]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

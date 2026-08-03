@@ -1,0 +1,35 @@
+{
+  "total_rows": 11,
+  "duplicate_text_groups": 2,
+  "duplicate_text_samples": [
+    {
+      "text": "Что такое unit-экономика SaaS и как её считать для подписной модели?",
+      "count": 3
+    },
+    {
+      "text": "Real provider smoke: что такое product-market fit одним абзацем?",
+      "count": 2
+    }
+  ],
+  "null_chat_route_rows": 0,
+  "null_idempotency_rows": 0,
+  "row_ids_by_text_sample": {
+    "Что такое unit-экономика SaaS и как её считать для подписной модели?": [
+      "7ad30223-06c8-41fe-b4de-1f7575b47096",
+      "ea61481c-299c-407e-a088-6577f6ae72e0",
+      "0c9c71e9-2789-41a7-948a-fc918f94e841"
+    ],
+    "Хочу проверить бизнес-идею кофейни в центре города — аудитория офисные работники": [
+      "791ac3d7-1395-4b85-b424-3ccc06754ac1"
+    ],
+    "Краткий тестовый вопрос: что такое CAC в маркетинге?": [
+      "6a399225-3e07-4eb7-b375-dc251b39b0cc"
+    ],
+    "Enter race: что такое LTV в SaaS?": [
+      "dd6f9fa2-8fe4-4785-b9fb-88a8be02ca1c"
+    ],
+    "Two-tab hydrate marker-tab-g: что такое churn rate?": [
+      "a71ef2d4-d9f6-4ca0-86c7-a96e4256d236"
+    ]
+  }
+}

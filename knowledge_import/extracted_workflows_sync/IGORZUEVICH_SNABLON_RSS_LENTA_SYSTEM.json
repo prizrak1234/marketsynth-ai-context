@@ -1,0 +1,694 @@
+{
+  "name": "IGORZUEVICH_SNABLON_RSS_LENTA_SYSTEM",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=Ты высокоэффективный чат-бот, и твоя задача — отвечать на вопросы, связанные с маркетингом, используя предоставленное тебе хранилище векторов.\n\n### Ограничения:\n\n- Ответы должны быть сгенерированы только на основе информации, предоставленной в хранилище векторов."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -120,
+        0
+      ],
+      "id": "ddf79a0d-d257-47bc-9924-be38cf07950b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -200,
+        280
+      ],
+      "id": "7898c28b-55b0-476b-a306-47744abbadf3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "marketing",
+        "description": "Contains data on marketing"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        240,
+        360
+      ],
+      "id": "081dc54d-4e3c-40a1-bf35-332cdb23245a",
+      "name": "Answer questions with a vector store"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        360,
+        700
+      ],
+      "id": "377b2032-c148-4da8-91c0-0007031f8267",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "bazamark",
+          "mode": "list",
+          "cachedResultName": "bazamark"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.1,
+      "position": [
+        100,
+        520
+      ],
+      "id": "06a4c43a-9f77-4852-aadf-af38b377ebed",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "xHYJdGWUvOWZd8CK",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-large",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        700
+      ],
+      "id": "b5ac7dd7-abca-44f0-b8bf-fcb63965b9c5",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ИДЕЯ, ЦА И ЗАДАЧА\n",
+        "height": 1020,
+        "width": 860,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        -120
+      ],
+      "typeVersion": 1,
+      "id": "e584a0b3-0409-405c-b575-0485e4ecaade",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "bazamark",
+          "mode": "list",
+          "cachedResultName": "bazamark"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        2320,
+        40
+      ],
+      "id": "512d2c65-ccec-4635-bf49-d3392335e644",
+      "name": "Pinecone Vector Store1",
+      "credentials": {
+        "pineconeApi": {
+          "id": "xHYJdGWUvOWZd8CK",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-large",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2240,
+        300
+      ],
+      "id": "1a7efde1-bcbe-4fff-a2c7-d6c9fbc91141",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "Publish Date",
+                "value": "={{ $('Clean up').item.json.publishDate }}"
+              },
+              {
+                "name": "Extraction Date",
+                "value": "={{ $('Clean up').item.json.extractedAt }}"
+              },
+              {
+                "name": "Content",
+                "value": "={{ $('Clean up').item.json.content }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2520,
+        240
+      ],
+      "id": "ed328322-aeb7-411a-9ae9-24c07962563a",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2580,
+        440
+      ],
+      "id": "c323a7d2-2f9e-448e-94ed-ad9911d27acb",
+      "name": "Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        840,
+        120
+      ],
+      "id": "b0793506-a0c6-4073-af78-ecbaf84bf7fe",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1280,
+        120
+      ],
+      "id": "0a1e565f-1dad-41c4-a43e-bb11ba3caa64",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.feed }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        1580,
+        240
+      ],
+      "id": "33088c91-865a-4de0-babc-f5d8736dff9f",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1820,
+        20
+      ],
+      "id": "a96566c3-0679-439f-96be-34042be434aa",
+      "name": "Get HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n { json: { feed: \"https://contentmarketinginstitute.com/blog/feed\" } }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        120
+      ],
+      "id": "94084c67-20f8-42ba-8a2b-7ddc31d8928d",
+      "name": "Input RSS Feeds here"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the HTML content from the response\nconst html = items[0].json.data;\n\n// Simple HTML to text converter function\nfunction htmlToText(html) {\n  return html\n    .replace(/<style[^>]*>.*?<\\/style>/gs, '')\n    .replace(/<script[^>]*>.*?<\\/script>/gs, '')\n    .replace(/<header[^>]*>.*?<\\/header>/gs, '')\n    .replace(/<footer[^>]*>.*?<\\/footer>/gs, '')\n    .replace(/<nav[^>]*>.*?<\\/nav>/gs, '')\n    .replace(/<aside[^>]*>.*?<\\/aside>/gs, '')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&[^;]+;/g, '')\n    .trim();\n}\n\n// Extract publish date using multiple methods\nfunction extractPublishDate(html) {\n    const metaDateMatch = html.match(/<meta property=\"article:published_time\" content=\"([^\"]+)\"/i) ||\n                         html.match(/<meta name=\"published_time\" content=\"([^\"]+)\"/i) ||\n                         html.match(/<meta name=\"date\" content=\"([^\"]+)\"/i);\n    \n    if (metaDateMatch) {\n        return new Date(metaDateMatch[1]).toISOString();\n    }\n\n    const schemaMatch = html.match(/<script type=\"application\\/ld\\+json\">[^{]*({[\\s\\S]*?})[^}]*<\\/script>/i);\n    if (schemaMatch) {\n        try {\n            const schema = JSON.parse(schemaMatch[1]);\n            if (schema.datePublished) {\n                return new Date(schema.datePublished).toISOString();\n            }\n        } catch (e) {}\n    }\n\n    const datePattern = /(?:Published|Updated|Posted on|Date):\\s*([A-Za-z]+\\s+\\d{1,2},\\s+\\d{4})|(\\d{4}-\\d{2}-\\d{2})/i;\n    const dateMatch = html.match(datePattern);\n    if (dateMatch) {\n        const dateStr = dateMatch[1] || dateMatch[2];\n        return new Date(dateStr).toISOString();\n    }\n\n    return new Date().toISOString();\n}\n\n// Extract content\nlet content = '';\nconst articleMatch = html.match(/<article[^>]*>([\\s\\S]*?)<\\/article>/i);\n\nif (articleMatch && articleMatch[1]) {\n  content = htmlToText(articleMatch[1]);\n} else {\n  content = htmlToText(html);\n}\n\n// Clean up the content\nconst cleanContent = content\n  .replace(/\\s+/g, ' ')\n  .replace(/\\n+/g, '\\n')\n  .replace(/\\t+/g, ' ')\n  .trim();\n\n// Remove common navigation text and footer text\nconst finalContent = cleanContent\n  .replace(/Menu.*?Search/g, '')\n  .replace(/Share this article/g, '')\n  .replace(/Related articles/g, '')\n  .replace(/Leave a comment/g, '');\n\nreturn {\n  json: {\n    content: finalContent,\n    publishDate: extractPublishDate(html),\n    extractedAt: new Date().toISOString()\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2060,
+        20
+      ],
+      "id": "c4493a76-9469-41d5-9afe-7972e383fe9c",
+      "name": "Clean up"
+    },
+    {
+      "parameters": {
+        "content": "## ФОРМИРОВАНИЕ БАЗЫ",
+        "height": 800,
+        "width": 2080,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        760,
+        -140
+      ],
+      "typeVersion": 1,
+      "id": "7cea29a2-5d4f-43d1-948e-06b68e9527b3",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9a7becbc-b3d1-4d5d-bec2-193ab95ea0cc",
+              "leftValue": "={{ new Date($json[\"pubDate\"]).getTime() }}",
+              "rightValue": "={{ new Date('2022-01-01T00:00:00Z').getTime() + (new Date().setHours(0, 0, 0, 0) - new Date('2022-01-01T00:00:00Z').setHours(0, 0, 0, 0)) }}",
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1520,
+        -60
+      ],
+      "id": "af12de99-83f2-4673-ae2d-fd688b41f608",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "## @igorzuevich \n**Автор** на [YouTube](https://www.youtube.com/@igorzuevich)",
+        "height": 240,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -7800,
+        4500
+      ],
+      "typeVersion": 1,
+      "id": "5bbfd5c7-f29f-4b02-aefb-8b6fcabb5daf",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ\n",
+        "height": 540,
+        "width": 1260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1600,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "3e482ea8-d91e-495d-9695-bd5ad884eea1",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fd81c27d-2306-4bd5-8f92-7205ed12e700",
+              "name": "text",
+              "value": "={{ $json.query.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -940,
+        480
+      ],
+      "id": "8b434b15-a33e-4f7f-9d21-01c3631ae0a6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "2123214"
+            },
+            {
+              "name": "2242433"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1140,
+        500
+      ],
+      "id": "9b3cb7b4-363e-488e-9113-9ed2efe3f133",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d5677cbe-adf3-4dba-ac73-0dff909b6cda",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6049962e-55e5-42d3-98a6-190fb8a6b277",
+      "name": "Success",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        0
+      ]
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": {
+            "query": "Claude",
+            "message": "Создайте контент на основе последних новостей о Claude."
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Input RSS Feeds here",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get HTML": {
+      "main": [
+        [
+          {
+            "node": "Clean up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input RSS Feeds here": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean up": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d87e7f5f-5573-4285-8527-5cd3b4bab7c1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "Vkj5IMlXMQjnRuHb",
+  "tags": []
+}

@@ -1,0 +1,715 @@
+{
+  "name": "1_IZ_TokTok_SCR_AI",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        -336
+      ],
+      "id": "68e8c70d-7458-49ae-9c7c-8082cdd15824",
+      "name": "Telegram Trigger",
+      "webhookId": "558f349e-211e-47b9-b4da-e14f33aa603f",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        496,
+        -48
+      ],
+      "id": "e4947fe3-06d7-4927-8e98-3b435808d2db",
+      "name": "Send a chat action",
+      "webhookId": "8fea81b7-2244-4e78-af44-fa0ccd7c1c39",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "d0f75300-d3c1-4eb4-8087-b9d1a5da2420"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ca9cc06c-dcf8-457b-854b-4c03d3d15dcc",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        544,
+        -336
+      ],
+      "id": "0c044f9a-1fe6-4212-b429-52c7f9ab0cb3",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9d8e573-3830-4e93-9f74-4838b5ff49b5",
+              "name": "text",
+              "value": "={{ $('Telegram Trigger').item.json.message.text }}\n{{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1344,
+        -352
+      ],
+      "id": "b3fd2804-eedf-4659-8152-6f8b875e9a35",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=Your role is a router. When the user asks to get/list/analyze a TikTok profile's videos:\n\n1) Normalize input: extract the handle from @username or URL and remove @ (e.g., \"@toolpresident\" → \"toolpresident\")\n\n2) Call the tool \"Get a TikTok profile's videos\" ONLY to validate and fetch a basic response.\n\nRequired args:\n- username (string without @)\n- limit (1-50; default 20 if not provided)\n\n3) Then dispatch the task to the worker workflow \"tiktok_profile_videos_worker\" with:\n- username (handle without @)\n- limit\n\nThe worker will save data to the table, compute Top-3, and send the Telegram message to the user.\n\n4) When you receive the response from the worker, YOU MUST format a natural, user-friendly message based on the returned data.\n\nIMPORTANT: After receiving the worker's response:\n- Extract the username and top_videos links from the JSON response\n- Create a friendly message in Russian that says you've analyzed the user's content\n- List the top 3 video links in a clear format\n- DO NOT just return the raw JSON or a generic \"task completed\" message\n\nExample response format:\n\"Я проанализировал контент пользователя @zuevich_ai и нашёл 3 самых популярных видео:\n\n1. https://www.tiktok.com/@zuevich_ai/video/7554791557757422862\n2. https://www.tiktok.com/@zuevich_ai/video/7553532071550127374\n3. https://www.tiktok.com/@zuevich_ai/video/7554788251303759118\"\n\n5) Do NOT use this tool for single video links or hashtag/keyword searches.\n\n---\n\nWhen the user asks to transcribe/get transcript of a TikTok video:\n\n1) Validate that the user provided a single video URL (not a profile or list)\n\n2) Call the tool \"Get a tik tok video transcript\" with the video URL\n\nRequired args:\n- URL (full TikTok video link)\n\n3) The tool will extract audio, transcribe it, and save to the database\n\n4) When you receive the response from the worker, YOU MUST format a natural, user-friendly message based on the returned data.\n\nIMPORTANT: After receiving the worker's response:\n- Confirm that the transcription was completed successfully\n- Mention the video URL that was transcribed\n- Create a friendly message in Russian\n- DO NOT return raw JSON\n\nExample response format:\n\"Транскрипция видео выполнена успешно!\n\nВидео: https://www.tiktok.com/@zuevich_ai/video/7554791557757422862\n\nТекст сохранен в базу данных и готов к использованию.\"\n\n5) Do NOT use this tool for profiles, lists, or hashtag searches - only for individual video links.\n\n---\n\nWhen the user asks to search/analyze TikTok content by hashtag:\n\n1) Normalize input: extract the hashtag and REMOVE # symbol (e.g., \"#n8n\" → \"n8n\", \"automation\" → \"automation\")\n\n2) Call the tool \"Search tik tok by hashtag\" with the normalized hashtag\n\nRequired args:\n- hashtag (string WITHOUT # symbol)\n- limit (1-50; default 20 if not provided)\n\n3) Then dispatch the task to the worker workflow with:\n- hashtag (string without #)\n- limit\n\nThe tool will search TikTok by the hashtag, find popular videos, and save data to the database.\n\n4) When you receive the response from the worker, YOU MUST format a natural, user-friendly message based on the returned data.\n\nIMPORTANT: After receiving the worker's response:\n- Extract the hashtag and top_videos links from the JSON response\n- Use the EXACT hashtag format returned in the response (it will include #)\n- Create a friendly message in Russian that says you've analyzed content by this hashtag\n- List the top 3 video links in a clear format\n- DO NOT just return the raw JSON or a generic \"task completed\" message\n\nExample response format:\n\"Я проанализировал контент по хештегу #n8n и нашёл 3 самых популярных видео:\n\n1. https://www.tiktok.com/@edhillai/video/7521023366485003542\n2. https://www.tiktok.com/@chase_ai_/video/7508115970372799787\n3. https://www.tiktok.com/@nocode.joshua/video/7521630927181729032\"\n\n5) Do NOT use this tool for profiles or single video links - only for hashtag searches.\n\n---\n\n6) DO NOT craft the final user message yourself - wait for the worker response and format it appropriately."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2000,
+        -352
+      ],
+      "id": "0aafe76f-2bcd-4f04-8d40-0361f86e7be1",
+      "name": "TikTok AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1808,
+        -112
+      ],
+      "id": "b23bbe7c-ff2d-46a7-9488-68de4b2c9a2e",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1952,
+        -112
+      ],
+      "id": "cc7c4d7d-21dd-47b1-9ce2-7afb38ef36e8",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Retrieves a list of videos from a TikTok profile.",
+        "workflowId": {
+          "__rl": true,
+          "value": "RKZLhaDyigONdfx8",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/RKZLhaDyigONdfx8",
+          "cachedResultName": "2_IZ_TokTok_SCR_GET_PRF_VIDEO"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('username', `TikTok handle of the user (without @).\nExample: igorzuevich`, 'string') }}",
+            "Limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', `Number of videos to fetch (1–50). Default is 20.`, 'string') }}"
+          },
+          "matchingColumns": [
+            "username"
+          ],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Limit",
+              "displayName": "Limit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2224,
+        -64
+      ],
+      "id": "af1bc8db-b9de-4fe7-a5b5-e70b10e4077b",
+      "name": "Get a tik tok profile s videos"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        816,
+        -192
+      ],
+      "id": "2d90a041-7d6b-44fa-9dcc-adc993242c42",
+      "name": "Telegram3",
+      "webhookId": "b7d85eca-45a9-4488-b15d-fb05d3568dc5",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1072,
+        -192
+      ],
+      "id": "e4c42667-f874-4495-84e3-8cc2107676a3",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=tg_ID_{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        2064,
+        48
+      ],
+      "id": "409acf08-6a4d-4a81-a6c2-283782541973",
+      "name": "Redis Chat Memory1",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2560,
+        -352
+      ],
+      "id": "a0bb71f8-1f73-4bdc-8e18-db08ca5e9995",
+      "name": "Send a text message",
+      "webhookId": "af87d534-31b5-433c-b1e7-94e6e2ff30e7",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Retrieves a transcript of a TikTok video. Takes a video URL, extracts audio, transcribes it to text, and saves the result to the database. Use this tool only for individual TikTok video links, not for profiles or video lists.",
+        "workflowId": {
+          "__rl": true,
+          "value": "N5yM8xkiDxQFMMRl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/N5yM8xkiDxQFMMRl",
+          "cachedResultName": "3_IZ_TokTok_SCR_GET_VIDEO_TRANSCRIPT"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "URL": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', `URL of a specific TikTok video to transcribe. Must be a full link in format: https://www.tiktok.com/@username/video/1234567890 or a short link vm.tiktok.com/...`, 'string') }}"
+          },
+          "matchingColumns": [
+            "username"
+          ],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2400,
+        -64
+      ],
+      "id": "a279100d-8614-46d7-94da-9f39ea263243",
+      "name": "Get a tik tok video transcript"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        704,
+        -512
+      ],
+      "typeVersion": 1,
+      "id": "17b62e6a-8e14-4882-a167-eb2b6bc14ebc",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 116,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "e777d91c-da7e-44b6-aadb-cba734dce50b",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ И ПРОВЕРКА",
+        "height": 589,
+        "width": 1453,
+        "color": 3
+      },
+      "id": "38a9c8d9-2d33-473a-a680-ed7e7f3985b6",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        128,
+        -448
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 96,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2128,
+        -512
+      ],
+      "typeVersion": 1,
+      "id": "e170c541-2a77-4de9-b98b-340cc9530054",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## УРОК: НОДА REDIS https://youtu.be/TEr9L6DRKKA",
+        "height": 116,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2512,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "7fc42272-190f-4b3d-b3ce-5dc952e20e30",
+      "name": "Sticky Note13",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## TikTok AI Агент",
+        "height": 656,
+        "width": 1264,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "6e65056e-2b7c-45f3-bea6-42d81e00bb2f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 116,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        176
+      ],
+      "typeVersion": 1,
+      "id": "d7d315e0-c0e1-430a-9162-8d19a730aa91",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "description": "Searches TikTok content by hashtag and retrieves top popular videos. Takes a hashtag (without #), finds the most engaging videos, saves data to the database, and returns the top 3 video links. Use this tool only for hashtag-based searches, not for user profiles or individual videos.",
+        "workflowId": {
+          "__rl": true,
+          "value": "fFK2WeLbTCP2Vaqz",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/fFK2WeLbTCP2Vaqz",
+          "cachedResultName": "4_IZ_TokTok_SCR_SEARCH_HAST"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Hashtag": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Hashtag', `Hashtag to search for on TikTok (without # symbol, e.g., \"n8n\", \"automation\", \"ai\"). The system will automatically add # when processing.`, 'string') }}",
+            "Limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', `Number of videos to fetch (1-50). Default is 20 if not provided.`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Hashtag",
+              "displayName": "Hashtag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Limit",
+              "displayName": "Limit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2576,
+        -64
+      ],
+      "id": "66203328-4e63-4f73-b23d-cc045dc3e67a",
+      "name": "Search tik tok by hashtag"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a chat action",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "TikTok AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "TikTok AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "TikTok AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get a tik tok profile s videos": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram3": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "TikTok AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a tik tok video transcript": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search tik tok by hashtag": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9c982289-e6df-4e4e-8113-726b8f15f91b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "3huTtqUAbS5BgAoj",
+  "tags": []
+}

@@ -1,0 +1,97 @@
+{
+  "linking_report_id": "kl-report-001",
+  "skill_id": "ms.skill.knowledge_linking",
+  "skill_version": "0.1.0",
+  "analyzed_artifact_count": 4,
+  "valid_existing_links": [
+    {
+      "link_id": "link-skill-pattern-001",
+      "source_artifact_id": "skill-arch-001",
+      "target_artifact_id": "pattern-approval-001",
+      "relation_type": "uses_pattern",
+      "direction": "forward",
+      "reason": "Architecture skill declares frozen pattern dependency.",
+      "supporting_evidence": [{"type": "declared_dependency", "field": "manifest.dependencies"}],
+      "confidence": "high",
+      "tenant_scope": "global",
+      "project_scope": "proj-demo",
+      "human_review_required": false,
+      "conflict_status": "none",
+      "provenance": {"source": "existing_link"}
+    }
+  ],
+  "proposed_links": [
+    {
+      "link_id": "link-pattern-practice-001",
+      "source_artifact_id": "pattern-approval-001",
+      "target_artifact_id": "practice-approval-001",
+      "relation_type": "uses_practice",
+      "direction": "forward",
+      "reason": "Pattern references governing practice record.",
+      "supporting_evidence": [{"type": "explicit_reference", "ref": "practice_id"}],
+      "confidence": "high",
+      "tenant_scope": "global",
+      "project_scope": "proj-demo",
+      "human_review_required": false,
+      "conflict_status": "none",
+      "provenance": {"source": "link_proposal"}
+    }
+  ],
+  "broken_links": [
+    {
+      "broken_link_id": "broken-001",
+      "source_artifact_id": "skill-debug-001",
+      "expected_target_id": "pattern-missing-999",
+      "relation_type": "uses_pattern",
+      "failure_type": "missing_target",
+      "observed_reference": {"pattern_id": "pattern-missing-999"},
+      "expected_reference": {"target_artifact_id": "pattern-missing-999"},
+      "severity": "high",
+      "blocking": true,
+      "remediation": "Add pattern to frozen library or remove reference.",
+      "provenance": {"detector": "broken_link"}
+    }
+  ],
+  "orphan_artifacts": [
+    {
+      "artifact_id": "skill-doc-orphan-001",
+      "artifact_type": "skill",
+      "orphan_reason": "no_inbound_or_outbound_links_in_scope",
+      "expected_link_types": ["documents", "related_to"],
+      "possible_targets": ["pattern-approval-001"],
+      "confidence": "medium",
+      "human_review_required": true,
+      "provenance": {"detector": "orphan"}
+    }
+  ],
+  "duplicate_candidates": [],
+  "supersession_candidates": [],
+  "contradiction_candidates": [],
+  "index_recommendations": [
+    {
+      "recommendation_id": "idx-rec-001",
+      "index_type": "skill_matrix",
+      "scope": "global",
+      "missing_or_stale_artifacts": ["skill-doc-orphan-001"],
+      "proposed_index_entries": [{"artifact_id": "skill-doc-orphan-001", "action": "add"}],
+      "rationale": "Orphan skill documentation missing from engineering matrix.",
+      "confidence": "medium",
+      "human_review_required": true,
+      "provenance": {"detector": "index_recommendation"}
+    }
+  ],
+  "rejected_cross_tenant_links": [],
+  "unresolved_ambiguities": [],
+  "evidence_gaps": ["orphan skill documentation not indexed"],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "human_review_required": true,
+  "provenance": {
+    "skill_id": "ms.skill.knowledge_linking",
+    "skill_version": "0.1.0",
+    "methodology": "knowledge-linking-methodology.md"
+  },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

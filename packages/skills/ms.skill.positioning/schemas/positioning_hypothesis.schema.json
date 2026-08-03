@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.positioning/positioning_hypothesis/0.1.0",
+  "title": "PositioningHypothesis",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "hypothesis_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "hypothesis_name": { "type": "string", "maxLength": 500 },
+    "target_segment_ids": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "minItems": 1,
+      "maxItems": 10
+    },
+    "target_customer_summary": { "type": "string", "maxLength": 4000 },
+    "market_or_category_frame": { "type": "string", "maxLength": 2000 },
+    "primary_customer_problem": { "type": "string", "maxLength": 2000 },
+    "primary_customer_problem_ref": { "type": "string", "maxLength": 128 },
+    "primary_jtbd_ref": { "type": "string", "maxLength": 128 },
+    "desired_outcome": { "type": "string", "maxLength": 2000 },
+    "desired_outcome_ref": { "type": "string", "maxLength": 128 },
+    "differentiation_basis": { "type": "string", "maxLength": 4000 },
+    "competitive_alternative": { "type": "string", "maxLength": 2000 },
+    "value_frame": { "type": "string", "maxLength": 4000 },
+    "reason_to_believe": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/reason_to_believe_item" },
+      "maxItems": 20
+    },
+    "proof_requirements": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 30
+    },
+    "key_message": { "type": "string", "maxLength": 2000 },
+    "supporting_messages": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "exclusion_or_boundary": { "type": "string", "maxLength": 2000 },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 256 },
+      "maxItems": 50
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 256 },
+      "maxItems": 30
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/traceable_item" },
+      "maxItems": 30
+    },
+    "inferences": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/traceable_item" },
+      "maxItems": 30
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/unknown_item" },
+      "maxItems": 30
+    },
+    "conflicts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/conflict_item" },
+      "maxItems": 20
+    },
+    "validation_conditions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "risks": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "recommended",
+        "viable_alternative",
+        "exploratory",
+        "blocked",
+        "rejected",
+        "insufficient_evidence"
+      ]
+    },
+    "ranking_tier": {
+      "type": "string",
+      "enum": [
+        "preferred",
+        "alternative",
+        "exploratory",
+        "blocked",
+        "insufficient_evidence"
+      ]
+    },
+    "ranking_rationale": { "type": "string", "maxLength": 4000 },
+    "ranking_dimensions": { "$ref": "#/$defs/ranking_dimensions" },
+    "provenance": { "$ref": "#/$defs/provenance" }
+  },
+  "required": [
+    "hypothesis_id",
+    "hypothesis_name",
+    "target_segment_ids",
+    "target_customer_summary",
+    "market_or_category_frame",
+    "primary_customer_problem",
+    "primary_customer_problem_ref",
+    "desired_outcome",
+    "differentiation_basis",
+    "competitive_alternative",
+    "value_frame",
+    "reason_to_believe",
+    "proof_requirements",
+    "key_message",
+    "supporting_messages",
+    "exclusion_or_boundary",
+    "evidence_references",
+    "contradictory_evidence",
+    "assumptions",
+    "inferences",
+    "unknowns",
+    "conflicts",
+    "validation_conditions",
+    "risks",
+    "confidence",
+    "status",
+    "provenance"
+  ],
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "const": "ms.skill.positioning" },
+        "skill_version": { "type": "string", "pattern": "^0\\.1\\.\\d+$" }
+      },
+      "required": ["skill_id", "skill_version"]
+    },
+    "traceable_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "statement": { "type": "string", "maxLength": 4000 },
+        "trace_type": {
+          "type": "string",
+          "enum": ["evidence", "assumption", "inference"]
+        },
+        "evidence_class": { "type": "string", "maxLength": 64 },
+        "source_reference": { "type": "string", "maxLength": 256 }
+      },
+      "required": ["statement", "trace_type"]
+    },
+    "unknown_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 4000 },
+        "blocking": { "type": "boolean" }
+      },
+      "required": ["domain", "description"]
+    },
+    "conflict_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "conflict_id": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 4000 },
+        "severity": {
+          "type": "string",
+          "enum": ["critical", "major", "minor", "unknown"]
+        },
+        "evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 256 },
+          "maxItems": 20
+        }
+      },
+      "required": ["conflict_id", "description", "severity"]
+    },
+    "reason_to_believe_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "statement": { "type": "string", "maxLength": 4000 },
+        "trace_type": {
+          "type": "string",
+          "enum": ["evidence", "assumption", "inference"]
+        },
+        "evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 256 },
+          "maxItems": 20
+        },
+        "proof_requirement_ref": { "type": "string", "maxLength": 256 }
+      },
+      "required": ["statement", "trace_type"]
+    },
+    "ranking_dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "customer_relevance": { "$ref": "#/$defs/ordinal" },
+        "differentiation_strength": { "$ref": "#/$defs/ordinal" },
+        "evidence_strength": { "$ref": "#/$defs/ordinal" },
+        "defensibility": { "$ref": "#/$defs/ordinal" },
+        "proof_availability": { "$ref": "#/$defs/ordinal" },
+        "category_clarity": { "$ref": "#/$defs/ordinal" },
+        "segment_fit": { "$ref": "#/$defs/ordinal" },
+        "market_validation_alignment": { "$ref": "#/$defs/ordinal" },
+        "condition_compatibility": { "$ref": "#/$defs/ordinal" },
+        "brand_fit": { "$ref": "#/$defs/ordinal" },
+        "execution_feasibility": { "$ref": "#/$defs/ordinal" },
+        "risk_level": { "$ref": "#/$defs/ordinal" },
+        "confidence": { "$ref": "#/$defs/ordinal" }
+      },
+      "required": [
+        "customer_relevance",
+        "differentiation_strength",
+        "evidence_strength",
+        "defensibility",
+        "proof_availability",
+        "category_clarity",
+        "segment_fit",
+        "market_validation_alignment",
+        "condition_compatibility",
+        "brand_fit",
+        "execution_feasibility",
+        "risk_level",
+        "confidence"
+      ]
+    },
+    "ordinal": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    }
+  }
+}

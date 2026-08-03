@@ -1,0 +1,310 @@
+{
+    "name": "nano banana (url)",
+    "flow": [
+        {
+            "id": 1,
+            "module": "scenario-service:StartSubscenario",
+            "version": 2,
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "interface": [
+                    {
+                        "name": "prompt",
+                        "label": "",
+                        "help": "текстовый промпт на генерацию изображения, в нем так же могут содержаться настройки генерации",
+                        "type": "text",
+                        "default": "",
+                        "required": true,
+                        "multiline": false
+                    },
+                    {
+                        "name": "id",
+                        "label": "",
+                        "help": "id пользователя для которого происходит генерация",
+                        "type": "text",
+                        "default": "",
+                        "required": true,
+                        "multiline": false
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "app#nano-banana-gora-rm0h2s:textToImage",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 13352414
+            },
+            "mapper": {
+                "model": "gemini-3-pro-image-preview",
+                "prompt": "{{1.prompt}}",
+                "enableSearch": false,
+                "responseText": false,
+                "responseImage": true
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "model": {
+                            "mode": "chose",
+                            "label": "Gemini 3 Pro Image Preview"
+                        },
+                        "imageSize": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "aspectRatio": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "enableSearch": {
+                            "mode": "chose"
+                        },
+                        "responseText": {
+                            "mode": "chose"
+                        },
+                        "responseImage": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "app#nano-banana-gora-rm0h2s"
+                            },
+                            "label": "Banana (Gemini API key)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:app#nano-banana-gora-rm0h2s",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "prompt",
+                        "type": "text",
+                        "label": "Prompt",
+                        "required": true
+                    },
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "Model",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "gemini-2.5-flash-image",
+                                "gemini-3-pro-image-preview"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "aspectRatio",
+                        "type": "select",
+                        "label": "Aspect ratio",
+                        "validate": {
+                            "enum": [
+                                "1:1",
+                                "16:9",
+                                "4:3",
+                                "9:16",
+                                "3:4"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "imageSize",
+                        "type": "select",
+                        "label": "Resolution",
+                        "validate": {
+                            "enum": [
+                                "1K",
+                                "2K",
+                                "4K"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "enableSearch",
+                        "type": "boolean",
+                        "label": "Enable Google Search grounding"
+                    },
+                    {
+                        "name": "responseImage",
+                        "type": "boolean",
+                        "label": "Return IMAGE"
+                    },
+                    {
+                        "name": "responseText",
+                        "type": "boolean",
+                        "label": "Return TEXT"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 10,
+            "module": "onesaas:storagetempadd",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 13650102
+            },
+            "mapper": {
+                "buffer": "{{2.data}}",
+                "fileName": "{{2.fileName}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "label": "web.reklaman@gmail.com",
+                            "data": {
+                                "scoped": "true",
+                                "connection": "onesaas2"
+                            }
+                        }
+                    },
+                    "expect": {
+                        "otherInputParameters": {
+                            "mode": "chose"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:onesaas2",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "otherInputParameters",
+                        "type": "array",
+                        "label": "Other Input Parameters",
+                        "spec": [
+                            {
+                                "name": "key",
+                                "type": "text",
+                                "label": "Key"
+                            },
+                            {
+                                "name": "value",
+                                "type": "any",
+                                "label": "Value"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "buffer",
+                        "type": "buffer",
+                        "label": "File",
+                        "required": true
+                    },
+                    {
+                        "name": "fileName",
+                        "type": "text",
+                        "label": "File Name",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 12,
+            "module": "scenario-service:ReturnData",
+            "version": 2,
+            "parameters": {},
+            "mapper": {
+                "url": "{{10.url}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0
+                },
+                "restore": {},
+                "expect": [
+                    {
+                        "name": "url",
+                        "type": "text",
+                        "label": ""
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    },
+    "io": {
+        "input_spec": [
+            {
+                "name": "prompt",
+                "label": "",
+                "help": "текстовый промпт на генерацию изображения, в нем так же могут содержаться настройки генерации",
+                "type": "text",
+                "default": "",
+                "required": true,
+                "multiline": false
+            },
+            {
+                "name": "id",
+                "label": "",
+                "help": "id пользователя для которого происходит генерация",
+                "type": "text",
+                "default": "",
+                "required": true,
+                "multiline": false
+            }
+        ],
+        "output_spec": [
+            {
+                "name": "url",
+                "label": "",
+                "help": "ссылка на сгенерированное изображение",
+                "type": "text",
+                "default": "",
+                "required": false,
+                "multiline": false
+            }
+        ]
+    }
+}

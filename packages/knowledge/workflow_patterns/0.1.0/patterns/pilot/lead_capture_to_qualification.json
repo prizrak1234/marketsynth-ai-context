@@ -1,0 +1,311 @@
+{
+  "pattern_id": "lead_capture_to_qualification",
+  "pattern_name": "Lead Capture to Qualification",
+  "pattern_category": "lead_generation",
+  "objective": "Capture inbound lead signals and qualify before CRM_provider write.",
+  "problem_context": "Lead list enrichment and map-based prospecting flows.",
+  "capability_ids": [
+    "lead_generation"
+  ],
+  "related_skill_ids": [
+    "ms.skill.n8n_workflow_architecture"
+  ],
+  "input_contract": {
+    "type": "object",
+    "required": [
+      "tenant_context",
+      "correlation_id"
+    ]
+  },
+  "output_contract": {
+    "type": "object",
+    "required": [
+      "status",
+      "evidence_refs"
+    ]
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "step_name": "Capture lead signal",
+      "step_type": "trigger",
+      "security_class": "read_only"
+    },
+    {
+      "step_id": "s2",
+      "step_name": "Normalize lead profile",
+      "step_type": "transform",
+      "security_class": "read_only"
+    },
+    {
+      "step_id": "s3",
+      "step_name": "Qualify via LLM_provider rules",
+      "step_type": "validate",
+      "security_class": "elevated_review"
+    },
+    {
+      "step_id": "s4",
+      "step_name": "Write qualified lead to CRM_provider",
+      "step_type": "write",
+      "security_class": "write_internal"
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "e1",
+      "from_step_id": "s1",
+      "to_step_id": "s2"
+    },
+    {
+      "edge_id": "e2",
+      "from_step_id": "s2",
+      "to_step_id": "s3"
+    },
+    {
+      "edge_id": "e3",
+      "from_step_id": "s3",
+      "to_step_id": "s4",
+      "condition": "qualified"
+    },
+    {
+      "edge_id": "e4",
+      "from_step_id": "s3",
+      "to_step_id": "s2",
+      "condition": "unqualified",
+      "on_failure": "stop"
+    }
+  ],
+  "required_connectors": [],
+  "required_tools": [],
+  "approval_requirements": {
+    "human_approval_required": false,
+    "approval_gates": [
+      "before_write"
+    ],
+    "auto_approval_allowed": false,
+    "spend_approval_required": false,
+    "publication_approval_required": false
+  },
+  "evidence_requirements": {
+    "required": true,
+    "evidence_classes": [
+      "source_reference",
+      "execution_log"
+    ]
+  },
+  "idempotency_requirements": {
+    "required": true,
+    "policy": "dedupe_by_event_id",
+    "unknown_outcome_auto_retry": false,
+    "duplicate_event_prevention": true
+  },
+  "retry_policy": "none",
+  "timeout_policy": "pilot_default_120s",
+  "rate_limit_policy": "provider_default",
+  "error_paths": [
+    "human_review",
+    "dead_letter"
+  ],
+  "rollback_or_recovery": "manual_review",
+  "security_class": "write_internal",
+  "tenant_scope": "tenant_scoped",
+  "personal_data_class": "unknown",
+  "publication_sensitive": false,
+  "billing_sensitive": false,
+  "destructive": false,
+  "implementation_variants": [
+    {
+      "provider": "OpenAI",
+      "component": "LLM_provider",
+      "documented_version": "source_catalog_0.1.0",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Observed in frozen catalog metadata only; not executed in pilot.",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "variant-OpenAI",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "provider": "Google Sheets",
+      "component": "storage_provider",
+      "documented_version": "source_catalog_0.1.0",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Observed in frozen catalog metadata only; not executed in pilot.",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "variant-Google Sheets",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "source_workflow_ids": [
+    "wf-353be45a7de607a0",
+    "wf-bdf26007404af6a3"
+  ],
+  "source_practice_ids": [
+    "lead_qualification_boundary"
+  ],
+  "known_limitations": [
+    "Personal-data handling requires tenant policy review before production.",
+    "CRM_provider field mapping not included in pilot abstraction."
+  ],
+  "quality_gates": [
+    {
+      "gate_id": "lead_capture_to_qualification-schema_valid",
+      "title": "Pattern validates against workflow-pattern schema",
+      "description": "Pattern validates against workflow-pattern schema",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-source_support_valid",
+      "title": "Source support gate satisfied",
+      "description": "Source support gate satisfied",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-provider_neutral",
+      "title": "Main flow uses functional abstractions only",
+      "description": "Main flow uses functional abstractions only",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-no_credentials",
+      "title": "No credential identifiers in pattern body",
+      "description": "No credential identifiers in pattern body",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-approval_boundary_valid",
+      "title": "Approval boundaries match sensitivity",
+      "description": "Approval boundaries match sensitivity",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-evidence_boundary_valid",
+      "title": "Evidence requirements documented",
+      "description": "Evidence requirements documented",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-tenant_boundary_valid",
+      "title": "Tenant scope preserved",
+      "description": "Tenant scope preserved",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-idempotency_valid",
+      "title": "Idempotency policy matches retry behavior",
+      "description": "Idempotency policy matches retry behavior",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-error_path_present",
+      "title": "Terminal error path documented",
+      "description": "Terminal error path documented",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-limitations_documented",
+      "title": "Known limitations listed",
+      "description": "Known limitations listed",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "lead_capture_to_qualification-manual_review_complete",
+      "title": "Manual pilot audit complete",
+      "description": "Manual pilot audit complete",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-lead_capture_to_qualification",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "maturity": "reviewed",
+  "provenance": {
+    "source_type": "pattern_extraction_pilot",
+    "archive_id": "arc-bots-knowledge-rar",
+    "source_id": "lead_capture_to_qualification",
+    "program_phase": "KB-WPL-01.3A.1"
+  }
+}

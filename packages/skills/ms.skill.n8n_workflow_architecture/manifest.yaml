@@ -1,0 +1,80 @@
+id: ms.skill.n8n_workflow_architecture
+name: n8n Workflow Architecture
+version: 0.1.0
+description: >
+  Transform business automation requirements into safe, provider-aware,
+  non-executable n8n workflow architecture specifications.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - workflow_requirements_normalization
+  - trigger_selection
+  - workflow_boundary_design
+  - node_role_planning
+  - subworkflow_decomposition
+  - input_output_contract_design
+  - approval_gate_design
+  - evidence_boundary_design
+  - credential_reference_design
+  - retry_policy_design
+  - idempotency_design
+  - error_path_design
+  - recovery_plan_design
+  - monitoring_plan_design
+  - provider_constraint_review
+  - deployment_prerequisite_review
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - assumption
+    - inference
+  rules:
+    - id: no_runtime_execution
+      description: Non-executable candidate — architecture design only.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.n8n_deployment_review
+      relationship: optional_dependency
+      note: Architecture output consumable by deployment review
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  deployment_or_publication:
+    approval_required: true
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 4
+  current_state: candidate_evaluated
+known_limitations:
+  - Non-executable candidate — no runtime loader.
+  - No workflow JSON generation or n8n deployment.
+  - Pattern maturity=reviewed does not imply runtime correctness.
+  - production_eligible=false
+network_policy:
+  default: deny
+  allowed_hosts: []
+script_policy:
+  enabled: false
+provenance:
+  origin: platform_native
+  methodology:
+    - KB-WPL-01.4 n8n Engineering Knowledge Skills
+    - KB-WPL-01.3C frozen Workflow Pattern Library
+test_suite:
+  manifest: tests/eval_manifest.yaml

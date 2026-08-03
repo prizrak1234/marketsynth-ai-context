@@ -1,0 +1,93 @@
+{
+  "slice": "REAL-RESEARCH-HARDENING-02",
+  "prior_slice": "REAL-RESEARCH-HARDENING-01",
+  "hardening_01_status": "checkpoint_closed",
+  "architecture_doc": "docs/product/EVIDENCE-FUNNEL-ARCHITECTURE.md",
+  "status": "architecture_accepted_implementation_not_started",
+  "checkpoints": {
+    "checkpoint_1_observability": "PASS",
+    "checkpoint_2_resilience": "PASS",
+    "checkpoint_3_real_case": "FAIL",
+    "checkpoint_3_real_case_runs": 2
+  },
+  "provider_preflight": {
+    "overall": "PASS",
+    "provider_decision": "B_firecrawl_credits_exhausted_direct_http_fallback",
+    "firecrawl": {
+      "status": "FAIL",
+      "http_status": 402,
+      "error_class": "credits_exhausted",
+      "retryable": false,
+      "authentication_valid": true,
+      "reachable": true,
+      "quota_remaining": null,
+      "correlation_id": null,
+      "adapter_version": "firecrawl_fetch/v1/scrape"
+    },
+    "direct_http": {
+      "status": "PASS",
+      "http_status": 200,
+      "extraction_status": "accepted",
+      "extracted_len": 142
+    },
+    "xmlriver": "PASS",
+    "llm": "PASS"
+  },
+  "internal_gates": {
+    "extraction_hardening": "PASS",
+    "evidence_floors": "PASS",
+    "finding_traceability": "PASS",
+    "report_validator": "PASS",
+    "failure_matrix": "PASS",
+    "automated_tests": "37 passed, 1 skipped",
+    "db_migration_0063": "applied"
+  },
+  "real_marketsynth_case_latest": {
+    "run_id": "5eaa7519-6ea1-4ca1-b3e2-d5e67707cf5f",
+    "correlation_id": "8e14d848d05c4b64ba6b31199baa351a",
+    "status": "failed",
+    "failure_code": "fewer_than_3_accepted_sources",
+    "failure_stage": "pipeline",
+    "elapsed_seconds": 260.6,
+    "metrics": {
+      "search_success_rate": 1.0,
+      "search_success_count": 32,
+      "search_requests": 32,
+      "fetch_success_rate": 0.7407,
+      "fetch_success_count": 40,
+      "attempted_eligible_urls": 54,
+      "extraction_success_rate": 0.8889,
+      "extraction_success_count": 40,
+      "accepted_evidence": 1,
+      "evidence_coverage": 0.0,
+      "citation_coverage": 1.0,
+      "unsupported_findings": 0,
+      "findings_count": 1,
+      "fallback_success_count": 40,
+      "provider_circuit_state": {
+        "firecrawl": "open",
+        "direct_http": "closed"
+      }
+    },
+    "pass_criteria_gaps": {
+      "fetch_success": "74.1% < 90% (14 eligible URLs failed: http_403=7, empty_content=4, http_401=1, tls_error=1)",
+      "extraction_success": "88.9% < 95%",
+      "accepted_sources": "1 < 3",
+      "evidence_coverage": "0% < 80%",
+      "evidence_floors": "only market=1; competition/ICP/pricing/demand floors unmet"
+    },
+    "retry_recommendation": "Evidence funnel after successful direct_http fetch — category keyword gate in extract_claims + commercial_relevance filter yields 1 accepted item from 40 fetches. Next slice: widen claim extraction for direct_http HTML without weakening acceptance integrity."
+  },
+  "owner_action_optional": {
+    "provider": "firecrawl",
+    "issue": "credits_exhausted",
+    "action": "Top up credits at https://firecrawl.dev/pricing for rendered fetch quality",
+    "note": "Not blocking — direct_http fallback verified for real case; run proceeds without Firecrawl."
+  },
+  "code_fixes_this_session": [
+    "firecrawl HTTP 402 mapped to credits_exhausted",
+    "provider preflight reports fetch contour PASS with direct_http fallback",
+    "fetch orchestrator: non-retryable Firecrawl errors no longer skip direct_http fallback",
+    "alembic 20260728_0063 applied (fetch ledger table)"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "customer_intelligence_reference": {
+    "source_skill_id": "ms.skill.icp_segmentation",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+    "cim_version": "0.1.0",
+    "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "selected_segment_ids": [
+      "seg-unknown"
+    ],
+    "source_evidence_references": [
+      "ev-seg-seg-remote-eng"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "budget",
+        "description": "Budget bands unverified",
+        "blocking": false
+      }
+    ],
+    "source_conflicts": [],
+    "source_status": "ready_for_downstream_use"
+  },
+  "competitor_analysis_output": {
+    "source_skill_id": "ms.skill.competitor_analysis",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "market_validation_output": {
+    "source_skill_id": "ms.skill.market_validation",
+    "source_skill_version": "0.2.0",
+    "source_output_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "market_validation_snapshot": {
+    "verdict": "proceed",
+    "verdict_confidence": "medium",
+    "conditions": [],
+    "blockers": [],
+    "required_changes": [],
+    "evidence_gaps": [],
+    "conflicts": []
+  },
+  "cim_claim_catalog": {
+    "segment_ids": [
+      "seg-remote-eng"
+    ],
+    "pain_point_ids": [
+      "pain-seg-remote-eng"
+    ],
+    "jtbd_ids": [
+      "jtbd-seg-remote-eng"
+    ],
+    "objection_ids": [
+      "obj-seg-remote-eng"
+    ],
+    "outcome_ids": [
+      "out-seg-remote-eng"
+    ],
+    "trigger_ids": [
+      "trg-seg-remote-eng"
+    ],
+    "barrier_ids": [
+      "bar-seg-remote-eng"
+    ],
+    "trust_driver_ids": [
+      "trust-seg-remote-eng"
+    ]
+  },
+  "positioning_objectives": [
+    "Develop evidence-backed positioning hypotheses"
+  ],
+  "selected_segment_ids": [
+    "seg-unknown"
+  ],
+  "product_or_brand_scope": "B2B async SaaS",
+  "category_assumptions": [],
+  "existing_positioning": "",
+  "brand_constraints": [],
+  "legal_or_compliance_constraints": [],
+  "channel_context": [
+    "product-led"
+  ],
+  "language": "en",
+  "required_depth": "standard",
+  "provenance": {
+    "submitted_by": "fixture"
+  }
+}

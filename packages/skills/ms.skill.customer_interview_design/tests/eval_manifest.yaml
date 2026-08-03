@@ -1,0 +1,6 @@
+version: 1
+skill_id: ms.skill.customer_interview_design
+eval_cases:
+  - id: valid_guide
+    fixture: tests/fixtures/output_valid_guide.json
+    expectation: schema_valid

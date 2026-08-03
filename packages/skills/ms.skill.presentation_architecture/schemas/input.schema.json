@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.presentation_architecture/input/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "presentation_objective": { "type": "string" },
+    "presentation_type": { "type": "string" },
+    "audience": { "type": "string" },
+    "audience_context": { "type": "object" },
+    "source_content_references": { "type": "array", "items": { "type": "object" } },
+    "source_evidence_references": { "type": "array", "items": { "type": "object" } },
+    "source_claim_references": { "type": "array", "items": { "type": "object" } },
+    "approved_positioning_reference": { "type": "object" },
+    "approved_offer_reference": { "type": "object" },
+    "desired_slide_count": { "type": "integer", "minimum": 1 },
+    "duration_minutes": { "type": "number" },
+    "delivery_context": { "type": "string" },
+    "language": { "type": "string" },
+    "tone": { "type": "string" },
+    "brand_constraints": { "type": "object" },
+    "accessibility_constraints": { "type": "object" },
+    "legal_or_compliance_constraints": { "type": "object" },
+    "required_sections": { "type": "array", "items": { "type": "string" } },
+    "required_call_to_action": { "type": "string" },
+    "visual_constraints": { "type": "object" },
+    "chart_data_references": { "type": "array", "items": { "type": "object" } },
+    "image_asset_references": { "type": "array", "items": { "type": "object" } },
+    "prohibited_claims": { "type": "array", "items": { "type": "string" } },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "presentation_objective", "presentation_type", "audience", "source_content_references",
+    "language", "tone", "provenance"
+  ]
+}

@@ -1,0 +1,80 @@
+id: ms.skill.n8n_deployment_review
+name: n8n Deployment Review
+version: 0.1.0
+description: >
+  Review n8n workflow deployment readiness and prepare manual activation gate.
+  No deployment, activation, or n8n API calls.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - deployment_readiness_review
+  - architecture_conformance_review
+  - workflow_diff_review
+  - credential_reference_review
+  - workflow_settings_review
+  - trigger_configuration_review
+  - webhook_configuration_review
+  - provider_version_review
+  - approval_boundary_review
+  - publication_safety_review
+  - billing_safety_review
+  - idempotency_review
+  - retry_review
+  - error_workflow_review
+  - rollback_plan_review
+  - test_evidence_review
+  - activation_gate_preparation
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - assumption
+    - inference
+  rules:
+    - id: no_runtime_execution
+      description: Review only — never deploy or activate.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.n8n_workflow_architecture
+      relationship: required_dependency
+      note: KB-WPL-01.4 architecture reference
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  deployment_or_publication:
+    approval_required: true
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 3
+  current_state: candidate_evaluated
+known_limitations:
+  - Non-executable candidate — activation gate preparation only.
+  - final_manual_action_required always true.
+  - production_eligible=false
+network_policy:
+  default: deny
+  allowed_hosts: []
+script_policy:
+  enabled: false
+provenance:
+  origin: platform_native
+  methodology:
+    - KB-WPL-01.4 n8n Engineering Knowledge Skills
+    - KB-WPL-01.3C frozen Workflow Pattern Library
+test_suite:
+  manifest: tests/eval_manifest.yaml

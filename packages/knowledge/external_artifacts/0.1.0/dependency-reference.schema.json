@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/dependency-reference.schema.json",
+  "title": "DependencyReference",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "dependency_id": {
+      "type": "string"
+    },
+    "dependency_type": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "version_scope": {
+      "type": "string"
+    },
+    "requires_reverification": {
+      "type": "boolean"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "dependency_id",
+    "dependency_type",
+    "name",
+    "provenance"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "practice_id": "tool_workflow_permission_boundary",
+  "title": "Tool workflow permission boundary",
+  "domain": "ai_integration",
+  "context": "Agent tools implemented as separate workflows.",
+  "problem": "Tool workflow inherits full agent permissions.",
+  "recommended_practice": "Tool workflow accepts only allowlisted operations; no credential escalation across tool boundary.",
+  "rationale": "Catalog toolWorkflow nodes with isolated triggers.",
+  "prerequisites": [],
+  "implementation_pattern": "tool_trigger → allowlist_check → minimal_action",
+  "failure_modes": [],
+  "security_notes": [],
+  "provider_version_scope": [
+    {
+      "provider": "n8n",
+      "component": "workflow_platform",
+      "documented_version": "source_archive_methodology",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Archive methodology; not re-executed in pilot hardening.",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "scope-n8n",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "tested_environment": "archive_metadata_only",
+  "verification_status": "source_documented",
+  "source_references": [
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/ai-agents.md",
+      "content_hash": "453a415870a0c9cbef2accddecd5e19fd833b05c741099fd82df421e5e5a3620",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-ai-agents-core",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "related_pattern_ids": [
+    "tool_workflow_separation"
+  ],
+  "tenant_scope": "tenant_scoped",
+  "provenance": {
+    "source_type": "practice_lineage_pilot",
+    "archive_id": "arc-skills-dlya-peredachi",
+    "source_id": "tool_workflow_permission_boundary",
+    "program_phase": "KB-WPL-01.3B"
+  }
+}

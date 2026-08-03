@@ -1,0 +1,19 @@
+{
+  "skill_id": "ms.skill.n8n_workflow_debugging",
+  "skill_version": "0.1.0",
+  "evidence_gaps": [],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "human_review_required": true,
+  "provenance": {
+    "skill_id": "ms.skill.n8n_workflow_debugging",
+    "skill_version": "0.1.0"
+  },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "analysis_id": "n8n-dbg-001",
+  "diagnostic_report": {},
+  "suspected_failure_node": "node-1",
+  "remediation_candidates": []
+}

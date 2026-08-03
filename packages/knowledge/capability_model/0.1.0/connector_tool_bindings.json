@@ -1,0 +1,106 @@
+[
+  {
+    "connector_class": "research_connector",
+    "tool_class": "read",
+    "policy": "no_side_effect",
+    "conceptual_only": true,
+    "allowlist_mutation": false,
+    "permission_granted": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "connector_class": "research_connector",
+    "tool_class": "search",
+    "policy": "no_side_effect",
+    "conceptual_only": true,
+    "allowlist_mutation": false,
+    "permission_granted": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "connector_class": "content_generation_connector",
+    "tool_class": "generate_draft",
+    "policy": "draft_not_publication",
+    "conceptual_only": true,
+    "allowlist_mutation": false,
+    "permission_granted": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "connector_class": "rendering_connector",
+    "tool_class": "render",
+    "policy": "render_not_publication",
+    "conceptual_only": true,
+    "allowlist_mutation": false,
+    "permission_granted": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "connector_class": "publication_connector",
+    "tool_class": "publish",
+    "policy": "requires_approval_and_evidence",
+    "conceptual_only": true,
+    "allowlist_mutation": false,
+    "permission_granted": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "connector_class": "publication_connector",
+    "tool_class": "write",
+    "policy": "requires_approval",
+    "conceptual_only": true,
+    "allowlist_mutation": false,
+    "permission_granted": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "connector_class": "storage_connector",
+    "tool_class": "delete",
+    "policy": "elevated_approval",
+    "conceptual_only": true,
+    "allowlist_mutation": false,
+    "permission_granted": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "connector_class": "advertising_connector",
+    "tool_class": "spend",
+    "policy": "deny_by_default",
+    "conceptual_only": true,
+    "allowlist_mutation": false,
+    "permission_granted": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  }
+]

@@ -1,0 +1,310 @@
+{
+  "pattern_id": "structured_LLM_to_API_request",
+  "pattern_name": "Structured LLM Output to API Request",
+  "pattern_category": "ai_integration",
+  "objective": "Generate structured output via LLM_provider and validate before transport.",
+  "problem_context": "Lead enrichment and research agents calling external APIs.",
+  "capability_ids": [
+    "agent_orchestration",
+    "lead_generation"
+  ],
+  "related_skill_ids": [
+    "ms.skill.n8n_workflow_architecture"
+  ],
+  "input_contract": {
+    "type": "object",
+    "required": [
+      "tenant_context",
+      "correlation_id"
+    ]
+  },
+  "output_contract": {
+    "type": "object",
+    "required": [
+      "status",
+      "evidence_refs"
+    ]
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "step_name": "Collect input context",
+      "step_type": "transform",
+      "security_class": "read_only"
+    },
+    {
+      "step_id": "s2",
+      "step_name": "Invoke LLM_provider with schema contract",
+      "step_type": "generate",
+      "security_class": "read_only"
+    },
+    {
+      "step_id": "s3",
+      "step_name": "Validate structured payload",
+      "step_type": "validate",
+      "security_class": "read_only"
+    },
+    {
+      "step_id": "s4",
+      "step_name": "Send validated payload via transport",
+      "step_type": "transport",
+      "security_class": "write_internal"
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "e1",
+      "from_step_id": "s1",
+      "to_step_id": "s2"
+    },
+    {
+      "edge_id": "e2",
+      "from_step_id": "s2",
+      "to_step_id": "s3"
+    },
+    {
+      "edge_id": "e3",
+      "from_step_id": "s3",
+      "to_step_id": "s4",
+      "condition": "valid"
+    },
+    {
+      "edge_id": "e4",
+      "from_step_id": "s3",
+      "to_step_id": "s1",
+      "condition": "invalid",
+      "on_failure": "human_review"
+    }
+  ],
+  "required_connectors": [],
+  "required_tools": [],
+  "approval_requirements": {
+    "human_approval_required": false,
+    "approval_gates": [],
+    "auto_approval_allowed": false,
+    "spend_approval_required": false,
+    "publication_approval_required": false
+  },
+  "evidence_requirements": {
+    "required": true,
+    "evidence_classes": [
+      "execution_log",
+      "source_reference"
+    ]
+  },
+  "idempotency_requirements": {
+    "required": true,
+    "policy": "dedupe_by_content_hash",
+    "unknown_outcome_auto_retry": false,
+    "duplicate_event_prevention": true
+  },
+  "retry_policy": "backoff",
+  "timeout_policy": "pilot_default_120s",
+  "rate_limit_policy": "provider_default",
+  "error_paths": [
+    "human_review",
+    "dead_letter"
+  ],
+  "rollback_or_recovery": "manual_review",
+  "security_class": "write_internal",
+  "tenant_scope": "tenant_scoped",
+  "personal_data_class": "unknown",
+  "publication_sensitive": false,
+  "billing_sensitive": false,
+  "destructive": false,
+  "implementation_variants": [
+    {
+      "provider": "OpenAI",
+      "component": "LLM_provider",
+      "documented_version": "source_catalog_0.1.0",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Observed in frozen catalog metadata only; not executed in pilot.",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "variant-OpenAI",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "provider": "LangChain",
+      "component": "LLM_provider",
+      "documented_version": "source_catalog_0.1.0",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Observed in frozen catalog metadata only; not executed in pilot.",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "variant-LangChain",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "source_workflow_ids": [
+    "wf-353be45a7de607a0",
+    "wf-b6c98c93d44e4384"
+  ],
+  "source_practice_ids": [
+    "structured_output_before_API_call"
+  ],
+  "known_limitations": [
+    "Schema validation rules are pilot-level; provider response shapes vary.",
+    "LLM_provider hallucination risk requires human review for high-stakes writes."
+  ],
+  "quality_gates": [
+    {
+      "gate_id": "structured_LLM_to_API_request-schema_valid",
+      "title": "Pattern validates against workflow-pattern schema",
+      "description": "Pattern validates against workflow-pattern schema",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-source_support_valid",
+      "title": "Source support gate satisfied",
+      "description": "Source support gate satisfied",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-provider_neutral",
+      "title": "Main flow uses functional abstractions only",
+      "description": "Main flow uses functional abstractions only",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-no_credentials",
+      "title": "No credential identifiers in pattern body",
+      "description": "No credential identifiers in pattern body",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-approval_boundary_valid",
+      "title": "Approval boundaries match sensitivity",
+      "description": "Approval boundaries match sensitivity",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-evidence_boundary_valid",
+      "title": "Evidence requirements documented",
+      "description": "Evidence requirements documented",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-tenant_boundary_valid",
+      "title": "Tenant scope preserved",
+      "description": "Tenant scope preserved",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-idempotency_valid",
+      "title": "Idempotency policy matches retry behavior",
+      "description": "Idempotency policy matches retry behavior",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-error_path_present",
+      "title": "Terminal error path documented",
+      "description": "Terminal error path documented",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-limitations_documented",
+      "title": "Known limitations listed",
+      "description": "Known limitations listed",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "structured_LLM_to_API_request-manual_review_complete",
+      "title": "Manual pilot audit complete",
+      "description": "Manual pilot audit complete",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-structured_LLM_to_API_request",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "maturity": "reviewed",
+  "provenance": {
+    "source_type": "pattern_extraction_pilot",
+    "archive_id": "arc-bots-knowledge-rar",
+    "source_id": "structured_LLM_to_API_request",
+    "program_phase": "KB-WPL-01.3A.1"
+  }
+}

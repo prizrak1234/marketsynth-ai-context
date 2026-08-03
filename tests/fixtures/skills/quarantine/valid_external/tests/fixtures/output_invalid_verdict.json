@@ -1,0 +1,24 @@
+{
+  "skill_id": "ms.skill.market_validation",
+  "skill_version": "0.1.0",
+  "verdict": "maybe_later",
+  "verdict_confidence": "high",
+  "executive_summary": "Invalid fixture — unsupported verdict value.",
+  "supporting_evidence": [],
+  "contradictory_evidence": [],
+  "assumptions": [],
+  "evidence_gaps": [],
+  "market_signals": [],
+  "customer_fit_findings": [],
+  "competitor_findings": [],
+  "commercial_risks": [],
+  "operational_risks": [],
+  "recommended_action": "N/A",
+  "required_changes": [],
+  "next_validation_steps": [],
+  "approval_required": false,
+  "provenance": {
+    "skill_id": "ms.skill.market_validation",
+    "skill_version": "0.1.0"
+  }
+}

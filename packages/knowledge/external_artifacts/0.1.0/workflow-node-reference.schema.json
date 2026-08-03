@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/workflow-node-reference.schema.json",
+  "title": "WorkflowNodeReference",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "node_id": {
+      "type": "string"
+    },
+    "node_type": {
+      "type": "string"
+    },
+    "node_version": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "security_class": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "node_id",
+    "node_type",
+    "provenance"
+  ]
+}

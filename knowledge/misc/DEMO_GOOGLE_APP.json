@@ -1,0 +1,483 @@
+{
+  "name": "DEMO_GOOGLE_APP",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ddd3209c-0a73-4290-8aed-f12eb5a71c67",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        688,
+        -272
+      ],
+      "id": "d79eb2aa-5d9b-4e58-9403-f399dc51d4c1",
+      "name": "Webhook",
+      "webhookId": "ddd3209c-0a73-4290-8aed-f12eb5a71c67"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.1",
+          "mode": "list",
+          "cachedResultName": "gpt-5.1"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        768,
+        64
+      ],
+      "id": "124234f7-c5e1-48ec-9c34-323e02aaf5b3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.1",
+          "mode": "list",
+          "cachedResultName": "gpt-5.1"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        944,
+        64
+      ],
+      "id": "feb39f88-873c-4e96-ae6f-3dccc09a61d9",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "c8dd39ed9ebbd99dbcb12408736c6b5e9e0d11243c0a6585d1dbabf2dbffd20b@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "n8n_calendar"
+        },
+        "options": {
+          "orderBy": "startTime",
+          "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+          "recurringEventHandling": "expand",
+          "showDeleted": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Show_Deleted', ``, 'boolean') }}",
+          "showHiddenInvitations": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Show_Hidden_Invitations', ``, 'boolean') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1504,
+        304
+      ],
+      "id": "47119206-6ff7-4970-a35a-007d7c4970ec",
+      "name": "Get many events in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "FmfdXK755Qes1QHO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "c8dd39ed9ebbd99dbcb12408736c6b5e9e0d11243c0a6585d1dbabf2dbffd20b@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "n8n_calendar"
+        },
+        "end": "={{ $now.plus(30, 'minutes') }}",
+        "additionalFields": {
+          "attendees": [],
+          "guestsCanSeeOtherGuests": false,
+          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1712,
+        304
+      ],
+      "id": "e89563a4-63d7-421b-a5e3-443475c66c87",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "FmfdXK755Qes1QHO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "c8dd39ed9ebbd99dbcb12408736c6b5e9e0d11243c0a6585d1dbabf2dbffd20b@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "n8n_calendar"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1904,
+        304
+      ],
+      "id": "fddb2320-c79c-46c8-9f03-badd8882df23",
+      "name": "Update an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "FmfdXK755Qes1QHO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "c8dd39ed9ebbd99dbcb12408736c6b5e9e0d11243c0a6585d1dbabf2dbffd20b@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "n8n_calendar"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {
+          "sendUpdates": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2096,
+        288
+      ],
+      "id": "bcab342c-f6a2-42f3-826b-82e394bfc2b9",
+      "name": "Delete an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "FmfdXK755Qes1QHO",
+          "name": "Google Calendar account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Данные клиента:\n{{ $json.body.name }}\n{{ $json.body.email }}\n{{ $json.body.startTime }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=You are an AI assistant integrated with Google Calendar through four tools:\n\n1. **getAll::event** — retrieves events\n2. **create::event** — creates new events\n3. **update::event** — updates existing events\n4. **delete::event** — deletes existing events\n\nHere is the current date/time: {{ $now }}\n\n## CORE BEHAVIOR\n\n- Always respond in Russian language.\n- Use Russian titles, descriptions and text for events.\n- Convert all date/time values to proper ISO timestamps required by Google Calendar tools.\n- Never output JSON unless explicitly requested.\n- Your main goal is to help the user manage their Google Calendar efficiently.\n\n## INPUT FORMAT FROM WEBHOOK\n\nUser messages will usually contain structured client data, for example:\n\n\"Данные клиента:\nИмя: Игорь\nEmail: igor@mail.ru\nВремя: 2025-12-15T21:00:00\"\n\nFrom this text you MUST extract:\n- `name` — client name;\n- `email` — client email;\n- `appointment_time` — desired start time in ISO format (if the time is not ISO — convert it).\n\nIf any of these fields are missing or ambiguous, politely ask a clarification in Russian.\n\n## BOOKING LOGIC\n\nWhen you receive client data from the webhook:\n\n1. Treat it as a request to **book a new meeting** in Google Calendar.\n2. First, use **getAll::event** to check if there is already an event that overlaps with the requested `appointment_time`.\n   - If there is a conflict, clearly explain that this time is busy and suggest alternative times on the same day or the next day.\n3. If there is no conflict, use **create::event** to create a new event:\n   - Title: \"Встреча с {{ $json.body.name }}\"\n   - Start time: {{ $json.body.startTime }}\n   - End time: start time + 1 hour (default duration)\n   - Attendee: {{ $json.body.email }}\n   - Description: кратко опиши, что это встреча, созданная голосовым ассистентом.\n\n4. If the user later asks to move or cancel this meeting, use:\n   - **update::event** — to change time or details;\n   - **delete::event** — to cancel the meeting.\n\nAlways choose the correct tool based on the user’s request.\n\n## RESPONSE FORMAT\n\nAfter each tool execution give a clear, friendly answer in Russian, for example:\n\n- For successful booking:  \n  \"Я создал встречу «Встреча с Игорем» на 15 декабря в 21:00. Приглашение отправлено на почту igor@mail.ru.\"\n\n- If the time is busy and you propose alternatives:  \n  \"На 15 декабря в 21:00 у вас уже есть событие. Зато свободно в 19:00 или 22:00. Какое время выбрать?\"\n\n- For updates and cancellations:  \n  \"Я перенёс встречу на 16 декабря в 10:00.\"  \n  \"Я отменил встречу «Встреча с Игорем».\"\n\nAlways keep answers short, practical and in natural Russian.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1248,
+        -272
+      ],
+      "id": "66c3e6fd-bd7d-449c-b20d-548a5a4e24d3",
+      "name": "AI Agent  Calendar"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        1088,
+        64
+      ],
+      "id": "e25811a2-e7b0-4a84-841e-0e59446cd50b",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1824,
+        -272
+      ],
+      "id": "0977b4f1-539b-4e70-aac2-e07816ccd972",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "## Приём данных с голосового ИИ Агента",
+        "height": 272,
+        "width": 496,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        496,
+        -352
+      ],
+      "typeVersion": 1,
+      "id": "020b1e0e-a391-40d2-bf3f-4c181288bcd8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## ИИ Агент",
+        "height": 272,
+        "width": 464,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        -352
+      ],
+      "typeVersion": 1,
+      "id": "044478c1-c99d-4c7d-91e1-59c461416285",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Ответ",
+        "height": 272,
+        "width": 352,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1712,
+        -352
+      ],
+      "typeVersion": 1,
+      "id": "7eb2f6ab-542d-4fe8-8bfa-8f7eb93b3622",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Мозги",
+        "height": 256,
+        "width": 544,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        688,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "5d56fec2-2cf7-40b3-9206-9a011ed8dcd2",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Процесс выполения",
+        "height": 304,
+        "width": 880,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1440,
+        192
+      ],
+      "typeVersion": 1,
+      "id": "b34fe2d0-1335-4101-8621-f7030e5c036a",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "igorzuevich.app.n8n.cloud",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+            "content-length": "78",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "35.226.18.70",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "9ac428d84424acb2-ORD",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "origin": "https://5hsfqm6owub95h0ebw10fvqtc61m5chxhvbkhcfomovxefd9tc-h842232647.scf.usercontent.goog",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"macOS\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "35.226.18.70, 172.70.100.160",
+            "x-forwarded-host": "igorzuevich.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-27-56cf765df-rwcc8",
+            "x-is-trusted": "yes",
+            "x-real-ip": "35.226.18.70"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "name": "Игорь",
+            "email": "igor@mail.ru",
+            "startTime": "2025-12-18T13:00:00"
+          },
+          "webhookUrl": "https://igorzuevich.app.n8n.cloud/webhook/ddd3209c-0a73-4290-8aed-f12eb5a71c67",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent  Calendar",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent  Calendar",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent  Calendar",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent  Calendar",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent  Calendar",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent  Calendar",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent  Calendar": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent  Calendar",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent  Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "33113704-4a7b-4259-abb5-667a21a00aa0",
+  "meta": {
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "6jxkq6n8LDUqdUEi",
+  "tags": []
+}

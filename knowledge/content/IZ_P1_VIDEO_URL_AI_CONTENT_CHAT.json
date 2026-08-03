@@ -1,0 +1,632 @@
+{
+  "name": "IZ_P1_VIDEO_URL_AI_CONTENT_CHAT",
+  "nodes": [
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to create a new row for social media links.",
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyFTRMIH7FwaduS",
+          "mode": "list",
+          "cachedResultName": "Links",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblyFTRMIH7FwaduS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Video URL": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Video_URL', ``, 'string') }}",
+            "Social Media": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Social_Media', ``, 'string') }}",
+            "Status": "не сделано"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Social Media",
+              "displayName": "Social Media",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "не сделано",
+                  "value": "не сделано"
+                },
+                {
+                  "name": "в процессе",
+                  "value": "в процессе"
+                },
+                {
+                  "name": "готов",
+                  "value": "готов"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        360,
+        160
+      ],
+      "id": "440db7cd-ed4a-4941-8e25-8f42f94b024a",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        140
+      ],
+      "id": "98875c7a-ed70-478e-b32e-e1d23b50081e",
+      "name": "ChatGPT",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "Execute_Repurpose",
+        "description": "Call this tool to execute the repurposer.",
+        "workflowId": {
+          "__rl": true,
+          "value": "ih8mwjCX6nnDAnB6",
+          "mode": "list",
+          "cachedResultName": "IZ_P2_VIDEO_URL_AI_CONTENT"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "execute": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('execute', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "execute"
+          ],
+          "schema": [
+            {
+              "id": "execute",
+              "displayName": "execute",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        260
+      ],
+      "id": "620f6d9d-3f0b-4e5c-8e42-a91ebd554d48",
+      "name": "Execute Repurpose"
+    },
+    {
+      "parameters": {
+        "content": "## Получите свой API-ключ OpenAI\n\nЧтобы получить API-ключ для OpenAI, посетите:\n\nhttps://platform.openai.com/api-keys\n\n",
+        "height": 220,
+        "width": 460,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        140,
+        440
+      ],
+      "typeVersion": 1,
+      "id": "b238da11-6269-4996-9ad9-dd50491307e0",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "## Настройте свои данные Airtable и подключите их\n\nПосмотрите документацию по настройке Airtable здесь:\n\nhttps://docs.n8n.io/integrations/builtin/credentials/airtable/",
+        "height": 200,
+        "width": 440,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        900,
+        420
+      ],
+      "typeVersion": 1,
+      "id": "d4ed5c2b-7006-4b29-96eb-d4fbef33db90",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "\n### Role:\n\nYou are an efficient URL organizer.\n\n### Task:\n\nYou will create rows with social media URL's.\n\n### Instructions:\n\nCreating rows with new URL's:\n\n1. Receive the users URL\n2. Create a new row with the URL\n3. Output \"Ссылка добавлена.\" on completion\n\nExecuting repurposer:\n\n1. Upon user query of \"Execute\", call the Execute Repurposer.\n\n\n### Constraints:\n\n- Do not modify any links\n- Never call the Execute Repurposer unless the keyword \"Execute\" has been queried by the user.\n",
+        "height": 620,
+        "width": 680,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1620,
+        -100
+      ],
+      "typeVersion": 1,
+      "id": "9fbda39c-b4be-46b2-878b-f1f4dd52fb2c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### Роль:\n\nТы эффективный организатор URL-адресов.\n\n### Задача:\n\nТы будешь создавать строки с URL-адресами социальных сетей.\n\n### Инструкции:\n\nСоздание строк с новыми URL-адресами:\n\n1. Получи URL-адрес пользователя.\n2. Создай новую строку с URL-адресом.\n3. Выведи «Ссылка добавлена» по завершении.\n\nВыполнение перецелителя:\n\n1. По запросу пользователя «Выполнить» вызови перецелитель Execute.\n\n### Ограничения:\n\n- Не изменяй ссылки.\n- Никогда не вызывай перецелитель Execute, если ключевое слово «Выполнить» не было запрошено пользователем.\n",
+        "height": 620,
+        "width": 780,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2340,
+        -100
+      ],
+      "typeVersion": 1,
+      "id": "354ec4a8-099c-4c76-b2ca-9094fd9b4870",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyFTRMIH7FwaduS",
+          "mode": "list",
+          "cachedResultName": "Links",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblyFTRMIH7FwaduS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record ID": "={{ $json.output.script_record_ID }}",
+            "Video URL": "={{ $json.output['Video URL'] }}"
+          },
+          "matchingColumns": [
+            "Video URL"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Social Media",
+              "displayName": "Social Media",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "не сделано",
+                  "value": "не сделано"
+                },
+                {
+                  "name": "в процессе",
+                  "value": "в процессе"
+                },
+                {
+                  "name": "готов",
+                  "value": "готов"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        700,
+        -60
+      ],
+      "id": "0c6de5e9-3584-49cb-a5a0-a307a38f8a77",
+      "name": "Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"script_record_ID\": \"Airtable record ID of the script\",\n  \"Video URL\": \"Airtable Video URL of the script\",\n  \"output\": \"message\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1180,
+        260
+      ],
+      "id": "0c5a04ac-6fa9-4752-acf5-17a30d810070",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=### Role:\n\nYou are an efficient URL organizer.\n\n### Task:\n\nYou will create rows with social media URL's.\n\n### Instructions:\n\nCreating rows with new URL's:\n\n1. Receive the users URL\n2. Create a new row with the URL\n3. Output \"Ссылка добавлена.\" on completion\nAnswer in Russian\n\n\n### Constraints:\n\n- Do not modify any links\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        260,
+        -80
+      ],
+      "id": "f024d027-04b1-45e0-83fb-62636da27751",
+      "name": "VIDEO URL AI CONTENT"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=### Role:\n\nYou are an efficient URL organizer.\n\n### Task:\n\nYou will create rows with social media URL's.\n\n### Instructions:\n\nCreating rows with new URL's:\n\n1. Receive the users URL\n2. Create a new row with the URL\n3. Output \"Ссылка добавлена.\" on completion\nAnswer in Russian\n\nExecuting repurposer:\n\n1. Upon user query of \"Проработать\", call the Execute Repurposer.\n\n\n### Constraints:\n\n- Do not modify any links\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        960,
+        -80
+      ],
+      "id": "b0cafa74-8f7b-4c46-8d39-e03884e6bfbb",
+      "name": "VIDEO URL AI CONTENT1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        840,
+        140
+      ],
+      "id": "1f2e3199-80de-4ee8-8d09-4b679835821d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"script_record_ID\": \"Airtable record ID of the script\",\n  \"Video URL\": \"Airtable Video URL of the script\",\n  \"output\": \"message\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        520,
+        180
+      ],
+      "id": "9ebdb059-37e1-425d-b4b8-08afc14ae68c",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "content": "## @igorzuevich \n**Автор** на [YouTube](https://www.youtube.com/@igorzuevich)",
+        "height": 240,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1340,
+        820
+      ],
+      "typeVersion": 1,
+      "id": "b27b84f5-4dd1-404b-a2a1-f83cf9276386",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -280,
+        -100
+      ],
+      "id": "1d943396-6b78-4547-bae1-45cb0959e115",
+      "name": "When chat message received",
+      "webhookId": "559cb81b-76a9-437a-8d63-c9be9efd0352"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "85364c0a-2948-4f67-979d-0c9df89ac1ee",
+              "name": "Otvet",
+              "value": "={{ $json.output.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        -260
+      ],
+      "id": "d1dc22be-096b-4172-a1e0-0c1d000f3a8f",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "VIDEO URL AI CONTENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ChatGPT": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "VIDEO URL AI CONTENT",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Repurpose": {
+      "ai_tool": [
+        [
+          {
+            "node": "VIDEO URL AI CONTENT1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "main": [
+        [
+          {
+            "node": "VIDEO URL AI CONTENT1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "VIDEO URL AI CONTENT1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VIDEO URL AI CONTENT": {
+      "main": [
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VIDEO URL AI CONTENT1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "VIDEO URL AI CONTENT1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "VIDEO URL AI CONTENT",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "VIDEO URL AI CONTENT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "07eb05b4-3174-4fe0-a52d-2eefd3b38521",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "917bs75IUPDblD4l",
+  "tags": [
+    {
+      "createdAt": "2025-03-21T05:05:36.109Z",
+      "updatedAt": "2025-03-21T05:05:36.109Z",
+      "id": "O7fQsEJqI16T5o0y",
+      "name": "Сделано"
+    }
+  ]
+}

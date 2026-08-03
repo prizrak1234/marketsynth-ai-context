@@ -1,0 +1,135 @@
+id: ms.skill.product_marketing_context
+name: Product Marketing Context
+version: 0.2.0
+description: >
+  Transform fragmented user and business information into a structured,
+  evidence-aware Product Marketing Context for downstream native Skills —
+  without research, validation verdicts, or external execution.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: context
+capabilities:
+  - product_identity_normalization
+  - business_model_normalization
+  - customer_context_normalization
+  - geography_normalization
+  - market_category_normalization
+  - problem_statement_structuring
+  - value_proposition_assumption_capture
+  - pricing_assumption_capture
+  - competitor_claim_capture
+  - channel_context_capture
+  - brand_constraint_capture
+  - business_constraint_capture
+  - evidence_inventory
+  - unknown_detection
+  - conflict_detection
+  - context_readiness_assessment
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: false
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - market_source
+    - competitor_source
+    - demand_signal
+    - pricing_signal
+    - audience_signal
+    - assumption
+    - inference
+  rules:
+    - id: no_inference_as_fact
+      description: Inferences must not be presented as verified facts.
+    - id: verified_requires_source
+      description: Verified claims require a source reference.
+    - id: assumptions_not_evidence
+      description: Assumptions remain assumptions and are not promoted to evidence.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.market_research
+      relationship: declared_future_dependency
+      note: Downstream consumer — not a runtime trigger in SKILL-02.1.
+    - id: ms.skill.competitor_analysis
+      relationship: declared_future_dependency
+      note: Downstream consumer — not a runtime trigger in SKILL-02.1.
+    - id: ms.skill.icp_segmentation
+      relationship: declared_future_dependency
+      note: Downstream consumer — not a runtime trigger in SKILL-02.1.
+    - id: ms.skill.market_validation
+      relationship: declared_future_dependency
+      note: Downstream consumer — frozen 0.1.0 unchanged in SKILL-02.1.
+    - id: ms.skill.positioning
+      relationship: declared_future_dependency
+      note: Downstream consumer — not a runtime trigger in SKILL-02.1.
+    - id: ms.skill.offer_builder
+      relationship: declared_future_dependency
+      note: Downstream consumer — not a runtime trigger in SKILL-02.1.
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  verdict_presentation:
+    external_side_effects: false
+    approval_required: false
+  launch_or_execution_transition:
+    approval_required: true
+    note: Human approval required before launch, spend, or publication.
+  paid_or_write_actions:
+    approval_required: true
+  publication:
+    governed_by: native_publication_flow
+    skill_bypass_allowed: false
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 1
+  current_state: skeleton_only
+known_limitations:
+  - Non-executable candidate package — no runtime loader in SKILL-02.2.1.
+  - Does not perform market research, competitor scraping, or demand validation.
+  - Does not issue commercial viability verdicts.
+  - Does not replace existing CWF.1 Business Idea Validation workflow.
+  - No connector or tool permissions granted.
+  - Readiness assessment is deterministic contract logic — not LLM execution.
+test_suite:
+  manifest: tests/eval_manifest.yaml
+  backend_tests: tests/test_skill_02_2_1_product_marketing_context_v020.py
+provenance:
+  origin: platform_native
+  methodology:
+    - Internal Marketsynth product marketing context normalization
+    - Informed by SKILL-R0.1 audit MS-SKILL-001 (Product Marketing Context)
+  external_methodology_references:
+    - audit_card: docs/research/skills/candidates/01-product-marketing-context.md
+      reuse: methodology_only
+      license: MIT
+      note: No direct external Skill installation or executable content reuse.
+  external_code_dependency: false
+  direct_external_skill_install: false
+  audit_research_id: MS-SKILL-001
+runtime_compatibility:
+  - operator_dry_run
+  - assistant_explicit_run
+knowledge_scopes:
+  - product_context
+network_policy:
+  default: deny
+  allowed_hosts: []
+  allowed_connectors_only: true
+script_policy:
+  enabled: false
+  reason: SKILL-02.1 skeleton — scripts forbidden.
+resource_limits:
+  max_package_size_mib: 10
+  max_skill_md_kib: 256

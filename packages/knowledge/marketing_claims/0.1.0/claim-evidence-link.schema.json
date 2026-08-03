@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/marketing-claims/0.1.0/claim-evidence-link.schema.json",
+  "title": "ClaimEvidenceLink",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "link_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "claim_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "evidence_reference": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "evidence_class": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "supports": {
+      "type": "boolean"
+    },
+    "contradicts": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "link_id",
+    "claim_id",
+    "evidence_reference",
+    "evidence_class",
+    "supports",
+    "provenance"
+  ]
+}

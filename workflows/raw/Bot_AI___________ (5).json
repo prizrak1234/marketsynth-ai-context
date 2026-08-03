@@ -1,0 +1,1261 @@
+{
+  "name": "Bot AI Сообщество",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1440,
+        100
+      ],
+      "id": "36b09274-8b4b-4e46-9dc8-be17982cd290",
+      "name": "Telegram Trigger",
+      "webhookId": "d5dd0d5d-54cb-4055-b703-73aedcb7b35f",
+      "credentials": {
+        "telegramApi": {
+          "id": "pZlIfJLqoeGYXIip",
+          "name": "Bot AI Сообщество"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "Шаблоны находятся в закреплённом сообщении: https://t.me/c/2019152955/1/28246",
+        "additionalFields": {
+          "appendAttribution": false,
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        -160
+      ],
+      "id": "1863fa2f-d8d2-4ee6-bfc0-8a4ce5551f86",
+      "name": "Telegram",
+      "webhookId": "9f9d143c-4375-4b39-b31c-7af8a14f0d8e",
+      "credentials": {
+        "telegramApi": {
+          "id": "pZlIfJLqoeGYXIip",
+          "name": "Bot AI Сообщество"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9f8374f-e0c6-4b56-b2a1-cdc9985fcffa",
+              "leftValue": "={{$json[\"message\"][\"new_chat_members\"] && $json[\"message\"][\"new_chat_members\"].length > 0}}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "594e9279-a704-48b7-a5e9-5a6779e77220",
+              "leftValue": "={{$json[\"message\"][\"boost_added\"] !== undefined}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -900,
+        80
+      ],
+      "id": "1e1d6c1f-cefc-4f51-baac-6d404d3c0340",
+      "name": "If (сервисное сообщение)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8bb9a76d-39cf-47be-b4a3-ac76faa3e717",
+              "leftValue": "={{$json[\"message\"][\"from\"][\"is_bot\"].toString()}}\n",
+              "rightValue": "=false",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -360,
+        100
+      ],
+      "id": "2e1246a5-dd36-483a-8540-390110dc7c09",
+      "name": "If (это бот)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b46cfb14-4472-4ee1-b207-078efe9b3d49",
+              "leftValue": "={{ (\n  [\"шаблон\", \"шаблоны\", \"шаблона\", \"шблон\", \"шаблн\", \"шаблоне\"].some(s =>\n    $node[\"Telegram Trigger\"].json[\"message\"][\"text\"].toLowerCase().includes(s)\n  ) &&\n  [\"где\", \"найти\", \"скачать\", \"получить\", \"находится\", \"посмотреть\"].some(w =>\n    $node[\"Telegram Trigger\"].json[\"message\"][\"text\"].toLowerCase().includes(w)\n  )\n).toString() }}",
+              "rightValue": "=true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -60,
+        120
+      ],
+      "id": "e72c27c3-4fad-4f6c-96b5-3419f1537f42",
+      "name": "If(Вопрос по шаблону)"
+    },
+    {
+      "parameters": {
+        "operation": "deleteMessage",
+        "chatId": "={{$json[\"message\"][\"chat\"][\"id\"]}}",
+        "messageId": "={{$json[\"message\"][\"message_id\"]}}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -680,
+        -200
+      ],
+      "id": "d3125b28-32ce-4963-9dc1-630ca9ef571b",
+      "name": "Telegram (удалить сообщение)",
+      "webhookId": "4c585c26-b15b-478e-af6a-52463719d50c",
+      "credentials": {
+        "telegramApi": {
+          "id": "pZlIfJLqoeGYXIip",
+          "name": "Bot AI Сообщество"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1c9b8d6-c420-4b57-a1d1-45f43752380b",
+              "leftValue": "={{$json[\"message\"][\"message_thread_id\"] === undefined}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1220,
+        100
+      ],
+      "id": "426bedf1-20f3-4282-acd2-cad22339965f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2020,
+        900
+      ],
+      "id": "e1bd077e-e61d-4557-9dd4-103b02ec8ca9",
+      "name": "When chat message received",
+      "webhookId": "a8c3be7c-91fe-48ad-acc7-e569262792d0"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here is the chat transcript from the past 24 hours from our technical community.\nCreate a brief, practical summary according to the requirements in the System Message.\n\n{{ $json.fullText }}",
+        "options": {
+          "systemMessage": "=Analyze the following chat transcript from the past 24 hours and create a brief, informative summary.\n\nMANDATORY REQUIREMENTS:\n1. STRICT character limit: maximum 2200 characters INCLUDING SPACES\n2. Choose ONLY 3-4 MOST important topics (not 5!)\n3. Write in SHORT bullet points, not long paragraphs\n4. Be SPECIFIC: mention exact names, tools, numbers\n5. NO filler words like \"кто-то\", \"также\", \"ну и\", \"в основном\"\n6. Use lively, direct language - write like you're texting a friend\n\nCONTENT SELECTION:\n- Focus on ACTIONABLE discussions only\n- Skip complaints without solutions\n- Prioritize: technical solutions > questions > general discussions\n- If someone asked a question AND got an answer - include both\n- If question has no answer - provide your own brief solution\n\nANSWER SUPPLEMENTATION:\n- For unanswered technical questions: give 1-2 sentence solution\n- For incomplete answers: add missing details\n- Mark your additions: \"[ИИ: ...]\"\n- Keep additions under 50 characters each\n\nFORMAT (strict structure):\n📆 Сводка за {{ $json.yesterday }}\n\n🔥 **Главное:**\n- [конкретная тема]: [конкретное решение/результат]\n- [вторая тема]: [что именно обсуждалось]\n- [третья тема]: [практический результат]\n\n❓ **Вопрос-ответ:**\n- [имя] спросил: [краткий вопрос]\n  → Решение: [конкретный ответ]\n- [второй вопрос без ответа]\n  → [ИИ: краткое решение]\n\n🛠 **Инструменты:**\n- [Tool]: [для чего] → пример: `код/команда`\n- [Second tool]: [применение]\n\nSTYLE RULES:\n- Each bullet point: maximum 100 characters\n- Use → instead of long explanations\n- Write names of people who contributed solutions\n- NO repetitions of same word in one sentence\n- NO bureaucratic phrases\n- Count characters constantly - STOP at 2200!\n\nAlways answer in Russian, regardless of input language.\ndon't use people's names."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -180,
+        1320
+      ],
+      "id": "defd4964-c5f2-468f-b255-7982c718b797",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        1680
+      ],
+      "id": "b579f709-e39d-49c3-848f-d613e68e65a8",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZVRw2Y38j3xeMMzY",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "talegram_ai_chat",
+          "mode": "list",
+          "cachedResultName": "talegram_ai_chat"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ $json.message.from.username }}",
+            "text": "={{ $json.message.text }}",
+            "text_reply": "={{ $json.message.reply_to_message.text }}\n{{ $json.message.reply_to_message.caption }}",
+            "message_thread_id": "={{ $json.message.message_thread_id }}",
+            "Message_id": "={{ $json.message.message_id }}"
+          },
+          "matchingColumns": [
+            "message_thread_id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Message_id",
+              "displayName": "Message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text_reply",
+              "displayName": "text_reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_thread_id",
+              "displayName": "message_thread_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -920,
+        320
+      ],
+      "id": "e57691ad-cf10-4b24-a576-3e83e29b3387",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "3HkIfPFmwlcFLESH",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "talegram_ai_chat",
+          "mode": "list",
+          "cachedResultName": "talegram_ai_chat"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ $('Telegram Trigger').item.json.message.from.username }}",
+            "Message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}",
+            "text": "={{ $('Telegram Trigger').item.json.message.text }}\n{{ $('Telegram Trigger').item.json.message.caption }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Message_id",
+              "displayName": "Message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "text_reply",
+              "displayName": "text_reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message_thread_id",
+              "displayName": "message_thread_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -600,
+        100
+      ],
+      "id": "154849bb-f56b-43cf-b871-7f0ae21594a7",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "3HkIfPFmwlcFLESH",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1600,
+        660
+      ],
+      "id": "028e6401-32fb-4f46-9633-5345700874d0",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "telegramai_vector",
+          "mode": "list",
+          "cachedResultName": "telegramai_vector"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        660
+      ],
+      "id": "af39c271-a699-4140-9407-5649cfbca80b",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9zm1ir03lxlTek0k",
+          "name": "Supabase account (new_telegram)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -40,
+        900
+      ],
+      "id": "ae34f2cf-e7bd-4a3c-bd34-ae49bd041daf",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZVRw2Y38j3xeMMzY",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "-1002019152955",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        1320
+      ],
+      "id": "62b409d2-b81e-42ae-b63d-be442e1bd347",
+      "name": "Telegram1",
+      "webhookId": "3ffb541d-f93a-4a38-a471-7830eafcbb75",
+      "credentials": {
+        "telegramApi": {
+          "id": "pZlIfJLqoeGYXIip",
+          "name": "Bot AI Сообщество"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const chunkSize = 300;\nconst results = [];\n\nfor (const item of items) {\n  const text = item.json.text;\n  const text_reply = item.json.text_reply;\n\n  // Формируем итоговый контент: если есть text_reply, он добавляется первым, потом основной текст\n  let fullText = \"\";\n  if (text_reply && typeof text_reply === \"string\" && text_reply.trim().length > 0) {\n    fullText = `${text_reply}\\n${text}`;\n  } else {\n    fullText = text;\n  }\n\n  // Пропускаем пустые строки\n  if (!fullText || typeof fullText !== 'string' || fullText.trim().length === 0) continue;\n\n  // Режем на чанки если нужно\n  for (let i = 0; i < fullText.length; i += chunkSize) {\n    const chunk = fullText.slice(i, i + chunkSize).trim();\n    if (chunk.length === 0) continue;\n\n    results.push({\n      json: {\n        content: chunk,\n        metadata: {\n          username: item.json.username,\n          message_id: item.json.message_id,\n          message_thread_id: item.json.message_thread_id,\n          created_at: item.json.created_at\n        }\n      }\n    });\n  }\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -620,
+        660
+      ],
+      "id": "bb08fa91-2156-4f5f-8a01-6127ee03fdbc",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e69f5335-5b28-4f9d-80b0-0282e1167a82",
+              "name": "text",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -340,
+        660
+      ],
+      "id": "5c99cd0d-52df-461a-a0ba-c7c19e501b01",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        140,
+        880
+      ],
+      "id": "4dd299e2-3f67-4acd-b423-00898f6c3ae4",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        260,
+        1020
+      ],
+      "id": "ba540305-ed84-4ab6-938c-3839e4036777",
+      "name": "Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "talegram_ai_chat",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gt",
+              "keyValue": "={{ $json[\"lastDay\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        1320
+      ],
+      "id": "5fa74639-f429-4b2a-b0f0-182ea16ea68b",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9zm1ir03lxlTek0k",
+          "name": "Supabase account (new_telegram)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const itemsText = items.map(item => {\n  let parts = [];\n  if (item.json.text) parts.push(item.json.text);\n  if (item.json.text_reply && item.json.text_reply !== 'EMPTY') parts.push(item.json.text_reply);\n  return parts.join(' | ');\n}).filter(Boolean);\nconst combinedText = itemsText.join('\\n');\nreturn [{ json: { fullText: combinedText } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -660,
+        1320
+      ],
+      "id": "dd91574a-baaf-4d6a-9f48-e46ebd2cdb97",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const months = [\n  'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',\n  'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'\n];\n\nconst now = new Date();\nnow.setDate(now.getDate() - 1);\nconst day = now.getDate();\nconst month = months[now.getMonth()];\nconst formatted = `${day} ${month}`;\n\nreturn [{\n  json: {\n    ...items[0].json,\n    yesterday: formatted\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -380,
+        1320
+      ],
+      "id": "b8fc0faf-b3f1-4de5-a1b5-d2dbb8c71fee",
+      "name": "Code2"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        40,
+        1560
+      ],
+      "id": "b5e8da6d-6b1a-41e4-b69a-511370dd0e8d",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1360,
+        1320
+      ],
+      "id": "7a20b7d7-eb2f-4066-9de8-710ce6405c19",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "content": "## ВЫГРУЗКА ИСТОРИИ",
+        "height": 580,
+        "width": 2460,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1640,
+        580
+      ],
+      "typeVersion": 1,
+      "id": "b97ac3f7-d145-49dd-b0cc-472590ecb082",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## ЧАТ",
+        "height": 740,
+        "width": 2460,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1640,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "faa7d1e1-8937-4a8a-8c64-4fd452554827",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## ИТОГИ ДНЯ\n",
+        "height": 580,
+        "width": 2020,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1440,
+        1240
+      ],
+      "typeVersion": 1,
+      "id": "7eff304f-023b-4bf9-bacf-0aac9d8e3fd1",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## ПРОМПТ\n\nПроанализируй следующую запись чата за последние 24 часа и создай краткое, информативное саммари.\n\nОБЯЗАТЕЛЬНЫЕ ТРЕБОВАНИЯ:\n1. Общий объем ответа: максимум 2200 символов (включая пробелы)\n2. Выбирай только 3-5 САМЫХ важных и интересных тем/обсуждений\n3. Выделяй только действительно важные вопросы (максимум 3-4), которые:\n   - Затрагивают большинство участников\n   - Имеют практическую ценность\n   - Особенно выделяй вопросы, которые остались без ответа\n4. Игнорируй рутинные разговоры, приветствия, прощания и общие фразы\n5. Используй живой, неформальный язык общения вместо канцелярского стиля\n\nДОПОЛНЕНИЕ ОТВЕТОВ:\n- Если обнаружен интересный вопрос БЕЗ ОТВЕТА — дай краткий, но полезный ответ на него\n- Если ответ в чате был неполным — дополни его своими знаниями\n- Предлагай конкретные решения, инструменты или подходы\n- Отмечай свои дополнения и ответы фразой \"[ИИ-дополнение: ...]\"\n\nРЕСУРСНЫЙ ЦЕНТР:\n- Выделяй все полезные ссылки, инструменты, библиотеки, упомянутые в чате\n- Для каждого технического решения предлагай конкретный пример использования\n- Если упоминались альтернативные подходы к решению проблемы — сравни их\n- Если обсуждались технические решения без конкретных примеров, добавь свой мини-пример\n\nФОРМАТ:\n📆 Сводка за {{ $json.yesterday }}\n\n🔥 **Главное за день:**\n- [Краткая суть самой важной темы/новости] (упомяни кто поднял, если важно)\n- [Вторая по важности тема]\n...\n\n❓ **Вопросы и решения:**\n- Вопрос: [Конкретный вопрос без лишних деталей]\n  Ответ: [Ответ из чата или твое дополнение]\n- Вопрос: [Второй вопрос]\n  Ответ: [Нет ответа в чате] [ИИ-дополнение: твой ответ]\n...\n\n🧰 **Инструментарий:**\n- 🔧 [Название инструмента/библиотеки]: [для чего используется] + [мини-пример использования]\n- 🔗 Полезные ссылки: [краткое описание и ссылка]\n\n💡 **Практические советы:**\n- По теме [тема]: [конкретный совет, который можно сразу применить]\n- Альтернативные решения для [проблема]: [краткое сравнение подходов]\n- [ИИ-дополнение: твоя рекомендация по обсуждаемой теме]\n\nСТИЛЬ:\n- Пиши как человек для людей, избегай формального стиля\n- Используй простые предложения\n- Будь конкретным, избегай общих фраз вроде \"обсуждались технические вопросы\"\n- Твои ответы должны быть краткими, но действительно полезными\n- Если предлагаешь техническое решение, приводи мини-пример кода или конкретные шаги\n\nВсегда отвечай на русском языке, независимо от языка входных данных.",
+        "height": 1280,
+        "width": 1040
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        940,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "eb9f89ce-c66b-4397-bae1-339d37b3c66e",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### Видео настройка и подключение Telegram к агентам:\nhttps://youtu.be/c8bePGmxFNw",
+        "height": 80,
+        "width": 460,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1540,
+        -60
+      ],
+      "typeVersion": 1,
+      "id": "988a2bf3-5d80-4151-9710-c02aebf73393",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### Данные на своём сервере:\nhttps://youtu.be/BqrMrS5GAtI",
+        "height": 80,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -600,
+        360
+      ],
+      "typeVersion": 1,
+      "id": "e35b7790-7c10-4291-94cc-4a4f7da58f8e",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "### RAG и Настройка SupaBase:\nhttps://youtu.be/UrZ1sC8C_8E",
+        "height": 80,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1320,
+        900
+      ],
+      "typeVersion": 1,
+      "id": "ce75c6a5-1a4e-4dbf-a526-3ee2baf40767",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "### Инструмент Think:\nhttps://youtu.be/6GwKcWVmsFo",
+        "height": 80,
+        "width": 260,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        100,
+        1700
+      ],
+      "typeVersion": 1,
+      "id": "9948cf26-10e4-4e58-83ca-77399f63f7e9",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\nconst yesterday = new Date(now.getTime() - 24*60*60*1000);\nreturn [{ lastDay: yesterday.toISOString() }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1260,
+        660
+      ],
+      "id": "22763e91-66b3-4e0f-ba1b-0439aca4cb72",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "talegram_ai_chat",
+        "returnAll": true,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gt",
+              "keyValue": "={{ $json[\"lastDay\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -940,
+        660
+      ],
+      "id": "563685bb-9144-437d-b765-c0af71dbde2f",
+      "name": "Supabase2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9zm1ir03lxlTek0k",
+          "name": "Supabase account (new_telegram)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\nconst yesterday = new Date(now.getTime() - 24*60*60*1000);\nreturn [{ lastDay: yesterday.toISOString() }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1140,
+        1320
+      ],
+      "id": "552498f7-04ce-489f-b19c-ea93aff6566f",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "telegram_chat",
+        "returnAll": true,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gt",
+              "keyValue": "={{ $json[\"lastDay\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        980
+      ],
+      "id": "99fb67a2-f003-4332-a64b-1d8b4ec3d3ca",
+      "name": "Supabase3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9zm1ir03lxlTek0k",
+          "name": "Supabase account (new_telegram)"
+        }
+      },
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 141880882,
+          "message": {
+            "message_id": 58716,
+            "from": {
+              "id": 804465999,
+              "is_bot": false,
+              "first_name": "Max",
+              "last_name": "0n",
+              "username": "max0n89",
+              "is_premium": true
+            },
+            "chat": {
+              "id": -1002019152955,
+              "title": "Сообщество AI помощников",
+              "is_forum": true,
+              "type": "supergroup"
+            },
+            "date": 1748275266,
+            "text": "Вроде весь смысл сохранился"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If (сервисное сообщение)": {
+      "main": [
+        [
+          {
+            "node": "Telegram (удалить сообщение)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If (это бот)": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If(Вопрос по шаблону)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If(Вопрос по шаблону)": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "If (сервисное сообщение)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres1": {
+      "main": [
+        [
+          {
+            "node": "If (это бот)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "main": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Supabase2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase2": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Moscow",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "7492da9e-6822-4dcb-85aa-c82f07c30c83",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "afdd8a50bd7efd6d71e02e6aed81a27b1912d7cfa3d0028cfd433b00d795aed9"
+  },
+  "id": "YhOqNhu8DbhL0dWa",
+  "tags": []
+}

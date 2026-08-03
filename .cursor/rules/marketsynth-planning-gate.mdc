@@ -1,0 +1,59 @@
+---
+description: Planning Gate — pre-implementation check before code changes (Cursor Development Governance)
+alwaysApply: true
+---
+
+# Marketsynth Planning Gate
+
+**Layer:** Cursor Development Governance (not a product program).  
+**Does not replace:** `AGENTS.md`, commercial-product-directive, or owner-approved task specs.
+
+## When this gate applies
+
+**Required before any implementation** that edits:
+- `app/**`, `web/**`, `tests/**`, `alembic/**`, `scripts/**` (product/runtime)
+- API contracts, DB models, frontend routes, or user-facing copy tied to product behavior
+
+**Skip heavy preflight** (answer briefly, then proceed) for:
+- Read-only audit, questions, explanations
+- Documentation-only edits in `docs/**` or `knowledge/**` with no code impact
+- Cursor governance files only (`.cursor/**`, `docs/cursor/**`)
+- Trivial typo in comments (single line, no behavior change) when owner/task says so
+
+If owner task is **already approved** with Task ID and scope: **do not redesign architecture**. Map spec → repo → report contradictions only.
+
+## Before first code edit — PRE-IMPLEMENTATION CHECK
+
+Output this block (compact; bullets OK):
+
+1. **Task ID** and **active product priority** (from `knowledge/06_CURRENT_STATE.md`)
+2. **Files to inspect/change** (concrete paths)
+3. **Current behavior** (evidence: file/function, not guess)
+4. **Target behavior** (from approved spec)
+5. **In scope / out of scope**
+6. **Invariants** that must not break (tenant isolation, contracts-first, sanitize inbound text, no scope expansion)
+7. **Migrations / schema** — yes/no; if yes, owner decision required
+8. **Tests** to add or run
+9. **Verification commands**
+10. **Contradictions** with SoT, spec, or existing code — list or "none"
+11. **Owner decision required** — yes/no (yes if architecture change, irreversible migration, secrets/production, ambiguous scope)
+
+## Stop implementation until owner clarifies if
+
+- Spec contradicts SoT or active slice
+- Requires architecture/roadmap change not in approved task
+- Irreversible migration without approval
+- Scope ambiguous or expanded vs approved task
+- Secrets, production, or external publish without explicit approval
+
+## Do not stop for re-approval when
+
+- Task explicitly approved (Task ID in prompt)
+- No contradictions found
+- Work stays within approved scope and invariants
+
+## Priority guard
+
+If task is **infrastructure/governance** (e.g. CURSOR-GOVERNANCE-*): do not implement product slices (RUNTIME-01C, etc.) in the same turn unless owner explicitly combines them.
+
+If task is **product slice**: read `knowledge/00_INDEX.md`, `knowledge/06_CURRENT_STATE.md`, relevant spec — do not open parallel product programs.

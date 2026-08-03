@@ -1,0 +1,15 @@
+eval_cases:
+  - id: package_structure_valid
+    description: Package layout conforms to RFC-SKILL-002 skeleton.
+  - id: output_contract_type_research
+    description: Manifest declares output_contract_type research.
+  - id: no_commercial_verdict
+    description: Output schema has no verdict, positioning, offer, or execution_status.
+  - id: triple_upstream_dependency
+    description: Input requires PMC 0.2.x, Market Research, and Competitor Analysis refs.
+  - id: cim_schema_local_draft
+    description: CustomerIntelligenceDocument uses package-local 0.1.0-draft schema.
+  - id: positioning_consumer_boundary
+    description: Positioning consumes CIM without recomputing JTBD/pains/objections.
+  - id: priority_tier_explainable
+    description: Segment priority uses dimensions plus tier_rationale — not opaque score only.

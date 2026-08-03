@@ -1,0 +1,39 @@
+{
+  "skill_id": "marketsynth.xmlriver.wordstat",
+  "name": "XMLRiver Wordstat",
+  "version": "1.0.0",
+  "description": "Частотность и расширение ключей через XMLRiver Wordstat.",
+  "type": "integration",
+  "triggers": [
+    "wordstat",
+    "keyword_frequency",
+    "semantic_expand",
+    "xmlriver"
+  ],
+  "accepted_input_types": [
+    "keyword_query"
+  ],
+  "output_types": [
+    "wordstat_result"
+  ],
+  "instruction_entrypoint": "SKILL.md",
+  "allowed_tools": [
+    "wordstat.frequency",
+    "wordstat.expand",
+    "wordstat.related"
+  ],
+  "allowed_network_hosts": [
+    "xmlriver.com"
+  ],
+  "required_secret_aliases": [
+    "XML_RIVER_USER_ID",
+    "XML_RIVER_KEY"
+  ],
+  "external_action": "read",
+  "human_approval_required": false,
+  "timeout_seconds": 60,
+  "retry_max": 1,
+  "enabled": true,
+  "provenance": "owner_archive:Скилл_для_работы_с_вордстатом_xml_river.zip",
+  "checksum_sha256": null
+}

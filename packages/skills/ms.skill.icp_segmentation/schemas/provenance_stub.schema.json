@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.icp_segmentation/provenance_stub/0.1.0",
+  "title": "ProvenanceStub",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "source_skill_id": { "type": "string", "maxLength": 128 },
+    "source_skill_version": { "type": "string", "maxLength": 32 },
+    "source_reference": { "type": "string", "maxLength": 2000 },
+    "generated_at": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.customer_interview_design/schemas/question.schema.json",
+  "title": "InterviewQuestion",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "question_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "domain": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "question_text": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "question_type": {
+      "type": "string",
+      "enum": [
+        "open",
+        "closed",
+        "probe",
+        "scale",
+        "unknown"
+      ]
+    },
+    "evidence_objective": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "expected_evidence_type": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "follow_up_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "leading_risk": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "unknown"
+      ]
+    },
+    "sensitivity": {
+      "type": "string",
+      "enum": [
+        "none",
+        "moderate",
+        "high",
+        "unknown"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "question_id",
+    "domain",
+    "question_text",
+    "question_type",
+    "evidence_objective",
+    "expected_evidence_type",
+    "leading_risk",
+    "sensitivity",
+    "provenance"
+  ]
+}

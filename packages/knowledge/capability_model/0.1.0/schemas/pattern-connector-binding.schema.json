@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "$id": "https://schemas.marketsynth.ai/capability-model/0.1.0/pattern-connector-binding.schema.json",
+  "required": [
+    "pattern_id",
+    "connector_class",
+    "conceptual_only",
+    "provenance"
+  ]
+}

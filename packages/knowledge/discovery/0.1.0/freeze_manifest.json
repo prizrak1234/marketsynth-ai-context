@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1.0",
+  "bundle_status": "read_only_discovery_model",
+  "runtime_authorized": false,
+  "external_discovery": false,
+  "vector_search": false,
+  "llm_ranking": false,
+  "persistence": false,
+  "installation_actions": false,
+  "file_hashes": {
+    "aliases.json": "1e47738df558a0eb3d11c505e885487f5bac9375d8e12ae3c054d905daaa79d9",
+    "ranking_weights.json": "f42ec8167ee73946cbe3972ee2280ee20e51def0f4aa2d0fddce04b99385f5c9",
+    "query_modes.json": "62edc2bc0019f5c4e96c05596682b56791de38ab36f8e8d783fb96a708f8842e",
+    "safe_actions.json": "c277d68a7359a2388390b053a4358a59c8c48f99644e298e62683ef81e1fc3d3",
+    "discovery_fixtures.json": "436e146b1ff11842c4a9c1597b470d1571dd5b615f7b4102fd3983f770e9568e"
+  },
+  "bundle_hash": "9a4f05af83350893fe32ce2bacc6d7c2e963d6440d4d2b47d002a2b1b85304c8",
+  "semantic_bundle_hash": "9a4f05af83350893fe32ce2bacc6d7c2e963d6440d4d2b47d002a2b1b85304c8",
+  "generated_at": "2026-07-24T01:00:00Z"
+}

@@ -1,0 +1,15 @@
+{
+  "total_rows": 2,
+  "duplicate_text_groups": 0,
+  "duplicate_text_samples": [],
+  "null_chat_route_rows": 0,
+  "null_idempotency_rows": 0,
+  "row_ids_by_text_sample": {
+    "Что такое unit-экономика SaaS и как её считать для подписной модели?": [
+      "438c66fb-a6b3-4745-ba4b-dc9a8c721f62"
+    ],
+    "Хочу проверить бизнес-идею кофейни в центре города — аудитория офисные работники": [
+      "fd3ec698-44b5-4857-96ff-281963c0c32b"
+    ]
+  }
+}

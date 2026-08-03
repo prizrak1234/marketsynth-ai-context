@@ -1,0 +1,1030 @@
+{
+  "name": "Для видео Отдел AI Agent Копирайтер Новостник (в системе)",
+  "nodes": [
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "title, raw_content",
+        "options": {}
+      },
+      "id": "aa33fabc-1828-459c-82c2-da2b79eae65a",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        860,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "results",
+        "options": {}
+      },
+      "id": "69508537-7028-4cc0-bfa6-99dfbe2b9037",
+      "name": "Split Out",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        700,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"api_key\": \"[Добавить сюда свой ключ API]\",\n    \"query\": \"{{ $json.query.replace(/\"/g, '\\\\\"') }}\",\n    \"search_depth\": \"basic\",\n    \"include_answer\": true,\n    \"topic\": \"news\",\n    \"include_raw_content\": true,\n    \"max_results\": 3\n} ",
+        "options": {}
+      },
+      "id": "7639dfc6-29cd-4ce8-9f64-6c40a34fbb98",
+      "name": "Search Internet",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        540,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "445a7542-993b-4a33-a435-6571b95c6bd9",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        260,
+        460
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e51b5764-4e31-44c1-a929-636b666fdc3f",
+      "name": "OpenAI Chat Model2",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        720,
+        480
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI",
+          "mode": "list",
+          "cachedResultName": "n8n  Content Creator",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Пост для Linked In": "={{ $('Telegram пост').item.json.output }}",
+            "Пост для Threads": "={{ $('Threads').item.json.output }}",
+            "Пост для блога": "={{ $json.output }}",
+            "Тема": "={{ $('Google Sheets').item.json['Тема'] }}"
+          },
+          "matchingColumns": [
+            "Тема"
+          ],
+          "schema": [
+            {
+              "id": "Тема",
+              "displayName": "Тема",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Тема контента",
+              "displayName": "Тема контента",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Целевая Аудитория",
+              "displayName": "Целевая Аудитория",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Пост для Linked In",
+              "displayName": "Пост для Linked In",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Пост для Threads",
+              "displayName": "Пост для Threads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Пост для блога",
+              "displayName": "Пост для блога",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "ab8afe3a-c337-4865-8dfc-6521872c2b04",
+      "name": "Update Campaign",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1300,
+        180
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "05c13e6e-0d0d-4cc2-87df-32e735f93e7d",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -140,
+        400
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b493a3c6-939a-4301-9257-055b80c28d7a",
+              "name": "query",
+              "value": "={{ $json['Тема контента'] }}",
+              "type": "string"
+            },
+            {
+              "id": "e2813669-08fd-4d0d-a215-b0634032330b",
+              "name": "targetAudience",
+              "value": "={{ $json['Целевая Аудитория'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "72af124b-5f85-457c-b844-12eacd429ef1",
+      "name": "Set Search Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        380,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI",
+          "mode": "list",
+          "cachedResultName": "n8n  Content Creator",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -120,
+        -40
+      ],
+      "id": "d8339ed8-f1f0-49f4-9150-ab76bb6503da",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        100,
+        -40
+      ],
+      "id": "bde6b4bd-1f82-4e3d-aa0a-86f19caa4b7a",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI",
+          "mode": "list",
+          "cachedResultName": "n8n  Content Creator",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Целевая Аудитория": "={{ $('AI Agent по ЦА').item.json.output }}",
+            "Тема": "={{ $json.output }}",
+            "Тема контента": "={{ $('AI Agent Генератор задачи').item.json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Тема",
+              "displayName": "Тема",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Тема контента",
+              "displayName": "Тема контента",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Целевая Аудитория",
+              "displayName": "Целевая Аудитория",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Пост для Linked In",
+              "displayName": "Пост для Linked In",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Пост для Threads",
+              "displayName": "Пост для Threads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Пост для блога",
+              "displayName": "Пост для блога",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -380,
+        -220
+      ],
+      "id": "90559122-c8b1-4987-a4c8-5d2122f02479",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fd81c27d-2306-4bd5-8f92-7205ed12e700",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1460,
+        -360
+      ],
+      "id": "bbe1c6cc-04d7-4e62-99b3-5bd8e52fd149",
+      "name": "Edit Fields",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1240,
+        -80
+      ],
+      "id": "4b13b629-bb93-4f2c-aa7a-8c7559701bff",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1280,
+        380
+      ],
+      "id": "4ae585bb-e336-4c0c-8c9c-11f9b257b002",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1320,
+        840
+      ],
+      "id": "a28906cb-1a25-4e8c-9142-b3a8f711f35c",
+      "name": "OpenAI Chat Model5",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields').item.json.text }}",
+        "options": {
+          "systemMessage": "=<Agentinstructions>\n    <Role>\n        <Name>Эксперт по сообщениям</Name>\n        <Description>Вы эксперт в создании и анализе сообщений.</Description>\n    </Role>\n    <Goal>\n        <Primary>Сформулировать задачу, которую необходимо выполнить.</Primary>\n    </Goal>\n    <Instructions>\n        <Instruction>\n            <![CDATA[\nТехническое задание: Сформулируйте задачу, которую необходимо выполнить. Описание не должно превышать 100 символов.\n\nСпецифичность и контекст: понять и сформулировать задачу, которую нужно выполнить. Это важно для дальнейшего создания контента.\n\nПример 1:\nВходные данные: Найдите последние новости о компании open AI.\nВыходные данные: Найти последние новости и обновления о компании open AI.\n\nНапоминания:\n- Четко сформулируйте задачу, которую необходимо выполнить.\n- Сообщение не должно превышать 100 символов.\n- Выводите только текст.\n- Ответ должен быть на русском языке.\n            ]]>\n        </Instruction>\n    </Instructions>\n</Agentinstructions>\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -1260,
+        120
+      ],
+      "id": "e51d6a28-e850-4f65-a1cc-c22d47e411bc",
+      "name": "AI Agent Генератор задачи"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields').item.json.text }}",
+        "options": {
+          "systemMessage": "=<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Agentinstructions>\n    <Role>\n        <Name>Эксперт по сообщениям</Name>\n        <Description>Вы эксперт в создании и анализе сообщений.</Description>\n    </Role>\n    <Goal>\n        <Primary>Сформулировать название задачи.</Primary>\n    </Goal>\n    <Instructions>\n        <Instruction>\n            <![CDATA[\nСформулировать заголовок и название для задачи.\nСпецифичность и контекст: придумайте название задачи.\nПример:\nВходные данные: Найдите свежие новости о компании open AI.\nВыходные данные: Задача: найти новости о компании open AI.\nНапоминания:\n- Четко сформулируйте название задачи.\n- Сообщение не должно превышать 100 символов.\n- Выводите только текст.\n- Ответ должен быть на русском языке.\n            ]]>\n        </Instruction>\n    </Instructions>\n</Agentinstructions>\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -1260,
+        560
+      ],
+      "id": "47cf15fd-0b9d-4a98-8d46-96b1f2a2195a",
+      "name": "AI Agent Генератор Названия"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=<Agentinstructions>\n    <Role>\n        <Name>Эксперт по созданию и анализу сообщений</Name>\n        <Description>Вы эксперт в создании и анализе сообщений.</Description>\n    </Role>\n    <Goal>\n        <Primary>Определить целевую аудиторию для данного запроса.</Primary>\n    </Goal>\n    <Instructions>\n        <Instruction>\n            <![CDATA[\nТехническое задание: определите целевую аудиторию, которая будет заинтересована в этом запросе, или извлеките данные о целевой аудитории из запроса. Описание должно быть не более 100 символов.\n\nСпецифичность и контекст: выберите наиболее подходящую целевую аудиторию для данной темы или задачи. Старайся чётко определять сегмент целевой аудитории. Это важно при дальнейшей подготовки контента.\n\nПример 1:\nВходные данные: Найдите последние новости о компании Open AI.\nВыходные данные: Целевая аудитория — предприниматели, блогеры.\n\nНапоминания:\n- Четко опишите целевую аудиторию и сегмент аудитории.\n- Сообщение не должно превышать 100 символов.\n- Выводите только текст.\n- Ответ должен быть на русском языке.\n            ]]>\n        </Instruction>\n    </Instructions>\n</Agentinstructions>\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -1240,
+        -360
+      ],
+      "id": "0b8f3b35-6403-4247-aad7-1ecb6ecca067",
+      "name": "AI Agent по ЦА"
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "=Article Content:\n{{ $json.data.toJsonString() }}\n\nTarget Audience:\n{{ $('Set Search Fields').item.json.targetAudience }}",
+        "options": {
+          "systemMessage": "=<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Agentinstructions>\n    <Role>\n        <Name>Эксперт по контенту для Telegram канала</Name>\n        <Description>Вы эксперт по созданию контента для Telegram канала, специализируетесь на преобразовании статей в высокововлекающие посты для определённой целевой аудитории.</Description>\n    </Role>\n    <Goal>\n        <Primary>Создать Telegram пост по предоставленной статье.</Primary>\n    </Goal>\n    <Instructions>\n        <Instruction>\n            <![CDATA[\nТехническое задание: используя предоставленную статью, составьте пост для Telegram канала, который:\n1. Написан в лаконичном, увлекательном тоне, оптимизированном для мобильных устройств.\n2. Адаптирован под интересы, потребности и профессиональные цели целевой аудитории.\n3. Представлен в виде простого текста с частыми переносами строк для удобочитаемости. Максимум 2-3 предложения в абзаце.\n4. Содержит 1-2 эмодзи для придания индивидуальности и привлекательности.\n5. Предоставляет ценную информацию и включает ясный призыв к действию.\n6. Содержит 3-5 релевантных хештегов.\n7. Выводит только текст поста — без дополнительного контента.\n\nКонтекст: Пост должен кратко передавать основное сообщение статьи и резонировать с ценностями аудитории. Он должен звучать естественно, разговорно и не превышать 2200 символов, но при этом не быть меньше 1500 символов.\n\nНапоминания:\n- Контент должен соответствовать интересам и вызовам целевой аудитории.\n- Обязательно использовать 1-2 эмодзи и призыв к действию.\n- Выводите только текст поста.\n- Ответ должен быть на русском языке.\n            ]]>\n        </Instruction>\n    </Instructions>\n</Agentinstructions>\n\n"
+        }
+      },
+      "id": "22df119e-1572-4520-818c-763e8b38234d",
+      "name": "Telegram пост",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -160,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "=Article Content:\n{{ $('Aggregate').item.json.data.toJsonString() }}\n\nTarget Audience:\n{{ $('Set Search Fields').item.json.targetAudience }}",
+        "options": {
+          "systemMessage": "=<Agentinstructions>\n    <Role>\n        <Name>Эксперт по контенту для Threads</Name>\n        <Description>Вы эксперт в создании контента для Threads, специализируетесь на преобразовании статей в увлекательные и краткие твиты для конкретной целевой аудитории.</Description>\n    </Role>\n    <Goal>\n        <Primary>Создать твит по предоставленной статье.</Primary>\n    </Goal>\n    <Instructions>\n        <Instruction>\n            <![CDATA[\nТехническое задание: используя предоставленную статью, составьте твит, который:\n1. Краток, лаконичен и оптимизирован для лимита Threads (390 символов).\n2. Соответствует интересам, потребностям и целям целевой аудитории.\n3. Содержит 1-2 эмодзи для усиления индивидуальности и привлекательности.\n4. Предоставляет ценное сообщение или инсайт и включает явный призыв к действию.\n5. Содержит 1 релевантный хештега.\n6. Выводит только текст твита — без дополнительного контента.\n\nКонтекст: Твит должен кратко передавать суть статьи, привлекать внимание, предлагать немедленную ценность и стимулировать вовлеченность (лайки, ответы, клики).\n\nНапоминания:\n- Тон должен быть доступным и увлекательным.\n- Используйте эмодзи экономно для акцента.\n- Убедитесь, что твит не превышает 390 символов и адаптирован под аудиторию.\n- Выводите только текст твита.\n- Ответ должен быть на русском языке.\n            ]]>\n        </Instruction>\n    </Instructions>\n</Agentinstructions>\n"
+        }
+      },
+      "id": "b5cb27fa-909c-475c-af31-0e04d91d259d",
+      "name": "Threads",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        280,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39c2f302-03be-4464-a17a-d7cc481d6d44",
+              "name": "=response",
+              "value": "Отлично. Я выполнил задание. Все посты доступны https://docs.google.com/spreadsheets/d/13maMWkSDLcdBySNmmotSCer411HPhxncAcvZyDqWfeI/edit?gid=0#gid=0",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "47649a1c-a5c4-439d-8e66-f8ad55bfe59e",
+      "name": "Success",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1520,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "=Article Content:\n{{ $('Aggregate').item.json.data.toJsonString() }}\n\nTarget Audience:\n{{ $('Set Search Fields').item.json.targetAudience }}",
+        "options": {
+          "systemMessage": "=<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Agentinstructions>\n    <Role>\n        <Name>Эксперт копирайтер. </Name>\n        <Description>Вы опытный и креативный блогер, способный создавать увлекательные, лаконичные и хорошо структурированные статьи для Instagram на основе предоставленного контента.</Description>\n    </Role>\n    <Goal>\n        <Primary>Создать пост для Instagram до 2000 символов на основе предоставленного контента.</Primary>\n    </Goal>\n    <Instructions>\n        <Instruction>\n            <![CDATA[\nТехническое задание: напишите пост для Instagram до 2000 символов используя предоставленный контент. Пост должна быть связной, увлекательной и информативной, ориентированной на широкую аудиторию. Обеспечьте профессиональный, но дружелюбный тон и логичное структурирование от введения до заключения.\n\nКонтекст: данная задача необходима для быстрого создания качественных полезных постов, которые привлекают внимание читателей, точно передают основное сообщение и помогают брендам или отдельным лицам устанавливать лидерство в мнениях и эффективно взаимодействовать с аудиторией.\n\nНапоминания:\n- Сохраняйте ясность и логическую последовательность между абзацами.\n- Обеспечьте увлекательный, дружеский, но профессиональный тон.\n- Пост должна быть лаконичной и соответствовать предоставленному контенту.\n- Дели текст на абзацы через каждые 2-3 предложения.\n- Пост должен быть для Instagram до 2000 символов, но не менее 1400 символов.\n- Ответ должен быть на русском языке.\n            ]]>\n        </Instruction>\n    </Instructions>\n</Agentinstructions>\n"
+        }
+      },
+      "id": "fd884c6f-fc1a-4e57-86ae-c2216c53b967",
+      "name": "InstagramWriter",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        700,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1980,
+        -560
+      ],
+      "id": "799497db-71ed-45a2-b592-6bb978038fa0",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1880,
+        -280
+      ],
+      "id": "33ace0af-cc6c-4979-803b-5dc110e72a7d",
+      "name": "Telegram Trigger",
+      "webhookId": "4bc2dd79-4173-4669-9e31-b95507065de8",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fd81c27d-2306-4bd5-8f92-7205ed12e700",
+              "name": "text",
+              "value": "={{ $json.query.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1740,
+        -640
+      ],
+      "id": "7f734561-baea-4e47-9117-9c7474338321",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.response }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1740,
+        160
+      ],
+      "id": "d53de359-4d66-46d5-85fd-91e41012e5f1",
+      "name": "Telegram",
+      "webhookId": "5d6653a5-f96c-45c2-bc69-d365003ab55f",
+      "notesInFlow": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      },
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": {
+            "query": "Claude",
+            "message": "Создайте контент на основе последних новостей о Claude."
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Internet": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Telegram пост",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Threads",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "InstagramWriter",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Telegram пост",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Search Fields": {
+      "main": [
+        [
+          {
+            "node": "Search Internet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Set Search Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent по ЦА",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent по ЦА",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Генератор задачи",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Генератор Названия",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Генератор задачи": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Генератор Названия",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Генератор Названия": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent по ЦА": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Генератор задачи",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram пост": {
+      "main": [
+        [
+          {
+            "node": "Threads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Threads": {
+      "main": [
+        [
+          {
+            "node": "InstagramWriter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Campaign": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "InstagramWriter": {
+      "main": [
+        [
+          {
+            "node": "Update Campaign",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Success": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent по ЦА",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bd711b06-eecc-4aa2-9a2f-0e37941ebd0d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "pPFaxnFhpxlWPZ4Z",
+  "tags": [
+    {
+      "createdAt": "2025-03-06T12:11:15.812Z",
+      "updatedAt": "2025-03-06T12:11:15.812Z",
+      "id": "XD9MpCzqMOq9rI8b",
+      "name": "video"
+    }
+  ]
+}

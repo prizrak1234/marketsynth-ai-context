@@ -1,0 +1,45 @@
+{
+  "pilot_version": "0.1.0-pilot-lineage",
+  "status": "pilot_lineage_hardened",
+  "pattern_count": 8,
+  "pattern_ids": [
+    "draft_to_human_approval",
+    "error_workflow_or_recovery",
+    "evidence_grounded_generation",
+    "human_approval_before_publication",
+    "lead_capture_to_qualification",
+    "retry_with_idempotency",
+    "structured_LLM_to_API_request",
+    "workflow_backup"
+  ],
+  "practice_ids": [
+    "draft_review_resume",
+    "evidence_grounded_generation",
+    "explicit_error_workflow",
+    "human_approval_before_write_or_publication",
+    "idempotency_before_retry",
+    "lead_qualification_boundary",
+    "prompt_injection_boundary",
+    "recovery_and_terminal_failure_path",
+    "structured_output_before_API_call",
+    "unknown_outcome_write_no_auto_retry",
+    "workflow_backup_and_source_control"
+  ],
+  "source_workflow_ids": [
+    "wf-16b82581942c24a9",
+    "wf-21966e054442133e",
+    "wf-353be45a7de607a0",
+    "wf-580f7458a07243a7",
+    "wf-60870942fc4ef5b9",
+    "wf-9c87e7783b3cb118",
+    "wf-b144bd6927caa092",
+    "wf-b6c98c93d44e4384",
+    "wf-b6e1676935a48901",
+    "wf-bdf26007404af6a3",
+    "wf-c7d30b91fd4e5694",
+    "wf-de3f478cf93ab7e0",
+    "wf-febea81827b8ad6b"
+  ],
+  "source_support_map_hash": "a408a4599c9f5ad617c81561910f0b3751eccdd4d8e8416cefe7b6fc2c7a24fb",
+  "generated_at": "2026-07-23T18:58:45.705648+00:00"
+}

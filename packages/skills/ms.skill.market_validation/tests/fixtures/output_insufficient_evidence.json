@@ -1,0 +1,35 @@
+{
+  "skill_id": "ms.skill.market_validation",
+  "skill_version": "0.1.0",
+  "verdict": "insufficient_evidence",
+  "verdict_confidence": "low",
+  "executive_summary": "The idea cannot be responsibly validated without target market, geography, or supporting sources.",
+  "supporting_evidence": [],
+  "contradictory_evidence": [],
+  "assumptions": [],
+  "evidence_gaps": [
+    "Target market not provided",
+    "No market or competitor sources admitted"
+  ],
+  "market_signals": [],
+  "customer_fit_findings": [],
+  "competitor_findings": [],
+  "commercial_risks": [],
+  "operational_risks": [],
+  "recommended_action": "Collect minimum market and customer context before re-running validation.",
+  "required_changes": [
+    "Provide target market and geography",
+    "Add at least one market or competitor source"
+  ],
+  "next_validation_steps": [
+    "Complete intake fields",
+    "Run governed research collection when available"
+  ],
+  "approval_required": false,
+  "provenance": {
+    "skill_id": "ms.skill.market_validation",
+    "skill_version": "0.1.0",
+    "generated_at": "2026-07-23T14:00:00Z",
+    "methodology_ref": "platform_native_skeleton"
+  }
+}

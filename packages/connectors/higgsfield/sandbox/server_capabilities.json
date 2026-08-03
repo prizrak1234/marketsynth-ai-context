@@ -1,0 +1,8 @@
+{
+  "capabilities": {},
+  "captured_at": null,
+  "endpoint": "https://mcp.higgsfield.ai/mcp",
+  "negotiated_protocol_version": null,
+  "server_info": null,
+  "status": "sandbox_verification_required"
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/import-report.schema.json",
+  "title": "ImportReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string"
+    },
+    "archive_count": {
+      "type": "integer"
+    },
+    "file_count": {
+      "type": "integer"
+    },
+    "workflow_count": {
+      "type": "integer"
+    },
+    "security_finding_count": {
+      "type": "integer"
+    },
+    "generated_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "report_id",
+    "file_count",
+    "generated_at"
+  ]
+}

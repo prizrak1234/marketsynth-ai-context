@@ -1,0 +1,54 @@
+{
+  "research_id": "res-cafe-001",
+  "skill_id": "ms.skill.market_research",
+  "skill_version": "0.1.0",
+  "source_context_reference": {
+    "skill_id": "ms.skill.product_marketing_context",
+    "skill_version": "0.1.0",
+    "output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "readiness": "partially_ready"
+  },
+  "research_questions": [
+    "Is local café delivery demand sufficient to justify expansion?"
+  ],
+  "market_definition": [],
+  "market_structure": [],
+  "market_signals": [],
+  "demand_signals": [],
+  "customer_signals": [],
+  "pricing_signals": [],
+  "channel_signals": [],
+  "competitor_signals": [],
+  "regulatory_or_operational_constraints": [],
+  "source_inventory": [],
+  "supporting_evidence": [],
+  "contradictory_evidence": [],
+  "assumptions": [],
+  "inferences": [],
+  "unknowns": [
+    {
+      "domain": "demand",
+      "description": "No market sources provided for delivery demand",
+      "blocking": true
+    }
+  ],
+  "evidence_gaps": [
+    "No citeable market sources",
+    "Incomplete product marketing context"
+  ],
+  "coverage": "minimal",
+  "evidence_quality": "insufficient",
+  "research_status": "insufficient_sources",
+  "recommended_next_research": [
+    "Provide local market reports or customer interview data",
+    "Complete product marketing context before deeper research"
+  ],
+  "provenance": {
+    "skill_id": "ms.skill.market_research",
+    "skill_version": "0.1.0",
+    "generated_at": "2026-07-23T14:00:00Z",
+    "methodology_ref": "docs/skills/ms.skill.market_research.md"
+  },
+  "input_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "output_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+}

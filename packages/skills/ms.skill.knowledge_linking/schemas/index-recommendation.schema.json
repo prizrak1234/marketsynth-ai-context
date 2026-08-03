@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "index-recommendation.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "recommendation_id": { "type": "string" },
+    "index_type": { "type": "string" },
+    "scope": { "type": "string" },
+    "missing_or_stale_artifacts": { "type": "array", "items": { "type": "string" } },
+    "proposed_index_entries": { "type": "array", "items": { "type": "object" } },
+    "rationale": { "type": "string" },
+    "confidence": { "type": "string" },
+    "human_review_required": { "type": "boolean" },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "recommendation_id", "index_type", "scope", "missing_or_stale_artifacts",
+    "proposed_index_entries", "rationale", "confidence", "human_review_required", "provenance"
+  ]
+}

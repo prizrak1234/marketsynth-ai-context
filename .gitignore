@@ -1,0 +1,76 @@
+# Secrets and local-only files — Marketsynth / BotFazer
+
+# Environment (allow only *.example)
+.env
+.env.*
+!.env.example
+!**/.env.example
+web/.env.local
+web/.env.local.*
+web/.env.production
+web/.env.development
+web/.env.test
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.coverage
+htmlcov/
+
+# Build / deps / caches
+node_modules/
+web/node_modules/
+.next/
+web/.next/
+web/out/
+dist/
+build/
+coverage/
+tmp/
+logs/
+.cache/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Certificates & cloud credentials
+*.pem
+*.key
+*.p12
+*.pfx
+service-account.json
+**/service-account.json
+
+# Local DBs / backups / scratch
+*.sql
+*.dump
+backups/
+botfazer_backups/
+.tmp_alembic.db
+.tmp_alembic_test*.db
+*.db
+!**/fixtures/**/*.db
+
+# Runtime artifacts
+data/generated_visuals/
+data/reference_visuals/
+data/_tmp_*
+scripts/_tmp_*
+scripts/_import_*
+scripts/_probe_*
+web/playwright-report/
+web/test-results/
+web/e2e-artifacts/
+.tmp_*/
+.tmp_*
+
+# OS
+.DS_Store
+Thumbs.db

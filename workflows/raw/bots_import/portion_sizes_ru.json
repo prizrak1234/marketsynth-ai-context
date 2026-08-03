@@ -1,0 +1,29 @@
+{
+  "household_measures": [
+    {
+      "id": "HM_GLASS_250",
+      "name": "Стакан (250 мл)",
+      "ml": 250
+    },
+    {
+      "id": "HM_SPOON_TB",
+      "name": "Столовая ложка",
+      "ml": 15
+    },
+    {
+      "id": "HM_SPOON_TS",
+      "name": "Чайная ложка",
+      "ml": 5
+    }
+  ],
+  "hand_portions": [
+    {
+      "id": "HP_PALM_PROTEIN",
+      "name": "Ладонь белка (женская)",
+      "g_range": [
+        80,
+        120
+      ]
+    }
+  ]
+}

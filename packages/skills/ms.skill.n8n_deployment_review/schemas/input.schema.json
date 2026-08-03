@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.n8n_deployment_review/input/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "workflow_architecture_reference": { "type": "object" },
+    "proposed_workflow_metadata": { "type": "object" },
+    "workflow_diff_summary": { "type": "object" },
+    "n8n_version": { "type": "string" },
+    "node_version_inventory": { "type": "array", "items": { "type": "object" } },
+    "provider_version_inventory": {
+      "type": "array",
+      "items": { "$ref": "schemas/provider-version-scope.schema.json" }
+    },
+    "credential_reference_inventory": { "type": "array", "items": { "type": "string" } },
+    "environment_target": { "type": "string" },
+    "trigger_configuration": { "type": "object" },
+    "webhook_configuration": { "type": "object" },
+    "workflow_settings": { "type": "object" },
+    "error_workflow_configuration": { "type": "object" },
+    "retry_configuration": { "type": "object" },
+    "idempotency_configuration": { "type": "object" },
+    "approval_configuration": { "type": "object" },
+    "publication_configuration": { "type": "object" },
+    "billing_configuration": { "type": "object" },
+    "personal_data_context": { "type": "object" },
+    "rollback_plan": { "type": "object" },
+    "test_results": { "type": "object" },
+    "security_scan_results": { "type": "object" },
+    "workflow_pattern_library_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "workflow_architecture_reference",
+    "proposed_workflow_metadata",
+    "environment_target",
+    "workflow_pattern_library_hash",
+    "provenance"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "provider-version-scope.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "provider": {
+      "type": "string"
+    },
+    "n8n_node_type": {
+      "type": "string"
+    },
+    "n8n_node_version": {
+      "type": "string"
+    },
+    "provider_api_version": {
+      "type": "string"
+    },
+    "documented_at": {
+      "type": "string"
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "source_documented",
+        "regression_tested",
+        "reproduced"
+      ]
+    },
+    "requires_reverification": {
+      "type": "boolean"
+    },
+    "source_practice_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "provider",
+    "requires_reverification"
+  ]
+}

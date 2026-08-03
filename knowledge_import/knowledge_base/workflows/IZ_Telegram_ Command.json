@@ -1,0 +1,1270 @@
+{
+  "name": "IZ_Telegram_ Command",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "b30a4df4-e0f9-457d-8041-de48d1504265",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        -688,
+        784
+      ],
+      "webhookId": "30a3f361-4607-40f0-bc7e-d1fb385430d2",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/command1"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "d09b6282-e9f8-4e43-b3db-9edae88cd634",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/command2"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "2"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "89a078b3-c2f3-47ff-9136-5de7bd05fb98",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/command3"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "3"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "89b90a06-447d-4e98-b58a-c658c4fb40ec",
+      "name": "Switch (Command Routing)",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        352,
+        240
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "waitingForContent1"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "1a145782-de66-496c-aa5e-5fa5b93614f9",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "waitingForContent2"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "2"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "e83e025f-2758-4baa-a868-bdc0f2bd7ac2",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "waitingForContent3"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "3"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "18a16b8c-0c4a-41e6-95b1-14c65b308eb1",
+      "name": "Check State",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        464,
+        1296
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "jsCode": "let workflowStaticData = $getWorkflowStaticData('global');\nif (workflowStaticData.telegramStates) {\n    delete workflowStaticData.telegramStates[$('Telegram Trigger').first().json.message.chat.id.toString()];\n}\nreturn $input.all();"
+      },
+      "id": "b72a02bd-71c2-4ef1-9c6c-147f72ac9d54",
+      "name": "Clear State",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2928,
+        1376
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "let workflowStaticData = $getWorkflowStaticData('global');\nif (!workflowStaticData.telegramStates) {\n    workflowStaticData.telegramStates = {};\n}\nworkflowStaticData.telegramStates[$json.message.chat.id.toString()] = { waitingForContent1: true };\nreturn $input.all();"
+      },
+      "id": "2f266317-8189-4c73-b150-fec20990c0eb",
+      "name": "Set waitingForContent1",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        832,
+        -48
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "let workflowStaticData = $getWorkflowStaticData('global');\nif (!workflowStaticData.telegramStates) {\n    workflowStaticData.telegramStates = {};\n}\nworkflowStaticData.telegramStates[$json.message.chat.id.toString()] = { waitingForContent2: true };\nreturn $input.all();"
+      },
+      "id": "5fcdb6e1-95aa-4b2d-be0c-79933fca3738",
+      "name": "Set waitingForContent2",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        832,
+        176
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "let globalData = $getWorkflowStaticData('global');\nlet state = \"none\"; // Default state\n\nif (globalData && globalData.telegramStates) {\n    let chatData = globalData.telegramStates[$json.message.chat.id.toString()];\n    if (chatData) {\n        if (chatData.waitingForContent1 === true) {\n            state = \"waitingForContent1\";\n        } else if (chatData.waitingForContent2 === true) {\n            state = \"waitingForContent2\";\n        } else if (chatData.waitingForContent3 === true) {\n            state = \"waitingForContent3\";\n        }\n    }\n}\nreturn { state };"
+      },
+      "id": "a6f9fdf4-f8eb-4cf5-bc1e-89f9241fa3cc",
+      "name": "Prepare IF Value",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        208,
+        1328
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json['message']['text']}}",
+              "operation": "startsWith",
+              "value2": "/command"
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "id": "22de5073-9b66-4e11-9e34-273aca15a80f",
+      "name": "Command Check",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -224,
+        784
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "let workflowStaticData = $getWorkflowStaticData('global');\nif (!workflowStaticData.telegramStates) {\n    workflowStaticData.telegramStates = {};\n}\nworkflowStaticData.telegramStates[$json.message.chat.id.toString()] = { waitingForContent3: true };\nreturn $input.all();"
+      },
+      "id": "543dc15d-4505-4bd5-b6a4-ab1f61f886c1",
+      "name": "Set waitingForContent3",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        832,
+        400
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "id": "2c37b485-995c-422d-9913-39033b06aeae",
+      "name": "Send Typing action",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        -416,
+        592
+      ],
+      "webhookId": "425443f1-117e-4aaa-84d5-74ce2a1a1b64",
+      "typeVersion": 1.2,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.message.chat.id}}",
+        "text": "Отлично, какой у Вас вопрос к службе поддержки?",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "53a318cd-2b6e-4ac9-b3f4-8976e3b4268d",
+      "name": "Command1 content request",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1104,
+        -48
+      ],
+      "webhookId": "e6222973-c851-4ee3-88e7-114eb59193e6",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json['message']['chat']['id']}}",
+        "text": "Отлично, какой у Вас вопрос о товаре?",
+        "additionalFields": {}
+      },
+      "id": "d525f0b6-8dfc-473c-8842-c727040865e6",
+      "name": "Command2 content request",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1104,
+        176
+      ],
+      "webhookId": "4b6373cf-99db-4fd9-8665-bc8dbba64c32",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json['message']['chat']['id']}}",
+        "text": "Отлично, какой у Вас вопрос по доставке?",
+        "additionalFields": {}
+      },
+      "id": "f440a174-5e58-4ebf-a711-71bc176449d2",
+      "name": "Command3 content request",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1104,
+        400
+      ],
+      "webhookId": "8e2fb397-4b82-4a5d-a358-32ed6c18ac22",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "id": "7c6c3762-a63d-4a3e-9d1a-2770c5c42e6d",
+      "name": "No Command check",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2432,
+        1888
+      ],
+      "webhookId": "2814cc4c-0392-43f4-bbb4-fd096e61ac13",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Обработка команд",
+        "height": 829,
+        "width": 573,
+        "color": 6
+      },
+      "id": "57e483a3-f407-45e1-86b9-2445b9d359ca",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        720,
+        992
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "2404c3d6-ce20-4c70-a29d-33efce163c49",
+      "name": "Command1 result",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2400,
+        1088
+      ],
+      "webhookId": "05e84345-6d19-42cf-bc8c-afdfd87339f1",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "id": "41bfa6dd-7f09-404b-8b7d-070336b3bb24",
+      "name": "Command2 result",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2416,
+        1344
+      ],
+      "webhookId": "55ee4a03-2d14-4caa-94f8-b11db34ddabd",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "id": "23bd01b5-2528-48cf-88a4-e93e437c2ee5",
+      "name": "Command3 result",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2416,
+        1616
+      ],
+      "webhookId": "55ee4a03-2d14-4caa-94f8-b11db34ddabd",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Запрос команд и вводная информация",
+        "height": 981,
+        "width": 573,
+        "color": 5
+      },
+      "id": "c2b9b186-7256-4f19-87b6-c3f8556d06e1",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        752,
+        -144
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "87a5bb2e-c91e-4a56-9972-ad8c7f25c7be",
+      "name": "Command1 processing",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1008,
+        1088
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "3659afdb-4273-46a4-a105-618c13e8d613",
+      "name": "Command2 processing",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1008,
+        1344
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "c76f220c-7201-488c-90c6-4020f3ee51ad",
+      "name": "Command3 processing",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1008,
+        1616
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2112,
+        1520
+      ],
+      "id": "20bbfa1f-31e9-4285-9776-6d62ed964726",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        2080,
+        1232
+      ],
+      "id": "fedc18d9-0d76-4736-a3f5-03a45687b5ec",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "Ты отвечаешь на вопросы по доставке, которые к тебе приходят."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        1088
+      ],
+      "id": "c4743f4c-5a0c-4c5a-9f02-ec9337c9555c",
+      "name": "AI Agent Comand 1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "Ты отвечаешь на вопросы по доставке, которые к тебе приходят."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1408,
+        1344
+      ],
+      "id": "19979afa-d625-431b-91b0-5499dd33aad8",
+      "name": "AI Agent Comand 2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "Ты отвечаешь на вопросы, которые к тебе приходят.\nЕсли ты видишь, что тебе пришла команда /start, ты ты должен поприветствовать человека и предложить ему выбрать кнопки в меню."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1648,
+        1904
+      ],
+      "id": "f56742b8-8ee0-4e41-a156-6d17d888ebba",
+      "name": "AI Agent NO Comand"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "Ты отвечаешь на вопросы по доставке, которые к тебе приходят."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1408,
+        1616
+      ],
+      "id": "1eaf42a8-2ffd-4b70-87aa-9a5e15f52413",
+      "name": "AI Agent Comand 3"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json['message']['chat']['id']}}",
+        "text": "Дружок... ты ввёл неверную команду.",
+        "additionalFields": {}
+      },
+      "id": "8032a160-d0e1-472c-bd09-f6e324b6267e",
+      "name": "Command3 content request1",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        976,
+        656
+      ],
+      "webhookId": "8e2fb397-4b82-4a5d-a358-32ed6c18ac22",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## AI Агент для ответа",
+        "height": 1133,
+        "width": 909,
+        "color": 6
+      },
+      "id": "be4a0166-811a-40b0-9854-5df317f843d3",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        992
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  Ответ и удаление команд",
+        "height": 1133,
+        "width": 909,
+        "color": 6
+      },
+      "id": "9dd53a73-ec6f-40f6-b1fd-56a20102fbed",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2272,
+        992
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Определение команды",
+        "height": 333,
+        "width": 573,
+        "color": 6
+      },
+      "id": "fb56f201-b232-4f87-95d4-96948c1cdddc",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        128,
+        1216
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Определение команды",
+        "height": 333,
+        "width": 573,
+        "color": 5
+      },
+      "id": "ab0d92e4-88ce-4c05-9323-ac0f02273e28",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        128,
+        160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ БОТА",
+        "height": 589,
+        "width": 957,
+        "color": 3
+      },
+      "id": "dd1a7f5b-6f3a-4680-8383-5b1e65a256f4",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -848,
+        512
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -576,
+        1056
+      ],
+      "typeVersion": 1,
+      "id": "16e8a82e-bb3f-4430-a854-0e1a337fce4f",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        448
+      ],
+      "typeVersion": 1,
+      "id": "6f84ee62-5ecb-435c-8bf9-6c7dadb98780",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        928
+      ],
+      "typeVersion": 1,
+      "id": "da7bd89b-5cab-4ee2-ac90-d5c0c68378d7",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1136,
+        2064
+      ],
+      "typeVersion": 1,
+      "id": "b4c0f70e-659c-48d5-b86e-1cb460d849e6",
+      "name": "Sticky Note13",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        1792
+      ],
+      "id": "43c6b260-e789-4789-a1bb-465f423a629e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bS3VhMXmlWezaHfW",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Gemini Полный Обзор: https://youtu.be/qKh7BTjQoM0",
+        "height": 104,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2080,
+        2144
+      ],
+      "typeVersion": 1,
+      "id": "420932fc-5a96-4f71-bec4-830a0a0b64c1",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по настройке нод CODE: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        -288
+      ],
+      "typeVersion": 1,
+      "id": "0d002dc5-68d9-42dd-82c7-dbd12c33e8e7",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок Разбор нод Telegram: https://youtu.be/d0O9IfRIdC8",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        368,
+        752
+      ],
+      "typeVersion": 1,
+      "id": "908263dc-4fcd-45cb-a4ef-03e84316a3a4",
+      "name": "Sticky Note16",
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 391164724,
+          "message": {
+            "message_id": 65,
+            "from": {
+              "id": 190190068,
+              "is_bot": false,
+              "first_name": "Igor",
+              "username": "igorzuevich",
+              "language_code": "ru",
+              "is_premium": true
+            },
+            "chat": {
+              "id": 190190068,
+              "first_name": "Igor",
+              "username": "igorzuevich",
+              "type": "private"
+            },
+            "date": 1757580431,
+            "text": "/start",
+            "entities": [
+              {
+                "offset": 0,
+                "length": 6,
+                "type": "bot_command"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Check State": {
+      "main": [
+        [
+          {
+            "node": "Command1 processing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Command2 processing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Command3 processing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent NO Comand",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command Check": {
+      "main": [
+        [
+          {
+            "node": "Switch (Command Routing)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare IF Value",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command1 result": {
+      "main": [
+        [
+          {
+            "node": "Clear State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command2 result": {
+      "main": [
+        [
+          {
+            "node": "Clear State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command3 result": {
+      "main": [
+        [
+          {
+            "node": "Clear State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare IF Value": {
+      "main": [
+        [
+          {
+            "node": "Check State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Command Check",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Typing action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command1 processing": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Comand 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command2 processing": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Comand 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command3 processing": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Comand 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set waitingForContent1": {
+      "main": [
+        [
+          {
+            "node": "Command1 content request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set waitingForContent2": {
+      "main": [
+        [
+          {
+            "node": "Command2 content request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set waitingForContent3": {
+      "main": [
+        [
+          {
+            "node": "Command3 content request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch (Command Routing)": {
+      "main": [
+        [
+          {
+            "node": "Set waitingForContent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set waitingForContent2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set waitingForContent3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Command3 content request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Command1 content request": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Comand 1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent Comand 2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent Comand 3",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent NO Comand",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent Comand 1",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "AI Agent Comand 2",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "AI Agent Comand 3",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "AI Agent NO Comand",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Comand 1": {
+      "main": [
+        [
+          {
+            "node": "Command1 result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Comand 2": {
+      "main": [
+        [
+          {
+            "node": "Command2 result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent NO Comand": {
+      "main": [
+        [
+          {
+            "node": "No Command check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Comand 3": {
+      "main": [
+        [
+          {
+            "node": "Command3 result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent NO Comand",
+            "type": "ai_languageModel",
+            "index": 1
+          },
+          {
+            "node": "AI Agent Comand 3",
+            "type": "ai_languageModel",
+            "index": 1
+          },
+          {
+            "node": "AI Agent Comand 2",
+            "type": "ai_languageModel",
+            "index": 1
+          },
+          {
+            "node": "AI Agent Comand 1",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f1f6d052-07cb-481c-ad33-b1cfd9e0505b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "IEGrfFprpOIDpKJ2",
+  "tags": []
+}

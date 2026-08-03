@@ -1,0 +1,9 @@
+version: 1
+skill_id: ms.skill.n8n_workflow_architecture
+eval_cases:
+  - id: telegram_publication
+    fixture: tests/fixtures/output_telegram_publication.json
+    expectation: schema_valid
+  - id: missing_error_path
+    fixture: tests/fixtures/output_missing_error_path.json
+    expectation: semantic_blocked

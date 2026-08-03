@@ -1,0 +1,17 @@
+{
+  "version": "0.1.0",
+  "actions": [
+    "use_internal_skill_contract",
+    "review_workflow_pattern",
+    "review_practice",
+    "inspect_error_pattern",
+    "gather_missing_evidence",
+    "request_human_review",
+    "request_security_review",
+    "request_connector_design",
+    "request_runtime_implementation",
+    "adapt_internal_methodology",
+    "defer",
+    "reject"
+  ]
+}

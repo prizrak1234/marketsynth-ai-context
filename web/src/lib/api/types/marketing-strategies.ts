@@ -1,0 +1,42 @@
+/** Backend MarketingStrategy DTOs (Commercial MVP P0.6). */
+
+export type BackendMarketingStrategyDto = {
+  id: string;
+  owner_id: string;
+  project_id: string;
+  business_verdict_id: string;
+  business_verdict_version: number;
+  business_verdict_type: string;
+  evidence_snapshot_id: string;
+  evidence_snapshot_hash: string;
+  version: number;
+  lifecycle_status: string;
+  strategy_origin: string;
+  title: string;
+  executive_summary: string;
+  primary_business_objective: string;
+  strategic_horizon: string;
+  objectives: Array<Record<string, unknown>>;
+  audience_segments: Array<Record<string, unknown>>;
+  positioning: Record<string, unknown>;
+  offers: Array<Record<string, unknown>>;
+  channel_strategy: Array<Record<string, unknown>>;
+  funnel: Array<Record<string, unknown>>;
+  asset_plan: Array<Record<string, unknown>>;
+  budget_policy: Record<string, unknown>;
+  metrics: Array<Record<string, unknown>>;
+  verdict_conditions: Array<Record<string, unknown>>;
+  strategic_risks: Array<Record<string, unknown>>;
+  assumptions: Array<Record<string, unknown>>;
+  execution_constraints: string[];
+  readiness_status: string;
+  related_marketing_plan_ids: string[];
+  handoff_status: string;
+  creates_marketing_plan: boolean;
+  creates_campaign: boolean;
+  creates_execution_approval: boolean;
+  creates_agent_run: boolean;
+  is_marketing_plan: boolean;
+  created_at: string;
+  updated_at: string;
+};

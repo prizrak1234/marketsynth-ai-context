@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.offer_builder/schemas/offer_candidate.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "offer_id": {
+      "type": "string"
+    },
+    "offer_name": {
+      "type": "string"
+    },
+    "selected_segment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "positioning_hypothesis_id": {
+      "type": "string"
+    },
+    "primary_customer_problem": {
+      "type": "string"
+    },
+    "desired_outcome": {
+      "type": "string"
+    },
+    "offer_promise": {
+      "type": "string"
+    },
+    "claim_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "delivery_mechanism": {
+      "$ref": "delivery_mechanism.schema.json"
+    },
+    "delivery_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "intermediate_outcomes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "time_to_value": {
+      "type": "object"
+    },
+    "product_components": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "service_components": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proof_elements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proof_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trust_elements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "objection_responses": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "risk_reversal": {
+      "type": "object"
+    },
+    "guarantee_proposal": {
+      "type": "object"
+    },
+    "pricing_context": {
+      "type": "object"
+    },
+    "price_justification": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "buying_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "customer_responsibilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provider_responsibilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "eligibility_or_fit": {
+      "type": "string"
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "bonuses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "bundle_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "upsell_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "cross_sell_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "CTA_strategy": {
+      "type": "string"
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inherited_conditions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "inherited_blockers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "confidence": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "preferred",
+        "viable_alternative",
+        "exploratory",
+        "blocked",
+        "insufficient_evidence",
+        "rejected"
+      ]
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "offer_id",
+    "offer_name",
+    "selected_segment_ids",
+    "positioning_hypothesis_id",
+    "primary_customer_problem",
+    "desired_outcome",
+    "offer_promise",
+    "claim_references",
+    "delivery_mechanism",
+    "limitations",
+    "status",
+    "provenance"
+  ]
+}

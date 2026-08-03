@@ -1,0 +1,6 @@
+{
+  "messages": [
+    "Какой у вас уровень активности?"
+  ],
+  "pal_ref": "activity_levels.json"
+}

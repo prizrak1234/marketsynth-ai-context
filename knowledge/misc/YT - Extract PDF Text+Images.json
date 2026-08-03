@@ -1,0 +1,697 @@
+{
+  "name": "20 - Extract PDF Text+Images",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        48,
+        -336
+      ],
+      "id": "97912601-ce5a-46f0-b23d-2fb64839d953",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.document.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        -192
+      ],
+      "id": "d7595696-59ac-43cc-aff7-95edb5d1185d",
+      "name": "Get a file",
+      "webhookId": "9ed876b8-f8ab-4dba-b6ba-983db7a96824",
+      "credentials": {
+        "telegramApi": {
+          "id": "x0dsZPmcLWDRA7MD",
+          "name": "railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -352,
+        -192
+      ],
+      "id": "b5f9a523-3a27-4c64-842f-819ae651b424",
+      "name": "Telegram Trigger",
+      "webhookId": "9b988cc7-4543-498b-a149-62d725cfbf64",
+      "credentials": {
+        "telegramApi": {
+          "id": "x0dsZPmcLWDRA7MD",
+          "name": "railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "Files",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        272,
+        -96
+      ],
+      "id": "46c074f0-6686-44c7-b239-14ab4c27b55c",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Что на картинке?",
+        "imageUrls": "={{ $json.Url }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        464,
+        -96
+      ],
+      "id": "789e61ae-519b-4081-8b70-cbb55fa1ab45",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -96
+      ],
+      "id": "c71ecb40-7f3c-47cf-ba33-6f0dea5fcae7",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://v2.convertapi.com/convert/pdf/to/extract-images",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "StoreFile",
+              "value": "true"
+            },
+            {
+              "name": "ImageOutputFormat",
+              "value": "png"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "File",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        48,
+        -96
+      ],
+      "id": "5145ab9d-ef50-4750-a62d-6f54daf59992",
+      "name": "Extract Images",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GHzombQyVwP9I0V4",
+          "name": "Convertapi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        912,
+        -128
+      ],
+      "id": "f44e5e24-d61b-4a4d-93a0-ea11d9a7c66c",
+      "name": "Embeddings OpenAI2",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chunkSize": 5000,
+        "chunkOverlap": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        16
+      ],
+      "id": "a3089dac-7818-40b0-ba8c-735516287589",
+      "name": "Recursive Character Text Splitter2"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.content }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "file_name",
+                "value": "={{ $('Telegram Trigger').item.json.message.document.file_name }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "ea558d59-8f0b-4752-a1ae-faa9b9a9ec96",
+      "name": "Default Data Loader2",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents_yt",
+          "mode": "list",
+          "cachedResultName": "documents_yt"
+        },
+        "options": {
+          "queryName": "match_documents_yt"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        -336
+      ],
+      "id": "5cc606b8-4009-41a6-8551-6edd4deab2bf",
+      "name": "Supabase Vector2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eltjkIm4u9ZxtQbe",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ba139cca-a7d0-4cf8-95ff-90cbb4536d8e",
+              "name": "content",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        -336
+      ],
+      "id": "c7439634-4a71-4cda-aeca-b458c83c77ee",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Every time you answer a question please go the the vectorStore tool to get the data for the answer. Please be friendly, you can add some jokes and emotions when answering."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1712,
+        -256
+      ],
+      "id": "e691b1f8-0b47-4ef3-9f21-893129dfacb9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "vectorStore",
+        "toolDescription": "This is the tool where you can get all the store data.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents_yt",
+          "mode": "list",
+          "cachedResultName": "documents_yt"
+        },
+        "options": {
+          "queryName": "match_documents_yt"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        2032,
+        -128
+      ],
+      "id": "1aa6fb8f-a8da-40ff-b623-e0cced6e5926",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eltjkIm4u9ZxtQbe",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1808,
+        -32
+      ],
+      "id": "1860b887-c229-4b36-adde-7f6f007ebdca",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "qL9ee8PD54cIAtbp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1632,
+        -16
+      ],
+      "id": "0d4ac35f-9f05-441f-89df-93d2b5763d5d",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2000,
+        -16
+      ],
+      "id": "900879fc-f17f-4124-961a-53e6341da7f2",
+      "name": "Embeddings OpenAI3",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1520,
+        -256
+      ],
+      "id": "78a179c1-3d29-4c4c-9e49-d0dc8a2998a2",
+      "name": "When chat message received",
+      "webhookId": "53ce964e-d004-442d-b078-163a61486e66"
+    },
+    {
+      "parameters": {
+        "content": "## Загружаем файл\n",
+        "height": 560,
+        "width": 380
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -400
+      ],
+      "id": "9d871ce7-fe4c-49c3-a6d0-68b8248335c1",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Извлекаем картинки",
+        "height": 320,
+        "width": 396
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -160
+      ],
+      "id": "2ac6bfc4-3fd2-4de8-93d3-38bf7fda8814",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Извлекаем текст",
+        "height": 224,
+        "width": 396
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -400
+      ],
+      "id": "d1947e6b-1709-424f-8abc-472b46df2aed",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Анализируем картинки",
+        "height": 320,
+        "width": 396
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -160
+      ],
+      "id": "76e07544-18da-4921-ac5b-18d206cf1bf0",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Векторизуем",
+        "height": 560,
+        "width": 540
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        832,
+        -400
+      ],
+      "id": "7df997cf-1a05-4563-b362-7afa42a96fb9",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Mistral OCR\nНужна усиленная автоматизация, которая умеет читать отсканированные документы, работать не только с картинками, но и таблицами?\n\nИщи в Pro-группе: https://t.me/iishenka_pro_bot",
+        "height": 272,
+        "width": 2396,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        176
+      ],
+      "id": "76bdcd72-25b9-448b-a08d-4e2d82ae2569",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Assistant",
+        "height": 560,
+        "width": 1004,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        -400
+      ],
+      "id": "d1d83cb9-fd40-4636-8703-2adff06a5a97",
+      "name": "Sticky Note7"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract Images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Images": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter2": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader2",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader2": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector2",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI3": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "74ed9914-6d3d-4a36-9d0e-9033e096884c",
+  "meta": {
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "CQCj8E53PzWeSJYX",
+  "tags": []
+}

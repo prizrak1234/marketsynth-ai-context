@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "canonical_uri_base": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/",
+  "schema_status": "frozen",
+  "file_hashes": {
+    "dependency-reference.schema.json": "17190f9eb3be33fb51b43722f248c92ca8a11d25bc9dd2e575c79c403a4799a9",
+    "error-pattern.schema.json": "3cbced0f8b04781c2fcc6921a365d9e19625576f117d082b9c758a8141dda085",
+    "import-report.schema.json": "c68a63a9dcabbbeeebcb7c3bfc6650b9d4f2a8885f7830eb19c96bafbd1a196d",
+    "knowledge-artifact.schema.json": "6acd8d6bc65490cbc91f7567efac2268b39aa8d419a19b9c7f33871f10c0d825",
+    "knowledge-link.schema.json": "b2cfc50c9fe1e3edb9cb46fd1d45b06190f2e79dd5f4a6ef741cf4a9b33a0f7b",
+    "methodology-record.schema.json": "8ab18e4059c0a9b971e61caa357bab091cd077d7d67c93f5e14e532f8aed75a4",
+    "practice-record.schema.json": "2a08c1b9c104910fa9708f68a79a17f151fa5989de4581b6c9fcaa017bc20581",
+    "provenance.schema.json": "7b22f0c6a9c3218fc9c226bfc26a667656772b694b9f8fa80d1180d1ff59f37b",
+    "quality-gate.schema.json": "369b430613ce7987f568a1ba6e7ee3a56421fc657e443747019d1b559d1e7491",
+    "security-finding.schema.json": "d950727a0e4b2bbe8f008ad6f5f9f545e6c2736273688f77c1ffe82b8e8d0f55",
+    "source-reference.schema.json": "84a66ec9a7b7d522ddd64657add3463cbc65b062445e57eabae31c540b23be29",
+    "workflow-node-reference.schema.json": "25c054d9e413203c727a62d9c72fa319a58ac149e8bb8eb63a499a943bdeebbb",
+    "workflow-template.schema.json": "ff463591e2c51e05777781afa48094b4d063a700189649af86623db1390bd53e"
+  },
+  "bundle_hash": "cb89298f766d101f0e4c928d720f1f99b52e95c67ac5af48924726ee39e486d2",
+  "generated_at": "2026-07-23T18:11:11Z"
+}

@@ -1,0 +1,79 @@
+{
+  "make_routes": [
+    {
+      "route": "kb.load",
+      "files": [
+        "kb_meta.json",
+        "jurisdiction_ru_norms.json",
+        "energy_equations.json",
+        "goal_protocols.json",
+        "breastfeeding_rules.json",
+        "contraindications_screening.json",
+        "safety_policy.json",
+        "allergens_master.json",
+        "intolerances.json",
+        "diet_styles.json",
+        "activity_levels.json",
+        "portion_sizes_ru.json",
+        "parsing_food_text.json",
+        "photo_estimation_rules.json",
+        "user_profile_schema.json",
+        "user_diary_schema.json",
+        "user_photo_schema.json",
+        "dialog_greeting.json",
+        "dialog_goal_setting.json",
+        "dialog_allergy_check.json",
+        "dialog_breastfeeding_check.json",
+        "dialog_activity_check.json",
+        "dialog_portion_coaching.json",
+        "dialog_plate_method.json",
+        "dialog_recheck_uncertainty.json",
+        "nlp_entities.json",
+        "nlp_synonyms_ru.json",
+        "nlp_units.json",
+        "nutrients_core.json",
+        "ru_foods_index.json",
+        "ru_foods_composition_part_1.json",
+        "ru_foods_composition_part_2.json",
+        "ru_dishes_recipes.json",
+        "cooking_yield_factors.json",
+        "allergens_mapping_ru.json",
+        "substitutions_safe.json",
+        "meal_plans_examples.json",
+        "kcal_estimation_rules.json",
+        "protein_targets_women.json",
+        "micronutrient_targets_women.json",
+        "hydration_rules.json",
+        "weight_tracking_rules.json",
+        "adherence_tips.json",
+        "uncertainty_policy.json",
+        "photo_prompts_examples.json",
+        "test_cases_text.json",
+        "test_cases_photos.json",
+        "make_integration_map.json",
+        "telemetry_schema.json",
+        "update_changelog.json"
+      ]
+    },
+    {
+      "route": "photo.analyze",
+      "needs": [
+        "photo_estimation_rules.json",
+        "ru_foods_index.json"
+      ]
+    }
+  ],
+  "telegram_bot": {
+    "commands": [
+      "/start",
+      "/goal",
+      "/allergy",
+      "/plan"
+    ],
+    "dialogs": [
+      "dialog_greeting.json",
+      "dialog_goal_setting.json",
+      "dialog_allergy_check.json"
+    ]
+  }
+}

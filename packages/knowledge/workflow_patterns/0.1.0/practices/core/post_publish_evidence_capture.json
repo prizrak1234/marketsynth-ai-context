@@ -1,0 +1,57 @@
+{
+  "practice_id": "post_publish_evidence_capture",
+  "title": "Post-publish evidence capture",
+  "domain": "control_and_safety",
+  "context": "External publication confirmation workflows.",
+  "problem": "Publication without confirmation evidence breaks audit trail.",
+  "recommended_practice": "After publication_target action, capture confirmation evidence (message_id, timestamp, channel_ref); require human approval before send.",
+  "rationale": "Publication-sensitive catalog workflows with Gmail/social side effects.",
+  "prerequisites": [],
+  "implementation_pattern": "approve → publish → capture_confirmation_evidence",
+  "failure_modes": [],
+  "security_notes": [],
+  "provider_version_scope": [
+    {
+      "provider": "n8n",
+      "component": "workflow_platform",
+      "documented_version": "source_archive_methodology",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Archive methodology; not re-executed in pilot hardening.",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "scope-n8n",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "tested_environment": "archive_metadata_only",
+  "verification_status": "source_documented",
+  "source_references": [
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/methodology.md",
+      "content_hash": "727666fe4bb10519fe05561f2a938336b11df28718e472bc39c4e7fc52acd8e3",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-methodology-core",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "related_pattern_ids": [
+    "publication_confirmation"
+  ],
+  "tenant_scope": "tenant_scoped",
+  "provenance": {
+    "source_type": "practice_lineage_pilot",
+    "archive_id": "arc-skills-dlya-peredachi",
+    "source_id": "post_publish_evidence_capture",
+    "program_phase": "KB-WPL-01.3B"
+  }
+}

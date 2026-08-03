@@ -1,0 +1,327 @@
+[
+  {
+    "gap_id": "gap-001",
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.content_strategy",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-002",
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.copywriting",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-003",
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.launch_strategy",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-004",
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.distribution",
+    "gap_type": "missing_connector",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [
+      "publication_connector"
+    ],
+    "missing_tool_classes": [
+      "publish"
+    ],
+    "missing_approval_boundary": true,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": true,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-005",
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.marketing_analytics",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-006",
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.learning_and_feedback",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-007",
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.workflow_documentation",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-008",
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.provider_version_review",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-009",
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.source_ingestion",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-010",
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.knowledge_discovery",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-011",
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.document_structure",
+    "gap_type": "capability_not_released",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [],
+    "missing_tool_classes": [],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-012",
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.renderer_handoff",
+    "gap_type": "missing_connector",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [
+      "rendering_connector"
+    ],
+    "missing_tool_classes": [
+      "render"
+    ],
+    "missing_approval_boundary": false,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": false,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-013",
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.publication_handoff",
+    "gap_type": "missing_connector",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [
+      "publication_connector"
+    ],
+    "missing_tool_classes": [
+      "publish"
+    ],
+    "missing_approval_boundary": true,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Capability specified but not yet implemented as executable contour.",
+    "blocking": true,
+    "remediation": "Implement in future phase with Connector and approval boundaries.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "gap_id": "gap-runtime-global",
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.deployment_review",
+    "gap_type": "missing_runtime",
+    "missing_skill_ids": [],
+    "missing_pattern_ids": [],
+    "missing_connector_classes": [
+      "development_connector"
+    ],
+    "missing_tool_classes": [
+      "write",
+      "administer"
+    ],
+    "missing_approval_boundary": true,
+    "missing_evidence_boundary": false,
+    "missing_runtime": true,
+    "impact": "Deployment activation remains blocked until Connector Gateway phase.",
+    "blocking": true,
+    "remediation": "KB-WPL-04 Controlled n8n Deployment Gateway.",
+    "owner_review_required": true,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  }
+]

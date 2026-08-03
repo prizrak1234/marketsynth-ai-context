@@ -1,0 +1,730 @@
+{
+    "name": "Wordstat",
+    "flow": [
+        {
+            "id": 3,
+            "module": "scenario-service:StartSubscenario",
+            "version": 2,
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 300
+                },
+                "interface": [
+                    {
+                        "help": "Поисковая фраза. Символ & заменяйте на %26",
+                        "name": "query",
+                        "type": "text",
+                        "label": "",
+                        "default": "",
+                        "required": true,
+                        "multiline": false
+                    },
+                    {
+                        "help": "ID региона Яндекса. Пусто — все регионы",
+                        "name": "region",
+                        "type": "text",
+                        "label": "",
+                        "default": "",
+                        "required": false,
+                        "multiline": false
+                    },
+                    {
+                        "help": "Устройство для поиска. Оставьте пустым, чтоб посмотреть общую статистику",
+                        "name": "device",
+                        "type": "select",
+                        "label": "",
+                        "options": [
+                            {
+                                "value": "desktop"
+                            },
+                            {
+                                "value": "phone"
+                            },
+                            {
+                                "value": "tablet"
+                            }
+                        ],
+                        "required": false
+                    },
+                    {
+                        "help": "Тип отчета который будет получен в итоге",
+                        "name": "report_type",
+                        "type": "select",
+                        "label": "",
+                        "options": [
+                            {
+                                "value": "short"
+                            },
+                            {
+                                "value": "long"
+                            },
+                            {
+                                "value": "one"
+                            }
+                        ],
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 300
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": 19,
+                            "module": "app#xml-nwclqx:getHistory",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 13635719
+                            },
+                            "filter": {
+                                "name": "one",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.report_type}}",
+                                            "b": "one",
+                                            "o": "text:equal"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "query": "{{3.query}}",
+                                "device": "{{3.device}}",
+                                "regions": "{{3.region}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 0
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "device": {
+                                            "mode": "edit"
+                                        },
+                                        "period": {
+                                            "mode": "chose",
+                                            "label": "Empty"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "app#xml-nwclqx"
+                                            },
+                                            "label": "My XMLRiver connection (XMLRiver Wordstat)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:app#xml-nwclqx",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "query",
+                                        "type": "text",
+                                        "label": "Запрос (query)",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "regions",
+                                        "type": "text",
+                                        "label": "Регион (regions)"
+                                    },
+                                    {
+                                        "name": "device",
+                                        "type": "select",
+                                        "label": "Устройство (device)",
+                                        "validate": {
+                                            "enum": [
+                                                "",
+                                                "desktop",
+                                                "phone",
+                                                "tablet"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "period",
+                                        "type": "select",
+                                        "label": "Группировка (period)",
+                                        "validate": {
+                                            "enum": [
+                                                "month",
+                                                "week",
+                                                "day"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "start",
+                                        "type": "text",
+                                        "label": "Дата начала (start)"
+                                    },
+                                    {
+                                        "name": "end",
+                                        "type": "text",
+                                        "label": "Дата окончания (end)"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 20,
+                            "module": "scenario-service:ReturnData",
+                            "version": 2,
+                            "parameters": {},
+                            "mapper": {
+                                "result": "{{first(19.table.tableData.popular)}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 906,
+                                    "y": 0
+                                },
+                                "restore": {},
+                                "expect": [
+                                    {
+                                        "name": "result",
+                                        "type": "text",
+                                        "label": ""
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 1,
+                            "module": "app#xml-nwclqx:getHistory",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 13635719
+                            },
+                            "filter": {
+                                "name": "short",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.report_type}}",
+                                            "b": "short",
+                                            "o": "text:equal"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "query": "{{3.query}}",
+                                "device": "{{3.device}}",
+                                "regions": "{{3.region}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 300
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "device": {
+                                            "mode": "edit"
+                                        },
+                                        "period": {
+                                            "mode": "chose",
+                                            "label": "Empty"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "app#xml-nwclqx"
+                                            },
+                                            "label": "My XMLRiver connection (XMLRiver Wordstat)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:app#xml-nwclqx",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "query",
+                                        "type": "text",
+                                        "label": "Запрос (query)",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "regions",
+                                        "type": "text",
+                                        "label": "Регион (regions)"
+                                    },
+                                    {
+                                        "name": "device",
+                                        "type": "select",
+                                        "label": "Устройство (device)",
+                                        "validate": {
+                                            "enum": [
+                                                "",
+                                                "desktop",
+                                                "phone",
+                                                "tablet"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "period",
+                                        "type": "select",
+                                        "label": "Группировка (period)",
+                                        "validate": {
+                                            "enum": [
+                                                "month",
+                                                "week",
+                                                "day"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "start",
+                                        "type": "text",
+                                        "label": "Дата начала (start)"
+                                    },
+                                    {
+                                        "name": "end",
+                                        "type": "text",
+                                        "label": "Дата окончания (end)"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 11,
+                            "module": "builtin:BasicRepeater",
+                            "version": 1,
+                            "parameters": {},
+                            "mapper": {
+                                "step": "1",
+                                "start": "1",
+                                "repeats": "10"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 900,
+                                    "y": 300
+                                },
+                                "restore": {},
+                                "expect": [
+                                    {
+                                        "name": "start",
+                                        "type": "number",
+                                        "label": "Initial value",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "repeats",
+                                        "type": "number",
+                                        "label": "Repeats",
+                                        "required": true,
+                                        "validate": {
+                                            "max": 10000,
+                                            "min": 0
+                                        }
+                                    },
+                                    {
+                                        "name": "step",
+                                        "type": "number",
+                                        "label": "Step",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 10,
+                            "module": "util:SetVariables",
+                            "version": 1,
+                            "parameters": {},
+                            "mapper": {
+                                "scope": "roundtrip",
+                                "variables": [
+                                    {
+                                        "name": "key",
+                                        "value": "{{1.table.tableData.popular[11.i].text}}"
+                                    },
+                                    {
+                                        "name": "value",
+                                        "value": "{{1.table.tableData.popular[11.i].value}}"
+                                    }
+                                ]
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1200,
+                                    "y": 300
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "scope": {
+                                            "label": "One cycle"
+                                        },
+                                        "variables": {
+                                            "items": [
+                                                null,
+                                                null
+                                            ]
+                                        }
+                                    }
+                                },
+                                "expect": [
+                                    {
+                                        "name": "variables",
+                                        "spec": [
+                                            {
+                                                "name": "name",
+                                                "type": "text",
+                                                "label": "Variable name",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "value",
+                                                "type": "any",
+                                                "label": "Variable value"
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Variables"
+                                    },
+                                    {
+                                        "name": "scope",
+                                        "type": "select",
+                                        "label": "Variable lifetime",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "roundtrip",
+                                                "execution"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "interface": [
+                                    {
+                                        "name": "key",
+                                        "type": "any",
+                                        "label": "key"
+                                    },
+                                    {
+                                        "name": "value",
+                                        "type": "any",
+                                        "label": "value"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 12,
+                            "module": "builtin:BasicAggregator",
+                            "version": 1,
+                            "parameters": {
+                                "feeder": 11
+                            },
+                            "mapper": {
+                                "key": "{{10.key}}",
+                                "value": "{{10.value}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1500,
+                                    "y": 300
+                                },
+                                "restore": {
+                                    "extra": {
+                                        "feeder": {
+                                            "label": "Repeater [11]"
+                                        },
+                                        "target": {
+                                            "label": "Custom"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "id": 13,
+                            "module": "scenario-service:ReturnData",
+                            "version": 2,
+                            "parameters": {},
+                            "mapper": {
+                                "result": "{{12.array}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1800,
+                                    "y": 300
+                                },
+                                "restore": {},
+                                "expect": [
+                                    {
+                                        "name": "result",
+                                        "type": "text",
+                                        "label": ""
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 14,
+                            "module": "app#xml-nwclqx:getHistory",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 13635719
+                            },
+                            "filter": {
+                                "name": "long",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{3.report_type}}",
+                                            "b": "long",
+                                            "o": "text:equal"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "query": "{{3.query}}",
+                                "device": "{{3.device}}",
+                                "regions": "{{3.region}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 600
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "device": {
+                                            "mode": "edit"
+                                        },
+                                        "period": {
+                                            "mode": "chose",
+                                            "label": "Empty"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "app#xml-nwclqx"
+                                            },
+                                            "label": "My XMLRiver connection (XMLRiver Wordstat)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:app#xml-nwclqx",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "query",
+                                        "type": "text",
+                                        "label": "Запрос (query)",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "regions",
+                                        "type": "text",
+                                        "label": "Регион (regions)"
+                                    },
+                                    {
+                                        "name": "device",
+                                        "type": "select",
+                                        "label": "Устройство (device)",
+                                        "validate": {
+                                            "enum": [
+                                                "",
+                                                "desktop",
+                                                "phone",
+                                                "tablet"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "period",
+                                        "type": "select",
+                                        "label": "Группировка (period)",
+                                        "validate": {
+                                            "enum": [
+                                                "month",
+                                                "week",
+                                                "day"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "start",
+                                        "type": "text",
+                                        "label": "Дата начала (start)"
+                                    },
+                                    {
+                                        "name": "end",
+                                        "type": "text",
+                                        "label": "Дата окончания (end)"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 18,
+                            "module": "scenario-service:ReturnData",
+                            "version": 2,
+                            "parameters": {},
+                            "mapper": {
+                                "result": "Левая колонка Wordstat:\n{{14.table.tableData.popular}}\n\nПравая колонка Wordstat:\n{{14.table.tableData.associations}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 900,
+                                    "y": 600
+                                },
+                                "restore": {},
+                                "expect": [
+                                    {
+                                        "name": "result",
+                                        "type": "text",
+                                        "label": ""
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    },
+    "io": {
+        "input_spec": [
+            {
+                "help": "Поисковая фраза. Символ & заменяйте на %26",
+                "name": "query",
+                "type": "text",
+                "label": "",
+                "default": "",
+                "required": true,
+                "multiline": false
+            },
+            {
+                "help": "ID региона Яндекса. Пусто — все регионы",
+                "name": "region",
+                "type": "text",
+                "label": "",
+                "default": "",
+                "required": false,
+                "multiline": false
+            },
+            {
+                "help": "Устройство для поиска. Оставьте пустым, чтоб посмотреть общую статистику",
+                "name": "device",
+                "type": "select",
+                "label": "",
+                "options": [
+                    {
+                        "value": "desktop"
+                    },
+                    {
+                        "value": "phone"
+                    },
+                    {
+                        "value": "tablet"
+                    }
+                ],
+                "required": false
+            },
+            {
+                "help": "Тип отчета который будет получен в итоге",
+                "name": "report_type",
+                "type": "select",
+                "label": "",
+                "options": [
+                    {
+                        "value": "short"
+                    },
+                    {
+                        "value": "long"
+                    },
+                    {
+                        "value": "one"
+                    }
+                ],
+                "required": true
+            }
+        ],
+        "output_spec": [
+            {
+                "help": "Ключевые фразы и количество запросов по ним",
+                "name": "result",
+                "type": "text",
+                "label": "",
+                "default": "",
+                "required": false,
+                "multiline": false
+            }
+        ]
+    }
+}

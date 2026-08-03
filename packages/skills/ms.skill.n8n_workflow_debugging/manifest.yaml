@@ -1,0 +1,78 @@
+id: ms.skill.n8n_workflow_debugging
+name: n8n Workflow Debugging
+version: 0.1.0
+description: >
+  Evidence-backed diagnostic reports and safe sandbox plans for failed n8n workflows.
+  No live mutation or execution.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - failure_localization
+  - failure_classification
+  - probable_cause_analysis
+  - expression_type_diagnosis
+  - payload_shape_diagnosis
+  - webhook_diagnosis
+  - database_type_diagnosis
+  - messaging_payload_diagnosis
+  - duplicate_event_diagnosis
+  - retry_failure_diagnosis
+  - unknown_outcome_diagnosis
+  - sandbox_plan_generation
+  - expensive_step_isolation
+  - remediation_candidate_generation
+  - regression_test_plan_generation
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - assumption
+    - inference
+  rules:
+    - id: no_runtime_execution
+      description: Diagnostic only — no live patch or node execution.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.n8n_workflow_architecture
+      relationship: optional_dependency
+      note: KB-WPL-01.4 architecture context
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  deployment_or_publication:
+    approval_required: true
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 3
+  current_state: candidate_evaluated
+known_limitations:
+  - Non-executable candidate — sandbox plan only, no execution.
+  - Sanitized logs required; raw credentials forbidden.
+  - production_eligible=false
+network_policy:
+  default: deny
+  allowed_hosts: []
+script_policy:
+  enabled: false
+provenance:
+  origin: platform_native
+  methodology:
+    - KB-WPL-01.4 n8n Engineering Knowledge Skills
+    - KB-WPL-01.3C frozen Workflow Pattern Library
+test_suite:
+  manifest: tests/eval_manifest.yaml

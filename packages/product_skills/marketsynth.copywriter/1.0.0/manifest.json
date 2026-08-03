@@ -1,0 +1,30 @@
+{
+  "skill_id": "marketsynth.copywriter",
+  "name": "Copywriter",
+  "version": "1.0.0",
+  "description": "Генерация и редактура маркетинговых текстов (инфостиль).",
+  "type": "instruction",
+  "triggers": [
+    "marketing_copy",
+    "telegram_post",
+    "content_edit",
+    "copywriter"
+  ],
+  "accepted_input_types": [
+    "content_request"
+  ],
+  "output_types": [
+    "content_candidates"
+  ],
+  "instruction_entrypoint": "SKILL.md",
+  "allowed_tools": [],
+  "allowed_network_hosts": [],
+  "required_secret_aliases": [],
+  "external_action": "none",
+  "human_approval_required": false,
+  "timeout_seconds": 60,
+  "retry_max": 1,
+  "enabled": true,
+  "provenance": "owner_archive:Скилл-копирайтер.zip",
+  "checksum_sha256": null
+}

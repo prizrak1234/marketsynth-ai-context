@@ -1,0 +1,695 @@
+{
+  "name": "30 - Maps Scraping",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d1df5242-9c6b-4a51-a026-596ad838d9cb",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "SUCCEEDED",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        544,
+        128
+      ],
+      "id": "0c191c20-6a22-479e-b647-c9a313491275",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"includeWebResults\": false,\n    \"language\": \"ru\",\n    \"locationQuery\": \"{{ $json.Location }}\",\n    \"maxCrawledPlacesPerSearch\": 20,\n    \"maxImages\": 0,\n    \"maximumLeadsEnrichmentRecords\": 0,\n    \"scrapeContacts\": false,\n    \"scrapeDirectories\": false,\n    \"scrapeImageAuthors\": false,\n    \"scrapePlaceDetailPage\": false,\n    \"scrapeReviewsPersonalData\": true,\n    \"scrapeTableReservationProvider\": false,\n    \"searchStringsArray\": [\n        \"{{ $json.Query }}\"\n    ],\n    \"skipClosedPlaces\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        144,
+        128
+      ],
+      "id": "694dbf18-6a92-450b-bf9e-ad3eef2c6456",
+      "name": "Init"
+    },
+    {
+      "parameters": {
+        "url": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        384,
+        128
+      ],
+      "id": "f7cb24be-f301-4ca4-84d3-fdedd951cdc8",
+      "name": "Get Run"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        752,
+        128
+      ],
+      "id": "bcbe74e7-c77f-4192-8bf8-0ab383bf4e60",
+      "name": "Wait",
+      "webhookId": "30579d39-fd3b-4470-be0e-8b1650ef764e"
+    },
+    {
+      "parameters": {
+        "url": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -352,
+        496
+      ],
+      "id": "bac22a98-6a73-402d-8469-5980b0c2a4d8",
+      "name": "Get Data"
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "Website",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        496
+      ],
+      "id": "ef91f523-3c70-4829-b74d-39cce0d636de",
+      "name": "Remove Duplicates"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1dI8MGStRFp8fBdVTy-vB1uFiWZGaSBUhfYn4ZpvkeqE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 337494671,
+          "mode": "list",
+          "cachedResultName": "Sheet2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dI8MGStRFp8fBdVTy-vB1uFiWZGaSBUhfYn4ZpvkeqE/edit#gid=337494671"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.title }}",
+            "Website": "={{ $json.website || \"\" }}",
+            "Rating": "={{ $json.totalScore }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -176,
+        496
+      ],
+      "id": "74eef7c1-8404-48ca-9192-e78c8b0b2d60",
+      "name": "All Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "enqvyHpWXgCm2XpE",
+          "name": "aiiszdes sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1dI8MGStRFp8fBdVTy-vB1uFiWZGaSBUhfYn4ZpvkeqE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dI8MGStRFp8fBdVTy-vB1uFiWZGaSBUhfYn4ZpvkeqE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Website": "={{ $json.Website }}",
+            "Rating": "={{ $json.Rating }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        496
+      ],
+      "id": "1276823b-5fcb-4784-8e59-3b8607875505",
+      "name": "Clean Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "enqvyHpWXgCm2XpE",
+          "name": "aiiszdes sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "query": "=Найди полную информацию об этой компании и сформируй саммари на русском языке: {{ $json.Website }}",
+        "options": {
+          "include_answer": "basic"
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        608,
+        496
+      ],
+      "id": "c6aa48d2-75bd-4a3c-9053-60b4bf3d45b2",
+      "name": "Search",
+      "credentials": {
+        "tavilyApi": {
+          "id": "nzfoFi95XgnuylSV",
+          "name": "Tavily aiiszdes"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "341c17b9-7ec9-4959-b1ba-a74db9bcefff",
+              "leftValue": "={{ $json.Website }}",
+              "rightValue": "http",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        384,
+        496
+      ],
+      "id": "c30d2624-0894-4c26-b92d-94571374f4e7",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        128
+      ],
+      "id": "6b9dc2e7-b38b-4c99-8f4f-7dc078ee6522",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "495e9356-73e8-4ecd-992b-f855654bcea5",
+              "name": "Query",
+              "value": "Магазин цветов",
+              "type": "string"
+            },
+            {
+              "id": "a2d3de56-1897-4473-82ec-3424029905a5",
+              "name": "Location",
+              "value": "Москва, Останкино",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        128
+      ],
+      "id": "06a8ec16-1b6f-4d41-b6b9-45471cc9bc5a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "## Старт",
+        "height": 320,
+        "width": 432
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -416,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "73912338-96e5-44dc-b898-ffec52448d02",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Сбор данных",
+        "height": 320,
+        "width": 944,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        32,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "201e5114-5c4d-43c3-bf6d-dfdd167d2a32",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Очистка данных",
+        "height": 384,
+        "width": 688,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -416,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "b70c92ad-4d97-41f5-a16b-e368e3a91665",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Обогащение данных",
+        "height": 384,
+        "width": 688,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        288,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "86eba0d3-4a45-4e77-8442-6e10aeb1548a",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dI8MGStRFp8fBdVTy-vB1uFiWZGaSBUhfYn4ZpvkeqE",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dI8MGStRFp8fBdVTy-vB1uFiWZGaSBUhfYn4ZpvkeqE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Website": "={{ $('Clean Data').item.json.Website }}",
+            "Description": "={{ $json.answer }}"
+          },
+          "matchingColumns": [
+            "Website"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        496
+      ],
+      "id": "334cdaa9-4684-4b15-a970-951b7fa9b0d2",
+      "name": "New Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "enqvyHpWXgCm2XpE",
+          "name": "aiiszdes sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ⭐️ Присоединяйся к Pro-группе\n\n### Это экспертные глубокие знания в ИИ, сообщество ИИ-энтузиастов и автоматизации, которые РЕАЛЬНО работают в бизнесе и продуктах. Плюс, там есть видео про скрейпинг Яндекс Карт в полуавтоматическом режиме.\n\n### Ищи Pro-группу тут: https://t.me/iishenka_pro_bot",
+        "height": 380,
+        "width": 1384,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -416,
+        752
+      ],
+      "typeVersion": 1,
+      "id": "089ef814-251f-4113-b5bb-073fcb18edc3",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Init": {
+      "main": [
+        [
+          {
+            "node": "Get Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Run": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Data": {
+      "main": [
+        [
+          {
+            "node": "All Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Clean Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All Data": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Data": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search": {
+      "main": [
+        [
+          {
+            "node": "New Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Init",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "624b7583-285b-4aef-950e-a73d7f21cee3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "XU1PNrDHkTsxLKG6",
+  "tags": []
+}

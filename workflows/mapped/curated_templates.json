@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "phase": "AI.259",
+  "description": "Curated BotFazer CampaignWorkflowTemplate registry — product layer over workflows/raw archive.",
+  "invariants": [
+    "No n8n execution",
+    "No auto-run",
+    "Steps recommend existing CampaignActionType only"
+  ],
+  "templates": [
+    {
+      "template_id": "lead_gen_campaign",
+      "product_registry": "app/marketing/workflows/registry.py",
+      "purpose": "Research audience demand, package offer, prepare launch artifacts",
+      "raw_inventory_categories": ["lead_generation", "seo_wordstat", "offer_sales"],
+      "representative_raw_samples": []
+    },
+    {
+      "template_id": "content_machine",
+      "product_registry": "app/marketing/workflows/registry.py",
+      "purpose": "Turn offer insights into content and publication packages",
+      "raw_inventory_categories": ["content_social", "offer_sales"],
+      "representative_raw_samples": []
+    },
+    {
+      "template_id": "offer_validation",
+      "product_registry": "app/marketing/workflows/registry.py",
+      "purpose": "Validate segment fit, offer structure, and demand before scaling",
+      "raw_inventory_categories": ["offer_sales", "seo_wordstat", "lead_generation"],
+      "representative_raw_samples": []
+    },
+    {
+      "template_id": "metrica_traffic_diagnostics",
+      "product_registry": "app/marketing/workflows/registry.py",
+      "purpose": "Diagnose site traffic and align keyword demand",
+      "raw_inventory_categories": ["analytics_metrica", "seo_wordstat"],
+      "representative_raw_samples": []
+    },
+    {
+      "template_id": "visual_content_pack",
+      "product_registry": "app/marketing/workflows/registry.py",
+      "purpose": "Visual direction, media brief, publication-ready bundle",
+      "raw_inventory_categories": ["content_social", "publishing"],
+      "representative_raw_samples": []
+    }
+  ],
+  "mapping_notes": "Populate representative_raw_samples during curation sprints — filenames from workflows/raw only, never wired to runtime."
+}

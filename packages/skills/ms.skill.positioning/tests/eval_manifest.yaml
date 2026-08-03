@@ -1,0 +1,15 @@
+eval_cases:
+  - id: package_structure_valid
+    description: Package layout conforms to RFC-SKILL-002 skeleton.
+  - id: output_contract_type_research
+    description: Manifest declares output_contract_type research.
+  - id: no_verdict_or_offer
+    description: Output schema has no verdict, final_offer, campaign or execution_status.
+  - id: cim_consumer_boundary
+    description: Hypotheses reference CIM catalog refs; no JTBD/pain recompute.
+  - id: mv_verdict_boundary
+    description: MV stop cannot produce recommended hypothesis or ready_for_offer_design.
+  - id: competitor_evidence_required
+    description: Differentiation basis requires competitor evidence references.
+  - id: downstream_offer_input_boundary
+    description: Downstream offer input is structured handoff, not an Offer.

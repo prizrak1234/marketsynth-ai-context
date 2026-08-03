@@ -1,0 +1,253 @@
+{
+  "offer_analysis_id": "ob-mv-stop",
+  "skill_id": "ms.skill.offer_builder",
+  "skill_version": "0.1.0",
+  "source_cim_reference": {
+    "source_skill_id": "ms.skill.icp_segmentation",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+    "cim_version": "0.1.0",
+    "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "selected_segment_ids": [
+      "seg-remote-eng"
+    ],
+    "source_evidence_references": [
+      "ev-seg-seg-remote-eng"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_positioning_reference": {
+    "source_skill_id": "ms.skill.positioning",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "cbd8283f4addaa9c8496504a9c6dbccd580e8ca317b2cf86bf628be6557e8da6",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_market_validation_reference": {
+    "source_skill_id": "ms.skill.market_validation",
+    "source_skill_version": "0.2.0",
+    "source_output_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_meaning_reference": {
+    "source_skill_id": "ms.skill.customer_meaning_extraction",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_claim_substantiation_reference": {
+    "source_skill_id": "ms.skill.claim_substantiation",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "selected_segment_ids": [
+    "seg-remote-eng"
+  ],
+  "offer_candidates": [
+    {
+      "offer_id": "offer-blocked-1",
+      "offer_name": "Async Team Pilot",
+      "selected_segment_ids": [
+        "seg-remote-eng"
+      ],
+      "positioning_hypothesis_id": "hyp-async-1",
+      "primary_customer_problem": "Too many sync meetings",
+      "desired_outcome": "More deep work time",
+      "offer_promise": "Pilot async workflows to reduce status meetings",
+      "claim_references": [
+        "claim-async-1"
+      ],
+      "delivery_mechanism": {
+        "mechanism_id": "mech-async-handoff",
+        "mechanism_name": "Async workflow handoff",
+        "plain_language_explanation": "Replace status meetings with structured async updates",
+        "process_steps": [
+          "Configure channels",
+          "Run pilot sprint",
+          "Measure meeting hours"
+        ],
+        "expected_intermediate_outcomes": [
+          "Pilot team reduces one recurring meeting"
+        ],
+        "capability_references": [
+          "cap-async-workflows"
+        ],
+        "evidence_references": [
+          "ev-cap-001"
+        ],
+        "dependencies": [
+          "Team lead sponsorship"
+        ],
+        "customer_effort": "Medium — habit change required",
+        "provider_effort": "Onboarding and templates",
+        "limitations": [
+          "Does not eliminate all meetings"
+        ],
+        "failure_modes": [
+          "Low adoption"
+        ],
+        "assumptions": [
+          "Leadership models async behavior"
+        ],
+        "confidence": "medium",
+        "provenance": {
+          "skill_id": "ms.skill.offer_builder",
+          "skill_version": "0.1.0"
+        }
+      },
+      "delivery_steps": [
+        "Configure channels",
+        "Run pilot sprint",
+        "Measure meeting hours"
+      ],
+      "intermediate_outcomes": [
+        "Pilot team reduces one recurring meeting"
+      ],
+      "time_to_value": {
+        "horizon": "30 days",
+        "is_assumption": true,
+        "evidence_references": []
+      },
+      "product_components": [
+        "Workflow templates"
+      ],
+      "service_components": [
+        "Onboarding workshop"
+      ],
+      "proof_elements": [
+        "Pilot case summary"
+      ],
+      "proof_requirements": [
+        "pilot_results"
+      ],
+      "trust_elements": [
+        "Transparent limitations"
+      ],
+      "objection_responses": [],
+      "risk_reversal": {
+        "risk_reversal_id": "rr-refund-1",
+        "reversal_type": "refund",
+        "reduces_commercial_risk": true,
+        "proves_outcome": false
+      },
+      "guarantee_proposal": {
+        "guarantee_id": "g-refund",
+        "outcome_guarantee": false,
+        "legal_review_required": true
+      },
+      "pricing_context": {
+        "model": "pilot_fee"
+      },
+      "price_justification": [
+        {
+          "justification_id": "pj-1",
+          "justification_type": "faster_outcome",
+          "statement": "Pilot surfaces meeting reduction within 30 days",
+          "comparison_basis": "Status quo meeting load",
+          "is_assumption": true
+        }
+      ],
+      "buying_conditions": [
+        "Executive sponsor"
+      ],
+      "customer_responsibilities": [
+        "Adopt async norms"
+      ],
+      "provider_responsibilities": [
+        "Deliver onboarding"
+      ],
+      "eligibility_or_fit": "Remote engineering teams 20-200 people",
+      "exclusions": [
+        "Guaranteed hour savings"
+      ],
+      "limitations": [
+        "Requires adoption"
+      ],
+      "bonuses": [],
+      "bundle_candidates": [],
+      "upsell_candidates": [],
+      "cross_sell_candidates": [],
+      "CTA_strategy": "Book pilot scoping call",
+      "evidence_references": [
+        "ev-cap-001"
+      ],
+      "inherited_conditions": [],
+      "inherited_blockers": [],
+      "assumptions": [],
+      "unknowns": [],
+      "risks": [],
+      "confidence": "medium",
+      "status": "blocked",
+      "provenance": {
+        "skill_id": "ms.skill.offer_builder",
+        "skill_version": "0.1.0"
+      }
+    }
+  ],
+  "preferred_offer_id": null,
+  "blocked_offer_ids": [
+    "offer-blocked-1"
+  ],
+  "proof_plan": [],
+  "objection_handling_plan": [],
+  "risk_reversal_plan": [
+    {
+      "risk_reversal_id": "rr-refund-1"
+    }
+  ],
+  "pricing_justification": [
+    {
+      "justification_id": "pj-1",
+      "justification_type": "faster_outcome",
+      "statement": "Pilot surfaces meeting reduction within 30 days",
+      "comparison_basis": "Status quo meeting load",
+      "is_assumption": true
+    }
+  ],
+  "product_decomposition": [],
+  "service_advantages": [
+    "Dedicated onboarding"
+  ],
+  "bundle_strategy": {},
+  "unsupported_claims_excluded": [
+    "claim-income-bad"
+  ],
+  "inherited_conditions": [],
+  "inherited_blockers": [],
+  "evidence_gaps": [],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "offer_readiness": "blocked",
+  "downstream_launch_inputs": [],
+  "downstream_copy_inputs": [],
+  "human_approval_required": true,
+  "provenance": {
+    "skill_id": "ms.skill.offer_builder",
+    "skill_version": "0.1.0"
+  },
+  "input_hash": "7777777777777777777777777777777777777777777777777777777777777777",
+  "output_hash": "8888888888888888888888888888888888888888888888888888888888888888"
+}

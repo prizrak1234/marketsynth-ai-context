@@ -1,0 +1,295 @@
+{
+  "pattern_id": "error_workflow_or_recovery",
+  "pattern_name": "Error Workflow or Recovery Path",
+  "pattern_category": "reliability",
+  "objective": "Route failures to recovery or operator review without silent loss.",
+  "problem_context": "Alerting and API refresh workflows with failure branches.",
+  "capability_ids": [
+    "publication",
+    "scheduling"
+  ],
+  "related_skill_ids": [
+    "ms.skill.n8n_workflow_architecture"
+  ],
+  "input_contract": {
+    "type": "object",
+    "required": [
+      "tenant_context",
+      "correlation_id"
+    ]
+  },
+  "output_contract": {
+    "type": "object",
+    "required": [
+      "status",
+      "evidence_refs"
+    ]
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "step_name": "Execute primary action",
+      "step_type": "transport",
+      "security_class": "publication"
+    },
+    {
+      "step_id": "s2",
+      "step_name": "Detect failure class",
+      "step_type": "branch",
+      "security_class": "read_only"
+    },
+    {
+      "step_id": "s3",
+      "step_name": "Invoke recovery or error_workflow",
+      "step_type": "recover",
+      "security_class": "write_internal"
+    },
+    {
+      "step_id": "s4",
+      "step_name": "Notify operator via message_channel",
+      "step_type": "notify",
+      "security_class": "publication"
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "e1",
+      "from_step_id": "s1",
+      "to_step_id": "s2"
+    },
+    {
+      "edge_id": "e2",
+      "from_step_id": "s2",
+      "to_step_id": "s3",
+      "condition": "recoverable",
+      "on_failure": "fallback"
+    },
+    {
+      "edge_id": "e3",
+      "from_step_id": "s2",
+      "to_step_id": "s4",
+      "condition": "terminal_failure",
+      "on_failure": "human_review"
+    }
+  ],
+  "required_connectors": [],
+  "required_tools": [],
+  "approval_requirements": {
+    "human_approval_required": true,
+    "approval_gates": [
+      "before_publication"
+    ],
+    "auto_approval_allowed": false,
+    "spend_approval_required": false,
+    "publication_approval_required": true
+  },
+  "evidence_requirements": {
+    "required": true,
+    "evidence_classes": [
+      "execution_log",
+      "approval_record"
+    ]
+  },
+  "idempotency_requirements": {
+    "required": true,
+    "policy": "dedupe_by_event_id",
+    "unknown_outcome_auto_retry": false,
+    "duplicate_event_prevention": true
+  },
+  "retry_policy": "bounded_backoff",
+  "timeout_policy": "pilot_default_120s",
+  "rate_limit_policy": "provider_default",
+  "error_paths": [
+    "human_review",
+    "dead_letter",
+    "fallback"
+  ],
+  "rollback_or_recovery": "manual_review",
+  "security_class": "publication",
+  "tenant_scope": "tenant_scoped",
+  "personal_data_class": "unknown",
+  "publication_sensitive": true,
+  "billing_sensitive": false,
+  "destructive": false,
+  "implementation_variants": [
+    {
+      "provider": "Gmail",
+      "component": "message_channel",
+      "documented_version": "source_catalog_0.1.0",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Observed in frozen catalog metadata only; not executed in pilot.",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "variant-Gmail",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "source_workflow_ids": [
+    "wf-b6e1676935a48901",
+    "wf-580f7458a07243a7"
+  ],
+  "source_practice_ids": [
+    "explicit_error_workflow",
+    "recovery_and_terminal_failure_path"
+  ],
+  "known_limitations": [
+    "Recovery semantics vary by transport provider.",
+    "Error workflow linkage not executed or validated in pilot."
+  ],
+  "quality_gates": [
+    {
+      "gate_id": "error_workflow_or_recovery-schema_valid",
+      "title": "Pattern validates against workflow-pattern schema",
+      "description": "Pattern validates against workflow-pattern schema",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-source_support_valid",
+      "title": "Source support gate satisfied",
+      "description": "Source support gate satisfied",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-provider_neutral",
+      "title": "Main flow uses functional abstractions only",
+      "description": "Main flow uses functional abstractions only",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-no_credentials",
+      "title": "No credential identifiers in pattern body",
+      "description": "No credential identifiers in pattern body",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-approval_boundary_valid",
+      "title": "Approval boundaries match sensitivity",
+      "description": "Approval boundaries match sensitivity",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-evidence_boundary_valid",
+      "title": "Evidence requirements documented",
+      "description": "Evidence requirements documented",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-tenant_boundary_valid",
+      "title": "Tenant scope preserved",
+      "description": "Tenant scope preserved",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-idempotency_valid",
+      "title": "Idempotency policy matches retry behavior",
+      "description": "Idempotency policy matches retry behavior",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-error_path_present",
+      "title": "Terminal error path documented",
+      "description": "Terminal error path documented",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-limitations_documented",
+      "title": "Known limitations listed",
+      "description": "Known limitations listed",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "gate_id": "error_workflow_or_recovery-manual_review_complete",
+      "title": "Manual pilot audit complete",
+      "description": "Manual pilot audit complete",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-error_workflow_or_recovery",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "maturity": "reviewed",
+  "provenance": {
+    "source_type": "pattern_extraction_pilot",
+    "archive_id": "arc-bots-knowledge-rar",
+    "source_id": "error_workflow_or_recovery",
+    "program_phase": "KB-WPL-01.3A.1"
+  }
+}

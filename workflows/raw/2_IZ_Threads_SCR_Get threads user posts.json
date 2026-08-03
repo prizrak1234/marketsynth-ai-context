@@ -1,0 +1,1350 @@
+{
+  "name": "2_IZ_Threads_SCR_Get threads user posts",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "username"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -192,
+        -64
+      ],
+      "id": "7f14159b-4ea0-4ad6-b9e1-c7b6c69783df",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "posts",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        288,
+        -64
+      ],
+      "id": "fc111c0f-d49b-4e61-b553-614ef9273f32",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "G6CIPawfXERA6p0Y",
+          "mode": "list",
+          "cachedResultName": "2_THREADS_GET_USER_POSTS",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/G6CIPawfXERA6p0Y"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ $json.user.username }}",
+            "URL": "={{ $json.url }}",
+            "post_Id": "={{ $json.code }}",
+            "like_count": "={{ $json.like_count }}",
+            "text": "={{ $json.caption.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "post_Id",
+              "displayName": "post_Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "like_count",
+              "displayName": "like_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -64
+      ],
+      "id": "b1ebe559-a33f-46b6-822a-1a00a496b2ef",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "jsCode": "// === Threads: 3 последних поста ===\n\n// 1) Получаем все входящие объекты\nconst rows = items.map(i => i.json);\n\n// 2) Вспомогательные функции\nconst toTime = (v) => {\n  if (!v && v !== 0) return 0;\n  if (typeof v === 'number' || /^\\d+$/.test(String(v))) {\n    const n = Number(v);\n    return n < 1e12 ? n * 1000 : n; // поддержка секунд/миллисекунд\n  }\n  const t = Date.parse(String(v));\n  return Number.isFinite(t) ? t : 0;\n};\n\nconst normUsername = (u) => {\n  if (!u) return null;\n  return String(u).replace(/^@/, '');\n};\n\nfunction buildUrl(r) {\n  if (r.URL) return r.URL;\n  if (r.url) return r.url;\n\n  const u = normUsername(r.username || r.user?.username || r.owner?.username);\n  if (u && r.post_Id) {\n    return `https://www.threads.net/@${u}/post/${r.post_Id}`;\n  }\n\n  return null;\n}\n\n// 3) Нормализация данных\nlet normalized = rows.map(r => {\n  const created = r.createdAt ?? r.updatedAt ?? r.taken_at;\n  const ts = toTime(created);\n  const url = buildUrl(r);\n\n  const obj = {\n    url,\n    createdAt: ts ? new Date(ts).toISOString() : undefined,\n    _ts: ts,\n  };\n\n  Object.keys(obj).forEach(k => (obj[k] == null || obj[k] === '') && delete obj[k]);\n  return obj;\n});\n\n// 4) Фильтруем только те, у кого есть ссылки и валидная дата\nnormalized = normalized\n  .filter(x => x.url && Number.isFinite(x._ts))\n  .sort((a, b) => b._ts - a._ts);\n\n// 5) Берём последние 3\nconst latest3 = normalized.slice(0, 3).map(({ url, createdAt }) => ({ url, createdAt }));\n\n// 6) Упрощённый массив ссылок\nconst links = latest3.map(x => x.url);\n\n// 7) Возвращаем в одном объекте\nreturn [{\n  json: {\n    total: rows.length,\n    latest3,\n    links\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -64
+      ],
+      "id": "cc21655c-4984-4f6e-b889-de5713cd9782",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// === Threads: Формирование ответа для ИИ агента ===\n\n// 1) Получаем данные из предыдущей ноды\nconst inputData = $input.all()[0].json;\n\n// 2) Извлекаем username, если он есть (необязательно, но удобно)\nconst username = inputData.username || inputData.profile?.username || \"Неизвестный пользователь\";\n\n// 3) Извлекаем ссылки из latest3\nconst threadLinks = inputData.latest3.map(post => post.url);\n\n// 4) Формируем результирующий объект\nconst result = {\n  message: `Анализ контента Threads пользователя ${username} выполнен успешно`,\n  username: username,\n  top_threads: {\n    description: \"3 последних поста пользователя\",\n    links: threadLinks\n  }\n};\n\n// 5) Возвращаем результат\nreturn result;\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -64
+      ],
+      "id": "8f51f4bc-7881-4359-8a70-0008e0cfbf9e",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        -400
+      ],
+      "id": "d0bf9c9c-6e4e-4ba0-bf4c-59b13e1c17c5",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "G6CIPawfXERA6p0Y",
+          "mode": "list",
+          "cachedResultName": "2_THREADS_GET_USER_POSTS",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/G6CIPawfXERA6p0Y"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -400
+      ],
+      "id": "c2215f2b-29f2-4928-ad92-975cd26cf32c",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1PFkjKxVbkPiFo-YSsBTe7fQsPqC9sdBMCpEbdZeKkAM",
+          "mode": "list",
+          "cachedResultName": "Threads AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PFkjKxVbkPiFo-YSsBTe7fQsPqC9sdBMCpEbdZeKkAM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "2_THREADS_GET_USER_POSTS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PFkjKxVbkPiFo-YSsBTe7fQsPqC9sdBMCpEbdZeKkAM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ $json.username }}",
+            "\npost_Id": "={{ $json.post_Id }}",
+            "URL": "={{ $json.URL }}",
+            "like_count": "={{ $json.like_count }}",
+            "text": "={{ $json.text }}",
+            "createdAt": "={{ $json.createdAt }}",
+            "updatedAt": "={{ $json.updatedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "\npost_Id",
+              "displayName": "\npost_Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "like_count",
+              "displayName": "like_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        -400
+      ],
+      "id": "582b446a-a8fb-4ff3-b290-76b07049f8fa",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Синхронизация данных в таблице в Google",
+        "height": 304,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -512
+      ],
+      "id": "a17bbc8d-d24b-43b5-b704-d8494d7c83d2",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "G6CIPawfXERA6p0Y",
+          "mode": "list",
+          "cachedResultName": "2_THREADS_GET_USER_POSTS",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/G6CIPawfXERA6p0Y"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "username",
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        608,
+        -400
+      ],
+      "id": "f9a6847b-c952-4dc9-9973-9028b1a845c3",
+      "name": "Delete row(s)1"
+    },
+    {
+      "parameters": {
+        "content": "## Get a Instagram profile s videos",
+        "height": 288,
+        "width": 1488,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "cac9d65b-0b1d-422a-8a86-f8ff83f670b8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: DATA TABLE в n8n: https://youtu.be/FD1HyYR3EP0\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 132,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        -576
+      ],
+      "typeVersion": 1,
+      "id": "c08b1957-d832-4dca-84a5-ee598338768a",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        656,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "c674f6a7-30c9-44a0-bcd1-609d7a244dc6",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "threads",
+        "operation": "getThreadsUserPosts",
+        "handle": "={{ $json.username }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        64,
+        -64
+      ],
+      "id": "9ffe26e3-097b-4688-a683-1fb61b17d0f0",
+      "name": "Get threads user posts",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "XNzkdQFgWnEu59Bh",
+          "name": "Scrape Creators account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "username": "igorzuevich",
+          "Limit": "30",
+          "chat_id": "190190068",
+          "correlation_id": "corr_1759340723510_1k1u51"
+        }
+      }
+    ],
+    "Get threads user posts": [
+      {
+        "json": {
+          "success": true,
+          "credits_remaining": 23,
+          "posts": [
+            {
+              "id": "3741770816065407146_63294928181",
+              "pk": "3741770816065407146",
+              "caption": {
+                "text": "Как создать автоматическую систему мониторинга YouTube конкурентов через n8n.\n\nБольше никаких ежедневных заходов на каналы - система сама отслеживает новые видео и присылает красивые отчеты в Telegram.  Полная пошаговая настройка автоматизации, которая экономит минимум час времени каждый день.\n#n8n #youtube #контент #youtubeавтоматизация #n8nтуториал",
+                "pk": "18240828913294561",
+                "has_translation": true
+              },
+              "code": "DPtcLuCgIiq",
+              "like_count": 7,
+              "taken_at": 1760273863,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DPtcLuCgIiq"
+            },
+            {
+              "id": "3699670965419722630_63294928181",
+              "pk": "3699670965419722630",
+              "caption": {
+                "text": "Контент-завод для Threads. Как работает:\n\n– 4 источника контента: Perplexity AI для актуальных новостей, Story AI для исторических фактов, How-to агента для практических советов и Reddit-парсер для трендовых тем;\n– Умный алгоритм ротации, который анализирует последние 6 постов и автоматически выбирает тип контента, избегая повторений;\n– Генерирует посты в едином стиле;\n– Публикация всегда разнообразного контента;\n– Threads как канал для привлечения подписчиков и клиентов;",
+                "pk": "18068221895136752",
+                "has_translation": true
+              },
+              "code": "DNX3yQvq0eG",
+              "like_count": 0,
+              "taken_at": 1755255169,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DNX3yQvq0eG"
+            },
+            {
+              "id": "3693856958343335861_63294928181",
+              "pk": "3693856958343335861",
+              "caption": {
+                "text": "🦾 Видео Контент Завод:\n– Находит свежие новости по Вашей теме;\n– Оценивает вирусность новости и выбирает наиболее подходящую;\n– Пишет скрипт для видео аватара адаптированный под Вашу манеру;\n– Создает ИИ видео Heygen AI);\n– Оформляет (субтитры, заголовки, теги, описание);\n– Публикует в социальных сетях;",
+                "pk": "17893026564165481",
+                "has_translation": true
+              },
+              "code": "DNDN1UtKM-1",
+              "like_count": 0,
+              "taken_at": 1754562085,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DNDN1UtKM-1"
+            },
+            {
+              "id": "3687653272726456986_63294928181",
+              "pk": "3687653272726456986",
+              "caption": {
+                "text": "Скрестил Яндекс Диск и n8n…",
+                "pk": "18011214257780814",
+                "has_translation": null
+              },
+              "code": "DMtLR0Pqsqa",
+              "like_count": 0,
+              "taken_at": 1753822548,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DMtLR0Pqsqa"
+            },
+            {
+              "id": "3681411202877578152_63294928181",
+              "pk": "3681411202877578152",
+              "caption": {
+                "text": "Криптаны проснулись)) Crypto шаблон для n8n:\n– отслеживает действия китов;\n– отслеживает выбранные монеты;\n– отслеживает свежие листинги за 24 час;\n– отчеты каждые 30 минут в телегу;\n– отслеживает движения по крупным кошелька;\n– следит за обьемами на Dex;",
+                "pk": "18063402527270393",
+                "has_translation": true
+              },
+              "code": "DMW__vrqVuo",
+              "like_count": 0,
+              "taken_at": 1753078435,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DMW__vrqVuo"
+            },
+            {
+              "id": "3680828274615408840_63294928181",
+              "pk": "3680828274615408840",
+              "caption": {
+                "text": "ИИ Агент, который подключается к ВНИМАНИЕ!!! личному Телеграм аккаунту и отвечает сам.",
+                "pk": "18124319260457208",
+                "has_translation": true
+              },
+              "code": "DMU7dBbqljI",
+              "like_count": 0,
+              "taken_at": 1753008945,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DMU7dBbqljI"
+            },
+            {
+              "id": "3680298946077586646_63294928181",
+              "pk": "3680298946077586646",
+              "caption": null,
+              "code": "DMTDGR0MvTW",
+              "like_count": 4,
+              "taken_at": 1752945846,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DMTDGR0MvTW"
+            },
+            {
+              "id": "3677289563701266929_63294928181",
+              "pk": "3677289563701266929",
+              "caption": {
+                "text": "Запустил у себя рабочий шаблон n8n для автоматической нарезки длинных YouTube-видео на короткие ролики для Reels, Shorts и TikTok — всё делается через n8n и Vizard ai.\n\nИз 1 ролика получается от 10 до 20 коротких видео. На автомате. Работает почти без моего участия — идеальный инструмент для автоматизации рутины!",
+                "pk": "17913706380140168",
+                "has_translation": true
+              },
+              "code": "DMIW2AEqknx",
+              "like_count": 0,
+              "taken_at": 1752587098,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DMIW2AEqknx"
+            },
+            {
+              "id": "3584985726269833604_63294928181",
+              "pk": "3584985726269833604",
+              "caption": {
+                "text": "Куда Вы стали девать всё освободившееся время, после внедрения ИИ?",
+                "pk": "18266864128258914",
+                "has_translation": true
+              },
+              "code": "DHAbYYjKMGE",
+              "like_count": 0,
+              "taken_at": 1741583623,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DHAbYYjKMGE"
+            },
+            {
+              "id": "3582995915669675595_63294928181",
+              "pk": "3582995915669675595",
+              "caption": {
+                "text": "Если Вы изучите n8n, то вряд ли Вы вернётесь к Make.",
+                "pk": "18024254582419779",
+                "has_translation": true
+              },
+              "code": "DG5W81BKp5L",
+              "like_count": 0,
+              "taken_at": 1741346419,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DG5W81BKp5L"
+            },
+            {
+              "id": "3581684639597136397_63294928181",
+              "pk": "3581684639597136397",
+              "caption": {
+                "text": "Сначала учат в Threads писать противоречивые высказывание, а затем удивляются почему вся лента засрана каким-то 💩",
+                "pk": "18039982724170775",
+                "has_translation": true
+              },
+              "code": "DG0szQAqQoN",
+              "like_count": 0,
+              "taken_at": 1741190103,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DG0szQAqQoN"
+            },
+            {
+              "id": "3580956008772016335_63294928181",
+              "pk": "3580956008772016335",
+              "caption": {
+                "text": "Разница между ИИ автоматизацией и ИИ агентами:\n\nMake – ИИ автоматизация и она запускается по жесткому сценарию.\nn8n – ИИ агент он готов выходить за рамки жесткого плана.",
+                "pk": "17947522262959121",
+                "has_translation": true
+              },
+              "code": "DGyHIRrKBjP",
+              "like_count": 0,
+              "taken_at": 1741103243,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DGyHIRrKBjP"
+            },
+            {
+              "id": "3580281385105529987_63294928181",
+              "pk": "3580281385105529987",
+              "caption": {
+                "text": "Вопрос: Что ты будешь делать, когда наберешь млн просмотров?\nОтвет: То же что и когда наберешь 100 просмотров – снимать следующее.",
+                "pk": "18033941177543251",
+                "has_translation": true
+              },
+              "code": "DGvtvNbKJyD",
+              "like_count": 0,
+              "taken_at": 1741022822,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DGvtvNbKJyD"
+            },
+            {
+              "id": "3580279464273657054_63294928181",
+              "pk": "3580279464273657054",
+              "caption": {
+                "text": "Бесплатно и доступно всем.  В ChatGPT появились глубокие исследования во всех аккаунтах.\n\nПравда есть один нюанс…",
+                "pk": "17899238892148948",
+                "has_translation": true
+              },
+              "code": "DGvtTQgqDze",
+              "like_count": 0,
+              "taken_at": 1741022593,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DGvtTQgqDze"
+            },
+            {
+              "id": "3577717305207642321_63294928181",
+              "pk": "3577717305207642321",
+              "caption": {
+                "text": "У Open AI закончились графические процессоры.\nПоэтому ChatGPT 4,5 выйдет только для Pro аккаунтов. \n\nНо через неделю ситуацию поправят))",
+                "pk": "18272494987265022",
+                "has_translation": true
+              },
+              "code": "DGmmu77q1jR",
+              "like_count": 0,
+              "taken_at": 1740717159,
+              "user": {
+                "friendship_status": null,
+                "pk": "63294928181",
+                "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+                "username": "igorzuevich",
+                "id": "63294928181",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              },
+              "url": "https://www.threads.com/@igorzuevich/post/DGmmu77q1jR"
+            }
+          ]
+        }
+      }
+    ],
+    "Split Out": [
+      {
+        "json": {
+          "id": "3741770816065407146_63294928181",
+          "pk": "3741770816065407146",
+          "caption": {
+            "text": "Как создать автоматическую систему мониторинга YouTube конкурентов через n8n.\n\nБольше никаких ежедневных заходов на каналы - система сама отслеживает новые видео и присылает красивые отчеты в Telegram.  Полная пошаговая настройка автоматизации, которая экономит минимум час времени каждый день.\n#n8n #youtube #контент #youtubeавтоматизация #n8nтуториал",
+            "pk": "18240828913294561",
+            "has_translation": true
+          },
+          "code": "DPtcLuCgIiq",
+          "like_count": 7,
+          "taken_at": 1760273863,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DPtcLuCgIiq"
+        }
+      },
+      {
+        "json": {
+          "id": "3699670965419722630_63294928181",
+          "pk": "3699670965419722630",
+          "caption": {
+            "text": "Контент-завод для Threads. Как работает:\n\n– 4 источника контента: Perplexity AI для актуальных новостей, Story AI для исторических фактов, How-to агента для практических советов и Reddit-парсер для трендовых тем;\n– Умный алгоритм ротации, который анализирует последние 6 постов и автоматически выбирает тип контента, избегая повторений;\n– Генерирует посты в едином стиле;\n– Публикация всегда разнообразного контента;\n– Threads как канал для привлечения подписчиков и клиентов;",
+            "pk": "18068221895136752",
+            "has_translation": true
+          },
+          "code": "DNX3yQvq0eG",
+          "like_count": 0,
+          "taken_at": 1755255169,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DNX3yQvq0eG"
+        }
+      },
+      {
+        "json": {
+          "id": "3693856958343335861_63294928181",
+          "pk": "3693856958343335861",
+          "caption": {
+            "text": "🦾 Видео Контент Завод:\n– Находит свежие новости по Вашей теме;\n– Оценивает вирусность новости и выбирает наиболее подходящую;\n– Пишет скрипт для видео аватара адаптированный под Вашу манеру;\n– Создает ИИ видео Heygen AI);\n– Оформляет (субтитры, заголовки, теги, описание);\n– Публикует в социальных сетях;",
+            "pk": "17893026564165481",
+            "has_translation": true
+          },
+          "code": "DNDN1UtKM-1",
+          "like_count": 0,
+          "taken_at": 1754562085,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DNDN1UtKM-1"
+        }
+      },
+      {
+        "json": {
+          "id": "3687653272726456986_63294928181",
+          "pk": "3687653272726456986",
+          "caption": {
+            "text": "Скрестил Яндекс Диск и n8n…",
+            "pk": "18011214257780814",
+            "has_translation": null
+          },
+          "code": "DMtLR0Pqsqa",
+          "like_count": 0,
+          "taken_at": 1753822548,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DMtLR0Pqsqa"
+        }
+      },
+      {
+        "json": {
+          "id": "3681411202877578152_63294928181",
+          "pk": "3681411202877578152",
+          "caption": {
+            "text": "Криптаны проснулись)) Crypto шаблон для n8n:\n– отслеживает действия китов;\n– отслеживает выбранные монеты;\n– отслеживает свежие листинги за 24 час;\n– отчеты каждые 30 минут в телегу;\n– отслеживает движения по крупным кошелька;\n– следит за обьемами на Dex;",
+            "pk": "18063402527270393",
+            "has_translation": true
+          },
+          "code": "DMW__vrqVuo",
+          "like_count": 0,
+          "taken_at": 1753078435,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DMW__vrqVuo"
+        }
+      },
+      {
+        "json": {
+          "id": "3680828274615408840_63294928181",
+          "pk": "3680828274615408840",
+          "caption": {
+            "text": "ИИ Агент, который подключается к ВНИМАНИЕ!!! личному Телеграм аккаунту и отвечает сам.",
+            "pk": "18124319260457208",
+            "has_translation": true
+          },
+          "code": "DMU7dBbqljI",
+          "like_count": 0,
+          "taken_at": 1753008945,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DMU7dBbqljI"
+        }
+      },
+      {
+        "json": {
+          "id": "3680298946077586646_63294928181",
+          "pk": "3680298946077586646",
+          "caption": null,
+          "code": "DMTDGR0MvTW",
+          "like_count": 4,
+          "taken_at": 1752945846,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DMTDGR0MvTW"
+        }
+      },
+      {
+        "json": {
+          "id": "3677289563701266929_63294928181",
+          "pk": "3677289563701266929",
+          "caption": {
+            "text": "Запустил у себя рабочий шаблон n8n для автоматической нарезки длинных YouTube-видео на короткие ролики для Reels, Shorts и TikTok — всё делается через n8n и Vizard ai.\n\nИз 1 ролика получается от 10 до 20 коротких видео. На автомате. Работает почти без моего участия — идеальный инструмент для автоматизации рутины!",
+            "pk": "17913706380140168",
+            "has_translation": true
+          },
+          "code": "DMIW2AEqknx",
+          "like_count": 0,
+          "taken_at": 1752587098,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DMIW2AEqknx"
+        }
+      },
+      {
+        "json": {
+          "id": "3584985726269833604_63294928181",
+          "pk": "3584985726269833604",
+          "caption": {
+            "text": "Куда Вы стали девать всё освободившееся время, после внедрения ИИ?",
+            "pk": "18266864128258914",
+            "has_translation": true
+          },
+          "code": "DHAbYYjKMGE",
+          "like_count": 0,
+          "taken_at": 1741583623,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DHAbYYjKMGE"
+        }
+      },
+      {
+        "json": {
+          "id": "3582995915669675595_63294928181",
+          "pk": "3582995915669675595",
+          "caption": {
+            "text": "Если Вы изучите n8n, то вряд ли Вы вернётесь к Make.",
+            "pk": "18024254582419779",
+            "has_translation": true
+          },
+          "code": "DG5W81BKp5L",
+          "like_count": 0,
+          "taken_at": 1741346419,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DG5W81BKp5L"
+        }
+      },
+      {
+        "json": {
+          "id": "3581684639597136397_63294928181",
+          "pk": "3581684639597136397",
+          "caption": {
+            "text": "Сначала учат в Threads писать противоречивые высказывание, а затем удивляются почему вся лента засрана каким-то 💩",
+            "pk": "18039982724170775",
+            "has_translation": true
+          },
+          "code": "DG0szQAqQoN",
+          "like_count": 0,
+          "taken_at": 1741190103,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DG0szQAqQoN"
+        }
+      },
+      {
+        "json": {
+          "id": "3580956008772016335_63294928181",
+          "pk": "3580956008772016335",
+          "caption": {
+            "text": "Разница между ИИ автоматизацией и ИИ агентами:\n\nMake – ИИ автоматизация и она запускается по жесткому сценарию.\nn8n – ИИ агент он готов выходить за рамки жесткого плана.",
+            "pk": "17947522262959121",
+            "has_translation": true
+          },
+          "code": "DGyHIRrKBjP",
+          "like_count": 0,
+          "taken_at": 1741103243,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DGyHIRrKBjP"
+        }
+      },
+      {
+        "json": {
+          "id": "3580281385105529987_63294928181",
+          "pk": "3580281385105529987",
+          "caption": {
+            "text": "Вопрос: Что ты будешь делать, когда наберешь млн просмотров?\nОтвет: То же что и когда наберешь 100 просмотров – снимать следующее.",
+            "pk": "18033941177543251",
+            "has_translation": true
+          },
+          "code": "DGvtvNbKJyD",
+          "like_count": 0,
+          "taken_at": 1741022822,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DGvtvNbKJyD"
+        }
+      },
+      {
+        "json": {
+          "id": "3580279464273657054_63294928181",
+          "pk": "3580279464273657054",
+          "caption": {
+            "text": "Бесплатно и доступно всем.  В ChatGPT появились глубокие исследования во всех аккаунтах.\n\nПравда есть один нюанс…",
+            "pk": "17899238892148948",
+            "has_translation": true
+          },
+          "code": "DGvtTQgqDze",
+          "like_count": 0,
+          "taken_at": 1741022593,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DGvtTQgqDze"
+        }
+      },
+      {
+        "json": {
+          "id": "3577717305207642321_63294928181",
+          "pk": "3577717305207642321",
+          "caption": {
+            "text": "У Open AI закончились графические процессоры.\nПоэтому ChatGPT 4,5 выйдет только для Pro аккаунтов. \n\nНо через неделю ситуацию поправят))",
+            "pk": "18272494987265022",
+            "has_translation": true
+          },
+          "code": "DGmmu77q1jR",
+          "like_count": 0,
+          "taken_at": 1740717159,
+          "user": {
+            "friendship_status": null,
+            "pk": "63294928181",
+            "profile_pic_url": "https://scontent-poa1-1.cdninstagram.com/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-poa1-1.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFB_JQeX8kZnTiUwFRHtqNxSR0faG9az-g60Isw3z2JzMvBxrqVaxw_wEwgMuB3LXA&_nc_ohc=OiJzJnwdcV8Q7kNvwEE7Y0H&_nc_gid=3oxkiysWzBw1m8yVzATcbA&edm=AA3DLpEBAAAA&ccb=7-5&oh=00_AffTwz7-oatWm0lkS9h3XHPvAMd-FEQ480Y3ab_DYeT6Mg&oe=68FEB7EE&_nc_sid=d92198",
+            "username": "igorzuevich",
+            "id": "63294928181",
+            "transparency_label": null,
+            "transparency_product": null,
+            "transparency_product_enabled": false,
+            "is_verified": false,
+            "text_post_app_is_private": false,
+            "has_onboarded_to_text_post_app": true
+          },
+          "url": "https://www.threads.com/@igorzuevich/post/DGmmu77q1jR"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get threads user posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get threads user posts": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "53e2389e-1caa-47a8-a6b0-6aea04e7380c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "jmxEfjgDvVlxrsVp",
+  "tags": []
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.claim_substantiation/input/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "source_positioning_reference": {
+      "type": "object"
+    },
+    "source_meaning_reference": {
+      "type": "object"
+    },
+    "source_market_validation_reference": {
+      "type": "object"
+    },
+    "claim_inventory": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "market_validation_verdict": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_positioning_reference",
+    "source_meaning_reference",
+    "source_market_validation_reference",
+    "claim_inventory",
+    "market_validation_verdict"
+  ]
+}

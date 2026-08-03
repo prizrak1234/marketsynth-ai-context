@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "link-conflict.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "conflict_id": { "type": "string" },
+    "artifact_ids": { "type": "array", "items": { "type": "string" } },
+    "conflict_type": { "type": "string" },
+    "description": { "type": "string" },
+    "blocking": { "type": "boolean" },
+    "provenance": { "type": "object" }
+  },
+  "required": ["conflict_id", "artifact_ids", "conflict_type", "description", "blocking", "provenance"]
+}

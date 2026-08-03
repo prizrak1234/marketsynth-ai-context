@@ -1,0 +1,788 @@
+{
+  "name": "SHABLON_IZ_INSTAGRAM_P2_COMPETITORS",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2ae926dd-b51f-4a6a-a720-42b699dd4d3b",
+              "leftValue": "={{ $json.data.follower_count }}",
+              "rightValue": 5000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "c0c437ac-6867-4ed5-abff-4340f7a69e8c",
+              "leftValue": "={{ $json.data.username }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1320,
+        80
+      ],
+      "id": "da489e0f-7132-4365-b29e-c58b64b9de74",
+      "name": "Filter Low Followers"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "Instagram_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tbl7V6L6E6GwpFHfU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Followers": "={{ $json.data.follower_count }}",
+            "Username": "={{ $json.data.username }}",
+            "Bio": "={{ $json.data.biography_with_entities.raw_text }}",
+            "Category": "={{ $json.data.category }}",
+            "User ID": "={{ $json.data.id }}",
+            "Account URL": "={{ $json.instagramURL }}",
+            "Your search term": "={{ $('When Executed by Another Workflow').item.json.username }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Your search term",
+              "displayName": "Your search term",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Followers",
+              "displayName": "Followers",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Bio",
+              "displayName": "Bio",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Account URL",
+              "displayName": "Account URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "User ID",
+              "displayName": "User ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1840,
+        80
+      ],
+      "id": "2b3e1772-a41b-4d96-ba9c-d62cd0f78c6d",
+      "name": "Send to Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "username"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -100,
+        260
+      ],
+      "id": "62b2f5ae-9f9c-4e7a-b160-18240531e697",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const username = item.json.data.username;\n  const instagramURL = `https://www.instagram.com/${username}`;\n  \n  return {\n    json: {\n      ...item.json,\n      username,\n      instagramURL\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1600,
+        80
+      ],
+      "id": "cf5df6ff-a6e9-42c4-b920-ef615c966016",
+      "name": "Create URLs"
+    },
+    {
+      "parameters": {
+        "content": "\n## Просто введите свой ключ API \"Instagram Scraper\" в поле для всех нод HTTP-запросов, которые его используют.\n\n## Ссылка на Instagram API: https://rapidapi.com/allapiservice/api/real-time-instagram-scraper-api1",
+        "height": 220,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -60,
+        520
+      ],
+      "typeVersion": 1,
+      "id": "930906a3-7358-46e4-91a8-e3bbe6437c37",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      query: \"Task has completed successfully.\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2320,
+        80
+      ],
+      "id": "f980f4a3-e78c-436f-b45f-83411fc97067",
+      "name": "Success"
+    },
+    {
+      "parameters": {
+        "url": "https://real-time-instagram-scraper-api1.p.rapidapi.com/v1/similar_users_v2",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "username_or_id",
+              "value": "={{ $json.username }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "VASH API"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "real-time-instagram-scraper-api1.p.rapidapi.com"
+            },
+            {
+              "name": "Content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        120,
+        260
+      ],
+      "id": "9d9f8881-7ae7-4b09-b4b0-5b4ff873d4c1",
+      "name": "Get Competitors"
+    },
+    {
+      "parameters": {
+        "url": "https://real-time-instagram-scraper-api1.p.rapidapi.com/v1/user_info",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "username_or_id",
+              "value": "={{ $json.username }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "VASH_API"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "real-time-instagram-scraper-api1.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1060,
+        260
+      ],
+      "id": "7812b2db-06f1-4707-84a5-76d54b9bf635",
+      "name": "Get Data"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        780,
+        260
+      ],
+      "id": "3e1be8e7-d5e7-49e9-bd19-18b2a399a5ef",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "amount": 0.25
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1320,
+        260
+      ],
+      "id": "d00e1b28-0d3c-4533-8adb-99d214679b72",
+      "name": "Wait 0.25",
+      "webhookId": "c0ed01df-61e5-4972-a35c-f9a00cb90579"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27a2fa1e-ec61-403f-8aaf-d2d1b426508e",
+              "name": "data.username",
+              "value": "={{ $json.data.username }}",
+              "type": "string"
+            },
+            {
+              "id": "a04ddecf-1221-43e9-93d1-4d33aa6215f1",
+              "name": "data.category",
+              "value": "={{ $json.data.category }}",
+              "type": "string"
+            },
+            {
+              "id": "67675d28-6dea-4807-b6c7-f7f34df506cf",
+              "name": "data.follower_count",
+              "value": "={{ $json.data.follower_count }}",
+              "type": "number"
+            },
+            {
+              "id": "5612ef49-5ffc-4ddb-93cf-b545f3f0f4cf",
+              "name": "data.id",
+              "value": "={{ $json.data.id }}",
+              "type": "string"
+            },
+            {
+              "id": "41f9158e-95a0-47c2-bd63-e8ee7c947a63",
+              "name": "data.biography_with_entities.raw_text",
+              "value": "={{ $json.data.biography_with_entities.raw_text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1060,
+        80
+      ],
+      "id": "cf09c8b3-d88d-4fac-88a2-5a0d79b80851",
+      "name": "Get Specifics"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data.users",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        340,
+        260
+      ],
+      "id": "41f2c4c6-5f3f-4b46-9c18-520415899fa1",
+      "name": "Split Data"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b0e7c7d8-78d4-4e84-b17d-4e5b9fa01e4f",
+              "name": "username",
+              "value": "={{ $json.username }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        260
+      ],
+      "id": "c0376ff1-07fe-4884-ba1c-5fbeac6e897c",
+      "name": "Set Usernames"
+    },
+    {
+      "parameters": {
+        "content": "## Добавьте свой Instagram API сюда",
+        "height": 80,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "1d911a06-38fb-4a6e-9942-aab2419f6c12",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# INSTAGRAM ПОИСК КОНКУРЕНТОВ ИЛИ ПОЛЬЗОВАТЕЛЕЙ",
+        "height": 120,
+        "width": 880
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "877cc215-a75e-4601-92f8-1bf92d1163aa",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "Instagram_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tbl7V6L6E6GwpFHfU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record ID": "={{ $json.id }}",
+            "Username": "={{ $json.fields.Username }}"
+          },
+          "matchingColumns": [
+            "Username"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Your search term",
+              "displayName": "Your search term",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Followers",
+              "displayName": "Followers",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Bio",
+              "displayName": "Bio",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Account URL",
+              "displayName": "Account URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "User ID",
+              "displayName": "User ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "updateAllMatches": false
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2040,
+        60
+      ],
+      "id": "7c3c8b96-d3c8-44bd-92ac-2d28d231d8be",
+      "name": "Send to Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Добавьте свой Instagram API сюда",
+        "height": 80,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        900,
+        500
+      ],
+      "typeVersion": 1,
+      "id": "ed565bd0-d8a1-4baa-a8d1-647313d3f450",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "username": "igorzuevich"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Filter Low Followers": {
+      "main": [
+        [
+          {
+            "node": "Create URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Competitors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create URLs": {
+      "main": [
+        [
+          {
+            "node": "Send to Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Airtable": {
+      "main": [
+        [
+          {
+            "node": "Send to Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Competitors": {
+      "main": [
+        [
+          {
+            "node": "Split Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Data": {
+      "main": [
+        [
+          {
+            "node": "Wait 0.25",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Get Specifics",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 0.25": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Specifics": {
+      "main": [
+        [
+          {
+            "node": "Filter Low Followers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Data": {
+      "main": [
+        [
+          {
+            "node": "Set Usernames",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Usernames": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Airtable1": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "aced52bb-1fa4-46c4-9546-4418b84bf7a5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "UWrfw3aQHNgsK8fW",
+  "tags": []
+}

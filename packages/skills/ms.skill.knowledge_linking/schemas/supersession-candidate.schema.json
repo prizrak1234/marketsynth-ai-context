@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "supersession-candidate.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "candidate_id": { "type": "string" },
+    "older_artifact_id": { "type": "string" },
+    "newer_artifact_id": { "type": "string" },
+    "evidence": { "type": "array", "items": { "type": "object" } },
+    "compatibility_status": {
+      "type": "string",
+      "enum": ["compatible", "conditionally_compatible", "incompatible", "unknown"]
+    },
+    "historical_resolution_required": { "type": "boolean" },
+    "retirement_recommendation": { "type": "string" },
+    "confidence": { "type": "string" },
+    "human_review_required": { "type": "boolean" },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "candidate_id", "older_artifact_id", "newer_artifact_id", "evidence",
+    "compatibility_status", "historical_resolution_required", "retirement_recommendation",
+    "confidence", "human_review_required", "provenance"
+  ]
+}

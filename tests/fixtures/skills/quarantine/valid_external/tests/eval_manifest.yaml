@@ -1,0 +1,11 @@
+eval_cases:
+  - id: package_structure_valid
+    description: Package layout conforms to RFC-SKILL-002 skeleton.
+  - id: manifest_required_fields
+    description: manifest.yaml contains all required RFC fields.
+  - id: non_active_status
+    description: Package status is candidate — not active or approved.
+  - id: no_tool_permissions
+    description: allowed_tools is empty; scripts disabled.
+  - id: schema_roundtrip
+    description: Fixtures validate against input/output schemas.

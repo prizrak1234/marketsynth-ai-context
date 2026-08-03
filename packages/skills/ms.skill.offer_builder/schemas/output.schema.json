@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.offer_builder/output/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "offer_analysis_id": {
+      "type": "string"
+    },
+    "skill_id": {
+      "type": "string",
+      "const": "ms.skill.offer_builder"
+    },
+    "skill_version": {
+      "type": "string"
+    },
+    "source_cim_reference": {
+      "type": "object"
+    },
+    "source_positioning_reference": {
+      "type": "object"
+    },
+    "source_market_validation_reference": {
+      "type": "object"
+    },
+    "source_meaning_reference": {
+      "type": "object"
+    },
+    "source_claim_substantiation_reference": {
+      "type": "object"
+    },
+    "selected_segment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "offer_candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "schemas/offer_candidate.schema.json"
+      }
+    },
+    "preferred_offer_id": {
+      "type": "string"
+    },
+    "blocked_offer_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proof_plan": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "objection_handling_plan": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "risk_reversal_plan": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "pricing_justification": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "product_decomposition": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "service_advantages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "bundle_strategy": {
+      "type": "object"
+    },
+    "unsupported_claims_excluded": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inherited_conditions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "inherited_blockers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      },
+      "maxItems": 30
+    },
+    "coverage": {
+      "type": "string",
+      "enum": [
+        "full",
+        "partial",
+        "minimal",
+        "unknown"
+      ]
+    },
+    "evidence_quality": {
+      "type": "string",
+      "enum": [
+        "comprehensive",
+        "partial",
+        "insufficient",
+        "conflicted",
+        "unknown"
+      ]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partially_complete",
+        "insufficient_sources",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "offer_readiness": {
+      "type": "string",
+      "enum": [
+        "ready_for_owner_review",
+        "partially_ready",
+        "exploratory_only",
+        "blocked",
+        "insufficient_evidence",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "downstream_launch_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "downstream_copy_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "human_approval_required": {
+      "type": "boolean"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "input_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "output_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    }
+  },
+  "required": [
+    "offer_analysis_id",
+    "skill_id",
+    "skill_version",
+    "source_cim_reference",
+    "source_positioning_reference",
+    "source_market_validation_reference",
+    "source_claim_substantiation_reference",
+    "selected_segment_ids",
+    "offer_candidates",
+    "evidence_gaps",
+    "coverage",
+    "evidence_quality",
+    "research_status",
+    "offer_readiness",
+    "human_approval_required",
+    "provenance",
+    "input_hash",
+    "output_hash"
+  ]
+}

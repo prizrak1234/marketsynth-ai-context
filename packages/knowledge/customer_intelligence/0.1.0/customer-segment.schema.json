@@ -1,0 +1,315 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-segment.schema.json",
+  "title": "CustomerSegmentRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "segment_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "segment_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "segment_description": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "segment_type": {
+      "type": "string",
+      "enum": [
+        "behavioral",
+        "demographic",
+        "firmographic",
+        "geographic",
+        "psychographic",
+        "needs_based",
+        "value_based",
+        "lifecycle",
+        "channel_based",
+        "hybrid",
+        "unknown"
+      ]
+    },
+    "inclusion_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "maxItems": 30
+    },
+    "exclusion_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "maxItems": 30
+    },
+    "geography": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 256
+      },
+      "maxItems": 30
+    },
+    "company_or_customer_profile": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "jobs_to_be_done": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/job-to-be-done.schema.json"
+      },
+      "maxItems": 20
+    },
+    "pain_points": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-claim.schema.json"
+      },
+      "maxItems": 30
+    },
+    "desired_outcomes": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-claim.schema.json"
+      },
+      "maxItems": 30
+    },
+    "buying_triggers": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-claim.schema.json"
+      },
+      "maxItems": 30
+    },
+    "buying_barriers": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-claim.schema.json"
+      },
+      "maxItems": 30
+    },
+    "objections": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-claim.schema.json"
+      },
+      "maxItems": 30
+    },
+    "decision_roles": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/decision-role.schema.json"
+      },
+      "maxItems": 20
+    },
+    "urgency": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "budget_sensitivity": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "awareness_stage": {
+      "type": "string",
+      "enum": [
+        "unaware",
+        "problem_aware",
+        "solution_aware",
+        "product_aware",
+        "most_aware",
+        "unknown"
+      ]
+    },
+    "market_sophistication": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "unknown"
+      ]
+    },
+    "trust_drivers": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-claim.schema.json"
+      },
+      "maxItems": 20
+    },
+    "proof_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "maxItems": 20
+    },
+    "channel_preferences": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      },
+      "maxItems": 20
+    },
+    "content_preferences": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      },
+      "maxItems": 20
+    },
+    "buying_process": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "switching_costs": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "competitor_overlap": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 128
+      },
+      "maxItems": 30
+    },
+    "alternative_solutions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      },
+      "maxItems": 30
+    },
+    "segment_size_signal": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "demand_signal": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "profitability_assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "maxItems": 20
+    },
+    "strategic_fit": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "moderate",
+        "weak",
+        "unknown"
+      ]
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      },
+      "maxItems": 50
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      },
+      "maxItems": 30
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "maxItems": 30
+    },
+    "inferences": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "maxItems": 30
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "maxItems": 30
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "maxItems": 20
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "coverage": {
+      "type": "string",
+      "enum": [
+        "full",
+        "partial",
+        "minimal",
+        "unknown"
+      ]
+    },
+    "priority_assessment": {
+      "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/priority-assessment.schema.json"
+    },
+    "provenance": {
+      "$ref": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/provenance.schema.json"
+    }
+  },
+  "required": [
+    "segment_id",
+    "segment_name",
+    "segment_type",
+    "inclusion_criteria",
+    "confidence",
+    "coverage",
+    "priority_assessment"
+  ]
+}

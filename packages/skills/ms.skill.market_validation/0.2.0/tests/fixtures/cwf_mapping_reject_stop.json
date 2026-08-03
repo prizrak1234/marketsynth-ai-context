@@ -1,0 +1,7 @@
+{
+  "legacy_biv_value": "reject",
+  "mv_020_value": "stop",
+  "compatibility": "requires_adapter",
+  "migration_risk": "medium",
+  "adapter_required": true
+}

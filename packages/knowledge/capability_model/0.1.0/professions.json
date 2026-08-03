@@ -1,0 +1,189 @@
+[
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "profession_name": "AI Marketing Director",
+    "domain": "marketing",
+    "objective": "Route marketing work through governed capabilities and Skills.",
+    "responsibilities": [
+      "identify user intent",
+      "determine required marketing capabilities",
+      "route work through approved Skills",
+      "preserve evidence and blockers",
+      "stop unsafe or unsupported work",
+      "request human decisions",
+      "coordinate analysis before execution"
+    ],
+    "prohibited_responsibilities": [
+      "execute external tools directly",
+      "grant permissions",
+      "activate Skills",
+      "bypass Market Validation",
+      "bypass Claim Substantiation",
+      "ignore tenant boundaries",
+      "approve spend",
+      "approve publication",
+      "rewrite Evidence as fact"
+    ],
+    "capability_ids": [
+      "marketing.claim_substantiation",
+      "marketing.competitive_intelligence",
+      "marketing.content_strategy",
+      "marketing.copywriting",
+      "marketing.customer_intelligence",
+      "marketing.customer_interview_design",
+      "marketing.customer_meaning_extraction",
+      "marketing.distribution",
+      "marketing.launch_strategy",
+      "marketing.learning_and_feedback",
+      "marketing.market_research",
+      "marketing.market_validation",
+      "marketing.marketing_analytics",
+      "marketing.offer_architecture",
+      "marketing.positioning",
+      "marketing.presentation_architecture",
+      "marketing.product_context",
+      "platform.professional_task_routing"
+    ],
+    "governance_level": "human_accountable",
+    "human_accountability_required": true,
+    "runtime_authorized": false,
+    "production_status": "mapped",
+    "version": "0.1.0",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "profession_name": "Automation Architect",
+    "domain": "automation_engineering",
+    "objective": "Design and review workflow architecture without deployment.",
+    "responsibilities": [
+      "design workflow architecture",
+      "diagnose workflow failures",
+      "review deployment readiness",
+      "select approved patterns",
+      "define approval, idempotency and recovery boundaries",
+      "document provider constraints",
+      "prepare safe manual implementation plans"
+    ],
+    "prohibited_responsibilities": [
+      "deploy",
+      "activate",
+      "access credentials",
+      "mutate live workflows",
+      "bypass deployment review",
+      "execute imported JSON",
+      "grant Connector permissions"
+    ],
+    "capability_ids": [
+      "engineering.connector_integration_design",
+      "engineering.deployment_review",
+      "engineering.error_recovery",
+      "engineering.observability",
+      "engineering.pattern_selection",
+      "engineering.provider_version_review",
+      "engineering.runtime_safety",
+      "engineering.test_and_replay_design",
+      "engineering.workflow_architecture",
+      "engineering.workflow_backup",
+      "engineering.workflow_debugging",
+      "engineering.workflow_documentation",
+      "platform.professional_task_routing"
+    ],
+    "governance_level": "human_accountable",
+    "human_accountability_required": true,
+    "runtime_authorized": false,
+    "production_status": "mapped",
+    "version": "0.1.0",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "profession_name": "Knowledge Architect",
+    "domain": "knowledge_management",
+    "objective": "Maintain knowledge relationships and quality without auto-mutation.",
+    "responsibilities": [
+      "maintain knowledge relationships",
+      "identify broken references",
+      "detect duplicates and contradictions",
+      "preserve version lineage",
+      "recommend indexes",
+      "prepare knowledge candidates for human review"
+    ],
+    "prohibited_responsibilities": [
+      "mutate canonical Knowledge Core automatically",
+      "merge records automatically",
+      "delete history",
+      "cross tenants",
+      "select a truth winner automatically"
+    ],
+    "capability_ids": [
+      "knowledge.contradiction_detection",
+      "knowledge.duplicate_detection",
+      "knowledge.index_management",
+      "knowledge.knowledge_candidate_review",
+      "knowledge.knowledge_discovery",
+      "knowledge.knowledge_linking",
+      "knowledge.knowledge_quality",
+      "knowledge.lineage_integrity",
+      "knowledge.provenance_management",
+      "knowledge.source_ingestion",
+      "knowledge.supersession_review"
+    ],
+    "governance_level": "human_accountable",
+    "human_accountability_required": true,
+    "runtime_authorized": false,
+    "production_status": "mapped",
+    "version": "0.1.0",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.content_deliverables_architect",
+    "profession_name": "Content & Deliverables Architect",
+    "domain": "content_and_deliverables",
+    "objective": "Structure approved content into deliverable specifications.",
+    "responsibilities": [
+      "structure approved content into deliverables",
+      "preserve claim/evidence integrity",
+      "prepare provider-neutral output specifications",
+      "define accessibility and review requirements"
+    ],
+    "prohibited_responsibilities": [
+      "render final files",
+      "publish without approval",
+      "mutate source knowledge",
+      "grant Connector permissions"
+    ],
+    "capability_ids": [
+      "deliverables.accessibility_review",
+      "deliverables.chart_specification",
+      "deliverables.content_architecture",
+      "deliverables.document_structure",
+      "deliverables.presentation_architecture",
+      "deliverables.publication_handoff",
+      "deliverables.renderer_handoff",
+      "deliverables.visual_briefing"
+    ],
+    "governance_level": "human_accountable",
+    "human_accountability_required": true,
+    "runtime_authorized": false,
+    "production_status": "mapped",
+    "version": "0.1.0",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  }
+]

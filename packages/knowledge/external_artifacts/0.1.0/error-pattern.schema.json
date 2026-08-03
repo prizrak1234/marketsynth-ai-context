@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/error-pattern.schema.json",
+  "title": "ErrorPattern",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "error_pattern_id": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "component": {
+      "type": "string"
+    },
+    "symptom": {
+      "type": "string"
+    },
+    "likely_cause": {
+      "type": "string"
+    },
+    "remediation": {
+      "type": "string"
+    },
+    "verification_status": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "error_pattern_id",
+    "platform",
+    "symptom",
+    "remediation",
+    "provenance"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "factors": [
+    {
+      "method": "варка",
+      "water_loss_pct": 0.0,
+      "fat_loss_pct": 0.0
+    },
+    {
+      "method": "жарка",
+      "water_loss_pct": 0.2,
+      "fat_loss_pct": 0.05
+    },
+    {
+      "method": "запекание",
+      "water_loss_pct": 0.15,
+      "fat_loss_pct": 0.03
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/priority-assessment.schema.json",
+  "title": "SegmentPriorityAssessment",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "strategic_fit": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "moderate",
+        "weak",
+        "unknown"
+      ]
+    },
+    "problem_intensity": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "demand_signal_strength": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "moderate",
+        "weak",
+        "unknown"
+      ]
+    },
+    "evidence_quality": {
+      "type": "string",
+      "enum": [
+        "comprehensive",
+        "partial",
+        "insufficient",
+        "conflicted",
+        "unknown"
+      ]
+    },
+    "budget_fit": {
+      "type": "string",
+      "enum": [
+        "strong",
+        "moderate",
+        "weak",
+        "unknown"
+      ]
+    },
+    "urgency": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "reachability": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "competitive_pressure": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "switching_difficulty": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "sales_cycle_complexity": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "implementation_complexity": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "retention_potential": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      },
+      "maxItems": 20
+    },
+    "priority_tier": {
+      "type": "string",
+      "enum": [
+        "primary",
+        "secondary",
+        "exploratory",
+        "low_priority",
+        "excluded",
+        "insufficient_evidence"
+      ]
+    },
+    "tier_rationale": {
+      "type": "string",
+      "maxLength": 4000
+    }
+  },
+  "required": [
+    "strategic_fit",
+    "problem_intensity",
+    "demand_signal_strength",
+    "evidence_quality",
+    "priority_tier",
+    "tier_rationale",
+    "confidence"
+  ]
+}

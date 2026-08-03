@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_research/output/0.1.0",
+  "title": "MarketResearchSkillOutput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "research_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "skill_id": { "type": "string", "const": "ms.skill.market_research" },
+    "skill_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "source_context_reference": { "$ref": "#/$defs/context_reference" },
+    "research_questions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "market_definition": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "market_structure": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "market_signals": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "demand_signals": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "customer_signals": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "pricing_signals": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "channel_signals": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "competitor_signals": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "regulatory_or_operational_constraints": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 30
+    },
+    "source_inventory": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source_inventory_item" },
+      "maxItems": 100
+    },
+    "supporting_evidence": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 100
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "inferences": {
+      "type": "array",
+      "items": { "$ref": "schemas/research_finding.schema.json" },
+      "maxItems": 50
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/unknown_item" },
+      "maxItems": 50
+    },
+    "evidence_gaps": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 50
+    },
+    "coverage": {
+      "type": "string",
+      "enum": ["full", "partial", "minimal", "unknown"]
+    },
+    "evidence_quality": {
+      "type": "string",
+      "enum": ["comprehensive", "partial", "insufficient", "conflicted", "unknown"]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partially_complete",
+        "insufficient_sources",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "recommended_next_research": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "input_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "output_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  },
+  "required": [
+    "research_id",
+    "skill_id",
+    "skill_version",
+    "source_context_reference",
+    "research_questions",
+    "market_definition",
+    "market_structure",
+    "market_signals",
+    "demand_signals",
+    "customer_signals",
+    "pricing_signals",
+    "channel_signals",
+    "competitor_signals",
+    "regulatory_or_operational_constraints",
+    "source_inventory",
+    "supporting_evidence",
+    "contradictory_evidence",
+    "assumptions",
+    "inferences",
+    "unknowns",
+    "evidence_gaps",
+    "coverage",
+    "evidence_quality",
+    "research_status",
+    "recommended_next_research",
+    "provenance",
+    "input_hash",
+    "output_hash"
+  ],
+  "$defs": {
+    "context_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "context_id": { "type": "string", "maxLength": 128 },
+        "skill_id": { "type": "string" },
+        "skill_version": { "type": "string" },
+        "output_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "readiness": { "type": "string" }
+      },
+      "required": ["skill_id", "skill_version", "output_hash"]
+    },
+    "source_inventory_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_id": { "type": "string", "maxLength": 128 },
+        "source_type": { "type": "string", "maxLength": 64 },
+        "reference": { "type": "string", "maxLength": 2000 },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "partially_verified",
+            "verified",
+            "contradicted",
+            "unknown"
+          ]
+        },
+        "notes": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["source_id", "source_type"]
+    },
+    "unknown_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "blocking": { "type": "boolean" }
+      },
+      "required": ["domain", "description"]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string" },
+        "skill_version": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "methodology_ref": { "type": "string" },
+        "source_skill_id": { "type": "string" },
+        "source_skill_version": { "type": "string" },
+        "source_output_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      },
+      "required": ["skill_id", "skill_version"]
+    }
+  }
+}

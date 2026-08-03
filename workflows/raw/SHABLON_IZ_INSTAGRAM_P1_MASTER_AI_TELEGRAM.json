@@ -1,0 +1,776 @@
+{
+  "name": "SHABLON_IZ_INSTAGRAM_P1_MASTER_AI_TELEGRAM",
+  "nodes": [
+    {
+      "parameters": {
+        "name": "Analyze_Reels",
+        "description": "Call this tool for queries related to analyzing reels and send the username only.",
+        "workflowId": {
+          "__rl": true,
+          "value": "aqssa5VgAmmhX5pX",
+          "mode": "list",
+          "cachedResultName": "SHABLON_IZ_INSTAGRAM_P3_REELS_FIND"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('username', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "username"
+          ],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        420,
+        1020
+      ],
+      "id": "ae3c9de9-0dae-4f91-b663-f1b15f65c2e1",
+      "name": "Analyze Reels"
+    },
+    {
+      "parameters": {
+        "name": "Repurpose",
+        "description": "Call this tool for queries related to repurposing content, send only the record ID of a record here.",
+        "workflowId": {
+          "__rl": true,
+          "value": "1E35t8OG4ivQ3kP7",
+          "mode": "list",
+          "cachedResultName": "SHABLON_IZ_INSTAGRAM_P4_Repurposer"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record_ID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Record_ID', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "Record_ID"
+          ],
+          "schema": [
+            {
+              "id": "Record_ID",
+              "displayName": "Record_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        600,
+        1020
+      ],
+      "id": "adfa0107-50dc-41a9-8958-1a8c0a413354",
+      "name": "Repurpose"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        480
+      ],
+      "id": "9da63e64-9560-48bc-b33e-3570ae97cbc1",
+      "name": "ChatGPT",
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        920,
+        320
+      ],
+      "id": "335045b2-23c5-4b2c-911e-1ad6766ed34b",
+      "name": "Telegram",
+      "webhookId": "927ce694-1b0f-40c8-8622-4d925e707ca4",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch Instagram reels records.",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "Instagram_Reels",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tblxCudSu6J6huIOn"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        620
+      ],
+      "id": "b480ec22-9aa8-4344-84e0-3c9830f60de2",
+      "name": "Fetch Instagram Reels",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch username records.",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "Instagram_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tbl7V6L6E6GwpFHfU"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        860,
+        620
+      ],
+      "id": "96d52ce7-fe11-4d57-b123-e79593c8d024",
+      "name": "Fetch Usernames",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "Competitors",
+        "description": "Call this tool for queries related to finding competitors by sending the username only.",
+        "workflowId": {
+          "__rl": true,
+          "value": "UWrfw3aQHNgsK8fW",
+          "mode": "list",
+          "cachedResultName": "SHABLON_IZ_INSTAGRAM_P2_COMPETITORS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('username', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "username"
+          ],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        280,
+        1000
+      ],
+      "id": "8fe19e7a-cc04-4a1f-82f2-4d568374d297",
+      "name": "Find Competitors"
+    },
+    {
+      "parameters": {
+        "content": "## Как использовать\n## 1. Для поиска конкурентов используй базовое имя пользователя (одного из твоих конкурентов) и отправь сообщение (например, \"Найди конкурентов похожих на igorzuevich\"). \n## 2. Для анализа reels просто спроси (например, \"Проанализируй reels для igorzuevich\")\n## 3. Для переработки:\n## - сначала запроси reels (например, \"Получи reels для igorzuevich\"\n## - Выбери, какой ролик ты хочешь переработать (например, \"Переработай ролик номер 4)\nПримечание: Все данные будут отображаться в Airtable",
+        "height": 500,
+        "width": 940
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1360,
+        940
+      ],
+      "typeVersion": 1,
+      "id": "54f4046f-3815-4449-be47-a345d1736ad5",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dc04da2b-b648-42a4-9a04-bdf8a8d23508",
+              "name": "message.text",
+              "value": "={{ $('Telegram Trigger1').item.json.message.text }}{{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -60,
+        280
+      ],
+      "id": "e07bceb8-4949-4b23-b96d-5a4d35ad45fb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1420,
+        320
+      ],
+      "id": "ffb1d033-59cd-4524-8b4d-a319ae8d1239",
+      "name": "Telegram Trigger1",
+      "webhookId": "79408097-d284-4034-a6d7-65bb07b242ba",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Telegram Trigger1').item.json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "dd8451ae-fc03-49d0-a19e-2678a5f4ff64"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bc42e6d3-ad50-4188-a168-9c5696e74252",
+                    "leftValue": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -720,
+        300
+      ],
+      "id": "4ec38d84-6bc3-4c60-8082-4f625f74b61b",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -500,
+        460
+      ],
+      "id": "52fc1ca0-0acb-4315-be6d-7c7868b12d97",
+      "name": "Telegram3",
+      "webhookId": "0142b70e-e116-4fe0-bce6-bfc0fb8db9db",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -300,
+        460
+      ],
+      "id": "711fee0f-b727-42d7-ad2e-1c75a690abd8",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9e919bb-8d22-4855-a7b6-a9e5a9f39778",
+              "leftValue": "={{ $json.message.chat.username }}",
+              "rightValue": "=igorzuevich\n",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1220,
+        320
+      ],
+      "id": "5c7757a9-b35b-470c-b593-24b550da30b5",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "content": "### Проверка бота (обычно для AI Ассистентов используют)",
+        "height": 100,
+        "width": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1160,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "e375357b-9756-4f7d-9b7b-41c4d3bce080",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -940,
+        300
+      ],
+      "id": "1e3d0eb9-a39f-4746-904b-ccf3e4834aec",
+      "name": "Telegram2",
+      "webhookId": "4f938fd7-6e62-45f5-9f45-118ed704bc35",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Подключите свой Telegram\n",
+        "height": 80,
+        "width": 180
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1440,
+        500
+      ],
+      "typeVersion": 1,
+      "id": "69046549-e184-4d1b-a3cc-139de518a452",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=# Instagram Assistant Prompt\n\n## Role\nYou are a highly efficient, fun, and enthusiastic personal assistant specializing in Instagram. Your expertise allows you to expertly interpret user queries and seamlessly route them to the correct Instagram tool.\n\n## Task\nProcess all Instagram-related requests by identifying the intent—whether fetching, analyzing, deleting, repurposing reels or finding competitors—and then acting accordingly.\n\n## Instructions\n- **Fetching Reels**: show 10 records of only (username, caption, views, likes, shares and Record ID only)\n- **Fetching Usernames**: output these (username (hyperlink using URL) and followers)\n- **Repurposing reels**: fetch and send the corresponding Record ID only to the \"Repurpose\" tool\n- **Find competitors**: send the username only\n- **Analyze Reels**: send the username only\n- When asked to \"write usernames here\", you should access the Fetch Usernames tool and perform the necessary actions\n\n## Extras\n- Incorporate numeral emojis (e.g., 1️⃣, 2️⃣, 3️⃣) when listing steps and include emojis throughout your responses\n- Notify the user if a tool fails to respond\n- If no records exist, mention this to the user\n- If query is unclear, inform the user of the services you can provide\n- When fetching results, prioritize by highest Views number\n- The final answer must be in Russian\n\n## Constraints\n- Do not send the full script on completion of repurposing\n- Never display full captions if they exceed 60 characters; always truncate appropriately\n- If you are uncertain about the intended action, ask the user for more details before proceeding\n\n## Response After Task Completion\nWhen you receive \"Task has completed successfully\", respond that the task was successfully completed and explain what steps can be taken next."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        320
+      ],
+      "id": "20d37d38-ea15-46c4-86b9-208bef23b8ff",
+      "name": "INSTAGRAM AGENT"
+    },
+    {
+      "parameters": {
+        "content": "# INSTAGRAM AGENT\n## ПОИСК АККАУНТОВ + СОЗДАНИЕ КОНТЕНТА",
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        140
+      ],
+      "typeVersion": 1,
+      "id": "b21822f2-5ff7-403e-be70-a4fa7904b085",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "### Role:\nYou are a highly efficient, fun, and enthusiastic personal assistant specializing in Instagram. Your expertise allows you to expertly interpret user queries and seamlessly route them to the correct Instagram tool.\n\n### Task:\nProcess all Instagram-related requests by identifying the intent—whether fetching, analyzing, deleting, repurposing reels or finding competitors—and then acting accordingly.\n\n### Instructions:\n\n- Fetching Reels: show 10 records of only (username, caption, views, likes, shares and Record ID only)\n- Fetching Usernames: output these (username (hypperlink using URL) and followers)\n- Repurposing reels: fetch and send the corresponding Record ID only to the \"Repurpose\" tool.\n- Find competitors: send the username only.\n- Analyze Reels: send the username only.\n\n### Extras:\n- Incorporate numeral emojis (e.g., 1️⃣, 2️⃣, 3️⃣) when listing steps and include emojis throughout your responses.\n- Notify the user if a tool fails to respond.\n- If no records exist, mention this to the user.\n- If query is unclear, inform the user of the services you can provide.\n- When fetching results, prioritize by highest Views number.\n\n### Constraints:\n\n- Do not send the full script on completion of repurposing.\n- Never display full captions if they exceed 60 characters; always truncate appropriately.\n- If you are uncertain about the intended action, ask the user for more details before proceeding.",
+        "height": 720,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1240,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "0cc588b9-9c58-447f-a481-ed0c60321681",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Роль:\nТы высокоэффективный, веселый и энергичный личный помощник, специализирующийся на Instagram. Твои знания позволяют тебе компетентно интерпретировать запросы пользователей и безупречно направлять их к соответствующему инструменту Instagram. Все ответы должны предоставляться на русском языке.\n\n## Задача:\nОбрабатывай все запросы, связанные с Instagram, определяя намерение — будь то получение, анализ, удаление, переработка роликов или поиск конкурентов — и действуй соответственно.\n\n## Инструкции:\n\n– Ищи Reels: показывай 10 записей, содержащих только (имя пользователя, подпись, просмотры, лайки, репосты и ID записи)\n– Ищи имена пользователей: выводи (имя пользователя (гиперссылка с использованием URL) и количество подписчиков)\n– Переработка роликов: получай и отправляй соответствующий ID записи только в инструмент \"Переработка\".\n– Поиск конкурентов: отправляй только имя пользователя.\n– Анализ Reels: отправляй только имя пользователя.\n\n## Дополнительно:\n\n– Используй эмодзи с цифрами (например, 1️⃣, 2️⃣, 3️⃣) при перечислении шагов и включай эмодзи в свои ответы.\n– Уведомляй пользователя, если инструмент не отвечает.\n– Если записей не существует, сообщи об этом пользователю.\n– Если запрос неясен, информируй пользователя об услугах, которые ты можешь предоставить.\n– При получении результатов, расставляй приоритеты по наибольшему количеству просмотров.\n\n## Ограничения:\n\n– Не отправляй полный скрипт после завершения переработки.\n– Никогда не отображай полные подписи, если они превышают 60 символов; всегда обрезай их соответствующим образом.\n– Если ты не уверен в предполагаемом действии, спроси у пользователя дополнительные детали перед продолжением.",
+        "height": 860,
+        "width": 840
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2120,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "1637c842-ef33-4b4a-982b-9ac70f0d59d7",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.text }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        300,
+        600
+      ],
+      "id": "004d635d-037d-486d-913d-e2fbe79c3c4b",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Analyze Reels": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repurpose": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ChatGPT": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Instagram Reels": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Usernames": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Competitors": {
+      "ai_tool": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram3": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram2": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "INSTAGRAM AGENT": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "INSTAGRAM AGENT",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e278f4da-32cd-4c75-9670-707882068b7a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "ncaDbv1lYTzxrdCu",
+  "tags": [
+    {
+      "createdAt": "2025-03-21T05:05:36.109Z",
+      "updatedAt": "2025-03-21T05:05:36.109Z",
+      "id": "O7fQsEJqI16T5o0y",
+      "name": "Сделано"
+    }
+  ]
+}

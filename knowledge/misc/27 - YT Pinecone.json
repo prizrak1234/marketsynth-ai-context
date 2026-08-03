@@ -1,0 +1,162 @@
+{
+  "name": "27 - YT Pinecone",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        128
+      ],
+      "id": "34c98a13-672b-47fb-864e-a3a2874f4d75",
+      "name": "When chat message received",
+      "webhookId": "4a550885-7bb3-47ea-ab27-94ca4f941727"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Read the Vector Data Base tool before the answer.\nAlways return the document name, page number, and direct citation without any change.\nAnswer in Russian.\n\nYour response template:\n\n1. Your answer.\n2. Direct citations.\n3. Document number.\n4. Page numbers.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        128
+      ],
+      "id": "d128aa8e-b066-4ca3-ae71-0dd2cc969bcc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "content": "## AI Agent",
+        "height": 496,
+        "width": 976,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -112,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "ebee8706-ebab-423d-97c4-33828bd0bc34",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        288,
+        320
+      ],
+      "id": "95884485-eb41-4b27-a8a0-d945f43276ea",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://prod-1-data.ke.pinecone.io/assistant/chat/demo",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $fromAI('searchQuery') }}\"\n    }\n  ],\n  \"stream\": false,\n  \"model\": \"o4-mini\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        512,
+        320
+      ],
+      "id": "73950265-edca-46b8-a9e5-4a0585ce20ce",
+      "name": "Vector Data Base",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2G5YynZSDlt2Isq6",
+          "name": "Pinecone"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ⭐️ Присоединяйся к Pro-группе\n\n### Это экспертные глубокие знания в ИИ, сообщество ИИ-энтузиастов и автоматизации, которые РЕАЛЬНО работают в бизнесе и продуктах. Плюс, там даже есть n8n автоматизация, которая парсит таблицы из PDF и сохраняет их в Google Sheets.\n\n### Ищи Pro-группу тут: https://t.me/iishenka_pro_bot",
+        "height": 364,
+        "width": 968,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -112,
+        512
+      ],
+      "typeVersion": 1,
+      "id": "2ad228ff-c22d-4c70-b34a-b16ecdb5283e",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Data Base": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5ef1a31f-0e05-4739-a1c7-c8542c3e4f41",
+  "meta": {
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "NTw9bXBLQW8efHtR",
+  "tags": []
+}

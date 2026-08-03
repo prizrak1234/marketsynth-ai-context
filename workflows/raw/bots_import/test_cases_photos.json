@@ -1,0 +1,14 @@
+{
+  "cases": [
+    {
+      "description": "Тарелка 26 см, четверть гречки",
+      "expected_g": 220,
+      "tolerance_pct": 0.2
+    },
+    {
+      "description": "Ладонь курицы толщиной 1 см",
+      "expected_g": 100,
+      "tolerance_pct": 0.25
+    }
+  ]
+}

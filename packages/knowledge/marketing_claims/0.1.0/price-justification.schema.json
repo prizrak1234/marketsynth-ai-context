@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/marketing-claims/0.1.0/price-justification.schema.json",
+  "title": "PriceJustification",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "justification_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "justification_type": {
+      "type": "string",
+      "enum": [
+        "lower_total_cost",
+        "faster_outcome",
+        "earning_potential",
+        "premium_experience",
+        "comfort",
+        "duration",
+        "location_access",
+        "additional_components",
+        "bundle",
+        "upsell",
+        "cross_sell",
+        "unknown"
+      ]
+    },
+    "statement": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "comparison_basis": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "is_assumption": {
+      "type": "boolean"
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "justification_id",
+    "justification_type",
+    "statement",
+    "comparison_basis",
+    "is_assumption",
+    "evidence_references",
+    "provenance"
+  ]
+}

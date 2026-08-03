@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.positioning/positioning_territory/0.1.0",
+  "title": "PositioningTerritory",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "territory_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "territory_name": { "type": "string", "maxLength": 500 },
+    "territory_type": {
+      "type": "string",
+      "enum": [
+        "category_leadership",
+        "niche_specialist",
+        "outcome_based",
+        "problem_based",
+        "audience_based",
+        "use_case_based",
+        "method_based",
+        "trust_based",
+        "convenience_based",
+        "premium",
+        "value",
+        "challenger",
+        "alternative_category",
+        "unknown"
+      ]
+    },
+    "description": { "type": "string", "maxLength": 4000 },
+    "relevant_segment_ids": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "minItems": 1,
+      "maxItems": 10
+    },
+    "customer_relevance": { "type": "string", "maxLength": 2000 },
+    "competitive_whitespace": { "type": "string", "maxLength": 2000 },
+    "defensibility": { "type": "string", "maxLength": 2000 },
+    "proof_availability": { "type": "string", "maxLength": 2000 },
+    "market_sophistication_fit": { "type": "string", "maxLength": 2000 },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 256 },
+      "maxItems": 30
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "risks": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "const": "ms.skill.positioning" },
+        "skill_version": { "type": "string", "pattern": "^0\\.1\\.\\d+$" }
+      },
+      "required": ["skill_id", "skill_version"]
+    }
+  },
+  "required": [
+    "territory_id",
+    "territory_name",
+    "territory_type",
+    "description",
+    "relevant_segment_ids",
+    "customer_relevance",
+    "competitive_whitespace",
+    "defensibility",
+    "proof_availability",
+    "market_sophistication_fit",
+    "evidence_references",
+    "assumptions",
+    "unknowns",
+    "risks",
+    "confidence",
+    "provenance"
+  ]
+}

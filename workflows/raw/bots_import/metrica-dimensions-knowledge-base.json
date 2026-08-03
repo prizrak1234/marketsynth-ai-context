@@ -1,0 +1,97 @@
+{
+  "_meta": {
+    "purpose": "Вспомогательный контекст для агента: выбор dimensions и метрик по задаче, без перечисления всего API",
+    "source": "Список группировок и метрик.md",
+    "scope": "ym:s (визиты/сессии), ключевые сценарии аналитики"
+  },
+  "common_use": {
+    "traffic": {
+      "description": "Источники трафика: откуда пришли визиты и пользователи",
+      "dimensions": [
+        "ym:s:trafficSourceName",
+        "ym:s:searchEngine"
+      ],
+      "metrics": ["ym:s:visits", "ym:s:users", "ym:s:pageviews", "ym:s:bounceRate", "ym:s:avgVisitDurationSeconds"],
+      "notes": "trafficSourceName — основной срез (поиск, реклама, прямые, переходы по ссылкам и т.д.). searchEngine — поисковая система при трафике из поиска."
+    },
+    "search": {
+      "description": "Поисковые фразы: по каким запросам пришли из поисковиков",
+      "dimensions": ["ym:s:searchPhrase"],
+      "metrics": ["ym:s:visits", "ym:s:users"],
+      "filters": "ym:s:trafficSourceName=@'Search engine'",
+      "notes": "searchPhrase заполняется только для трафика из поиска. Всегда используйте фильтр по источнику, если нужны именно поисковые фразы."
+    },
+    "utm": {
+      "description": "UTM-метки рекламных кампаний",
+      "dimensions": [
+        "ym:s:UTMSource",
+        "ym:s:UTMMedium",
+        "ym:s:UTMCampaign",
+        "ym:s:UTMTerm",
+        "ym:s:UTMContent"
+      ],
+      "metrics": ["ym:s:visits", "ym:s:users"],
+      "filters": "ym:s:trafficSourceName=@'Ad traffic'",
+      "notes": "Имеет смысл при фильтре по рекламному трафику. Если UTM не проставлены, в отчёте будет 0 визитов по этим полям."
+    },
+    "geo": {
+      "description": "География: страна, регион, город",
+      "dimensions": [
+        "ym:s:regionCountry",
+        "ym:s:regionArea",
+        "ym:s:regionCity"
+      ],
+      "metrics": ["ym:s:visits", "ym:s:users"],
+      "notes": "Не во всех счётчиках/тарифах доступны (ошибка 400). При 400 — уточнить в интерфейсе Метрики отчёт «География» и актуальные имена измерений."
+    },
+    "content": {
+      "description": "Страницы и пути: какие URL/разделы просматривали",
+      "dimensions": [
+        "ym:s:startURLPath",
+        "ym:s:startURLPathLevel1",
+        "ym:s:endURLPath",
+        "ym:s:endURLDomain"
+      ],
+      "metrics": ["ym:s:visits", "ym:s:pageviews", "ym:s:users"],
+      "notes": "startURL — страница входа, endURL — страница выхода. PathLevel1 — первый сегмент пути (раздел сайта)."
+    },
+    "device": {
+      "description": "Устройства и окружение",
+      "dimensions": [
+        "ym:s:deviceCategory",
+        "ym:s:browser",
+        "ym:s:operatingSystem"
+      ],
+      "metrics": ["ym:s:visits", "ym:s:users", "ym:s:bounceRate"],
+      "notes": "deviceCategory: desktop, mobile, tablet. browser/operatingSystem — для детализации."
+    },
+    "time": {
+      "description": "Время: дата, день недели, час",
+      "dimensions": [
+        "ym:s:date",
+        "ym:s:dayOfWeek",
+        "ym:s:hour"
+      ],
+      "metrics": ["ym:s:visits", "ym:s:users", "ym:s:pageviews"],
+      "notes": "date — для трендов по дням. dayOfWeek/hour — для распределения по времени."
+    },
+    "goals": {
+      "description": "Цели и конверсии",
+      "dimensions": ["ym:s:goal"],
+      "metrics": ["ym:s:visits", "ym:s:users", "ym:s:goal<goal_id>reaches", "ym:s:goal<goal_id>users"],
+      "notes": "goal — идентификатор цели. Метрики по цели: подставить ID цели вместо <goal_id>, например ym:s:goal123456reaches, ym:s:goal123456users."
+    }
+  },
+  "metrics_quick_reference": {
+    "visits": "ym:s:visits",
+    "users": "ym:s:users",
+    "pageviews": "ym:s:pageviews",
+    "bounce_rate": "ym:s:bounceRate",
+    "avg_visit_duration": "ym:s:avgVisitDurationSeconds"
+  },
+  "filters_quick_reference": {
+    "search_traffic": "ym:s:trafficSourceName=@'Search engine'",
+    "ad_traffic": "ym:s:trafficSourceName=@'Ad traffic'",
+    "direct_traffic": "ym:s:trafficSourceName=@'Direct traffic'"
+  }
+}

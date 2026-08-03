@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "$id": "https://schemas.marketsynth.ai/capability-model/0.1.0/profession.schema.json",
+  "required": [
+    "profession_id",
+    "profession_name",
+    "domain",
+    "capability_ids",
+    "runtime_authorized",
+    "production_status",
+    "version",
+    "provenance"
+  ]
+}

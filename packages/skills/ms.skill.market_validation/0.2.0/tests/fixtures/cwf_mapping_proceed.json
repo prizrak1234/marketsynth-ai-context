@@ -1,0 +1,7 @@
+{
+  "legacy_biv_value": "proceed",
+  "mv_020_value": "proceed",
+  "compatibility": "compatible",
+  "migration_risk": "low",
+  "adapter_required": false
+}

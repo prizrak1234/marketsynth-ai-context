@@ -1,0 +1,11 @@
+{
+  "owner_acceptance": "rejected_with_findings",
+  "rejected_at": "2026-07-24",
+  "rejection_reason": "BIV intake and report integrity failed on browser click-through before Offer path could be validated",
+  "corrective_slice": "PRODUCT-01.3",
+  "browser_click_through": "failed_biv_intake",
+  "e2e_live_stack": "not_run_or_blocked_by_missing_e2e_credentials",
+  "postgresql_migration": "pending_owner_postgres_verification",
+  "accepted_at": null,
+  "reviewer": "owner"
+}

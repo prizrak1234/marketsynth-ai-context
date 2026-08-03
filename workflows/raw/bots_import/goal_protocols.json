@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "goals": [
+    {
+      "id": "GOAL_PP_RECOVERY",
+      "name": "Послеродовое восстановление",
+      "kcal_delta_per_day": [
+        -250,
+        0
+      ],
+      "protein_g_per_kg": [
+        1.6,
+        2.2
+      ]
+    },
+    {
+      "id": "GOAL_BEACH",
+      "name": "Подготовка к пляжному сезону",
+      "kcal_delta_per_day": [
+        -350,
+        -150
+      ],
+      "protein_g_per_kg": [
+        1.6,
+        2.0
+      ]
+    },
+    {
+      "id": "GOAL_MUSCLE_GAIN",
+      "name": "Набор мышц",
+      "kcal_delta_per_day": [
+        100,
+        300
+      ],
+      "protein_g_per_kg": [
+        1.8,
+        2.2
+      ]
+    }
+  ]
+}

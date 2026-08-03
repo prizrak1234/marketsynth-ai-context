@@ -1,0 +1,23 @@
+{
+  "version": "0.1.0",
+  "weights": {
+    "profession_fit": 10,
+    "capability_fit": 12,
+    "explicit_request_fit": 15,
+    "skill_availability": 8,
+    "pattern_support": 4,
+    "trust_status": 6,
+    "maturity": 5,
+    "tenant_visibility": 20,
+    "provider_fit": 3,
+    "platform_fit": 3,
+    "evidence_fit": 4,
+    "approval_compatibility": 6,
+    "execution_sensitivity_compatibility": 8,
+    "gap_severity": -5,
+    "dependency_completeness": 5,
+    "source_quality": 4,
+    "version_compatibility": 3,
+    "limitations_penalty": -4
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/workflow-pattern-step.schema.json",
+  "title": "WorkflowPatternStep",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "step_id": {
+      "type": "string"
+    },
+    "step_name": {
+      "type": "string"
+    },
+    "step_type": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "connector_requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "connector-requirement.schema.json"
+      }
+    },
+    "tool_requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "tool-requirement.schema.json"
+      }
+    },
+    "approval_gate": {
+      "type": "string"
+    },
+    "security_class": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "write_internal",
+        "publication",
+        "billing",
+        "destructive",
+        "elevated_review"
+      ]
+    }
+  },
+  "required": [
+    "step_id",
+    "step_name",
+    "step_type",
+    "security_class"
+  ]
+}

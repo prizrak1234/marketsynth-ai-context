@@ -1,0 +1,12 @@
+{
+  "entities": [
+    {
+      "type": "ingredient",
+      "name": "куриная грудка"
+    },
+    {
+      "type": "dish",
+      "name": "борщ"
+    }
+  ]
+}

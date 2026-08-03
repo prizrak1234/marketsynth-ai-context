@@ -1,0 +1,539 @@
+{
+  "name": "9-SearchAndScrapeAndCrawl",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        100,
+        20
+      ],
+      "id": "e7445731-1069-4b5e-8166-7d3b3db4f3e3",
+      "name": "When chat message received",
+      "webhookId": "128e2d68-0b6c-4893-b6d8-e2a2afb41097"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant. Always use the vectorStore to answer."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        320,
+        20
+      ],
+      "id": "057f4706-a174-4c16-ae5f-a91f63a1003f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        380,
+        240
+      ],
+      "id": "3a970512-f7af-46c5-8bad-4bd60bcda1ef",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        220,
+        240
+      ],
+      "id": "5953f52e-a668-4f7f-8d68-36b4c2070a35",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "0w82x7LWwL4LVtRZ",
+          "name": "MCP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"query\": \"what is Sendforsign?\",\n  \"topic\": \"general\",\n  \"search_depth\": \"basic\",\n  \"chunks_per_source\": 3,\n  \"max_results\": 1,\n  \"time_range\": null,\n  \"days\": 7,\n  \"include_answer\": true,\n  \"include_raw_content\": true,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": [],\n  \"country\": null\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        60,
+        500
+      ],
+      "id": "34d73c5d-d792-49e7-8dca-ae8ae7563902",
+      "name": "TavilySearch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"query\": \"what is Sendforsign?\",\n  \"limit\": 5,\n  \"tbs\": \"<string>\",\n  \"location\": \"<string>\",\n  \"timeout\": 60000,\n  \"ignoreInvalidURLs\": false,\n  \"scrapeOptions\": {\n    \"formats\": [\n      \"markdown\",\n      \"screenshot@fullPage\"\n    ] \n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        500
+      ],
+      "id": "cb669908-52d6-49dd-a267-fb7ce9383365",
+      "name": "FireCrawlSearch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"url\": \"https://sendforsign.com/\",\n  \"formats\": [\n    \"markdown\"\n  ],\n  \"onlyMainContent\": true,\n  \"parsePDF\": true,\n  \"removeBase64Images\": true,\n  \"blockAds\": true,\n  \"proxy\": \"basic\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        60,
+        780
+      ],
+      "id": "685d1cb4-b028-4603-87e2-aab0aed05bad",
+      "name": "FireCrawlScrape"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/crawl",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"url\": \"https://about.sendforsign.com/api-reference/introapi\",\n  \"max_depth\": 1,\n  \"max_breadth\": 20,\n  \"limit\": 50,\n  \"select_paths\": \"/client/.*\",\n  \"select_domains\": null,\n  \"exclude_paths\": null,\n  \"exclude_domains\": null,\n  \"allow_external\": false,\n  \"include_images\": false,\n  \"categories\": null,\n  \"extract_depth\": \"basic\",\n  \"format\": \"markdown\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        780
+      ],
+      "id": "fb964c91-075b-4627-9bbc-eb544ae1a7ce",
+      "name": "TavilyCrawl"
+    },
+    {
+      "parameters": {
+        "content": "Agent",
+        "height": 460,
+        "width": 920,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -100,
+        -60
+      ],
+      "typeVersion": 1,
+      "id": "4507a59b-7ee4-40a4-a4d1-f3ebf30df58a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Tavily Search",
+        "height": 260,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -100,
+        420
+      ],
+      "typeVersion": 1,
+      "id": "a5b48525-5cfc-4939-a7f3-05ac8d5cbadf",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "FireCrawl Search",
+        "height": 260,
+        "width": 460,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        360,
+        420
+      ],
+      "typeVersion": 1,
+      "id": "2f730a40-26a6-4de5-88da-6bb13c61d208",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "FireCrawl Scrape",
+        "height": 260,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -100,
+        700
+      ],
+      "typeVersion": 1,
+      "id": "3e72a006-a9c3-4952-a594-168b300befd5",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Tavily Crawl",
+        "height": 260,
+        "width": 460,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        360,
+        700
+      ],
+      "typeVersion": 1,
+      "id": "cc21ee09-fa68-49be-8941-f8b4290f1f04",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.results[0].raw_content }}",
+        "options": {}
+      },
+      "id": "db022b62-9533-401a-ae03-d53c2955c845",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "c9011235-8ca7-49ed-a033-23828ae80357",
+      "name": "Embeddings OpenAI1",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        940,
+        680
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "0w82x7LWwL4LVtRZ",
+          "name": "MCP"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "607f0f53-d4c6-43bc-b92f-cd7db01a25a1",
+      "name": "Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents_yt_now",
+          "mode": "list",
+          "cachedResultName": "documents_yt_now"
+        },
+        "options": {
+          "queryName": "match_documents_yt_now"
+        }
+      },
+      "id": "8df9d4df-5f15-4595-b0fa-8e18361cf363",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        500
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "aU9ZtDFkiy4X06yC",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Add to VectorStore",
+        "height": 540,
+        "width": 740,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        840,
+        420
+      ],
+      "typeVersion": 1,
+      "id": "285413cd-36e2-4e90-8e0a-ac6079224198",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "Проходить через формы, логины и капчи? Смотрите в Pro группе: https://t.me/iishenka_pro_bot",
+        "width": 920
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -100,
+        980
+      ],
+      "typeVersion": 1,
+      "id": "17773eb5-e66a-4dda-8e78-b15d0d2e1975",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "vectorStore",
+        "toolDescription": "RAG memory, always use it.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents_yt_now",
+          "mode": "list",
+          "cachedResultName": "documents_yt_now"
+        },
+        "options": {
+          "queryName": "match_documents_yt_now"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        80
+      ],
+      "id": "1c28387f-3c18-490d-bd65-a3e981ed33df",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "aU9ZtDFkiy4X06yC",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1060,
+        240
+      ],
+      "id": "26ecefed-586a-4896-a099-2296fdde3e77",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "0w82x7LWwL4LVtRZ",
+          "name": "MCP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Read from VectorStore",
+        "height": 460,
+        "width": 740,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        840,
+        -60
+      ],
+      "typeVersion": 1,
+      "id": "efb6d4ce-7947-400b-ade8-847444c24035",
+      "name": "Sticky Note7"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TavilyCrawl": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "276c16ad-2baa-4315-8d1f-5f2000c31d5b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "384ca5236156160ae2dc5de9617a22bf34a63ad41fb03ed4db76f3a49ebb98ad"
+  },
+  "id": "BMPw47pSKZsAiW48",
+  "tags": []
+}

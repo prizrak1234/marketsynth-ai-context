@@ -1,0 +1,753 @@
+{
+  "name": "Кейс 1 - Обновил",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        608
+      ],
+      "id": "080da2ba-2469-41f3-abf4-dba6e8348101",
+      "name": "Telegram Trigger",
+      "webhookId": "537cd9fe-806a-4fe2-b04e-90599fb5f7e6",
+      "credentials": {
+        "telegramApi": {
+          "id": "dinX8ILnTL3NrXbJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "4778d4f8-a5c9-4def-b189-1d44eb29d870"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6937e9ca-e6f5-4c51-ba8e-acf8aadc99dd",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        608
+      ],
+      "id": "79d37870-9981-4165-a5cb-64ab27dac18d",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "2145542d-f5cd-4b5e-8df8-bb297fcfe6e7",
+      "name": "Распознавание Голоса",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        688,
+        496
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "openAiApi": {
+          "id": "Pig8RdRPb3EpeFrL",
+          "name": "Polza AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "id": "a28dc817-6e1f-4a72-9af1-35240e87a9e9",
+      "name": "Скачать Голосовое",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        464,
+        496
+      ],
+      "webhookId": "24273e7e-6133-415e-8627-a9d6dc0f107c",
+      "typeVersion": 1.1,
+      "credentials": {
+        "telegramApi": {
+          "id": "dinX8ILnTL3NrXbJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=Ты личный цифровой ассистент руководителя. Твоя цель — быстро и профессионально выполнять поручения, экономя время босса. Общайся вежливо, по-деловому, но живо и естественно (например: \"Готово, добавила встречу!\" или \"Вот список важных писем:\").\n\nСегодняшняя дата: {{ $now }} (Московское время). Строго отталкивайся от этого времени при планировании! Никогда не ставь встречи в прошлом.\n\nВ твоем распоряжении 6 инструментов (Tools). ИСПОЛЬЗУЙ ИХ, чтобы получить данные, не отвечай по памяти:\n\n1. ViewCalendar: Узнать расписание. Фильтруй события и называй только те, о которых я спросил.\n2. CreateMeeting: Обязательно преобразуй слова вроде \"завтра в 3\" в точные дату и время начала и конца. Если время не ясно — переспроси.\n3. CheckNewEmails: Чтение новых входящих из Gmail. Игнорируй рекламный мусор и соцсети. Выводи супер-краткое саммари.\n4. GetTasks: Получить мои текущие задачи из списка дел.\n5. InternetSearch: Искать в интернете свежие новости, цены, факты, погоду или любую информацию.\n\nВАЖНЫЕ ПРАВИЛА:\n- Никогда не выдумывай и не галлюцинируй события, задачи или письма! Бери только факты из инструментов.\n- Если я ставлю общую задачу (\"Давай добавим встречу\"), а данных не хватает — сначала задай уточняющий вопрос.\n- Тебе не нужно вслух рассказывать мне, КАКИМ инструментом ты воспользовался. Просто выдавай результат.\n- Отвечай максимально кратко, структурировано и по делу.\n\nФормат ответа: строго обычный текст (plain text). Категорически запрещено использовать Markdown-разметку. Не используй символы *, #, _, ** для выделения текста или заголовков. Для разделения мыслей и абзацев используй только двойной перенос строки."
+        }
+      },
+      "id": "ef15f395-532d-47d7-a0dd-fa7ad16d8ee2",
+      "name": "Иван | Помощник ИИ",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        1184,
+        848
+      ],
+      "typeVersion": 1.6
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b39c3e07-1743-4206-ab46-d2769d68c8aa",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        720
+      ],
+      "id": "76d030bc-8650-406a-90e8-5a64059e5147",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "### Как запустить этот шаблон через Polza.ai\nВам нужен всего **ОДИН** ключ API для всех нейросетей!\n\n1. Зайдите в любую AI-ноду (например, OpenAI Chat Model).\n2. В разделе Credentials создайте **Create New** (OpenAI API).\n3. Вставьте **API Key** из кабинета Polza.ai.\n4. Важно: Зайдите в настройки Credential и измените **Base URL** на `https://api.polza.ai/api/v1`\n\nСписок всех моделей: https://polza.ai/models \nФормат имени: `провайдер/модель` (например `openai/gpt-4o`)",
+        "height": 250,
+        "width": 600,
+        "color": 6
+      },
+      "id": "07343136-923f-48b9-8d5a-cb8b0bc16f6f",
+      "name": "⚙️ Настройка Polza.ai (ВНИМАНИЕ)",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        -32
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.polza.ai/api/v2/audio/speech",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer pza_W_TFbu2EEteDR8odbkdwHJxBaE3epahV"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "elevenlabs/text-to-speech-multilingual-v2"
+            },
+            {
+              "name": "input",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "voice",
+              "value": "Rachel"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "de88695c-66ec-46fd-b1cd-7734ea702615",
+      "name": "Голос (ElevenLabs)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2000,
+        768
+      ],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "content": "### 📥 1. Вход и Обработка\n\n1. **Telegram Trigger** — ловит все входящие сообщения из бота.\n2. **Switch** — проверяет, есть ли аудио (голосовое) в сообщении.\n3. **Распознавание Голоса** — если это голосовое сообщение, скачиваем файл и переводим голос в текст.\n4. **Edit Fields** — если был отправлен просто текст, прокидываем его дальше к Агенту.\n",
+        "height": 640,
+        "width": 960
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        288
+      ],
+      "id": "df595964-9022-4840-b801-959f3793ef2d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### 🧠 2. ИИ-Ассистент (Мозг)\n\nГлавный узел (Agent), который анализирует запрос пользователя.\nИмеет доступ к **Краткосрочной памяти** (для контекста диалога) и пулу из 6 инструментов, которые он выбирает сам:\n\n* **Календарь** (чтение / создание встреч)\n* **Почта Gmail** (чтение новых писем / отметка прочитанным)\n* **Google Tasks** (просмотр списка задач)\n* **Perplexity** (быстрый поиск свежей информации в интернете)\n",
+        "height": 400,
+        "width": 768,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        592
+      ],
+      "id": "5d9b0e23-34f8-495b-b007-abfc2577a062",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### 🗣️ 3. Ответ Пользователю\n\n1. Сгенерированный текстовый ответ отправляется обратно в **Telegram**.\n2. Параллельно текст отправляется на озвучку в **ElevenLabs** (через HTTP-запрос).\n3. Готовый аудиофайл скачивается и отправляется **Голосовым сообщением** в тот же чат Telegram.\n",
+        "height": 560,
+        "width": 752,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        384
+      ],
+      "id": "c21a3831-e4b9-42aa-b06e-a466f9a07d00",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "id": "040f6d3f-506a-4c34-a7b9-a8be965b4d02",
+      "name": "Краткосрочная Память",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "position": [
+        1056,
+        1232
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-3-flash-preview",
+        "options": {}
+      },
+      "id": "9a82c663-cf46-4214-a599-c70cf5d8d481",
+      "name": "Мозг ИИ",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        784,
+        1232
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "Pig8RdRPb3EpeFrL",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "23c1a2c9-4aba-44ce-aab7-95c17d012b4c",
+      "name": "Telegram-Текст",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2000,
+        576
+      ],
+      "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
+      "typeVersion": 1.1,
+      "credentials": {
+        "telegramApi": {
+          "id": "dinX8ILnTL3NrXbJ",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "binaryPropertyName": "=data",
+        "additionalFields": {
+          "fileName": "Голосовое сообщение",
+          "reply_to_message_id": "={{ $('Telegram Trigger').item.json.message.message_id }}"
+        }
+      },
+      "id": "217e1e12-2228-4c19-99e6-093528a9a4d8",
+      "name": "Telegram-Аудио",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2416,
+        768
+      ],
+      "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
+      "typeVersion": 1.1,
+      "credentials": {
+        "telegramApi": {
+          "id": "dinX8ILnTL3NrXbJ",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "### 🧠 Мозг ИИ\n\nОсновная нейросеть (LLM). Она **«думает»**, анализирует текст и решает, какой инструмент использовать.",
+        "height": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        704,
+        1056
+      ],
+      "id": "ebeff192-1c25-41a3-b6bd-bc8e70784e26",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### 💾 Память\n\nХранит **историю текущего диалога**, чтобы бот помнил контекст и не переспрашивал.",
+        "height": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        976,
+        1056
+      ],
+      "id": "bcc3852c-81e7-4520-af34-83b9184e81c9",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### 🛠️ Инструменты Ассистента (Tools)\n\nАгент сам решает, когда и какой инструмент вызвать для выполнения вашей задачи. Сейчас подключены:\n\n* **📧 Почта (Gmail)** — читает новые письма.\n* **📅 Календарь (Google)** — смотрит расписание и создает новые встречи.\n* **✅ Задачи (Google Tasks)** — проверяет ваш список дел.\n* **🌐 Поиск (Perplexity)** — гуглит самую свежую актуальную информацию, цены и новости в реальном времени.\n",
+        "height": 464,
+        "width": 1056
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        1056
+      ],
+      "id": "39800cd3-177c-44ca-a19b-ca074c127e38",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.polza.ai/api/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer pza_W_TFbu2EEteDR8odbkdwHJxBaE3epahV"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"model\": \"perplexity/sonar-reasoning-pro\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Ты поисковик. Найди самую свежую и точную информацию по запросу пользователя. Отвечай кратко и только по делу.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $json.text }}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "8a257354-a130-455e-b2cc-dec5b3d77894",
+      "name": "InternetSearch",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "position": [
+        2128,
+        1312
+      ],
+      "typeVersion": 4.1
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "labelIds": [
+            "INBOX",
+            "UNREAD"
+          ],
+          "readStatus": "unread",
+          "receivedAfter": "={{$fromAI(\"date\",\"the date after which to fetch the messages in format YYYY-MM-DDTHH:MM:SS\")}}"
+        }
+      },
+      "id": "0362b271-2a4f-4790-a893-7be3d84e5a81",
+      "name": "MarkEmailRead",
+      "type": "n8n-nodes-base.gmailTool",
+      "position": [
+        1728,
+        1312
+      ],
+      "webhookId": "abf7e707-2eb8-4063-a920-b8ed975b0d70",
+      "typeVersion": 2.1,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "jha2GBcDUrvNxAEw",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "ivanantigravity@gmail.com",
+          "mode": "list",
+          "cachedResultName": "ivanantigravity@gmail.com"
+        },
+        "options": {
+          "timeMin": "={{$fromAI(\"date\",\"the date after which to fetch the messages in format YYYY-MM-DDTHH:MM:SS\")}}",
+          "fields": "=items(summary, start(dateTime))"
+        }
+      },
+      "id": "04bde101-7921-4ad4-9996-6a955ed4cc39",
+      "name": "ViewCalendar",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        1328,
+        1312
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "dQ1w6l7Ps1bb4Nsk",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "ivanantigravity@gmail.com",
+          "mode": "list",
+          "cachedResultName": "ivanantigravity@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1536,
+        1312
+      ],
+      "id": "b2852390-3dda-40e4-8936-9062b4eaf0cf",
+      "name": "CreateMeeting",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "dQ1w6l7Ps1bb4Nsk",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "task": "MDMwNTUyMjc0NDMzODgyNTA0MjQ6MDow",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleTasksTool",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        1312
+      ],
+      "id": "1a27bb70-52cd-4c5f-97cf-183e6948e87e",
+      "name": "GetTasks",
+      "credentials": {
+        "googleTasksOAuth2Api": {
+          "id": "VY2RAMpM8ieZVGKi",
+          "name": "Google Tasks account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "audio",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2208,
+        768
+      ],
+      "id": "95653fa8-5ffe-409c-ba03-aa949d1adee9",
+      "name": "Convert to File"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Скачать Голосовое",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Распознавание Голоса": {
+      "main": [
+        [
+          {
+            "node": "Иван | Помощник ИИ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Скачать Голосовое": {
+      "main": [
+        [
+          {
+            "node": "Распознавание Голоса",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Иван | Помощник ИИ": {
+      "main": [
+        [
+          {
+            "node": "Голос (ElevenLabs)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Иван | Помощник ИИ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Голос (ElevenLabs)": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Краткосрочная Память": {
+      "ai_memory": [
+        [
+          {
+            "node": "Иван | Помощник ИИ",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Мозг ИИ": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Иван | Помощник ИИ",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "InternetSearch": {
+      "ai_tool": [
+        [
+          {
+            "node": "Иван | Помощник ИИ",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MarkEmailRead": {
+      "ai_tool": [
+        [
+          {
+            "node": "Иван | Помощник ИИ",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ViewCalendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "Иван | Помощник ИИ",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateMeeting": {
+      "ai_tool": [
+        [
+          {
+            "node": "Иван | Помощник ИИ",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetTasks": {
+      "ai_tool": [
+        [
+          {
+            "node": "Иван | Помощник ИИ",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Telegram-Аудио",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "4c4c2e68-7dc8-49ff-881b-9ce50e5294ea",
+  "meta": {
+    "instanceId": "6fb9b8f49e74bce139c4f37ef143fda2d46e0242f07f5064a3a1a12fd177e8fa"
+  },
+  "id": "IhYcLRZYusPZZd0j",
+  "tags": []
+}

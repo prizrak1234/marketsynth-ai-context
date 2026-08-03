@@ -1,0 +1,426 @@
+{
+  "name": "45 - Your Obsidian RAG Simple",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        2304,
+        512
+      ],
+      "id": "cad74376-1338-43b8-b0c3-48f90e1bc3e4",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "content": "## Векторизация",
+        "height": 560,
+        "width": 992
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1984,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "56fd6aee-7db3-402f-9339-1c1dcc9f4bb2",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Нужна усложнённая версия этой автоматизация, которая держит вашу базу в актуальном состоянии?\n\n### Ищи в Pro-группе тут: https://t.me/iishenka_pro_bot\n",
+        "height": 1136,
+        "width": 624,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2992,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "8c384ac3-a436-4e0b-aac6-70a48b1df075",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "=file_name",
+                "value": "=/home/node/.n8n-files/RAG/{{ $('Read/Write Files').item.json.fileName }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "5fadf6ac-db7b-4f07-a06b-a864d2b1ac31",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2656,
+        656
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "373fb617-d6c0-4ccf-935f-e800443faf6a",
+      "name": "Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2736,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents4",
+          "mode": "list",
+          "cachedResultName": "documents4"
+        },
+        "options": {
+          "queryName": "match_documents4"
+        }
+      },
+      "id": "e5ec1659-2107-4f3d-8094-47968c7dada5",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        2544,
+        512
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "iuyN6KMYhbUARR13",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2464,
+        656
+      ],
+      "id": "9447e5da-e461-4e3b-aa6a-6a9eca476294",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "kPhwNDcHvNvMsRIS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        2096,
+        1072
+      ],
+      "id": "69247cde-7522-44d5-93e5-335c9ce9dc0c",
+      "name": "When chat message received",
+      "webhookId": "3a0da2ed-6e65-4370-8b33-3519442a56a1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2400,
+        1248
+      ],
+      "id": "6d013ebf-b4cf-4742-9936-15c0d41e7944",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "pcWiko0lcbqcxmkT",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "vectorStore",
+        "toolDescription": "this you vectorstore",
+        "tableName": {
+          "__rl": true,
+          "value": "documents4",
+          "mode": "list",
+          "cachedResultName": "documents4"
+        },
+        "options": {
+          "queryName": "match_documents4"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.2,
+      "position": [
+        2544,
+        1248
+      ],
+      "id": "c4572fe8-33c3-407d-80dc-f0d880e5352c",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "iuyN6KMYhbUARR13",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        2224,
+        1248
+      ],
+      "id": "7f6180a1-9280-463c-8a20-68a00edbe4cd",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "kPhwNDcHvNvMsRIS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2544,
+        1392
+      ],
+      "id": "ac8ed04d-28dc-429f-861f-7eac4d135857",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "kPhwNDcHvNvMsRIS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant. Use vectorStore to answer.\nAnswer only based on the context from vectorStore."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2352,
+        1072
+      ],
+      "id": "861133af-8932-4687-9009-7bf1fc44d6f5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "content": "## Векторизация",
+        "height": 560,
+        "width": 992,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1984,
+        992
+      ],
+      "typeVersion": 1,
+      "id": "8fde8555-8ef8-492f-9a72-df0b3ebc18c7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        512
+      ],
+      "id": "e40b2168-d9df-4c7b-9f13-afdeb878a057",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/.n8n-files/RAG/*.*",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        2096,
+        512
+      ],
+      "id": "488b532d-572d-4106-bdae-ecf27cbaa51b",
+      "name": "Read/Write Files"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9146022c-4d14-4c0d-80f2-28f7f8bce699",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e01000323930f9951ba3427ce9365f35d56a694ae3edbcd1b5275340b4ec1807"
+  },
+  "id": "XgCAsEI901hHqNrY",
+  "tags": []
+}

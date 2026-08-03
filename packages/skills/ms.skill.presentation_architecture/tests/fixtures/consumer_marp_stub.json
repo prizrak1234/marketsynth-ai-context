@@ -1,0 +1,6 @@
+{
+  "consumer": "marp_renderer_stub",
+  "reads_fields": ["presentation_id", "slide_plan", "theme_recommendation", "renderer_requirements"],
+  "forbidden_fields": ["marp_output", "rendered_file"],
+  "executes_render": false
+}

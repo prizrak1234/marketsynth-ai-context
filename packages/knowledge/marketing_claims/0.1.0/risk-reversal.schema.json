@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/marketing-claims/0.1.0/risk-reversal.schema.json",
+  "title": "RiskReversal",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "risk_reversal_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "reversal_type": {
+      "type": "string",
+      "enum": [
+        "refund",
+        "trial",
+        "pilot",
+        "phased_payment",
+        "success_fee",
+        "milestone_payment",
+        "cancellation_right",
+        "limited_guarantee",
+        "warranty",
+        "service_credit",
+        "proof_before_purchase",
+        "no_risk_reversal",
+        "unknown"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "reduces_commercial_risk": {
+      "type": "boolean"
+    },
+    "proves_outcome": {
+      "type": "boolean",
+      "const": false
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "risk_reversal_id",
+    "reversal_type",
+    "description",
+    "reduces_commercial_risk",
+    "proves_outcome",
+    "conditions",
+    "limitations",
+    "evidence_references",
+    "provenance"
+  ]
+}

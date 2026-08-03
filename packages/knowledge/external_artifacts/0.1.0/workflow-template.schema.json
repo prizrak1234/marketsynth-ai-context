@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/workflow-template.schema.json",
+  "title": "WorkflowTemplate",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "workflow_template_id": {
+      "type": "string"
+    },
+    "original_name": {
+      "type": "string"
+    },
+    "normalized_name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "use_case": {
+      "type": "string"
+    },
+    "trigger_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "node_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "credentials_required": {
+      "type": "boolean"
+    },
+    "side_effects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "publication_actions": {
+      "type": "boolean"
+    },
+    "billing_actions": {
+      "type": "boolean"
+    },
+    "destructive_actions": {
+      "type": "boolean"
+    },
+    "personal_data_risk": {
+      "type": "string"
+    },
+    "security_findings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "workflow_hash": {
+      "type": "string"
+    },
+    "quarantine_status": {
+      "type": "string"
+    },
+    "adaptation_status": {
+      "type": "string",
+      "enum": [
+        "catalog_only",
+        "requires_rewrite",
+        "reusable_pattern",
+        "rejected",
+        "deferred",
+        "adapted_internal_template"
+      ]
+    },
+    "target_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "commercial_priority": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "workflow_template_id",
+    "original_name",
+    "normalized_name",
+    "category",
+    "trigger_types",
+    "node_types",
+    "workflow_hash",
+    "quarantine_status",
+    "adaptation_status",
+    "provenance"
+  ]
+}

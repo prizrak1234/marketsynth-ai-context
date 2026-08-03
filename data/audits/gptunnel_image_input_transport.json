@@ -1,0 +1,60 @@
+{
+  "topic": "gptunnel_i2v_input_transport",
+  "paid_smoke": "not_run",
+  "temporary_internet_hosting_of_keyframe": "not_performed",
+  "creativelab_rest": {
+    "media_create_images": "URL array only (docs: accessible to GPTunnel servers)",
+    "base64_supported_in_faq": false,
+    "media_upload_endpoint": "not_found_404",
+    "files_post": "not_allowed_405",
+    "multipart_for_i2v": false,
+    "presigned_upload_api": "not_documented_for_creativelab",
+    "live_probes": "data/audits/gptunnel_upload_probe.json"
+  },
+  "related_but_out_of_scope_for_product_rest": {
+    "mcp_upload_media": {
+      "exists": true,
+      "docs": "https://docs.gptunnel.ru/mcp/tools/",
+      "scope": "workflow:write",
+      "behavior": "base64 up to 50MB → S3 URL",
+      "classification": "separate MCP/workflow surface; not CreativeLab media/create REST client for Marketsynth",
+      "not_used": true
+    },
+    "seedream_direct_generate": {
+      "images": "docs mention links / base64_url for Seedream-4 Direct API only",
+      "endpoint": "/media/generate",
+      "not_veo_i2v_contract": true
+    },
+    "audio_transcription_multipart": {
+      "exists": true,
+      "endpoint": "/audio/transcriptions",
+      "irrelevant_to_video_i2v": true
+    }
+  },
+  "marketsynth_asset_storage": {
+    "authenticated_content_routes": true,
+    "previous_signed_url": false,
+    "prepared_signed_url_mechanism": true,
+    "module": "app/media_generation/signed_asset_urls.py",
+    "route": "GET /signed-media/o/{jti}?exp&purpose&sig",
+    "owner_preview": "POST /media-generation/video-smoke/preview",
+    "defaults": {
+      "ASSET_SIGNED_URL_ENABLED": true,
+      "ASSET_SIGNED_URL_TTL_SECONDS": 600,
+      "requires": ["ASSET_SIGNED_URL_SECRET", "PUBLIC_BACKEND_URL"]
+    },
+    "properties": {
+      "ttl_max_seconds": 600,
+      "one_time": true,
+      "opaque_no_internal_paths": true,
+      "no_listing": true
+    },
+    "allowlist": ["capability_proof/smoke_keyframe_road_static.png (server-side only)"],
+    "reachability_caveat": "PUBLIC_BACKEND_URL must be reachable from GPTunnel internet; localhost will fail aggregator fetch"
+  },
+  "verdict": {
+    "creative_lab_requires_fetchable_url_for_veo_i2v": true,
+    "no_rest_multipart_alternative": true,
+    "recommended_next": "owner enables signed URLs on a publicly reachable backend, then confirms one paid smoke"
+  }
+}

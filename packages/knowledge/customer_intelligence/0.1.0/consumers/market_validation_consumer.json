@@ -1,0 +1,42 @@
+{
+  "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+  "cim_version": "0.1.0",
+  "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "source_skill_id": "ms.skill.icp_segmentation",
+  "source_skill_version": "0.1.0",
+  "selected_segment_ids": [
+    "seg-remote-eng"
+  ],
+  "evidence_references": [
+    "ev-seg-seg-remote-eng"
+  ],
+  "unknowns": [
+    {
+      "domain": "budget",
+      "description": "Exact budget bands unverified",
+      "blocking": false
+    }
+  ],
+  "conflicts": [],
+  "consumer_skill_id": "ms.skill.market_validation",
+  "consumer_skill_version": "0.2.0",
+  "consumed_fields": [
+    "primary_icp_candidates",
+    "priority_assessment",
+    "demand_signal",
+    "evidence_quality",
+    "reachability",
+    "switching_difficulty",
+    "customer_unknowns",
+    "segment_conflicts"
+  ],
+  "forbidden_recompute_fields": [],
+  "redefined_fields": [],
+  "verdict_issued_by_consumer": true,
+  "consumer_output": {
+    "viability_verdict": null,
+    "readiness_gaps": [
+      "Validate budget bands"
+    ]
+  }
+}

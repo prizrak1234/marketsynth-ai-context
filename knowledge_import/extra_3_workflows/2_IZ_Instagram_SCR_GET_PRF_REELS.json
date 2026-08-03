@@ -1,0 +1,636 @@
+{
+  "name": "2_IZ_Instagram_SCR_GET_PRF_REELS",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "username"
+            },
+            {
+              "name": "Limit"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -192,
+        -64
+      ],
+      "id": "a19e414a-c910-4f2b-b0a0-871266e93caa",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        288,
+        -64
+      ],
+      "id": "8f56e6a0-04ae-4ba0-b7c5-ccac682f1ddf",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "RyzzHN837UggS6cq",
+          "mode": "list",
+          "cachedResultName": "2_Instagram_GET_PRF_REELS",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/RyzzHN837UggS6cq"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "play_count": "={{ $json.play_count }}",
+            "comment_count": "={{ $json.comment_count }}",
+            "like_count": "={{ $json.like_count }}",
+            "url": "={{ $json.url }}",
+            "id_reels": "={{ $json.code }}",
+            "text": "={{ $json.caption.text }}",
+            "full_name": "={{ $json.caption.user.full_name }}",
+            "username": "={{ $json.caption.user.username }}",
+            "taken_at": "={{ $json.taken_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "taken_at",
+              "displayName": "taken_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "id_reels",
+              "displayName": "id_reels",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "play_count",
+              "displayName": "play_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "comment_count",
+              "displayName": "comment_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "like_count",
+              "displayName": "like_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -64
+      ],
+      "id": "cb05ec5a-2b98-488a-963e-68a6dbd58a60",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "jsCode": "// === Code node (Run Once for All Items) ===\n\n// 1) Собираем строки\nconst rows = items.map(i => i.json);\n\n// 2) Утилиты\nconst toNum = v => Number(v) || 0;\nconst cut = (s, words = 12) => String(s || '')\n  .replace(/\\s+/g, ' ')\n  .trim()\n  .split(' ')\n  .slice(0, words)\n  .join(' ');\n\n// Фолбэки по подписи\nfunction pickCaption(r) {\n  return (r?.caption?.text) || r?.text || '';\n}\n\n// Ссылка на рил\nfunction buildUrl(r) {\n  if (r.url) return r.url;\n  if (r.code) return `https://www.instagram.com/reel/${r.code}/`;\n  return null;\n}\n\n// 3) Нормализация\nlet normalized = rows.map(r => {\n  const play = toNum(r.play_count || r.ig_play_count);       // \n  const like = toNum(r.like_count);                           // \n  const comm = toNum(r.comment_count);                        // \n\n  const er = play > 0 ? ((like + comm) / play) * 100 : 0;\n\n  const obj = {\n    url: buildUrl(r),\n    taken_at: r.taken_at ? new Date(Number(r.taken_at) * 1000).toISOString() : null, // \n    play, like, comm,\n    er: Number(er.toFixed(2)),\n    caption: pickCaption(r),\n    caption_short: cut(pickCaption(r), 12),\n  };\n\n  // Удаляем поля-пустышки\n  Object.keys(obj).forEach(k => {\n    if (obj[k] === null || obj[k] === '' || obj[k] === undefined) delete obj[k];\n  });\n\n  return obj;\n});\n\n// 4) Сортировка: просмотры ↓, затем комменты ↓, затем лайки ↓\nnormalized.sort((a, b) =>\n  (b.play - a.play) || (b.comm - a.comm) || (b.like - a.like)\n);\n\n// 5) Топ-3 + ранги\nconst top3 = normalized.slice(0, 3).map((x, i) => ({ rank: i + 1, ...x }));\n\n// 6) Профиль (из первых строк)\nfunction inferProfile(rows) {\n  const r0 = rows[0] || {};\n  const u = r0.user || r0.owner || {};\n  const username = u.username || r0.username || null;         // \n  const fullName = u.full_name || r0.full_name || null;       // \n  return {\n    username: username ? `@${String(username).replace(/^@/, '')}` : null,\n    nickname: fullName || null,\n  };\n}\n\nconst profile = inferProfile(rows);\n\nreturn [{ json: { profile, total: rows.length, top3 } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -64
+      ],
+      "id": "cfba6990-45f8-444f-903a-77e113f0f03d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Получаем данные из входящего item\nconst inputData = $input.all()[0].json;\n\n// Извлекаем username\nconst username = inputData.profile.username;\n\n// Извлекаем ссылки из top3 (Instagram Reels)\nconst videoLinks = inputData.top3.map(video => video.url);\n\n// Формируем результирующий JSON\nconst result = {\n  message: `Анализ контента пользователя ${username} выполнен успешно`,\n  username: username,\n  top_reels: {\n    description: \"3 самых популярных Reels пользователя\",\n    links: videoLinks\n  }\n};\n\nreturn result;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -64
+      ],
+      "id": "71bbf3d0-a0b8-4e71-8a59-cf6928d67c39",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        -400
+      ],
+      "id": "4ca7b57a-7c09-4c5f-8b8d-ecf48c8bbcf7",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "RyzzHN837UggS6cq",
+          "mode": "list",
+          "cachedResultName": "2_Instagram_GET_PRF_REELS",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/RyzzHN837UggS6cq"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -400
+      ],
+      "id": "188fc6be-bc92-4a87-ac25-b43a544da57c",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "19Dzbfk_xMMh_HlY23HtlSRz4HkonhFdef48Q7bSpjcM",
+          "mode": "list",
+          "cachedResultName": "Instagram AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19Dzbfk_xMMh_HlY23HtlSRz4HkonhFdef48Q7bSpjcM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Instagram_profile_video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19Dzbfk_xMMh_HlY23HtlSRz4HkonhFdef48Q7bSpjcM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "URL": "={{ $json.url }}",
+            "play_count": "={{ $json.play_count }}",
+            "comment_count": "={{ $json.comment_count }}",
+            "createdAt": "={{ $json.createdAt }}",
+            "updatedAt": "={{ $json.updatedAt }}",
+            "username": "={{ $json.username }}",
+            "full_name": "={{ $json.full_name }}",
+            "text": "={{ $json.text }}",
+            "like_count": "={{ $json.like_count }}",
+            "id_reels": "={{ $json.id_reels }}",
+            "taken_at": "={{ $json.taken_at }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "taken_at",
+              "displayName": "taken_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "id_reels",
+              "displayName": "id_reels",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "play_count",
+              "displayName": "play_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "comment_count",
+              "displayName": "comment_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "like_count",
+              "displayName": "like_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        -400
+      ],
+      "id": "1b3b2296-0e31-4c1f-a3dc-df147e742831",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Синхронизация данных в таблице в Google",
+        "height": 304,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -512
+      ],
+      "id": "bbafe98e-9329-4744-bc03-86b918bb857e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "RyzzHN837UggS6cq",
+          "mode": "list",
+          "cachedResultName": "2_Instagram_GET_PRF_REELS",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/RyzzHN837UggS6cq"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "username",
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        608,
+        -400
+      ],
+      "id": "d30fcbb8-eae8-435a-987c-d9be00e5d48e",
+      "name": "Delete row(s)1"
+    },
+    {
+      "parameters": {
+        "content": "## Get a Instagram profile s videos",
+        "height": 288,
+        "width": 1488,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "8e31d56e-65b9-4ac8-b068-dd946f3f14ad",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: DATA TABLE в n8n: https://youtu.be/FD1HyYR3EP0\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 132,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        -576
+      ],
+      "typeVersion": 1,
+      "id": "00bea0bc-9330-48e6-91a7-9ec445e4aaa6",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        656,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "f2fd470c-7629-45c5-bcb6-b6bc3b96afde",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "getInstagramUserReels",
+        "handle": "={{ $json.username }}",
+        "limit": "={{ $json.Limit }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        64,
+        -64
+      ],
+      "id": "e2378645-bc05-4969-a920-67f9034a92fe",
+      "name": "Get an instagram user s reels",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "XNzkdQFgWnEu59Bh",
+          "name": "Scrape Creators account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "username": "igorzuevichm",
+          "Limit": "30",
+          "chat_id": "190190068",
+          "correlation_id": "corr_1759340723510_1k1u51"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get an instagram user s reels",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an instagram user s reels": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0cd1b5f2-a807-42e2-a79e-0e1b3146e790",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "DDuvTZjoZBxLEq8E",
+  "tags": []
+}

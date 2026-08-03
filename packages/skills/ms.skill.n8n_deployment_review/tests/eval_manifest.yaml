@@ -1,0 +1,9 @@
+version: 1
+skill_id: ms.skill.n8n_deployment_review
+eval_cases:
+  - id: safe_manual_deployment
+    fixture: tests/fixtures/output_safe_manual_deployment.json
+    expectation: schema_valid
+  - id: blocked_publication
+    fixture: tests/fixtures/output_blocked_publication.json
+    expectation: semantic_blocked

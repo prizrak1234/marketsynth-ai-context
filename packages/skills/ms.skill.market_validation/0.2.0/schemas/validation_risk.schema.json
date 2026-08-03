@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_validation/validation_risk/0.2.0",
+  "title": "MarketValidationRisk",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "risk_id": { "type": "string", "maxLength": 128 },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "market",
+        "customer",
+        "competitor",
+        "pricing",
+        "financial",
+        "operational",
+        "legal",
+        "compliance",
+        "timing",
+        "channel",
+        "evidence",
+        "execution"
+      ]
+    },
+    "description": { "type": "string", "maxLength": 4000 },
+    "likelihood": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "impact": {
+      "type": "string",
+      "enum": ["critical", "major", "moderate", "minor", "unknown"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "elevated", "moderate", "low"]
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 100
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 50
+    },
+    "mitigations": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "residual_risk": { "type": "string", "maxLength": 2000 },
+    "blocking": { "type": "boolean" },
+    "owner_review_required": { "type": "boolean" },
+    "provenance": { "$ref": "#/$defs/provenance_stub" }
+  },
+  "required": [
+    "risk_id",
+    "domain",
+    "description",
+    "likelihood",
+    "impact",
+    "severity",
+    "evidence_references",
+    "assumptions",
+    "blocking",
+    "owner_review_required",
+    "provenance"
+  ],
+  "$defs": {
+    "provenance_stub": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "maxLength": 128 },
+        "skill_version": { "type": "string", "maxLength": 32 }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "skill_id": "ms.skill.n8n_deployment_review",
+  "skill_version": "0.1.0",
+  "evidence_gaps": [],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "human_review_required": true,
+  "provenance": {
+    "skill_id": "ms.skill.n8n_deployment_review",
+    "skill_version": "0.1.0"
+  },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "analysis_id": "n8n-dep-001",
+  "deployment_review": {},
+  "blockers": [],
+  "activation_gate": "blocked"
+}

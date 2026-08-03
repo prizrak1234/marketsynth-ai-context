@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.customer_meaning_extraction/schemas/fear-objection-map.schema.json",
+  "title": "FearObjectionMap",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "map_id": {
+      "type": "string"
+    },
+    "fear_category": {
+      "type": "string",
+      "enum": [
+        "negative_experience",
+        "category_distrust",
+        "product_distrust",
+        "provider_distrust",
+        "self_doubt",
+        "price_value_mismatch",
+        "loss_risk",
+        "complexity",
+        "time_risk",
+        "social_risk",
+        "compliance_or_safety",
+        "unknown"
+      ]
+    },
+    "customer_meaning_reference": {
+      "type": "string"
+    },
+    "underlying_concern": {
+      "type": "string"
+    },
+    "proof_requirement_reference": {
+      "type": "string"
+    },
+    "response_constraint": {
+      "type": "string"
+    },
+    "unresolved_risk": {
+      "type": "string"
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "map_id",
+    "fear_category",
+    "customer_meaning_reference",
+    "underlying_concern",
+    "proof_requirement_reference",
+    "response_constraint",
+    "unresolved_risk",
+    "provenance"
+  ]
+}

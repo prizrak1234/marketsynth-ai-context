@@ -1,0 +1,388 @@
+{
+  "name": "Personal AI Assistant (Advanced)",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message"],
+        "additionalFields": {}
+      },
+      "id": "node-01",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [200, 400],
+      "credentials": {
+        "telegramApi": {
+          "id": "TELEGRAM_CREDENTIAL_ID",
+          "name": "Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "s1", "name": "userId",    "value": "={{ $json.message.from.id }}",      "type": "string" },
+            { "id": "s2", "name": "chatId",    "value": "={{ $json.message.chat.id }}",      "type": "string" },
+            { "id": "s3", "name": "text",      "value": "={{ $json.message.text || '' }}",   "type": "string" },
+            { "id": "s4", "name": "messageId", "value": "={{ $json.message.message_id }}",   "type": "number" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-02",
+      "name": "Extract Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [420, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer OPENAI_API_KEY" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', max_tokens: 5, messages: [{role:'system',content:'Classify the user message into ONE of: chat, calendar, search, image. Reply with only that single word.'},{role:'user',content:$json.text}] }) }}",
+        "options": {}
+      },
+      "id": "node-03",
+      "name": "AI Intent Router",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [640, 400]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "i1", "name": "intent", "value": "={{ $json.choices[0].message.content.trim().toLowerCase() }}", "type": "string" },
+            { "id": "i2", "name": "text",   "value": "={{ $('Extract Data').item.json.text }}",   "type": "string" },
+            { "id": "i3", "name": "userId", "value": "={{ $('Extract Data').item.json.userId }}", "type": "string" },
+            { "id": "i4", "name": "chatId", "value": "={{ $('Extract Data').item.json.chatId }}", "type": "string" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-04",
+      "name": "Set Intent",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [860, 400]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "conditions": { "conditions": [{ "leftValue": "={{ $json.intent }}", "rightValue": "chat",     "operator": { "type": "string", "operation": "equals" } }] },
+              "renameOutput": true, "outputKey": "chat"
+            },
+            {
+              "conditions": { "conditions": [{ "leftValue": "={{ $json.intent }}", "rightValue": "calendar", "operator": { "type": "string", "operation": "equals" } }] },
+              "renameOutput": true, "outputKey": "calendar"
+            },
+            {
+              "conditions": { "conditions": [{ "leftValue": "={{ $json.intent }}", "rightValue": "search",   "operator": { "type": "string", "operation": "equals" } }] },
+              "renameOutput": true, "outputKey": "search"
+            },
+            {
+              "conditions": { "conditions": [{ "leftValue": "={{ $json.intent }}", "rightValue": "image",    "operator": { "type": "string", "operation": "equals" } }] },
+              "renameOutput": true, "outputKey": "image"
+            }
+          ]
+        },
+        "options": { "fallbackOutput": "extra" }
+      },
+      "id": "node-05",
+      "name": "Route by Intent",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [1080, 400]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://SUPABASE_PROJECT_URL/rest/v1/chat_history?user_id=eq.{{ $json.userId }}&order=created_at.desc&limit=5",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey",        "value": "SUPABASE_ANON_KEY_PLACEHOLDER" },
+            { "name": "Authorization", "value": "Bearer SUPABASE_ANON_KEY_PLACEHOLDER" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-06",
+      "name": "Supabase Read History",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1300, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer OPENAI_API_KEY" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', max_tokens: 500, messages: [{role:'system',content:'Ты дружелюбный AI-ассистент. Отвечай кратко на русском.'}].concat(($items('Supabase Read History')||[]).filter(m=>m.json&&m.json.role).slice(-5).map(m=>({role:m.json.role,content:m.json.content}))).concat([{role:'user',content:$('Set Intent').item.json.text}]) }) }}",
+        "options": {}
+      },
+      "id": "node-07",
+      "name": "OpenAI Chat",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1520, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://SUPABASE_PROJECT_URL/rest/v1/chat_history",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey",        "value": "SUPABASE_ANON_KEY_PLACEHOLDER" },
+            { "name": "Authorization", "value": "Bearer SUPABASE_ANON_KEY_PLACEHOLDER" },
+            { "name": "Prefer",        "value": "return=minimal" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify([{user_id:$('Set Intent').item.json.userId,role:'user',content:$('Set Intent').item.json.text},{user_id:$('Set Intent').item.json.userId,role:'assistant',content:$json.choices[0].message.content}]) }}",
+        "options": {}
+      },
+      "id": "node-08",
+      "name": "Supabase Save Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1740, 180]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Set Intent').item.json.chatId }}",
+        "text":   "={{ $('OpenAI Chat').item.json.choices[0].message.content }}",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "node-09",
+      "name": "Send Chat Response",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1960, 180],
+      "credentials": { "telegramApi": { "id": "TELEGRAM_CREDENTIAL_ID", "name": "Telegram Bot" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer OPENAI_API_KEY" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model:'gpt-4o-mini', max_tokens:200, response_format:{type:'json_object'}, messages:[{role:'system',content:'Extract event. Today: '+new Date().toISOString().slice(0,10)+'. JSON only: {\"summary\":\"...\",\"start\":\"2026-01-01T15:00:00\",\"end\":\"2026-01-01T16:00:00\",\"description\":\"...\"}'},{role:'user',content:$json.text}] }) }}",
+        "options": {}
+      },
+      "id": "node-10",
+      "name": "OpenAI Extract Event",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1300, 400]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "pe1", "name": "event",  "value": "={{ JSON.parse($json.choices[0].message.content) }}", "type": "object" },
+            { "id": "pe2", "name": "chatId", "value": "={{ $('Set Intent').item.json.chatId }}",              "type": "string" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-11",
+      "name": "Parse Event JSON",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1520, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+        "sendHeaders": true,
+        "headerParameters": [{ "name": "Content-Type", "value": "application/json" }],
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({summary:$json.event.summary,description:$json.event.description||'',start:{dateTime:$json.event.start,timeZone:'Europe/Moscow'},end:{dateTime:$json.event.end,timeZone:'Europe/Moscow'}}) }}",
+        "options": {}
+      },
+      "id": "node-12",
+      "name": "Google Calendar Create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1740, 400],
+      "credentials": { "oAuth2Api": { "id": "GOOGLE_OAUTH_CREDENTIAL_ID", "name": "Google OAuth2" } }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Set Intent').item.json.chatId }}",
+        "text":   "=✅ *Событие создано!*\n\n📅 *{{ $('Parse Event JSON').item.json.event.summary }}*\n🕐 {{ $('Parse Event JSON').item.json.event.start }}\n\nПроверьте Google Calendar.",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "node-13",
+      "name": "Send Calendar Confirm",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1960, 400],
+      "credentials": { "telegramApi": { "id": "TELEGRAM_CREDENTIAL_ID", "name": "Telegram Bot" } }
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://xmlriver.com/search/xml?user=19836&key=XMLRIVER_API_KEY&query={{ encodeURIComponent($json.text) }}&lr=213&groupby=attr%3D%22%22.mode%3Dflat.groups-on-page%3D5",
+        "options": { "response": { "response": { "responseFormat": "text" } } }
+      },
+      "id": "node-14",
+      "name": "XMLRiver Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1300, 620]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Парсинг XML результатов XMLRiver\nconst xmlStr = String(items[0].json.data || items[0].json || '');\nconst results = [];\nconst re = /<group[\\s\\S]*?<\\/group>/g;\nlet m;\nwhile ((m = re.exec(xmlStr)) !== null && results.length < 5) {\n  const b = m[0];\n  const t = b.match(/<title[^>]*>([\\s\\S]*?)<\\/title>/);\n  const u = b.match(/<url[^>]*>([\\s\\S]*?)<\\/url>/);\n  const s = b.match(/<passage[^>]*>([\\s\\S]*?)<\\/passage>/);\n  if (t && u) results.push({\n    title:   t[1].replace(/<[^>]+>/g,'').trim(),\n    url:     u[1].trim(),\n    snippet: s ? s[1].replace(/<[^>]+>/g,'').trim() : ''\n  });\n}\nconst searchText = results.length\n  ? results.map((r,i)=>`${i+1}. ${r.title}\\n   ${r.snippet}\\n   ${r.url}`).join('\\n\\n')\n  : 'Результаты не найдены.';\nreturn [{ json: { searchText, resultsCount: results.length } }];"
+      },
+      "id": "node-15",
+      "name": "Парсинг XML результатов",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1520, 620]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": [{ "name": "Authorization", "value": "Bearer OPENAI_API_KEY" }],
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model:'gpt-4o-mini', max_tokens:400, messages:[{role:'system',content:'Суммаризируй результаты поиска на русском. Выдели ключевые факты, укажи источники.'},{role:'user',content:'Запрос: '+$('Set Intent').item.json.text+'\\n\\nРезультаты:\\n'+$json.searchText}] }) }}",
+        "options": {}
+      },
+      "id": "node-16",
+      "name": "OpenAI Summarize",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1740, 620]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Set Intent').item.json.chatId }}",
+        "text":   "=🔍 *Результаты поиска:*\n\n{{ $json.choices[0].message.content }}",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "node-17",
+      "name": "Send Search Results",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1960, 620],
+      "credentials": { "telegramApi": { "id": "TELEGRAM_CREDENTIAL_ID", "name": "Telegram Bot" } }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/generations",
+        "sendHeaders": true,
+        "headerParameters": [{ "name": "Authorization", "value": "Bearer OPENAI_API_KEY" }],
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model:'dall-e-3', prompt:$json.text, n:1, size:'1024x1024', quality:'standard' }) }}",
+        "options": {}
+      },
+      "id": "node-18",
+      "name": "DALL-E Generate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1300, 840]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Set Intent').item.json.chatId }}",
+        "binaryData": false,
+        "photo": "={{ $json.data[0].url }}",
+        "additionalFields": { "caption": "🎨 Готово!" }
+      },
+      "id": "node-19",
+      "name": "Send Photo",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1520, 840],
+      "credentials": { "telegramApi": { "id": "TELEGRAM_CREDENTIAL_ID", "name": "Telegram Bot" } }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Set Intent').item.json.chatId }}",
+        "text": "=⚠️ Не понял запрос. Попробуйте:\n\n• *Чат* — задайте любой вопрос\n• *Календарь* — «Добавь встречу завтра в 15:00»\n• *Поиск* — «Найди новости про AI»\n• *Картинка* — «Нарисуй закат над горами»",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "node-20",
+      "name": "Fallback",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1300, 1060],
+      "credentials": { "telegramApi": { "id": "TELEGRAM_CREDENTIAL_ID", "name": "Telegram Bot" } }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger":       { "main": [[{ "node": "Extract Data",            "type": "main", "index": 0 }]] },
+    "Extract Data":           { "main": [[{ "node": "AI Intent Router",         "type": "main", "index": 0 }]] },
+    "AI Intent Router":       { "main": [[{ "node": "Set Intent",               "type": "main", "index": 0 }]] },
+    "Set Intent":             { "main": [[{ "node": "Route by Intent",          "type": "main", "index": 0 }]] },
+    "Route by Intent": {
+      "chat":     [[{ "node": "Supabase Read History", "type": "main", "index": 0 }]],
+      "calendar": [[{ "node": "OpenAI Extract Event",  "type": "main", "index": 0 }]],
+      "search":   [[{ "node": "XMLRiver Search",        "type": "main", "index": 0 }]],
+      "image":    [[{ "node": "DALL-E Generate",        "type": "main", "index": 0 }]],
+      "extra":    [[{ "node": "Fallback",               "type": "main", "index": 0 }]]
+    },
+    "Supabase Read History":  { "main": [[{ "node": "OpenAI Chat",              "type": "main", "index": 0 }]] },
+    "OpenAI Chat":            { "main": [[{ "node": "Supabase Save Message",    "type": "main", "index": 0 }]] },
+    "Supabase Save Message":  { "main": [[{ "node": "Send Chat Response",       "type": "main", "index": 0 }]] },
+    "OpenAI Extract Event":   { "main": [[{ "node": "Parse Event JSON",         "type": "main", "index": 0 }]] },
+    "Parse Event JSON":       { "main": [[{ "node": "Google Calendar Create",   "type": "main", "index": 0 }]] },
+    "Google Calendar Create": { "main": [[{ "node": "Send Calendar Confirm",    "type": "main", "index": 0 }]] },
+    "XMLRiver Search":        { "main": [[{ "node": "Парсинг XML результатов",  "type": "main", "index": 0 }]] },
+    "Парсинг XML результатов":{ "main": [[{ "node": "OpenAI Summarize",         "type": "main", "index": 0 }]] },
+    "OpenAI Summarize":       { "main": [[{ "node": "Send Search Results",      "type": "main", "index": 0 }]] },
+    "DALL-E Generate":        { "main": [[{ "node": "Send Photo",               "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "Europe/Moscow"
+  },
+  "staticData": null,
+  "tags": [{ "id": "tag-personal-ai", "name": "personal-assistant" }],
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "botfazer-antigravity",
+    "notes": "Замените: OPENAI_API_KEY · TELEGRAM_CREDENTIAL_ID · SUPABASE_PROJECT_URL · SUPABASE_ANON_KEY_PLACEHOLDER · GOOGLE_OAUTH_CREDENTIAL_ID · XMLRIVER_API_KEY"
+  },
+  "id": "personal-ai-assistant-advanced",
+  "versionId": "v1.0.0"
+}

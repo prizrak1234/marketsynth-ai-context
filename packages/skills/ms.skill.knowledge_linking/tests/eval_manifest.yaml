@@ -1,0 +1,27 @@
+version: 1
+skill_id: ms.skill.knowledge_linking
+eval_cases:
+  - id: complete_report
+    fixture: tests/fixtures/output_complete_report.json
+    expectation: schema_valid
+  - id: bounded_input
+    fixture: tests/fixtures/input_bounded_scope.json
+    expectation: schema_valid
+  - id: complete_report_links
+    fixture: tests/fixtures/output_complete_report.json
+    expectation: schema_valid
+  - id: complete_report_broken
+    fixture: tests/fixtures/output_complete_report.json
+    expectation: schema_valid
+  - id: complete_report_orphans
+    fixture: tests/fixtures/output_complete_report.json
+    expectation: schema_valid
+  - id: complete_report_index
+    fixture: tests/fixtures/output_complete_report.json
+    expectation: schema_valid
+  - id: bounded_input_artifacts
+    fixture: tests/fixtures/input_bounded_scope.json
+    expectation: schema_valid
+  - id: bounded_input_policy
+    fixture: tests/fixtures/input_bounded_scope.json
+    expectation: schema_valid

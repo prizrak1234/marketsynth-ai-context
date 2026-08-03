@@ -1,0 +1,450 @@
+{
+  "name": "IZ_Image_video_TELEGRAM",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true,
+          "imageSize": "large"
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        0
+      ],
+      "id": "19cac8a8-0547-47ac-99a6-60bd0bffbbbb",
+      "name": "Telegram Trigger",
+      "webhookId": "f5bb41dc-4e65-4cc2-b324-b7cfdeee3b03",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0e5be209-986d-41f4-a751-85553c84b9c4",
+              "name": "Product Description",
+              "value": "={{ $('Telegram Trigger').item.json.message.caption }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        540,
+        0
+      ],
+      "id": "0ffb54c1-45a3-4f3f-8eab-52e92375333c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "inputDataFieldName": "=data",
+        "name": "={{ $now.format('dd-LL-yyyy-TT')\n  + '-' +\n  $node[\"Telegram Trigger\"].json[\"message\"][\"photo\"]\n    .slice(-1)[0][\"file_unique_id\"]\n  + '.png'\n}}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1AeqFNiDNR5EOu-uCN3UBZVjokYugV4Dc",
+          "mode": "list",
+          "cachedResultName": "n8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1AeqFNiDNR5EOu-uCN3UBZVjokYugV4Dc"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        360,
+        0
+      ],
+      "id": "16e3e1f8-b374-4580-86ce-cfe6ac594855",
+      "name": "Google Drive",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Description: {{ $json['Product Description'] }}",
+        "options": {
+          "systemMessage": "=# Overview\nYou are a world-class marketing strategist and an expert text-to-image prompt engineer specializing in creating hyper-realistic, high-quality product photography prompts for AI image generation models.\n\n## Your Objective:\nWhen given a product description, your task is to craft a detailed, professional prompt that results in a hyper-realistic, clean, and visually stunning product image suitable for marketing material, advertising campaigns, or e-commerce platforms.\n\n## Key Requirements:\n- Focus on hyper-realistic, professional studio photography.\n- Maintain a clean, minimalistic, and elegant visual style.\n- Highlight the product as the main subject with sharp detail and perfect lighting.\n- Use backgrounds that complement but do not overpower the product (e.g., soft gradient, light-colored, or pure white).\n- Include professional lighting details such as \"softbox lighting\", \"studio lights\", or \"natural soft shadows\".\n- Emphasize realism, texture, and color accuracy.\n- Maintain a high-end, premium look and feel.\n- If applicable, suggest a subtle setting that enhances the product's story (e.g., a luxury kitchen counter for a high-end blender).\n\n## Output Format:\n- Write a single text-to-image prompt optimized for a professional AI image model.\n- Be direct and descriptive without using excessive words.\n- Avoid unnecessary repetition or adjectives that do not enhance the image quality.\n- Ensure the prompt is complete and ready for direct input into an AI model.\n\n## Tone:\nProfessional, precise, clean, and optimized for maximum realism and marketing impact.\n\n# Example Input:\n\"A premium wireless Bluetooth speaker in matte black, cylindrical shape, modern design.\"\n\n# Example Output:\n\"Hyper-realistic product photo of a premium matte black wireless Bluetooth speaker with a cylindrical modern design, centered on a clean white studio background, softbox lighting with natural shadows, sharp focus on texture and material, minimalistic, professional advertising shot.\"\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        720,
+        0
+      ],
+      "id": "1559bc85-dc92-4ad3-90ad-e00b117abd4c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        220
+      ],
+      "id": "59c1f87e-5da4-40dc-87c5-b89a9c1ab788",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Google Drive').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1100,
+        0
+      ],
+      "id": "5a0c8bf5-2159-48c3-a25b-123aef28aa95",
+      "name": "Google Drive1",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/edits",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $('AI Agent').item.json.output }}"
+            },
+            {
+              "name": "model",
+              "value": "gpt-image-1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        0
+      ],
+      "id": "46200e90-b58f-4607-a20b-7b145be0c6c1",
+      "name": "Create Image",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "w9TxCOMWnItv0Uqb",
+          "name": "Image_generator_chatGPT_API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data[0].b64_json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1520,
+        0
+      ],
+      "id": "9def3bd0-263a-4084-9669-d930223c88d0",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1880,
+        160
+      ],
+      "id": "9fc25411-2c50-4bf2-8a06-945da2a33186",
+      "name": "Telegram1",
+      "webhookId": "a4bc4e91-c39b-4305-b6ca-3a410b558a89",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "inputDataFieldName": "=data",
+        "name": "={{ $now.format('dd-LL-yyyy-TT')\n  + '-' +\n  Math.random().toString(36).substr(2,8)\n  + '.png'\n}}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1AeqFNiDNR5EOu-uCN3UBZVjokYugV4Dc",
+          "mode": "list",
+          "cachedResultName": "n8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1AeqFNiDNR5EOu-uCN3UBZVjokYugV4Dc"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1880,
+        -60
+      ],
+      "id": "99f64677-29ba-477b-b721-4e0495e5d4cf",
+      "name": "Google Drive2",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Видео по настройке Telegram: https://youtu.be/c8bePGmxFNw",
+        "height": 120,
+        "width": 540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        100,
+        220
+      ],
+      "typeVersion": 1,
+      "id": "a12a6612-0919-4169-b00d-f75dbf4d03eb",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### ИНСТРУКЦИЯ ПО GOOGLE \nhttps://youtu.be/yyj9Hyr86ag",
+        "height": 80,
+        "width": 440,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        160,
+        -180
+      ],
+      "typeVersion": 1,
+      "id": "9278f3d7-a729-445e-9cab-ec2c28cec166",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### ИНСТРУКЦИЯ:\nhttps://youtu.be/MoW0lWwh9rg",
+        "height": 80,
+        "width": 440,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1160,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "bd816d95-8dc5-4420-be19-edb38f402bcf",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# ПРОМПТ \n## Обзор\nВы - маркетинговый стратег мирового класса и эксперт по созданию промптов для генерации изображений, специализирующийся на создании гиперреалистичных, высококачественных промптов для фотографий продуктов для моделей генерации изображений с помощью ИИ.\n\n## Ваша цель:\nПри получении описания продукта ваша задача - составить детальный, профессиональный промпт, который приведет к созданию гиперреалистичного, чистого и визуально потрясающего изображения продукта, подходящего для маркетинговых материалов, рекламных кампаний или платформ электронной коммерции.\n\n## Ключевые требования:\n- Фокус на гиперреалистичной, профессиональной студийной фотографии.\n- Поддержание чистого, минималистичного и элегантного визуального стиля.\n- Выделение продукта как главного объекта с четкой детализацией и идеальным освещением.\n- Использование фонов, которые дополняют, но не перебивают продукт (например, мягкий градиент, светлые оттенки или чисто белый).\n- Включение деталей профессионального освещения, таких как \"софтбокс-освещение\", \"студийный свет\" или \"естественные мягкие тени\".\n- Акцент на реализме, текстуре и точности цветопередачи.\n- Поддержание высококлассного, премиального вида и ощущения.\n- При необходимости, предложение тонкой обстановки, которая подчеркивает историю продукта (например, роскошная кухонная стойка для высококлассного блендера).\n\n## Формат вывода:\n- Напишите единый промпт для генерации изображения, оптимизированный для профессиональной модели ИИ.\n- Будьте прямолинейными и описательными, не используя лишних слов.\n- Избегайте ненужных повторений или прилагательных, которые не улучшают качество изображения.\n- Убедитесь, что промпт является полным и готовым для прямого ввода в модель ИИ.\n\n## Тон:\nПрофессиональный, точный, чистый и оптимизированный для максимального реализма и маркетингового воздействия.\n\n# Пример ввода:\n\"Премиальная беспроводная Bluetooth-колонка в матовом черном цвете, цилиндрической формы, современного дизайна.\"\n\n# Пример вывода:\n\"Гиперреалистичная продуктовая фотография премиальной матовой черной беспроводной Bluetooth-колонки цилиндрической формы современного дизайна, расположенной по центру на чистом белом студийном фоне, софтбокс-освещение с естественными тенями, резкий фокус на текстуре и материале, минималистичный, профессиональный рекламный снимок.\"",
+        "height": 1020,
+        "width": 1300,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2140,
+        -340
+      ],
+      "typeVersion": 1,
+      "id": "f5926f70-7bda-443d-801a-854cf316d6b5",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive1": {
+      "main": [
+        [
+          {
+            "node": "Create Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Image": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Google Drive2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive2": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b8098c67-c81b-4abe-93ac-4b34c6b3bdda",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "pRYlChCJihcRmLQR",
+  "tags": []
+}

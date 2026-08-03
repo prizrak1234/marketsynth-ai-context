@@ -1,0 +1,101 @@
+
+> web@0.1.0 build
+> next build
+
+   тЦ▓ Next.js 15.5.19
+   - Environments: .env.local, .env.production
+
+   Creating an optimized production build ...
+ тЬУ Compiled successfully in 4.1s
+   Linting and checking validity of types ...
+
+./src/components/agent-chat/campaign-supervisor-panel.tsx
+9:3  Warning: 'CampaignActionType' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/project-intake/steps/step-review-form.tsx
+102:6  Warning: React Hook useEffect has a missing dependency: 'draft'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/views/agent-chat-view.tsx
+45:33  Warning: 'AgentChatSession' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/workspace/home/authenticated-image.tsx
+39:6  Warning: React Hook useEffect has a missing dependency: 'onMediaKind'. Either include it or remove the dependency array. If 'onMediaKind' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+./src/components/workspace/home/workspace-home-view.tsx
+102:3  Warning: 'isInsufficientEvidence' is defined but never used.  @typescript-eslint/no-unused-vars
+188:10  Warning: 'researchUiState' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+534:5  Warning: '_userRequestText' is defined but never used.  @typescript-eslint/no-unused-vars
+1264:5  Warning: React Hook useCallback has missing dependencies: 'hydrateTerminalPartialRun' and 'resumeActiveResearch'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+1338:6  Warning: React Hook useCallback has a missing dependency: 'handleResearchAuthError'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/lib/integration/verdict-adapter.ts
+42:3  Warning: 'unsupportedVerdictCapability' is defined but never used.  @typescript-eslint/no-unused-vars
+49:3  Warning: 'unsupportedBackendVerdictOrigin' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/41) ...
+   Generating static pages (10/41) 
+   Generating static pages (20/41) 
+   Generating static pages (30/41) 
+ тЬУ Generating static pages (41/41)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                               Size  First Load JS
+тФМ тЧЛ /                                                  7.28 kB         141 kB
+тФЬ тЧЛ /_not-found                                           1 kB         103 kB
+тФЬ тЧЛ /activate-invite                                   6.68 kB         148 kB
+тФЬ ╞Т /agent-runs/[id]                                   3.58 kB         123 kB
+тФЬ тЧЛ /agents/chat                                       22.2 kB         153 kB
+тФЬ ╞Т /assets/[id]                                       7.33 kB         141 kB
+тФЬ тЧЛ /campaigns                                         6.36 kB         140 kB
+тФЬ ╞Т /campaigns/[id]                                    9.18 kB         143 kB
+тФЬ тЧЛ /forgot-password                                   1.88 kB         146 kB
+тФЬ тЧЛ /login                                             2.26 kB         147 kB
+тФЬ тЧЛ /register                                          2.26 kB         147 kB
+тФЬ тЧЛ /reset-password                                    2.08 kB         147 kB
+тФЬ тЧЛ /review                                            4.08 kB         138 kB
+тФЬ тЧЛ /settings/beta-qa                                  3.33 kB         126 kB
+тФЬ тЧЛ /settings/channels                                 5.16 kB         133 kB
+тФЬ тЧЛ /workspace                                           28 kB         200 kB
+тФЬ тЧЛ /workspace/assets                                  4.82 kB         168 kB
+тФЬ тЧЛ /workspace/assistant                               20.7 kB         190 kB
+тФЬ тЧЛ /workspace/channels                                1.09 kB         164 kB
+тФЬ тЧЛ /workspace/developer                               3.68 kB         166 kB
+тФЬ тЧЛ /workspace/execution                                 140 B         102 kB
+тФЬ тЧЛ /workspace/implementation                          4.49 kB         167 kB
+тФЬ тЧЛ /workspace/investigations                           4.3 kB         167 kB
+тФЬ тЧЛ /workspace/knowledge                               1.48 kB         164 kB
+тФЬ тЧЛ /workspace/knowledge/manage                        5.42 kB         168 kB
+тФЬ тЧЛ /workspace/projects                                   2 kB         167 kB
+тФЬ ╞Т /workspace/projects/[projectId]/execution-package  14.2 kB         212 kB
+тФЬ ╞Т /workspace/projects/[projectId]/implementation     15.9 kB         213 kB
+тФЬ ╞Т /workspace/projects/[projectId]/investigation      21.4 kB         195 kB
+тФЬ ╞Т /workspace/projects/[projectId]/pivot              2.64 kB         191 kB
+тФЬ ╞Т /workspace/projects/[projectId]/strategy           12.4 kB         205 kB
+тФЬ ╞Т /workspace/projects/[projectId]/verdict            8.61 kB         192 kB
+тФЬ тЧЛ /workspace/projects/new                            1.23 kB         173 kB
+тФЬ тЧЛ /workspace/projects/new/audience                   1.61 kB         173 kB
+тФЬ тЧЛ /workspace/projects/new/economics                  1.34 kB         173 kB
+тФЬ тЧЛ /workspace/projects/new/idea                       1.18 kB         173 kB
+тФЬ тЧЛ /workspace/projects/new/market                     1.39 kB         173 kB
+тФЬ тЧЛ /workspace/projects/new/materials                  1.73 kB         173 kB
+тФЬ тЧЛ /workspace/projects/new/review                     13.1 kB         184 kB
+тФЬ тЧЛ /workspace/recovery-preview/r3                       140 B         102 kB
+тФЬ тЧЛ /workspace/research                                  140 B         102 kB
+тФЬ тЧЛ /workspace/review                                  1.09 kB         164 kB
+тФЬ тЧЛ /workspace/settings                                5.24 kB         168 kB
+тФЬ тЧЛ /workspace/settings/skills                         3.56 kB         166 kB
+тФЬ тЧЛ /workspace/strategies                              4.01 kB         167 kB
+тФЬ тЧЛ /workspace/tasks                                   5.24 kB         174 kB
+тФФ тЧЛ /workspace/verdicts                                4.34 kB         167 kB
++ First Load JS shared by all                           102 kB
+  тФЬ chunks/1255-b8cf77ab14370e57.js                      46 kB
+  тФЬ chunks/4bd1b696-100b9d70ed4e49c1.js                54.2 kB
+  тФФ other shared chunks (total)                        2.01 kB
+
+
+тЧЛ  (Static)   prerendered as static content
+╞Т  (Dynamic)  server-rendered on demand
+

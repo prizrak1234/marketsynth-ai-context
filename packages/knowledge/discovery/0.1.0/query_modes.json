@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "modes": [
+    "task_routing",
+    "capability_lookup",
+    "skill_lookup",
+    "workflow_pattern_lookup",
+    "engineering_diagnosis_lookup",
+    "knowledge_maintenance_lookup",
+    "deliverable_lookup",
+    "internal_audit_lookup"
+  ]
+}

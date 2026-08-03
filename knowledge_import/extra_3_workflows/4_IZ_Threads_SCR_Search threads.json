@@ -1,0 +1,1065 @@
+{
+  "name": "4_IZ_Threads_SCR_Search threads",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "Query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -224,
+        -64
+      ],
+      "id": "2b81f9a7-9ea0-49b7-926f-cdf76f004b6c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "3sugiVeIQn7YlNSZ",
+          "mode": "list",
+          "cachedResultName": "4_IZ_Threads_SCR_Search threads",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/3sugiVeIQn7YlNSZ"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "text": "={{ $json.posts.caption.text }}",
+            "like_count": "={{ $json.posts.like_count }}",
+            "username": "={{ $json.posts.user.username }}",
+            "full_name": "={{ $json.posts.user.full_name }}",
+            "post_id": "={{ $json.posts.code }}",
+            "URL": "=https://www.threads.net/@{{ $json.posts.user.username }}/post/{{ $json.posts.code }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "post_id",
+              "displayName": "post_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "like_count",
+              "displayName": "like_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -64
+      ],
+      "id": "89daa5a2-76f6-4a8b-82d2-8c212d83d059",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "jsCode": "// === Threads: Ответ для ИИ-агента по результатам поиска ===\n// Ожидает вход от предыдущей ноды с { profile, total, top3 }.\n// Пытается вытащить Query из текущего item или из ноды\n// \"When Executed by Another Workflow\" (если имя ноды другое — поправь ниже).\n\n// 1) Вход\nconst input = $input.all()[0]?.json || {};\nconst top3 = Array.isArray(input.top3) ? input.top3 : [];\nconst total = Number(input.total) || 0;\n\n// 2) Пытаемся определить ключевое слово запроса\nlet query =\n  input.query ||\n  input.Query ||\n  ($items('When Executed by Another Workflow', 0, 0)?.json?.Query) ||\n  null;\n\n// 3) Сколько строк реально вставили в таблицу (если нода называется \"Insert row\")\nlet insertedRows = null;\ntry {\n  const ins = $items('Insert row');\n  if (Array.isArray(ins)) insertedRows = ins.length;\n} catch (e) {\n  // ок, просто оставим null\n}\n\n// 4) Ссылки и компактные карточки топ-3\nconst links = top3.map(x => x.url).filter(Boolean);\nconst items = top3.map(x => ({\n  rank: x.rank,\n  url: x.url || null,\n  like_count: x.like_count ?? null,\n  comment_count: x.comment_count ?? null,\n  createdAt: x.createdAt ?? null,\n  caption_short: x.caption_short ?? null\n}));\n\n// 5) Сообщение\nconst prettyQuery = query ? `«${query}»` : '';\nconst wrote = insertedRows != null ? insertedRows : total;\nconst message = [\n  `По запросу ${prettyQuery || 'без ключевого слова'} нашёл ${total} постов в Threads`,\n  wrote != null ? `и записал в таблицу ${wrote}.` : '.',\n  ' Три самых популярных — ниже по ссылкам.'\n].join(' ');\n\n// 6) Ответ для ИИ-агента\nconst result = {\n  status: 'ok',\n  message,\n  query: query || null,\n  total_found: total,\n  inserted_rows: wrote,\n  top_threads: {\n    description: '3 популярных поста по запросу',\n    links,\n    items\n  },\n  generated_at: new Date().toISOString()\n};\n\nreturn [{ json: result }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        -64
+      ],
+      "id": "b3a432e5-8df3-4e94-83a1-de90d51023fb",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        -400
+      ],
+      "id": "0d56713f-7938-4ddc-966d-07cf3e9f273d",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "3sugiVeIQn7YlNSZ",
+          "mode": "list",
+          "cachedResultName": "4_IZ_Threads_SCR_Search threads",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/3sugiVeIQn7YlNSZ"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -400
+      ],
+      "id": "7755f5b3-ae2c-4823-92bd-b9f2eae6b64e",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1PFkjKxVbkPiFo-YSsBTe7fQsPqC9sdBMCpEbdZeKkAM",
+          "mode": "list",
+          "cachedResultName": "Threads AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PFkjKxVbkPiFo-YSsBTe7fQsPqC9sdBMCpEbdZeKkAM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 807721524,
+          "mode": "list",
+          "cachedResultName": "4_IZ_Threads_SCR_Search threads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PFkjKxVbkPiFo-YSsBTe7fQsPqC9sdBMCpEbdZeKkAM/edit#gid=807721524"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ $json.username }}",
+            "full_name": "={{ $json.full_name }}",
+            "URL": "={{ $json.URL }}",
+            "post_id": "={{ $json.post_id }}",
+            "like_count": "={{ $json.like_count }}",
+            "text": "={{ $json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "post_id",
+              "displayName": "post_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "like_count",
+              "displayName": "like_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        -400
+      ],
+      "id": "fa22b377-0d6f-49b2-9a63-2e99b81e7bd0",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Синхронизация данных в таблице в Google",
+        "height": 304,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -512
+      ],
+      "id": "dafb7c9e-3fd8-465f-b28f-6684382bbc72",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "3sugiVeIQn7YlNSZ",
+          "mode": "list",
+          "cachedResultName": "4_IZ_Threads_SCR_Search threads",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/3sugiVeIQn7YlNSZ"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "username",
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        608,
+        -400
+      ],
+      "id": "c56e46c7-5847-4058-b48a-bc81915cd656",
+      "name": "Delete row(s)1"
+    },
+    {
+      "parameters": {
+        "content": "## Get a Instagram profile s videos",
+        "height": 288,
+        "width": 1552,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "6acb0609-b5f5-45a5-8896-90b779172e5a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: DATA TABLE в n8n: https://youtu.be/FD1HyYR3EP0\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 132,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        576,
+        -576
+      ],
+      "typeVersion": 1,
+      "id": "c73f12bb-0e45-42ac-ab12-16f895717c72",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        496,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "5831b550-c2df-4046-881d-05d2ff83d223",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "threads",
+        "operation": "searchThreads",
+        "query": "={{ $json.Query }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        32,
+        -64
+      ],
+      "id": "cc207936-50b6-41f2-9de1-9e5bec0959c6",
+      "name": "Search threads",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "XNzkdQFgWnEu59Bh",
+          "name": "Scrape Creators account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "posts",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -64
+      ],
+      "id": "649d82ea-c6d2-45ec-b775-db4081a14044",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "// === Threads: топ-3 популярных поста (Run Once for All Items) ===\n\n// 1) Собираем строки\nconst rows = items.map(i => i.json);\n\n// 2) Утилиты\nconst toNum = v => Number.isFinite(Number(v)) ? Number(v) : 0;\n\nconst toTime = (v) => {\n  if (v == null) return 0;\n  const n = Number(v);\n  if (Number.isFinite(n)) {\n    // unix seconds -> ms\n    return n < 1e12 ? n * 1000 : n;\n  }\n  const t = Date.parse(String(v));\n  return Number.isFinite(t) ? t : 0;\n};\n\nconst cut = (s, words = 12) => String(s || '')\n  .replace(/\\s+/g, ' ')\n  .trim()\n  .split(' ')\n  .slice(0, words)\n  .join(' ');\n\nconst normUsername = (u) => (u ? String(u).replace(/^@/, '') : null);\n\nfunction pickCaption(r) {\n  return r?.caption?.text ?? r?.text ?? '';\n}\n\nfunction pickUsername(r) {\n  return (\n    r?.user?.username ??\n    r?.owner?.username ??\n    r?.username ??\n    r?.profile?.username ??\n    null\n  );\n}\n\nfunction pickPostId(r) {\n  return r?.pk ?? r?.post_id ?? r?.id ?? null;\n}\n\nfunction buildUrl(r) {\n  if (r.URL) return r.URL;\n  if (r.url) return r.url;\n  const u = normUsername(pickUsername(r));\n  const pid = pickPostId(r);\n  return (u && pid) ? `https://www.threads.net/@${u}/post/${pid}` : null;\n}\n\n// 3) Нормализация\nlet normalized = rows.map(r => {\n  const like = toNum(r.like_count ?? r.likes);\n  const comm = toNum(r.comment_count ?? r.comments);\n  const ts   = toTime(r.taken_at ?? r.createdAt ?? r.created_at ?? r.date);\n\n  const score = like + 2 * comm; // без просмотров усиливаем вес комментариев\n\n  const obj = {\n    url: buildUrl(r),\n    createdAt: ts ? new Date(ts).toISOString() : undefined,\n    like_count: like,\n    comment_count: comm || undefined,\n    score,\n    caption: pickCaption(r),\n    caption_short: cut(pickCaption(r), 12),\n  };\n\n  // вычистим пустоты\n  Object.keys(obj).forEach(k => (obj[k] == null || obj[k] === '') && delete obj[k]);\n  return obj;\n});\n\n// 4) Фильтр и сортировка\nnormalized = normalized\n  .filter(x => x.url) // нужен валидный URL\n  .sort((a, b) =>\n    (b.score - a.score) ||\n    (b.like_count - a.like_count) ||\n    ((b.comment_count || 0) - (a.comment_count || 0)) ||\n    (toTime(b.createdAt) - toTime(a.createdAt))\n  );\n\n// 5) Топ-3 + ранги\nconst top3 = normalized.slice(0, 3).map((x, i) => ({ rank: i + 1, ...x }));\n\n// 6) Профиль (базово — из первых строк, если есть)\nfunction inferProfile(rows) {\n  const r0 = rows[0] || {};\n  const u = r0.user || r0.owner || {};\n  const username = pickUsername(r0);\n  const fullName = u.full_name ?? r0.full_name ?? r0.profile?.full_name ?? null;\n  return {\n    username: username ? `@${normUsername(username)}` : null,\n    nickname: fullName || null,\n  };\n}\n\nconst profile = inferProfile(rows);\n\n// 7) Результат\nreturn [{ json: { profile, total: rows.length, top3 } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -64
+      ],
+      "id": "73b65adc-717d-4848-8699-54f5d2044436",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "Query": "n8n"
+        }
+      }
+    ],
+    "Search threads": [
+      {
+        "json": {
+          "success": true,
+          "credits_remaining": 21,
+          "posts": [
+            {
+              "id": "3747386901058967475_63477801062",
+              "pk": "3747386901058967475",
+              "caption": {
+                "text": "AI avatar for ads\n\n🛠 AI tools: Higgsfield ➡ NanoBanana ➡ Grok\n\n👩‍💻 Workflow: n8n",
+                "pk": "18031391759720248",
+                "has_translation": null
+              },
+              "code": "DQBZIgxklez",
+              "like_count": 320,
+              "taken_at": 1760943351,
+              "user": {
+                "pk": "63477801062",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/509935641_17912594532113063_2172043909179095731_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDI2LmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=111&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=ioIvWPo-exwQ7kNvwHJ01tS&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AffdGcCuu1Ot_d26cXdU-IYVhX4_oQc5YGlZ3HM74J6Wew&oe=68FEA5C4&_nc_sid=10d13b",
+                "username": "blancmaq",
+                "id": "63477801062",
+                "full_name": "Ilia Kitchenko",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3639101503253905193_70302899791",
+              "pk": "3639101503253905193",
+              "caption": {
+                "text": "I spent 50+ hours curating AI Agent & Automation templates.\n\nNo paywalls. No friction. No signup. 100% FREE.\n\nReady to download and import into Make/n8n.\n\nBest for:\n\n- Beginners looking to learn by example\n- Creators & entrepreneurs automating tedious workflows\n- AI automation consultants and agencies building customized solutions\n\n800+ real-world use cases.\nSearch by tool, use case, and platform.\n\nIf you want to get it FREE, you know the deal:\n\n1. Like\n2. Share\n3. Comment \"agents\"",
+                "pk": "18033969203341149",
+                "has_translation": null
+              },
+              "code": "DKAr4lTCf8p",
+              "like_count": 1186,
+              "taken_at": 1748034781,
+              "user": {
+                "pk": "70302899791",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/451384170_1897085457383369_7745270744457463125_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=105&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=Qe8g6e8FdegQ7kNvwGq9yo-&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afd2PG9tfB8PFvqMQO5EH4Rv4RYCNZm_nRUKxf0v9mus3g&oe=68FEC0AF&_nc_sid=10d13b",
+                "username": "sabrina_ramonov",
+                "id": "70302899791",
+                "full_name": "Sabrina Ramonov 🍄",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": true,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3659211359797371329_69374274946",
+              "pk": "3659211359797371329",
+              "caption": {
+                "text": "昨天做了一個 n8n 「面試大師」\n\n只要貼上 LinkedIn 職缺連結，AI Agent 就會自動 review 你的履歷，找出 Job Description 和履歷之間差距，並給出具體修改建議。\n\n除此之外，它還會自動透過 Perplexity 搜集產業資訊、4P 架構、競品分析，幫你整理出可能會被問到的面試問題，讓你準備得更精準！\n\n如果你也想打造自己的 AI 求職助手，留言「想要」！",
+                "pk": "18275586724281075",
+                "has_translation": true
+              },
+              "code": "DLIIVgqy-HB",
+              "like_count": 6665,
+              "taken_at": 1750432008,
+              "user": {
+                "pk": "69374274946",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/532930355_17890384014314947_8444901939398676076_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=107&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=_XfnlrTBqxwQ7kNvwE7Qhwo&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AffEvhByOM2FVXAOJvQT42422WQG62PMkM8pNCgyT90eGg&oe=68FEBBC4&_nc_sid=10d13b",
+                "username": "ironv.careerlife",
+                "id": "69374274946",
+                "full_name": "鋼鐵 V （薇琪）| 職場作家 | 數據分析",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748220341274664181_63305803751",
+              "pk": "3748220341274664181",
+              "caption": {
+                "text": "【用n8n做一個易經占卜LINE bot】\n\n最近用n8n做了一個結合易經卜卦的 LINE bot\n部署在zeabur上，總之對我這種小白來說真是便宜方便好用！\n\n排盤用的是傳統易經裝卦方式，所以不會有AI亂排亂抓的問題，解卦才丟給AI解\n\n目前還在給親朋好友內測中",
+                "pk": "17913687732212744",
+                "has_translation": true
+              },
+              "code": "DQEWoqdkdz1",
+              "like_count": 119,
+              "taken_at": 1761042705,
+              "user": {
+                "pk": "63305803751",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/460369530_1079129866975122_5851597705573398860_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby43MTguYzIifQ&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=106&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=QPmFuubUkxYQ7kNvwEYfHgx&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfdJfuI4BOO54x8rxHWAySgSmNsabCRR_5qmdk_Wf886sQ&oe=68FEC998&_nc_sid=10d13b",
+                "username": "xxin1ei",
+                "id": "63305803751",
+                "full_name": "楊昕蕾",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748999344868810432_73098409451",
+              "pk": "3748999344868810432",
+              "caption": {
+                "text": "AI知識助手的免費n8n模板，終於趕出來了。\n​其實模板上週就做好了，但想要把教學影片也拍出來，讓第一次看到的人也能馬上用起來。\n​\n​直到今天才把影片拍好，這次的模板真的不難，\n​每個人都有機會可以使用，而且能盡快累積自己的個人知識庫。\n​\n​為了方便使用，連Notion知識庫模板都有提供，\n​有需要可以到我的Portaly下載，\n​如果模板有問題都能在群內問。\n​\n​同時AI知識助手的實戰版本也已經上架了，\n​不只是用表單輸入資料，而是能串接到LINE上，讓LINE成為自己的知識庫助手，\n​除了原本的文章和Youtube影片，還能解析更多內容，和讓重點更貼近自己的需求。\n​有需要也能在Portaly看看，若想購買還是推薦超級個體包，會包含五個工作流。(目前上架2個)\n​\n​然後這幾天也會推出串Telegram版本的知識助手，同時免費新增在超級個體包。\n​\n​免費版本很適合n8n新手入門，模板內說明有提示可以朝哪些方向做優化，\n​在成功跑起來後就能試著改造看看~",
+                "pk": "18076545907919426",
+                "has_translation": true
+              },
+              "code": "DQHHwqGE97A",
+              "like_count": 9,
+              "taken_at": 1761135570,
+              "user": {
+                "pk": "73098409451",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/544321100_17869227891433452_5471118197838884732_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDI0LmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=100&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=sDoDn5m9jXIQ7kNvwEWrhmP&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afee5IdjQYFFOjGALlnTJ7xWfhsexYjBquvyLytrwmNR2A&oe=68FE9D51&_nc_sid=10d13b",
+                "username": "darks0603",
+                "id": "73098409451",
+                "full_name": "陳盟升 Darks | 人生實驗計劃",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748734195406292812_68034822719",
+              "pk": "3748734195406292812",
+              "caption": {
+                "text": "太棒了！ ChatGPT 推出瀏覽器 Altas\n\n讓我們用來自動化 n8n 測試看看\n任務：重新命名三個節點\n\nChatGPT Altas : 2 分鐘 40 秒\nPerplexity Comet : 1 分鐘 50 秒\n人工 : 10 秒\n\n這次的測試明顯感受到 Altas 比較廢話\n在前面會跟你確定蠻多命名的細節\n\n有一種你沒真的叫我做事之前\n我是不會輕舉妄動的感覺\n\nAltas 在動畫的表現上有比較酷\n金粉一圈一圈非常貴氣\n也會在畫面呈現更多『正在幹嘛』的細節\n\nComet 就比較像是個老實人\n你一講完他就會直接動工\n對畫面跟操作步驟的理解貌似比較熟悉\n\n看來 AI 瀏覽器在解放雙手這件事情上還有一小段路\n用在對網頁上的畫面理解和分析場景比較適合\n期待 @ai.layology.lab 躺學的訂房測試！",
+                "pk": "18071898461220278",
+                "has_translation": true
+              },
+              "code": "DQGLeOajUdM",
+              "like_count": 30,
+              "taken_at": 1761104587,
+              "user": {
+                "pk": "68034822719",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/453428921_2735465993300168_7202571096705114971_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby41MTIuYzIifQ&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=108&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=bglyatIX2sYQ7kNvwH8vfk5&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfenCPCC1AfW7BU02Ld6c95h2vVa2DL-PylwaBW2KN0GUg&oe=68FEB52D&_nc_sid=10d13b",
+                "username": "darrell_tw_",
+                "id": "68034822719",
+                "full_name": "Darrell",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748389258722401149_65869007152",
+              "pk": "3748389258722401149",
+              "caption": {
+                "text": "［從零開始學 n8n］\n我做了一個「財神到！」機器人💰\n\n不是開玩笑\n美股財報季時它每天幫我追蹤最新數據\n比我還準時、比我還積極\n\n在n8n設定好想追的公司清單後\n串 FMP API 撈最新一季數據\n營收、EPS、預期值通通到手\n接著丟給 Agent 去搜新聞、看市場反應\n再幫我整理成重點摘要\n最後當然也是直接推播到 Telegram\n\n無論盤前還是盤後發布財報\n時間到我的手機就會跳出\n「叮～ 財神到!」\n\n接下來，我想教它分得出哪一個是真的財神!",
+                "pk": "18425724388109362",
+                "has_translation": true
+              },
+              "code": "DQE9CvGCdt9",
+              "like_count": 75,
+              "taken_at": 1761062842,
+              "user": {
+                "pk": "65869007152",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/441639790_447308184344527_6910987619455729239_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=107&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=Ne1kMPE48t0Q7kNvwEfMNHQ&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfdyLEs1F0jvgZnffktfCYbrMYdTrRm-Cu6SSPIe6VcloQ&oe=68FEA364&_nc_sid=10d13b",
+                "username": "wei_lun24",
+                "id": "65869007152",
+                "full_name": "Allen",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3696253091600626140_64832384317",
+              "pk": "3696253091600626140",
+              "caption": {
+                "text": "用n8n經營帳號一個月發180 篇文\n💰成本： 1.13 / reel +5小時架設 \n\n從影片處理到生成文案自動化，\n每天時間到它就自己開始工作\n好像開心農場開外掛自動幫玉米澆水🌽",
+                "pk": "18069096509150705",
+                "has_translation": true
+              },
+              "code": "DNLuppsy3Hc",
+              "like_count": 2827,
+              "taken_at": 1754847726,
+              "user": {
+                "pk": "64832384317",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/543843634_17917493991160318_8272469243763599508_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zMjAuYzIifQ&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=110&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=6yHNwRB6hWQQ7kNvwHTlo8N&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AffYIC963R9rPxlJvshKe5VkGRbs4c8Ahz0bbEJfN9HRtw&oe=68FEA9BF&_nc_sid=10d13b",
+                "username": "c.yu.an_",
+                "id": "64832384317",
+                "full_name": "I’m Anna",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3712005008348404130_73971505568",
+              "pk": "3712005008348404130",
+              "caption": {
+                "text": "Nano banana + n8n = Ad Factory\n\nThis system pumps out TikTok/FB/Insta video ads on autopilot using the latest AI video models.\n\n- No actors.\n- No editors.\n- No overpriced agencies.\n\nWant the full template?\n\nComment “NANO” and I’ll DM it to you.\n(must be following)",
+                "pk": "18078565985299455",
+                "has_translation": null
+              },
+              "code": "DODsONXE9mi",
+              "like_count": 119,
+              "taken_at": 1756725508,
+              "user": {
+                "pk": "73971505568",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/490715858_965968632192995_3557634563630625729_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby41MDAuYzIifQ&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=NMtK6tC16mgQ7kNvwF8C2w4&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfcExSHjLW57LuhK6mF3GF7Qr9ZtZ91A07quzm5Swq4gcA&oe=68FEB6EB&_nc_sid=10d13b",
+                "username": "aisocity",
+                "id": "73971505568",
+                "full_name": "Ai Society - Artificial Intelligence (AI) • ChatGPT",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3586065966091767965_72631919632",
+              "pk": "3586065966091767965",
+              "caption": {
+                "text": "終於整理好一個香港AI學習資源目錄🇭🇰\n\n排名不分先後，希望幫到大家更快掌握 AI 🤖 \n\n@ai.academyhk AI 工具進階玩法\n@krumjahn n8n 專家\n@dev.stuff.meme LLM小知識\n@ai.girlie.hk 分享學AI筆記\n@ng_chill_guy 分享AI工具\n@prompt_case AI Coding 專家\n@ai.chillguy  自家AI workflow 教學\n@bitandbyte.hk TLDR 實測 AI 工具\n@timktchan AI 成長行銷\n@edwardai.tech AI 打造豐盛人生\n@kat.aido 分享 AI 知識\n@goodai.hk 教師用AI 實例\n@slash.horse Make 自動化專家\n@ai.marketing.hk AI 行銷實戰應用\n@ai9_studio 打工創業必用AI工具\n@ar.shek AI Zapier 及營銷教學\n@dotai.hk AI 教學資訊平台\n@ay_onemarketing 用AI賺錢\n@ivansoig GenAI 專家\n\n仲有冇其他? 留言話我知⬇️",
+                "pk": "18046254482066045",
+                "has_translation": true
+              },
+              "code": "DHEQ_8SBJCd",
+              "like_count": 1112,
+              "taken_at": 1741712397,
+              "user": {
+                "pk": "72631919632",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/482334970_648657250863599_7479544431404018018_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=111&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=Y3FqJZvnEbcQ7kNvwGzssMv&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afeq6i7e0dPgxZ1_M_nwOQ8snvFvNAaBJtObUaqu3A1mKg&oe=68FECC27&_nc_sid=10d13b",
+                "username": "ericleung.hk",
+                "id": "72631919632",
+                "full_name": "Eric Leung",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3716874427083868842_63488872694",
+              "pk": "3716874427083868842",
+              "caption": {
+                "text": "My first successful automation on n8n.",
+                "pk": "18482189446078087",
+                "has_translation": null
+              },
+              "code": "DOU_Zk9EUqq",
+              "like_count": 954,
+              "taken_at": 1757305981,
+              "user": {
+                "pk": "63488872694",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/455112363_521965963544669_5391424694642276157_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=dlOI3xLgEOwQ7kNvwHXXtU6&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AffpriYsUtF1Df914vWQ69t-H_sCQgUcQKoDnVa4_XATaw&oe=68FEB1E0&_nc_sid=10d13b",
+                "username": "stanleywangg",
+                "id": "63488872694",
+                "full_name": "Stanley Wang",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": true,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3720779814631828546_68230504530",
+              "pk": "3720779814631828546",
+              "caption": {
+                "text": "I am looking for an AI automation expert using n8n",
+                "pk": "18337425637207789",
+                "has_translation": null
+              },
+              "code": "DOi3YcikuxC",
+              "like_count": 18,
+              "taken_at": 1757771540,
+              "user": {
+                "pk": "68230504530",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/452639985_1167400924538638_6014562503472564667_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDc4LmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=110&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=RPRw_uZXALMQ7kNvwGRXDTH&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AffY7g1-KdqmuHbCCS70KZeUh_YsInwSsK3Ms768XB8edA&oe=68FEBA5F&_nc_sid=10d13b",
+                "username": "lukeatmeeenow",
+                "id": "68230504530",
+                "full_name": "Luke Fernandez",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3728079033536201104_63231303261",
+              "pk": "3728079033536201104",
+              "caption": {
+                "text": "朋友看到我把 n8n 的影片都公開在 YouTube 上，問我這樣不擔心之後開課沒生意嗎？\n\n我：「如果我會沒生意那就是我自己的問題，跟我公開這些 n8n 的教學影片應該沒關係」\n\n在教學領域做了十幾年，我相信也見證過施永遠比受更有福。這些內容並不是護城河，它們就只是工具，在這個 AI 滿天飛的時代，越多人學會就越能減少不必要的 FOMO\n\n整個 IT 鐵人賽後續還有大概 20 集左右的額度，想要看什麼 n8n 的工作流程歡迎大家許願，能做的出來的我就做給大家看 :)",
+                "pk": "18084373891915158",
+                "has_translation": true
+              },
+              "code": "DO8zCD4gcGQ",
+              "like_count": 1015,
+              "taken_at": 1758641674,
+              "user": {
+                "pk": "63231303261",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/461424812_1051987226118207_6802339846180376759_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDI5LmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=103&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=T79gmrI-_2QQ7kNvwHE63MV&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afeof90eMDp4Wz4HGGYXPX01hFaZOAStqSlL3UCSEfdtug&oe=68FEB34B&_nc_sid=10d13b",
+                "username": "kaochenlong",
+                "id": "63231303261",
+                "full_name": "高見龍.agent",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3716353239857400023_74859435070",
+              "pk": "3716353239857400023",
+              "caption": {
+                "text": "👥【Threads 務實帳號推薦】\n\n好來分享一些我覺得 很有料、很務實 的帳號，很常看了都很有收穫的帳號！ ✨\n如果你也在玩 AI 或自動化，很值得關注！\n\n🔹 @darrell_tw_\n土地公不用多說，在 Threads 玩 n8n 的人一定知道！\n最近做了一個「一個點子快速發到十個平台」的 flow，超實用，去他牆上看看吧\n\n🔹 @c.yu.an_\n最早從她的 Threads + IG 自動化內容認識她，雖然稍硬，但非常實用～\n\n🔹 @kelly_guooo\n「蔡依林標準時間」開發者，最近還整理了 vibe coding 的 Notion 筆記，超佛！\n\n🔹 @lazyoffice2024\n常分享各種有趣的 n8n flow，前陣子還開放了 Line + Nano Banana 串接給大家玩！\n\n🔹 @ironv.careerlife\n最有名的 workflow 就是 n8n 履歷修改大師，還有太多神級應用，去他的 Threads 翻就對了。\n\n🧱 來蓋一棟樓吧！\n歡迎大家分享你最推薦的 AI / 自動化 / 工具新知帳號，\n讓更多人一起學習，也讓優質帳號被看到 🚀",
+                "pk": "18059614235457854",
+                "has_translation": true
+              },
+              "code": "DOTI5ThkojX",
+              "like_count": 493,
+              "taken_at": 1757243851,
+              "user": {
+                "pk": "74859435070",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/504123691_17847939477484159_8214240479325303443_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDI0LmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=107&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=feKhVqpIiDkQ7kNvwHE51st&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfeyJcZ8sThEMKukLTWIb81yREl1J6int95u4OimF2eUEg&oe=68FEC41F&_nc_sid=10d13b",
+                "username": "ai.lanrenbao",
+                "id": "74859435070",
+                "full_name": "AI懶人報",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748852542450290970_63305803751",
+              "pk": "3748852542450290970",
+              "caption": {
+                "text": "【用n8n做一個易經占卜LINE bot】\n想寫點這個機器人的心得實在有點不會寫🫠\n易經六爻卦是兩年多前，我的工程師表哥教我的，他教我用錢幣起卦，我回去自己找資料粗淺地學了一些。\n老實說我平常根本不會想算卦(ᵕ—ᴗ—)做這個就是好奇怎麼做、想做就做了。\n\n不希望被濫用，所以流程上\n- 傳送問題後會讓AI審核，ok才可以繼續算卦的步驟。暴力、惡意、試探他人隱私、賭博投機之類不適合占卜的問題，都會被擋掉，提示重新問問題\n- 防止spam行為，超過100字、只輸入數字、算卦步驟中、AI解卦中，也都會擋掉，避免無腦請求API和爆token\n- 每日占卜額度8次\n\n有興趣可以玩玩看，如果可以抖內我是最好ヽ(；▽；)ノ\n如有bug先假裝沒事（開玩笑）請告訴我，有空會修⋯",
+                "pk": "18194830432323967",
+                "has_translation": true
+              },
+              "code": "DQGmYZsEdEa",
+              "like_count": 9,
+              "taken_at": 1761118069,
+              "user": {
+                "pk": "63305803751",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/460369530_1079129866975122_5851597705573398860_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby43MTguYzIifQ&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=106&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=QPmFuubUkxYQ7kNvwEYfHgx&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfdJfuI4BOO54x8rxHWAySgSmNsabCRR_5qmdk_Wf886sQ&oe=68FEC998&_nc_sid=10d13b",
+                "username": "xxin1ei",
+                "id": "63305803751",
+                "full_name": "楊昕蕾",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3722867583872037437_69136896636",
+              "pk": "3722867583872037437",
+              "caption": {
+                "text": "Hey algorithm\nI want to connect with people who love:\n• AI\n• n8n\n• Vibe coding\n• Vibe marketing\nThreads where my people are??\n\nMe: running AI agency & SaaS😃",
+                "pk": "17942880813050275",
+                "has_translation": null
+              },
+              "code": "DOqSFfKgnI9",
+              "like_count": 276,
+              "taken_at": 1758020421,
+              "user": {
+                "pk": "69136896636",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/538993632_17892462309304637_7711642398300894795_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDI0LmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=105&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=PqEbOW1HjZwQ7kNvwF4Xb3K&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfdRAcAqCmXdgtXWuFdQh3i6Ek_qJAv59Utr1q0KyJNNTw&oe=68FEBE37&_nc_sid=10d13b",
+                "username": "ai_topia_",
+                "id": "69136896636",
+                "full_name": "Joon | AItopia",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3713656311612918223_73653794580",
+              "pk": "3713656311612918223",
+              "caption": {
+                "text": "Nano Banana + N8N = UGC Content Factory\n\nThis system generates scroll stopping video ads on autopilot using Google's newest image generation model.\n\nNo models needed\nNo video crews\nNo $10K agencies\n\nJust endless UGC-style content at the speed of thought.\n\nHere's how it works 🧵",
+                "pk": "18061450847367334",
+                "has_translation": null
+              },
+              "code": "DOJjr1Xk0nP",
+              "like_count": 332,
+              "taken_at": 1756922352,
+              "user": {
+                "pk": "73653794580",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/514933010_17857341291450581_1130815204126659927_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDAwLmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=105&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=rOdcskzbW0cQ7kNvwFEUhhf&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afc2ePiM8af5RD7jFcoLDAfM5op-HSS_nAyodtGUo3hMwQ&oe=68FEAEE0&_nc_sid=10d13b",
+                "username": "humangotai",
+                "id": "73653794580",
+                "full_name": "AI Tools • Tutorials • HumanGotAI",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3571318187230175628_70460364309",
+              "pk": "3571318187230175628",
+              "caption": {
+                "text": "무조건 봐야하는 해외 AI 유튜버\n\n1. [Liam Ottley] - 구독자 422,000명\nAI 자동화 에이전시 창시자. 이 사람만 봐도 인사이트 넘쳐남.\n\n2. [Nick Saraev] - 구독자 50,500명\nMake, n8n 자동화 퀄리티 미쳤음.\n\n3. [Jeff Su] - 구독자 1,020,000명\n초보자한테 너무 좋은 내용 + 영상 편집이 너무 맛있음.\n\n4. [Stephen G.Pope] - 구독자 51,800명\n수준 높은 자동화 시나리오. 자동화 고수 되려면 필수.\n\n5. [Eugene Kadzin] - 구독자 7,410명\n에이전시 고객 미팅을 실제로 보여줌. 엄청 도움됨.\n\n리포스트 많으면 아래 파일 공유할게! (총 28명)",
+                "pk": "18057753802860271",
+                "has_translation": true
+              },
+              "code": "DGP3vg5vyGM",
+              "like_count": 2373,
+              "taken_at": 1739954325,
+              "user": {
+                "pk": "70460364309",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/480084103_17861380440348310_6399995117092854081_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby41MDAuYzIifQ&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=110&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=xtoElzCgjM0Q7kNvwFCYAGb&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afci4lnilm5K_Mx2jwRNDqInlBmRGSHqS7HcElNMg_3Etw&oe=68FEBB4B&_nc_sid=10d13b",
+                "username": "realaiforyou",
+                "id": "70460364309",
+                "full_name": "당신을 위한 AI | AI 툴, 자동화, 비즈니스 인사이트",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748339787704243447_74793415238",
+              "pk": "3748339787704243447",
+              "caption": {
+                "text": "Found the n8n MCP integration a few weeks ago and I can’t stop using it.\n\nIt completely changed how I build automations.\n\nHere's why every AI first dev needs to pay attention (and the setup that saves hours) ↓",
+                "pk": "18083760169792193",
+                "has_translation": null
+              },
+              "code": "DQExy1nkxT3",
+              "like_count": 8,
+              "taken_at": 1761056950,
+              "user": {
+                "pk": "74793415238",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/501802274_17844872988492148_5679956078502227472_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=tpNhOxso67QQ7kNvwF4FGKc&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfeE4Hxe0_zmQDimLVkxceonyE7h1n2m1RpxK5MHUW2isQ&oe=68FEA340&_nc_sid=10d13b",
+                "username": "builtbyprajwal",
+                "id": "74793415238",
+                "full_name": "Prajwal Tomar",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": true,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748899155427291065_63663168005",
+              "pk": "3748899155427291065",
+              "caption": {
+                "text": "N8N可以丟一邊了⋯ \n\nWordPress 部落格 AI 寫手系統\n\n我用Claude Code 打造\n全自動部落格文章創作與發布\n\n功能如下\n\n多 Agent 協作：7 個專業 AI Agent 分工合作\n智能改寫：輸入網址或主題，自動產出高品質文章\n風格融合：學習參考作者風格，融合個人特色\n市場研究：分析熱門文章，掌握讀者偏好\nSEO 優化：自動優化關鍵字、Meta 標籤\n生成圖片：按最終內容生成提示詞生產對應圖片\n一鍵發布：直接發布到 WordPress",
+                "pk": "18083367403970076",
+                "has_translation": true
+              },
+              "code": "DQGw-taAW-5",
+              "like_count": 21,
+              "taken_at": 1761123626,
+              "user": {
+                "pk": "63663168005",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fmii9-1.fna.fbcdn.net/v/t51.2885-19/358027089_1006527754134349_5015067968563985470_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fmii9-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QFsASy5Kzppzr9_RjJCTMxTKBcQHeC5kd5wRQUF44VfiDhhaBk1OM_H2HPTWy6kYWA&_nc_ohc=d7tUhip9l2UQ7kNvwFvjx4O&_nc_gid=avisjBGctTgv9UuVry1YuA&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfdOUuD3rYVQxuT9E82JVc-NErq07fhu6-V1PQODsGqIYg&oe=68FEC134&_nc_sid=10d13b",
+                "username": "mr.__.l",
+                "id": "63663168005",
+                "full_name": "追求躺平主義的代表｜💻Louis",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Search threads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search threads": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "41540041-6fdd-464b-8f76-ed01407ea45d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "NM29dMKOBMfwntqU",
+  "tags": []
+}

@@ -1,0 +1,16 @@
+{
+  "map": [
+    {
+      "food_id": "FOOD_RU_0001",
+      "allergens": [
+        "глютен"
+      ]
+    },
+    {
+      "food_id": "FOOD_RU_0100",
+      "allergens": [
+        "нет"
+      ]
+    }
+  ]
+}

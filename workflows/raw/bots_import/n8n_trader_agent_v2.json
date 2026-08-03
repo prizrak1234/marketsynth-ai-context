@@ -1,0 +1,98 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "value": 9, "minutes": 30 }]
+        }
+      },
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [100, 200]
+    },
+    {
+      "parameters": {
+        "url": "https://iss.moex.com/iss/engines/stock/markets/shares/boards/tqbr/securities/IMOEX.json",
+        "options": {}
+      },
+      "name": "Get IMOEX Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [300, 100]
+    },
+    {
+      "parameters": {
+        "url": "https://iss.moex.com/iss/engines/stock/markets/shares/boards/tqbr/securities.json",
+        "options": {}
+      },
+      "name": "Get Stocks Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const stocks = $nodes[\"Get Stocks Data\"].json.securities.data;\nconst imoex = $nodes[\"Get IMOEX Status\"].json.securities.data;\n// Логика объединения и фильтрации по ATR и объему\nreturn stocks.slice(0, 10).map(s => ({ ticker: s[0], price: s[3], market_context: imoex }));"
+      },
+      "name": "Advanced Filter & Merge",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [550, 200]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "systemPrompt": "=[Вставьте содержимое trader_agent_system_prompt_v2.md]",
+        "prompt": "=Проанализируй данные: {{ $json.ticker }} по цене {{ $json.price }}. Учти режим рынка: {{ $json.market_context }}. Сформируй идею (Long/Short) с ATR-стопами."
+      },
+      "name": "AI Agent v2",
+      "type": "n8n-nodes-base.aiAgent",
+      "typeVersion": 1,
+      "position": [800, 200]
+    },
+    {
+      "parameters": {
+        "conditions": [
+          {
+            "value1": "={{ $json.probability }}",
+            "operation": "largerEqual",
+            "value2": 90
+          }
+        ]
+      },
+      "name": "Probability Filter",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1050, 200]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "=🚀 СИГНАЛ: {{ $json.ticker }} ({{ $json.direction }})\nВход: {{ $json.entry_point }}\nЦель: {{ $json.target }}\nСтоп (ATR): {{ $json.stop_loss }}\nОбоснование: {{ $json.justification.technical_setup }}"
+      },
+      "name": "Telegram: Confident Signal",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1300, 100]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "=🤔 УТОЧНЕНИЕ: {{ $json.ticker }}\nВероятность: {{ $json.probability }}%\nВопрос: {{ $json.justification.key_risks }}"
+      },
+      "name": "Telegram: Clarification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1300, 300]
+    }
+  ],
+  "connections": {
+    "Daily Trigger": { "main": [[{ "node": "Get IMOEX Status", "type": "main" }, { "node": "Get Stocks Data", "type": "main" }]] },
+    "Get IMOEX Status": { "main": [[{ "node": "Advanced Filter & Merge", "type": "main" }]] },
+    "Get Stocks Data": { "main": [[{ "node": "Advanced Filter & Merge", "type": "main" }]] },
+    "Advanced Filter & Merge": { "main": [[{ "node": "AI Agent v2", "type": "main" }]] },
+    "AI Agent v2": { "main": [[{ "node": "Probability Filter", "type": "main" }]] },
+    "Probability Filter": { "main": [[{ "node": "Telegram: Confident Signal", "type": "main" }], [{ "node": "Telegram: Clarification", "type": "main" }]] }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "core_version": "0.1.0-core",
+  "status": "core_reviewed",
+  "pilot_pattern_count": 8,
+  "core_pattern_count": 12,
+  "total_pattern_count": 20,
+  "pilot_pattern_ids": [
+    "draft_to_human_approval",
+    "error_workflow_or_recovery",
+    "evidence_grounded_generation",
+    "human_approval_before_publication",
+    "lead_capture_to_qualification",
+    "retry_with_idempotency",
+    "structured_LLM_to_API_request",
+    "workflow_backup"
+  ],
+  "core_pattern_ids": [
+    "checkpoint_and_resume",
+    "customer_feedback_to_learning_candidate",
+    "dead_letter_queue",
+    "human_edit_then_resume",
+    "pagination_and_batching",
+    "provider_rate_limit_handling",
+    "publication_confirmation",
+    "quality_gate_after_generation",
+    "source_lineage_preservation",
+    "specialist_subworkflow",
+    "supervisor_pattern",
+    "tool_workflow_separation"
+  ],
+  "generated_at": "2026-07-23T19:06:55.238287+00:00"
+}

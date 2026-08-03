@@ -1,0 +1,16 @@
+{
+  "plans": [
+    {
+      "id": "PLAN_1700",
+      "kcal": 1700,
+      "days": 7,
+      "style": "BALANCED"
+    },
+    {
+      "id": "PLAN_2000",
+      "kcal": 2000,
+      "days": 7,
+      "style": "BALANCED"
+    }
+  ]
+}

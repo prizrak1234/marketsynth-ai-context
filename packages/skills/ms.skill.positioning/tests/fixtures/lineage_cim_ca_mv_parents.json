@@ -1,0 +1,24 @@
+{
+  "child_skill_id": "ms.skill.positioning",
+  "child_skill_version": "0.1.0",
+  "child_output_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+  "parents": [
+    {
+      "skill_id": "ms.skill.icp_segmentation",
+      "skill_version": "0.1.0",
+      "output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "skill_id": "ms.skill.competitor_analysis",
+      "skill_version": "0.1.0",
+      "output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    },
+    {
+      "skill_id": "ms.skill.market_validation",
+      "skill_version": "0.2.0",
+      "output_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "package_hash": "ec7c86ce0bc39b5481e336b7749de3cf087d47630be315c639897dd687568f7a"
+    }
+  ]
+}

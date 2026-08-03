@@ -1,0 +1,223 @@
+{
+  "name": "Анализ звонков за неделю",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "13ggGgRn3fhKYQdwRB8p45eZuC4-2NVdh6r0hY84",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Лист1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13ggGgRn3fhKYQdwRB8p4UuC4-2NVdh6r0hY84/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -260,
+        -100
+      ],
+      "id": "28b576c7-ba6b-4f16-9fcb-04c32cc45589",
+      "name": "Чтение таблицы",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KE4NkgvfSwDVxSvU",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = await $input.all();\n\n// Определяем sevenDaysAgo\nconst sevenDaysAgo = new Date();\nsevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);\n\n// Функция для парсинга даты в формате DD.MM.YYYY HH:mm:ss\nfunction parseCustomDate(dateStr) {\n  const [datePart, timePart] = dateStr.split(' ');\n  const [day, month, year] = datePart.split('.');\n  const [hours, minutes, seconds] = timePart.split(':');\n\n  // Месяцы в JS начинаются с 0 (январь = 0, февраль = 1 и т.д.)\n  return new Date(year, month - 1, day, hours, minutes, seconds);\n}\n\n// Отладочные логи\nconsole.log(\"sevenDaysAgo:\", sevenDaysAgo); // Проверяем, как вычисляется sevenDaysAgo\nconsole.log(\"Current Date:\", new Date()); // Проверяем текущую дату\n\n// Фильтруем и формируем результат\nconst result = items\n  .filter(item => {\n    let rowDate;\n    try {\n      // Попытка парсинга даты\n      rowDate = parseCustomDate(item.json['Время']);\n      console.log(\"Original Date String:\", item.json['Время']); // Проверяем исходную строку даты\n      console.log(\"Parsed Date:\", rowDate); // Проверяем, как парсится каждая дата\n    } catch (error) {\n      console.error(`Ошибка при парсинге даты: ${item.json['Время']}`);\n      return false; // Если дата некорректна, пропускаем строку\n    }\n    console.log(\"Comparing dates:\", rowDate >= sevenDaysAgo && rowDate <= new Date());\n    return !isNaN(rowDate) && rowDate >= sevenDaysAgo && rowDate <= new Date();\n  })\n  .map(item => ({\n    Транскрипция: item.json['Транскрипция'],\n    Время: item.json['Время']\n  }));\n\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        -100
+      ],
+      "id": "3ab1cd4e-fc16-49c4-89ad-664abd7d0c44",
+      "name": "Code"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -100
+      ],
+      "id": "833ae63c-4ef8-4ae4-9430-055466ceccf6",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $json.prompt }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        400,
+        -100
+      ],
+      "id": "654e2c70-418a-403a-b502-6c0ac8149c49",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "ub73UUBisdNHoB6t",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = await $input.all();\n\n// Ограничиваем количество строк (если нужно)\nconst limitedItems = items.slice(0, 30); // можно оставить больше, если не перегружает модель\n\n// Формируем массив с темами и резюме\nconst dataForAnalysis = limitedItems.map(item => ({\n  Транскрипция: item.json['Транскрипция']\n}));\n\n// Преобразуем в строку для передачи в OpenAI\nconst promptText = `\nТы — аналитик клиентских звонков. Перед тобой тексты транскрибации разговоров с клиентами медицинского центра за прошедшую неделю. Проанализируй их и сформируй детальный и информативный отчёт для руководителя. \n\nПример отчета:\n\n\n📊 Наиболее востребованные услуги\nАнализируя запросы клиентов, можно выделить наиболее частые категории обращений:\n\n1. МРТ (магнитно-резонансная томография) ≈13 звонков\nЗапись на МРТ (головного мозга, поясничного отдела, плечевого сустава, шейного отдела и др.)\n\nУточнение стоимости, необходимости направления и других деталей процедуры.\n\n2. Запись на приём к врачу ≈12 звонков\nОбщие вопросы по записи на приём (без уточнения специальности).\n\nЧасто сопровождались дополнительными вопросами: расписание, график, консультации.\n\n3. Массаж / СПА-услуги ≈10 звонков\nЗапись на массаж (включая ЛПГ, массаж нижних конечностей, прессотерапия и др.).\n\nВопросы по стоимости, времени, доступности специалистов.\n\n4. Диагностика и обследования (рентген, УЗИ, ЭКГ и анализы) — ≈8 звонков\nРентген лёгких, защемлённого ребра.\n\nУЗИ сердца, сосудов, брюшной полости, вен нижних конечностей.\n\nАнализы крови, ЭКГ.\n\n5. Стоматология ≈3 звонка\nПротезирование, лечение зубов, расписание стоматолога.\n\n6. Административные и технические вопросы ≈6 звонков\nВопросы о расписании, отсутствии врача, горячей воде, технических проблемах, подарочных сертификатах.\n\n📌 Общий вывод по содержанию разговоров\nВысокий спрос на диагностику и реабилитационные услуги:\n\nМРТ, массаж, рентген, УЗИ — наиболее частые поводы для обращения. Это говорит о том, что медицинский центр привлекателен именно с точки зрения диагностических и восстановительных процедур.\n\nЧастые уточнения по стоимости и организационным деталям:\n\nКлючевыми моментами для клиентов являются цена, наличие направления, график работы специалистов. Это указывает на необходимость чёткой и прозрачной коммуникации на сайте и по телефону.\n\nНекоторые клиенты испытывали неудобства:\n\nНесовпадения в расписании (врач не вышел на работу), отсутствие горячей воды, проблемы с соединением. Такие случаи портят клиентский опыт и требуют управленческого внимания.\n\nРоль операторов и администраторов:\n\nВ большинстве случаев сотрудники эффективно справляются с задачами: записывают, консультируют, решают проблемы. Однако встречаются ситуации, где информация отсутствует или требуется перезвон, что может быть улучшено за счёт обновления баз знаний и автоматизации процессов.\n\nНаличие нерелевантных звонков:\n\nНекоторые обращения были не по профилю центра (например, звонок в СПА-центр по ошибке или услуги, которых нет). Это указывает на возможность оптимизировать телефонную маршрутизацию или добавить голосовое меню.\n\n-------\nAI-аналитик клиентских звонков\nМедицинского центра «Жемчужина моря»\n\n\nСделай отчет строго в таком же виде. Отчет отформатируй для дальнейшей отправки в качестве через Gmail, заголовки в тексте выдели жирным.\n\nДанные:\n${JSON.stringify(dataForAnalysis, null, 2)}\n`;\n\nreturn [{ json: { prompt: promptText } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        180,
+        -100
+      ],
+      "id": "b536a396-9262-4f6c-81b3-e9648759411f",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "sendTo": "dmitry.gubanov@gmail.com",
+        "subject": "Отчет по звонкам",
+        "message": "={{ $json.htmlReport }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        -100
+      ],
+      "id": "c71dee08-f6cb-4ffe-902d-6b4817a62fb9",
+      "name": "Gmail",
+      "webhookId": "494e24c0-b06f-4cf7-ab76-7e6865413b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "oH2TM3D7M2Hit3",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = await $input.all();\n\n// Формируем общий отчёт в HTML\nlet htmlReport = `\n<!DOCTYPE html>\n<html>\n<head>\n  <title>Отчёт по обращениям клиентов</title>\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      margin: 20px;\n    }\n    h1, h2 {\n      color: #333;\n    }\n    ul {\n      list-style-type: none;\n      padding: 0;\n      margin: 0;\n    }\n    li {\n      margin-bottom: 10px;\n    }\n    strong {\n      color: #007BFF;\n    }\n    .highlight {\n      color: red;\n    }\n  </style>\n</head>\n<body>\n  <h1>Отчёт по обращениям клиентов за неделю</h1>\n`;\n\nfor (const item of items) {\n  const content = item.json.message?.content;\n\n  if (!content) {\n    continue;\n  }\n\n  // Преобразуем текст в HTML\n  let formattedContent = content.replace(/\\*\\*([^*]+)\\*\\*/g, '<strong>$1</strong>'); // Жирный шрифт\n  formattedContent = formattedContent.replace(/\\n\\n+/g, '</p><p>'); // Разделяем абзацы\n  formattedContent = formattedContent.replace(/\\n/g, '<br>'); // Переносы строк\n\n  htmlReport += `\n  <div style=\"margin-bottom: 20px;\">\n    <h2>Запись</h2>\n    <p>${formattedContent}</p>\n  </div>\n  `;\n}\n\nhtmlReport += `\n</body>\n</html>\n`;\n\nreturn [{ json: { htmlReport } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        760,
+        -100
+      ],
+      "id": "78bca96a-4a43-4b8a-8882-70f5b2a28df2",
+      "name": "Code2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Чтение таблицы": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Чтение таблицы",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b167f500-039b-4d64-bb34-deab5ad7a5ce",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "85d036a93ffd73d9cb1c54a53f709c0b1d79aa78120c8db98f97430d0f7"
+  },
+  "id": "TCStRpSZ3Csjlohe",
+  "tags": []
+}

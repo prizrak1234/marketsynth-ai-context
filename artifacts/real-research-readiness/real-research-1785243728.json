@@ -1,0 +1,34 @@
+[
+  {
+    "case": "marketsynth_saas",
+    "project_id": "d02df65d-1455-4a12-b7fb-1fb683e75f3d",
+    "user_request_id": "5c007f3a-cdc0-4771-a3a7-fb67c414d15a",
+    "run_id": "8038e2a7-f53b-437e-983d-37571961efb6",
+    "status": "succeeded",
+    "elapsed_seconds": 388.7,
+    "export_pass": true,
+    "export_length": 3427,
+    "verdict_in_expected_set": true,
+    "validation": {
+      "passed": true,
+      "blockers": [],
+      "warnings": [
+        "no_sources_collected"
+      ],
+      "metrics": {
+        "accepted_sources": 0,
+        "rejected_sources": 0,
+        "findings": 0,
+        "verdict": "HOLD",
+        "confidence": 10,
+        "coverage": null,
+        "search_count": 32,
+        "fetch_count": 0,
+        "total_latency_ms": null,
+        "estimated_cost_usd": null,
+        "provider_errors": []
+      }
+    },
+    "export_preview": "MARKETSYNTH — КОММЕРЧЕСКОЕ ИССЛЕДОВАНИЕ\nПроект: Marketsynth\nДата экспорта: 2026-07-28 13:02 UTC\nRun ID: 8038e2a7-f53b-437e-983d-37571961efb6\n\n=== ИТОГОВЫЙ СТАТУС ===\nPILOT ONLY — недостаточно доказательств для масштаба\nПока недостаточно оснований для уверенного решения о запуске.\nОбщая уверенность: 10%\nПокрытие: 92%\n\n=== EXECUTIVE SUMMARY ===\nПока недостаточно оснований для уверенного решения о за"
+  }
+]

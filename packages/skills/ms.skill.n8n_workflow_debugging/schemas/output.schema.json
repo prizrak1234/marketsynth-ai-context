@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.n8n_workflow_debugging/output/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "diagnostic_report_id": { "type": "string" },
+    "skill_id": { "type": "string", "const": "ms.skill.n8n_workflow_debugging" },
+    "skill_version": { "type": "string" },
+    "failure_summary": { "type": "string" },
+    "failure_classification": { "type": "string" },
+    "suspected_failure_nodes_or_roles": { "type": "array", "items": { "type": "string" } },
+    "probable_causes": { "type": "array", "items": { "type": "string" } },
+    "supporting_evidence": { "type": "array", "items": { "type": "object" } },
+    "contradictory_evidence": { "type": "array", "items": { "type": "object" } },
+    "patterns_consulted": {
+      "type": "array",
+      "items": { "$ref": "schemas/pattern-selection-reference.schema.json" }
+    },
+    "practices_consulted": { "type": "array", "items": { "type": "string" } },
+    "diagnostic_steps": { "type": "array", "items": { "type": "string" } },
+    "sandbox_plan": { "type": "object" },
+    "expensive_step_isolation_plan": { "type": "object" },
+    "remediation_candidates": { "type": "array", "items": { "type": "object" } },
+    "remediation_risks": { "type": "array", "items": { "type": "string" } },
+    "rollback_considerations": { "type": "array", "items": { "type": "string" } },
+    "regression_test_plan": { "type": "object" },
+    "unresolved_questions": { "type": "array", "items": { "type": "string" } },
+    "security_findings": { "type": "array", "items": { "type": "object" } },
+    "provider_reverification_required": { "type": "boolean" },
+    "limitations": { "type": "array", "items": { "type": "string" } },
+    "diagnostic_confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "diagnostic_readiness": {
+      "type": "string",
+      "enum": [
+        "ready_for_manual_fix",
+        "ready_for_sandbox_reproduction",
+        "partially_diagnosed",
+        "blocked_by_missing_evidence",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "evidence_gaps": { "type": "array", "items": { "type": "string" }, "maxItems": 30 },
+    "coverage": { "type": "string", "enum": ["full", "partial", "minimal", "unknown"] },
+    "evidence_quality": {
+      "type": "string",
+      "enum": ["comprehensive", "partial", "insufficient", "conflicted", "unknown"]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": ["complete", "partially_complete", "insufficient_sources", "conflicted", "out_of_scope"]
+    },
+    "human_review_required": { "type": "boolean" },
+    "provenance": { "type": "object" },
+    "input_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "output_hash": { "type": "string", "minLength": 64, "maxLength": 64 }
+  },
+  "required": [
+    "diagnostic_report_id",
+    "skill_id",
+    "skill_version",
+    "failure_summary",
+    "failure_classification",
+    "patterns_consulted",
+    "sandbox_plan",
+    "remediation_candidates",
+    "diagnostic_confidence",
+    "diagnostic_readiness",
+    "limitations",
+    "provider_reverification_required",
+    "evidence_gaps",
+    "coverage",
+    "evidence_quality",
+    "research_status",
+    "human_review_required",
+    "provenance",
+    "input_hash",
+    "output_hash"
+  ]
+}

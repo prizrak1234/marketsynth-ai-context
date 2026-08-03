@@ -1,0 +1,14 @@
+---
+description: BotFazer foundation phase — structure and contracts before agents
+globs: app/**/*.py, tests/**/*.py, app/schemas/**
+alwaysApply: true
+---
+
+# BotFazer foundation rules
+
+- Do NOT add LangGraph, agent executors, or marketing pipelines unless the user explicitly requests phase 3+.
+- New entities MUST be added to `app/schemas/contracts.py` before DB or API.
+- All secrets via `app/core/config.py` and `.env` — never hardcode.
+- Inbound text MUST pass `app/core/security.sanitize_payload` before processing or logging.
+- API handlers stay thin; business logic belongs in `app/domain/` and `app/services/`.
+- Every new endpoint requires tests in `tests/`.

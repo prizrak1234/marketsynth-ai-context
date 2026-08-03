@@ -1,0 +1,29 @@
+{
+  "context_id": "ctx-bad-002",
+  "skill_id": "ms.skill.product_marketing_context",
+  "skill_version": "0.1.0",
+  "normalized_product": [],
+  "normalized_business_model": [],
+  "normalized_market_scope": [],
+  "normalized_customer_claims": [],
+  "normalized_problem_claims": [],
+  "normalized_value_proposition_claims": [],
+  "normalized_pricing_claims": [],
+  "normalized_competitor_claims": [],
+  "channel_context": [],
+  "brand_constraints": [],
+  "operational_constraints": [],
+  "evidence_inventory": [],
+  "assumptions": [],
+  "unknowns": [],
+  "conflicts": [],
+  "clarification_questions": [],
+  "readiness": "unknown_readiness_value",
+  "readiness_blockers": [],
+  "provenance": {
+    "skill_id": "ms.skill.product_marketing_context",
+    "skill_version": "0.1.0"
+  },
+  "input_hash": "3333333333333333333333333333333333333333333333333333333333333333",
+  "output_hash": "4444444444444444444444444444444444444444444444444444444444444444"
+}

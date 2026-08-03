@@ -1,0 +1,30 @@
+{
+  "deployment_review_id": "deploy-review-blocked-001",
+  "skill_id": "ms.skill.n8n_deployment_review",
+  "skill_version": "0.1.0",
+  "deployment_readiness": "ready_for_manual_deployment",
+  "architecture_conformance": { "conforms": false },
+  "review_findings": [],
+  "blockers": [],
+  "publication_findings": { "publication_configured": true, "approval_missing": true },
+  "billing_findings": {},
+  "retry_and_idempotency_findings": { "retry_enabled": true, "idempotency_present": false },
+  "rollback_findings": { "rollback_plan_missing": true },
+  "test_evidence_findings": { "tests_missing": true },
+  "provider_compatibility_findings": { "unknown_version": true },
+  "patterns_consulted": [],
+  "activation_gate": {
+    "gate_id": "gate-blocked-001",
+    "final_manual_action_required": true
+  },
+  "human_approval_required": true,
+  "provider_reverification_required": true,
+  "limitations": [],
+  "evidence_gaps": ["approval_missing", "tests_missing"],
+  "coverage": "minimal",
+  "evidence_quality": "insufficient",
+  "research_status": "insufficient_sources",
+  "provenance": { "program_phase": "KB-WPL-01.4" },
+  "input_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+}

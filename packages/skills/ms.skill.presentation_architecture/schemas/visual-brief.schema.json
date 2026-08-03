@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "visual-brief.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "visual_id": { "type": "string" },
+    "visual_type": {
+      "type": "string",
+      "enum": [
+        "photo", "illustration", "diagram", "process_diagram", "architecture_diagram",
+        "comparison_visual", "timeline", "map", "icon_set", "abstract_background",
+        "product_mockup", "screenshot_reference", "chart", "table", "other"
+      ]
+    },
+    "objective": { "type": "string" },
+    "subject": { "type": "string" },
+    "composition": { "type": "string" },
+    "information_hierarchy": { "type": "string" },
+    "required_elements": { "type": "array", "items": { "type": "string" } },
+    "prohibited_elements": { "type": "array", "items": { "type": "string" } },
+    "brand_constraints": { "type": "object" },
+    "accessibility_requirements": { "type": "object" },
+    "source_asset_references": { "type": "array", "items": { "type": "object" } },
+    "evidence_or_data_references": { "type": "array", "items": { "type": "object" } },
+    "renderer_neutral_description": { "type": "string" },
+    "human_review_required": { "type": "boolean" },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "visual_id", "visual_type", "objective", "subject", "composition",
+    "information_hierarchy", "required_elements", "renderer_neutral_description",
+    "human_review_required", "provenance"
+  ]
+}

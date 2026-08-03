@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.customer_meaning_extraction/input/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "source_cim_reference": {
+      "type": "object"
+    },
+    "source_evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "selected_segment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cim_claim_catalog": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "source_cim_reference",
+    "selected_segment_ids"
+  ]
+}

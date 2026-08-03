@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.product_marketing_context/output/0.2.0",
+  "title": "ProductMarketingContextSkillOutput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "context_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "skill_id": {
+      "type": "string",
+      "const": "ms.skill.product_marketing_context"
+    },
+    "skill_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "normalized_product": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "normalized_business_model": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "normalized_market_scope": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "normalized_customer_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "normalized_problem_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "normalized_value_proposition_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "normalized_pricing_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "normalized_competitor_claims": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "channel_context": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 30
+    },
+    "brand_constraints": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 30
+    },
+    "operational_constraints": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 30
+    },
+    "evidence_inventory": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_item" },
+      "maxItems": 100
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "$ref": "schemas/claim.schema.json" },
+      "maxItems": 50
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/unknown_item" },
+      "maxItems": 50
+    },
+    "conflicts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/conflict_item" },
+      "maxItems": 30
+    },
+    "clarification_questions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "readiness": {
+      "type": "string",
+      "enum": [
+        "ready",
+        "partially_ready",
+        "insufficient_context",
+        "conflicted"
+      ]
+    },
+    "readiness_blockers": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "output_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "context_id",
+    "skill_id",
+    "skill_version",
+    "normalized_product",
+    "normalized_business_model",
+    "normalized_market_scope",
+    "normalized_customer_claims",
+    "normalized_problem_claims",
+    "normalized_value_proposition_claims",
+    "normalized_pricing_claims",
+    "normalized_competitor_claims",
+    "channel_context",
+    "brand_constraints",
+    "operational_constraints",
+    "evidence_inventory",
+    "assumptions",
+    "unknowns",
+    "conflicts",
+    "clarification_questions",
+    "readiness",
+    "readiness_blockers",
+    "provenance",
+    "input_hash",
+    "output_hash"
+  ],
+  "$defs": {
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": { "type": "string", "maxLength": 128 },
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "market_source",
+            "competitor_source",
+            "demand_signal",
+            "pricing_signal",
+            "audience_signal",
+            "assumption",
+            "inference"
+          ]
+        },
+        "source_reference": { "type": "string", "maxLength": 2000 },
+        "claim": { "type": "string", "maxLength": 4000 },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "partially_verified",
+            "verified",
+            "contradicted",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        },
+        "collected_at": { "type": "string", "format": "date-time" },
+        "provenance": { "type": "string", "maxLength": 2000 },
+        "tenant_id": { "type": "string", "maxLength": 128 },
+        "project_id": { "type": "string", "maxLength": 128 }
+      },
+      "required": [
+        "evidence_id",
+        "evidence_type",
+        "claim",
+        "verification_status",
+        "confidence"
+      ]
+    },
+    "unknown_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "blocking": { "type": "boolean" }
+      },
+      "required": ["domain", "description"]
+    },
+    "conflict_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "conflict_group_id": { "type": "string", "maxLength": 128 },
+        "domain": { "type": "string", "maxLength": 128 },
+        "claim_ids": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 128 },
+          "minItems": 2,
+          "maxItems": 10
+        },
+        "description": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["conflict_group_id", "domain", "claim_ids", "description"]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string" },
+        "skill_version": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "methodology_ref": { "type": "string" },
+        "source_skill_id": { "type": "string" },
+        "source_skill_version": { "type": "string" },
+        "source_output_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      },
+      "required": ["skill_id", "skill_version"]
+    }
+  }
+}

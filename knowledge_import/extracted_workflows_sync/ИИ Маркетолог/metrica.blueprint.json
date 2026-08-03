@@ -1,0 +1,1532 @@
+{
+    "name": "metrica",
+    "flow": [
+        {
+            "id": 1,
+            "module": "scenario-service:StartSubscenario",
+            "version": 2,
+            "parameters": {},
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {},
+                "interface": [
+                    {
+                        "help": "ID счётчика Яндекс Метрики",
+                        "name": "ids",
+                        "type": "text",
+                        "label": "",
+                        "default": "",
+                        "required": true,
+                        "multiline": false
+                    },
+                    {
+                        "help": "Метрики через запятую",
+                        "name": "metrics",
+                        "type": "text",
+                        "label": "",
+                        "default": "",
+                        "required": true,
+                        "multiline": false
+                    },
+                    {
+                        "help": "Измерения",
+                        "name": "dimensions",
+                        "type": "text",
+                        "label": "",
+                        "default": "",
+                        "required": false,
+                        "multiline": false
+                    },
+                    {
+                        "help": "Начало периода",
+                        "name": "date1",
+                        "type": "text",
+                        "label": "",
+                        "default": "",
+                        "required": false,
+                        "multiline": false
+                    },
+                    {
+                        "help": "Конец периода",
+                        "name": "date2",
+                        "type": "text",
+                        "label": "",
+                        "default": "",
+                        "required": false,
+                        "multiline": false
+                    },
+                    {
+                        "help": "Фильтр в формате API: например: `ym:s:country=='Россия' AND ym:s:trafficSource=@organic`",
+                        "name": "filtersCustom",
+                        "type": "text",
+                        "label": "",
+                        "default": "",
+                        "required": false,
+                        "multiline": false
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "module": "openai-gpt-3:CreateCompletion",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 13635651
+            },
+            "filter": null,
+            "mapper": {
+                "model": "o4-mini",
+                "top_p": "1",
+                "select": "chat",
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "Ты преобразуешь запрос пользователя об отчёте Яндекс Метрики в JSON с параметрами API. На выход отдаёшь только валидный JSON-объект без markdown и пояснений, ровно с полями:\n- metrics (array): массив строк — каждая строка один код метрики. Пример: [\"ym:s:visits\", \"ym:s:users\", \"ym:s:pageviews\"]. Не строка через запятую, именно массив. Несколько метрик — несколько элементов массива.\n- dimensions (text): одно или несколько измерений — строка через запятую без пробела. Пример: \"ym:s:browser,ym:s:trafficSource\". Все измерения, которые попросил пользователь, перечисли в одной строке.\n- date1 (text): начало периода (YYYY-MM-DD или 7daysAgo, yesterday, today)\n- date2 (text): конец периода (today, yesterday или YYYY-MM-DD)\n- filtersCustom (text): фильтр в формате API или пустая строка\n\nМетрики — массив строк (array). Измерения (dimensions) — строка: один код или несколько через запятую без пробела. Коды: география/страна→ym:s:country, браузер→ym:s:browser, устройства→ym:s:deviceCategory, источник/источник трафика/source→ym:s:trafficSource (в API нет ym:s:source), дата→ym:s:date, регион→ym:s:region, город→ym:s:city, ОС→ym:s:operatingSystem, название источника→ym:s:trafficSourceName. Если пользователь назвал несколько срезов (браузер и источник, дата и устройства и т.д.) — выводи все через запятую в dimensions. Комбинация страна+браузер иногда даёт ошибку 4001; браузер+источник трафика обычно работает.\n\nМетрики (каждый элемент массива): посетители/пользователи→ym:s:users, визиты→ym:s:visits, просмотры→ym:s:pageviews, отказы/показатель отказов→ym:s:bounceRate, глубина просмотра→ym:s:pageDepth, длительность визита→ym:s:avgVisitDurationSeconds, новые пользователи→ym:s:newUsers, достижения целей→ym:s:goalReaches, расходы→ym:s:expense.\n\nПериод (date1, date2): если пользователь указал конкретную дату начала (например 20 января) — date1 в формате YYYY-MM-DD, год текущий (2026-01-20). Дата окончания «сегодня» → date2: \"today\". Относительные периоды: последние 7 дней/неделя → 7daysAgo, today; последние 30 дней/месяц → 30daysAgo, today; вчера → yesterday, yesterday; сегодня → today, today; последние 14 дней → 14daysAgo, today; последние 3 дня → 3daysAgo, today; последние 90 дней → 90daysAgo, today.\n\nФильтр (filtersCustom): страна Россия → ym:s:country=='Россия'. Органический трафик → ym:s:trafficSource=@organic. Несколько условий через AND. Если не указано — \"\".\n\nЕсли что-то не указано: период по умолчанию 7daysAgo и today; dimensions пустая строка \"\" если срез не упомянут; метрики минимум одна — ym:s:visits.\n\nПример входа: \"метрика — посетители, география и браузер. Дата начала 20 января, окончания — сегодня\"\nПример выхода (одно измерение: география, metrics — массив):\n{\"metrics\":[\"ym:s:users\"],\"dimensions\":\"ym:s:country\",\"date1\":\"2026-01-20\",\"date2\":\"today\",\"filtersCustom\":\"\"}\n\nПример входа: \"визиты и просмотры по источникам трафика за последние 7 дней\"\nПример выхода:\n{\"metrics\":[\"ym:s:visits\",\"ym:s:pageviews\"],\"dimensions\":\"ym:s:trafficSource\",\"date1\":\"7daysAgo\",\"date2\":\"today\",\"filtersCustom\":\"\"}\n\nПример входа: \"пользователи по браузеру за месяц\"\nПример выхода:\n{\"metrics\":[\"ym:s:users\"],\"dimensions\":\"ym:s:browser\",\"date1\":\"30daysAgo\",\"date2\":\"today\",\"filtersCustom\":\"\"}\n\nПример (несколько метрик):\n{\"metrics\":[\"ym:s:visits\",\"ym:s:users\",\"ym:s:pageviews\"],\"dimensions\":\"ym:s:browser\",\"date1\":\"2026-01-24\",\"date2\":\"2026-01-30\",\"filtersCustom\":\"\"}\n\nПример (несколько измерений — браузер и источник трафика):\n{\"metrics\":[\"ym:s:visits\",\"ym:s:users\",\"ym:s:pageviews\"],\"dimensions\":\"ym:s:browser,ym:s:trafficSource\",\"date1\":\"2026-01-24\",\"date2\":\"2026-01-30\",\"filtersCustom\":\"\"}\n\nОтветь только одним JSON-объектом с полями metrics, dimensions, date1, date2, filtersCustom. Без комментариев и без обёртки в блок кода."
+                    },
+                    {
+                        "role": "user",
+                        "content": "вот запросы\n{{1.metrics}}- метрика\n{{1.dimensions}}- измерения\n{{1.date1}}- дата начала\n{{1.date2}}- дата окончания\n{{1.filtersCustom}}- фильтр",
+                        "imageDetail": "auto"
+                    }
+                ],
+                "max_tokens": "2048",
+                "temperature": "1",
+                "n_completions": "1",
+                "response_format": "text"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "stop": {
+                            "mode": "chose"
+                        },
+                        "model": {
+                            "mode": "chose",
+                            "label": "o4-mini (system)Fast, cost-efficient reasoning model, succeeded by GPT-5 mini"
+                        },
+                        "select": {
+                            "label": "Create a Chat Completion (GPT and o1 models)"
+                        },
+                        "messages": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "role": {
+                                        "mode": "chose",
+                                        "label": "Developer / System"
+                                    }
+                                },
+                                {
+                                    "role": {
+                                        "mode": "chose",
+                                        "label": "User"
+                                    },
+                                    "imageDetail": {
+                                        "mode": "chose",
+                                        "label": "Auto"
+                                    },
+                                    "imageInputType": {
+                                        "mode": "chose",
+                                        "label": "Empty"
+                                    }
+                                }
+                            ]
+                        },
+                        "logit_bias": {
+                            "mode": "chose"
+                        },
+                        "tool_choice": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "response_format": {
+                            "mode": "chose",
+                            "label": "Text"
+                        },
+                        "reasoning_effort": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "additionalParameters": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "openai-gpt-3"
+                            },
+                            "label": "knmnomore@gmail.com"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:openai-gpt-3",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Select Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "chat",
+                                "prompt"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "temperature",
+                        "type": "number",
+                        "label": "Temperature",
+                        "validate": {
+                            "max": 2,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "top_p",
+                        "type": "number",
+                        "label": "Top P",
+                        "validate": {
+                            "max": 1,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "n_completions",
+                        "type": "number",
+                        "label": "Number"
+                    },
+                    {
+                        "name": "frequency_penalty",
+                        "type": "number",
+                        "label": "Frequency Penalty",
+                        "validate": {
+                            "max": 2,
+                            "min": -2
+                        }
+                    },
+                    {
+                        "name": "presence_penalty",
+                        "type": "number",
+                        "label": "Presence Penalty",
+                        "validate": {
+                            "max": 2,
+                            "min": -2
+                        }
+                    },
+                    {
+                        "name": "logit_bias",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "token",
+                                    "type": "text",
+                                    "label": "Token ID",
+                                    "required": true
+                                },
+                                {
+                                    "name": "probability",
+                                    "type": "number",
+                                    "label": "Probability",
+                                    "required": true,
+                                    "validate": {
+                                        "max": 100,
+                                        "min": -100
+                                    }
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Token Probability"
+                        },
+                        "type": "array",
+                        "label": "Token Probability"
+                    },
+                    {
+                        "name": "seed",
+                        "type": "integer",
+                        "label": "Seed"
+                    },
+                    {
+                        "name": "tool_choice",
+                        "type": "select",
+                        "label": "Tool Choice",
+                        "validate": {
+                            "enum": [
+                                "none",
+                                "auto",
+                                "required"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "stop",
+                        "spec": {
+                            "name": "value",
+                            "type": "text",
+                            "label": "Stop Sequence"
+                        },
+                        "type": "array",
+                        "label": "Stop Sequences",
+                        "validate": {
+                            "maxItems": 4
+                        }
+                    },
+                    {
+                        "name": "additionalParameters",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "key",
+                                    "type": "text",
+                                    "label": "Parameter Name",
+                                    "required": true
+                                },
+                                {
+                                    "name": "type",
+                                    "type": "select",
+                                    "label": "Input Type",
+                                    "options": [
+                                        {
+                                            "label": "Text",
+                                            "value": "text",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "text",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ],
+                                            "default": true
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "value": "number",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "number",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "value": "boolean",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "boolean",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Date",
+                                            "value": "date",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "date",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Any",
+                                            "value": "any",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "any",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Input Parameter"
+                        },
+                        "type": "array",
+                        "label": "Other Input Parameters"
+                    },
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "Model",
+                        "required": true
+                    },
+                    {
+                        "name": "max_tokens",
+                        "type": "uinteger",
+                        "label": "Max Output Tokens"
+                    },
+                    {
+                        "name": "messages",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "role",
+                                    "type": "select",
+                                    "label": "Role",
+                                    "options": {
+                                        "store": [
+                                            {
+                                                "label": "User",
+                                                "value": "user",
+                                                "nested": [
+                                                    {
+                                                        "help": "Text content of the message on behalf of the selected __Role__.",
+                                                        "name": "content",
+                                                        "type": "text",
+                                                        "label": "Text Content"
+                                                    },
+                                                    {
+                                                        "name": "imageInputType",
+                                                        "type": "select",
+                                                        "label": "Image Input Type",
+                                                        "options": [
+                                                            {
+                                                                "label": "URL",
+                                                                "value": "url",
+                                                                "nested": [
+                                                                    {
+                                                                        "help": "Make sure to use a publicly accessible URL.\nYou can test if your image is publicly accessible by opening the link in an incognito tab.",
+                                                                        "name": "imageUrl",
+                                                                        "type": "url",
+                                                                        "label": "Image URL"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "label": "Image File",
+                                                                "value": "file",
+                                                                "nested": [
+                                                                    {
+                                                                        "name": "imageFile",
+                                                                        "spec": [
+                                                                            {
+                                                                                "help": "Accepted extensions: `.jpg`, `.jpeg`, `.png`, `.webp` and `.gif`.",
+                                                                                "name": "imageFilename",
+                                                                                "type": "filename",
+                                                                                "label": "Image Filename",
+                                                                                "semantic": "file:name",
+                                                                                "extension": [
+                                                                                    "jpg",
+                                                                                    "jpeg",
+                                                                                    "png",
+                                                                                    "webp",
+                                                                                    "gif"
+                                                                                ]
+                                                                            },
+                                                                            {
+                                                                                "name": "imageData",
+                                                                                "type": "buffer",
+                                                                                "label": "Image Data",
+                                                                                "semantic": "file:data"
+                                                                            }
+                                                                        ],
+                                                                        "type": "collection",
+                                                                        "label": "Image"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ],
+                                                        "mappable": false
+                                                    },
+                                                    {
+                                                        "help": "Recommended value: `Auto`",
+                                                        "name": "imageDetail",
+                                                        "type": "select",
+                                                        "label": "Image Detail",
+                                                        "options": [
+                                                            {
+                                                                "label": "Auto",
+                                                                "value": "auto",
+                                                                "default": true
+                                                            },
+                                                            {
+                                                                "label": "High",
+                                                                "value": "high"
+                                                            },
+                                                            {
+                                                                "label": "Low",
+                                                                "value": "low"
+                                                            }
+                                                        ]
+                                                    }
+                                                ],
+                                                "default": true
+                                            },
+                                            {
+                                                "label": "Assistant",
+                                                "value": "assistant",
+                                                "nested": [
+                                                    {
+                                                        "help": "Text content of the message on behalf of the selected __Role__.",
+                                                        "name": "content",
+                                                        "type": "text",
+                                                        "label": "Text Content"
+                                                    },
+                                                    {
+                                                        "mode": "edit",
+                                                        "name": "tool_calls",
+                                                        "spec": {
+                                                            "spec": [
+                                                                {
+                                                                    "name": "type",
+                                                                    "type": "hidden",
+                                                                    "default": "function"
+                                                                },
+                                                                {
+                                                                    "help": "Map this directly from the output of a previous **Create a Completion** module. Look for `Choices[]: Message.Tool Calls[]: ID`.",
+                                                                    "name": "id",
+                                                                    "type": "text",
+                                                                    "label": "Tool call ID"
+                                                                },
+                                                                {
+                                                                    "name": "function",
+                                                                    "spec": [
+                                                                        {
+                                                                            "help": "The name of the function previously called.",
+                                                                            "name": "name",
+                                                                            "type": "text",
+                                                                            "label": "Name",
+                                                                            "required": true
+                                                                        },
+                                                                        {
+                                                                            "help": "The arguments previously output by the AI.",
+                                                                            "name": "arguments",
+                                                                            "type": "text",
+                                                                            "label": "Arguments",
+                                                                            "required": true
+                                                                        }
+                                                                    ],
+                                                                    "type": "collection",
+                                                                    "label": "Function"
+                                                                }
+                                                            ],
+                                                            "type": "collection",
+                                                            "label": "Tool Call"
+                                                        },
+                                                        "type": "array",
+                                                        "label": "Tool Calls",
+                                                        "labels": {
+                                                            "add": "Add tool call"
+                                                        },
+                                                        "mappable": {
+                                                            "help": "You can map the entire `Choices[]: Message.Tool Calls` array from a previous Create a Completion module here."
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "label": "Developer / System",
+                                                "value": "system",
+                                                "nested": [
+                                                    {
+                                                        "help": "Text content of the message on behalf of the selected __Role__.",
+                                                        "name": "content",
+                                                        "type": "text",
+                                                        "label": "Text Content"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "label": "Tool",
+                                                "value": "tool",
+                                                "nested": [
+                                                    {
+                                                        "help": "The return of the function. This role should only be used when you have processed a previous function call and want to send the output of the function execution back to the AI.",
+                                                        "name": "content",
+                                                        "type": "text",
+                                                        "label": "Text Content",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "help": "Map this directly from the output of a previous **Create a Completion** module. Look for `Choices[]: Message.Tool Calls[]: ID`.",
+                                                        "name": "tool_call_id",
+                                                        "type": "text",
+                                                        "label": "Tool Call ID.",
+                                                        "required": true
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "required": true
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Message"
+                        },
+                        "type": "array",
+                        "label": "Messages",
+                        "required": true
+                    },
+                    {
+                        "name": "response_format",
+                        "type": "select",
+                        "label": "Response Format",
+                        "validate": {
+                            "enum": [
+                                "text",
+                                "json_object"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "reasoning_effort",
+                        "type": "select",
+                        "label": "Reasoning Effort",
+                        "validate": {
+                            "enum": [
+                                "minimal",
+                                "low",
+                                "medium",
+                                "high"
+                            ]
+                        }
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "result",
+                        "type": "any",
+                        "label": "Result"
+                    },
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "object",
+                        "type": "text",
+                        "label": "Object"
+                    },
+                    {
+                        "name": "created",
+                        "type": "date",
+                        "label": "Created"
+                    },
+                    {
+                        "name": "model",
+                        "type": "text",
+                        "label": "Model"
+                    },
+                    {
+                        "name": "choices",
+                        "spec": [
+                            {
+                                "name": "text",
+                                "type": "text",
+                                "label": "Text"
+                            },
+                            {
+                                "name": "index",
+                                "type": "number",
+                                "label": "Index"
+                            },
+                            {
+                                "name": "logprobs",
+                                "type": "text",
+                                "label": "Log Probs"
+                            },
+                            {
+                                "name": "finish_reason",
+                                "type": "text",
+                                "label": "Finish Reason"
+                            },
+                            {
+                                "name": "message",
+                                "spec": [
+                                    {
+                                        "name": "role",
+                                        "type": "text",
+                                        "label": "Role"
+                                    },
+                                    {
+                                        "name": "content",
+                                        "type": "text",
+                                        "label": "Content"
+                                    },
+                                    {
+                                        "name": "tool_calls",
+                                        "spec": [
+                                            {
+                                                "name": "id",
+                                                "type": "text",
+                                                "label": "ID"
+                                            },
+                                            {
+                                                "name": "type",
+                                                "type": "text",
+                                                "label": "Type"
+                                            },
+                                            {
+                                                "name": "function",
+                                                "spec": [
+                                                    {
+                                                        "name": "name",
+                                                        "type": "text",
+                                                        "label": "Name"
+                                                    },
+                                                    {
+                                                        "name": "arguments",
+                                                        "type": "text",
+                                                        "label": "Arguments"
+                                                    }
+                                                ],
+                                                "type": "collection",
+                                                "label": "Function"
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Tool Calls"
+                                    },
+                                    {
+                                        "name": "refusal",
+                                        "type": "text",
+                                        "label": "Refusal"
+                                    },
+                                    {
+                                        "name": "annotations",
+                                        "spec": [
+                                            {
+                                                "name": "type",
+                                                "type": "text",
+                                                "label": "Type"
+                                            },
+                                            {
+                                                "name": "url_citation",
+                                                "spec": [
+                                                    {
+                                                        "name": "end_index",
+                                                        "type": "number",
+                                                        "label": "End Index"
+                                                    },
+                                                    {
+                                                        "name": "start_index",
+                                                        "type": "number",
+                                                        "label": "Start Index"
+                                                    },
+                                                    {
+                                                        "name": "title",
+                                                        "type": "text",
+                                                        "label": "Title"
+                                                    },
+                                                    {
+                                                        "name": "url",
+                                                        "type": "text",
+                                                        "label": "URL"
+                                                    }
+                                                ],
+                                                "type": "collection",
+                                                "label": "URL Citation"
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Annotations"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Message"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Choices"
+                    },
+                    {
+                        "name": "usage",
+                        "spec": [
+                            {
+                                "name": "prompt_tokens",
+                                "type": "number",
+                                "label": "Prompt Tokens"
+                            },
+                            {
+                                "name": "completion_tokens",
+                                "type": "text",
+                                "label": "Completion Tokens"
+                            },
+                            {
+                                "name": "total_tokens",
+                                "type": "number",
+                                "label": "Total Tokens"
+                            },
+                            {
+                                "name": "prompt_tokens_details",
+                                "spec": [
+                                    {
+                                        "name": "cached_tokens",
+                                        "type": "uinteger",
+                                        "label": "Cached Tokens"
+                                    },
+                                    {
+                                        "name": "text_tokens",
+                                        "type": "uinteger",
+                                        "label": "Text Tokens"
+                                    },
+                                    {
+                                        "name": "image_tokens",
+                                        "type": "uinteger",
+                                        "label": "Image Tokens"
+                                    },
+                                    {
+                                        "name": "audio_tokens",
+                                        "type": "uinteger",
+                                        "label": "Audio Tokens"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Prompt Tokens Details"
+                            },
+                            {
+                                "name": "completion_tokens_details",
+                                "spec": [
+                                    {
+                                        "name": "reasoning_tokens",
+                                        "type": "uinteger",
+                                        "label": "Reasoning Tokens"
+                                    },
+                                    {
+                                        "name": "text_tokens",
+                                        "type": "uinteger",
+                                        "label": "Text Tokens"
+                                    },
+                                    {
+                                        "name": "audio_tokens",
+                                        "type": "uinteger",
+                                        "label": "Audio Tokens"
+                                    },
+                                    {
+                                        "name": "accepted_prediction_tokens",
+                                        "type": "uinteger",
+                                        "label": "Accepted Prediction Tokens"
+                                    },
+                                    {
+                                        "name": "rejected_prediction_tokens",
+                                        "type": "uinteger",
+                                        "label": "Rejected Prediction Tokens"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Completion Tokens Details"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Usage"
+                    },
+                    {
+                        "name": "service_tier",
+                        "type": "text",
+                        "label": "Service Tier"
+                    },
+                    {
+                        "name": "system_fingerprint",
+                        "type": "text",
+                        "label": "System Fingerprint"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "json:ParseJSON",
+            "version": 1,
+            "parameters": {
+                "type": ""
+            },
+            "mapper": {
+                "json": "{{5.result}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "type": {
+                            "label": "Choose a data structure"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "udt",
+                        "label": "Data structure"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "json",
+                        "type": "text",
+                        "label": "JSON string",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "module": "app#metrika-2qxfyo:getReport",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 13636024
+            },
+            "mapper": {
+                "ids": "{{var.input.ids}}",
+                "date1": "{{6.date1}}",
+                "date2": "{{6.date2}}",
+                "limit": "100",
+                "offset": "1",
+                "metrics": "{{6.metrics}}",
+                "dimensions": "{{6.dimensions}}",
+                "filtersCustom": "{{6.filtersCustom}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "ids": {
+                            "mode": "edit"
+                        },
+                        "sort": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "metrics": {
+                            "mode": "edit"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "app#metrika-2qxfyo"
+                            },
+                            "label": "new-neometriya"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:app#metrika-2qxfyo",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "ids",
+                        "type": "select",
+                        "label": "Счётчик (ids)",
+                        "required": true
+                    },
+                    {
+                        "name": "metrics",
+                        "spec": {
+                            "name": "value",
+                            "type": "select",
+                            "label": "Метрика",
+                            "options": [
+                                {
+                                    "label": "Визиты (ym:s:visits)",
+                                    "value": "ym:s:visits"
+                                },
+                                {
+                                    "label": "Пользователи (ym:s:users)",
+                                    "value": "ym:s:users"
+                                },
+                                {
+                                    "label": "Просмотры (ym:s:pageviews)",
+                                    "value": "ym:s:pageviews"
+                                },
+                                {
+                                    "label": "Показатель отказов (ym:s:bounceRate)",
+                                    "value": "ym:s:bounceRate"
+                                },
+                                {
+                                    "label": "Глубина просмотра (ym:s:pageDepth)",
+                                    "value": "ym:s:pageDepth"
+                                },
+                                {
+                                    "label": "Средняя длительность визита, сек (ym:s:avgVisitDurationSeconds)",
+                                    "value": "ym:s:avgVisitDurationSeconds"
+                                },
+                                {
+                                    "label": "Клики по рекламе (ym:s:expenseClicks)",
+                                    "value": "ym:s:expenseClicks"
+                                },
+                                {
+                                    "label": "Достижения любой цели (ym:s:goalReachesAny)",
+                                    "value": "ym:s:goalReachesAny"
+                                },
+                                {
+                                    "label": "Достижения целей (ym:s:goalReaches)",
+                                    "value": "ym:s:goalReaches"
+                                },
+                                {
+                                    "label": "Пользователи, достигшие любой цели (ym:s:goalUsersAny)",
+                                    "value": "ym:s:goalUsersAny"
+                                },
+                                {
+                                    "label": "Пользователи, достигшие целей (ym:s:goalUsers)",
+                                    "value": "ym:s:goalUsers"
+                                },
+                                {
+                                    "label": "Новые пользователи (ym:s:newUsers)",
+                                    "value": "ym:s:newUsers"
+                                },
+                                {
+                                    "label": "Среднее время до цели, сек (ym:s:avgGoalReachesAny)",
+                                    "value": "ym:s:avgGoalReachesAny"
+                                },
+                                {
+                                    "label": "Расходы (ym:s:expense)",
+                                    "value": "ym:s:expense"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "label": "Метрики (metrics)",
+                        "required": true
+                    },
+                    {
+                        "name": "dimensions",
+                        "type": "text",
+                        "label": "Измерения (dimensions)"
+                    },
+                    {
+                        "name": "date1",
+                        "type": "text",
+                        "label": "Дата начала (date1)"
+                    },
+                    {
+                        "name": "date2",
+                        "type": "text",
+                        "label": "Дата окончания (date2)"
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "label": "Лимит строк (limit)"
+                    },
+                    {
+                        "name": "offset",
+                        "type": "integer",
+                        "label": "Смещение (offset)"
+                    },
+                    {
+                        "name": "filters",
+                        "type": "filter",
+                        "label": "Фильтр (filters)",
+                        "options": {
+                            "logic": "and",
+                            "store": [
+                                {
+                                    "label": "Дата (ym:s:date)",
+                                    "value": "ym:s:date"
+                                },
+                                {
+                                    "label": "Источник трафика (ym:s:trafficSource)",
+                                    "value": "ym:s:trafficSource"
+                                },
+                                {
+                                    "label": "Название источника (ym:s:trafficSourceName)",
+                                    "value": "ym:s:trafficSourceName"
+                                },
+                                {
+                                    "label": "Тип устройства (ym:s:deviceCategory)",
+                                    "value": "ym:s:deviceCategory"
+                                },
+                                {
+                                    "label": "Браузер (ym:s:browser)",
+                                    "value": "ym:s:browser"
+                                },
+                                {
+                                    "label": "ОС (ym:s:operatingSystem)",
+                                    "value": "ym:s:operatingSystem"
+                                },
+                                {
+                                    "label": "Страна (ym:s:country)",
+                                    "value": "ym:s:country"
+                                },
+                                {
+                                    "label": "Регион (ym:s:region)",
+                                    "value": "ym:s:region"
+                                },
+                                {
+                                    "label": "Город (ym:s:city)",
+                                    "value": "ym:s:city"
+                                },
+                                {
+                                    "label": "Пол (ym:s:gender)",
+                                    "value": "ym:s:gender"
+                                },
+                                {
+                                    "label": "Возраст (ym:s:ageInterval)",
+                                    "value": "ym:s:ageInterval"
+                                },
+                                {
+                                    "label": "Визиты (ym:s:visits)",
+                                    "value": "ym:s:visits"
+                                },
+                                {
+                                    "label": "Пользователи (ym:s:users)",
+                                    "value": "ym:s:users"
+                                },
+                                {
+                                    "label": "Просмотры (ym:s:pageviews)",
+                                    "value": "ym:s:pageviews"
+                                },
+                                {
+                                    "label": "Показатель отказов (ym:s:bounceRate)",
+                                    "value": "ym:s:bounceRate"
+                                },
+                                {
+                                    "label": "Глубина просмотра (ym:s:pageDepth)",
+                                    "value": "ym:s:pageDepth"
+                                },
+                                {
+                                    "label": "Средняя длительность визита, сек (ym:s:avgVisitDurationSeconds)",
+                                    "value": "ym:s:avgVisitDurationSeconds"
+                                },
+                                {
+                                    "label": "Новые пользователи (ym:s:newUsers)",
+                                    "value": "ym:s:newUsers"
+                                }
+                            ],
+                            "operators": [
+                                {
+                                    "label": "Текст",
+                                    "options": [
+                                        {
+                                            "label": "Равно",
+                                            "value": "=="
+                                        },
+                                        {
+                                            "label": "Не равно",
+                                            "value": "!="
+                                        },
+                                        {
+                                            "label": "Содержит",
+                                            "value": "=@"
+                                        },
+                                        {
+                                            "label": "Не содержит",
+                                            "value": "!@"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "Числа",
+                                    "options": [
+                                        {
+                                            "label": "Равно",
+                                            "value": "=="
+                                        },
+                                        {
+                                            "label": "Не равно",
+                                            "value": "!="
+                                        },
+                                        {
+                                            "label": "Больше",
+                                            "value": ">"
+                                        },
+                                        {
+                                            "label": "Меньше",
+                                            "value": "<"
+                                        },
+                                        {
+                                            "label": "Больше или равно",
+                                            "value": ">="
+                                        },
+                                        {
+                                            "label": "Меньше или равно",
+                                            "value": "<="
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "filtersCustom",
+                        "type": "text",
+                        "label": "Фильтр — строка (filters, для продвинутых)"
+                    },
+                    {
+                        "name": "sort",
+                        "type": "select",
+                        "label": "Сортировка (sort)",
+                        "validate": {
+                            "enum": [
+                                "",
+                                "-ym:s:visits",
+                                "ym:s:visits",
+                                "-ym:s:users",
+                                "ym:s:users",
+                                "-ym:s:pageviews",
+                                "ym:s:pageviews",
+                                "-ym:s:bounceRate",
+                                "ym:s:bounceRate",
+                                "-ym:s:pageDepth",
+                                "ym:s:pageDepth",
+                                "-ym:s:avgVisitDurationSeconds",
+                                "ym:s:avgVisitDurationSeconds",
+                                "-ym:s:newUsers",
+                                "ym:s:newUsers",
+                                "-ym:s:date",
+                                "ym:s:date",
+                                "-ym:s:trafficSource",
+                                "ym:s:trafficSource",
+                                "-ym:s:deviceCategory",
+                                "ym:s:deviceCategory",
+                                "-ym:s:country",
+                                "ym:s:country",
+                                "-ym:s:region",
+                                "ym:s:region",
+                                "-ym:s:city",
+                                "ym:s:city",
+                                "-ym:s:browser",
+                                "ym:s:browser",
+                                "-ym:s:operatingSystem",
+                                "ym:s:operatingSystem"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "onerror": [
+                {
+                    "id": 7,
+                    "module": "scenario-service:ReturnData",
+                    "version": 2,
+                    "parameters": {},
+                    "mapper": {
+                        "data": "{{4.error}}"
+                    },
+                    "metadata": {
+                        "designer": {
+                            "x": 1200,
+                            "y": 150
+                        },
+                        "restore": {
+                            "expect": {
+                                "data": {
+                                    "mode": "edit"
+                                },
+                                "totals": {
+                                    "mode": "chose"
+                                },
+                                "metrics": {
+                                    "mode": "chose"
+                                },
+                                "dimensions": {
+                                    "mode": "chose"
+                                }
+                            }
+                        },
+                        "expect": [
+                            {
+                                "name": "data",
+                                "spec": {
+                                    "name": "value",
+                                    "type": "text",
+                                    "required": true
+                                },
+                                "type": "array",
+                                "label": ""
+                            },
+                            {
+                                "name": "totals",
+                                "spec": {
+                                    "name": "value",
+                                    "type": "text",
+                                    "required": true
+                                },
+                                "type": "array",
+                                "label": ""
+                            },
+                            {
+                                "name": "dimensions",
+                                "spec": {
+                                    "name": "value",
+                                    "type": "text"
+                                },
+                                "type": "array",
+                                "label": ""
+                            },
+                            {
+                                "name": "metrics",
+                                "spec": {
+                                    "name": "value",
+                                    "type": "text"
+                                },
+                                "type": "array",
+                                "label": ""
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "module": "scenario-service:ReturnData",
+            "version": 2,
+            "parameters": {},
+            "mapper": {
+                "data": [
+                    "{{4.data}}"
+                ],
+                "totals": [
+                    "{{4.totals}}"
+                ],
+                "metrics": [
+                    "{{4.metrics}}"
+                ],
+                "dimensions": [
+                    "{{4.dimensions}}"
+                ]
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1200,
+                    "y": -150
+                },
+                "restore": {
+                    "expect": {
+                        "data": {
+                            "mode": "chose",
+                            "items": [
+                                null
+                            ]
+                        },
+                        "totals": {
+                            "mode": "chose",
+                            "items": [
+                                null
+                            ]
+                        },
+                        "metrics": {
+                            "mode": "chose",
+                            "items": [
+                                null
+                            ]
+                        },
+                        "dimensions": {
+                            "mode": "chose",
+                            "items": [
+                                null
+                            ]
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "data",
+                        "spec": {
+                            "name": "value",
+                            "type": "text",
+                            "required": true
+                        },
+                        "type": "array",
+                        "label": ""
+                    },
+                    {
+                        "name": "totals",
+                        "spec": {
+                            "name": "value",
+                            "type": "text",
+                            "required": true
+                        },
+                        "type": "array",
+                        "label": ""
+                    },
+                    {
+                        "name": "dimensions",
+                        "spec": {
+                            "name": "value",
+                            "type": "text"
+                        },
+                        "type": "array",
+                        "label": ""
+                    },
+                    {
+                        "name": "metrics",
+                        "spec": {
+                            "name": "value",
+                            "type": "text"
+                        },
+                        "type": "array",
+                        "label": ""
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    },
+    "io": {
+        "input_spec": [
+            {
+                "help": "ID счётчика Яндекс Метрики",
+                "name": "ids",
+                "type": "text",
+                "label": "",
+                "default": "",
+                "required": true,
+                "multiline": false
+            },
+            {
+                "help": "Метрики через запятую",
+                "name": "metrics",
+                "type": "text",
+                "label": "",
+                "default": "",
+                "required": true,
+                "multiline": false
+            },
+            {
+                "help": "Измерения",
+                "name": "dimensions",
+                "type": "text",
+                "label": "",
+                "default": "",
+                "required": false,
+                "multiline": false
+            },
+            {
+                "help": "Начало периода",
+                "name": "date1",
+                "type": "text",
+                "label": "",
+                "default": "",
+                "required": false,
+                "multiline": false
+            },
+            {
+                "help": "Конец периода",
+                "name": "date2",
+                "type": "text",
+                "label": "",
+                "default": "",
+                "required": false,
+                "multiline": false
+            },
+            {
+                "help": "Фильтр в формате API: например: `ym:s:country=='Россия' AND ym:s:trafficSource=@organic`",
+                "name": "filtersCustom",
+                "type": "text",
+                "label": "",
+                "default": "",
+                "required": false,
+                "multiline": false
+            }
+        ],
+        "output_spec": [
+            {
+                "help": "Данные отчёта: массив строк. Каждая строка — массив значений: сначала по измерениям (dimensions), затем по метрикам. Порядок столбцов соответствует порядку dimensions и metrics в запросе.",
+                "name": "data",
+                "spec": {
+                    "type": "text",
+                    "default": "",
+                    "required": true,
+                    "multiline": false
+                },
+                "type": "array",
+                "label": "",
+                "required": false
+            },
+            {
+                "help": "Итоги по метрикам за весь период: одна строка чисел в том же порядке, что и метрики в запросе (например сумма визитов, сумма просмотров).",
+                "name": "totals",
+                "spec": {
+                    "type": "text",
+                    "default": "",
+                    "required": true,
+                    "multiline": false
+                },
+                "type": "array",
+                "label": "",
+                "required": false
+            },
+            {
+                "help": "Метаданные измерений: массив объектов с полями id (код API, например ym:s:trafficSource) и name (название по-русски). Описывает, что означает каждый столбец измерений в data.",
+                "name": "dimensions",
+                "spec": {
+                    "type": "text",
+                    "default": "",
+                    "required": false,
+                    "multiline": false
+                },
+                "type": "array",
+                "label": "",
+                "required": false
+            },
+            {
+                "help": "Метаданные метрик: массив объектов с полями id (код API, например ym:s:visits) и name (название по-русски). Описывает, что означает каждый столбец метрик в data и в totals.",
+                "name": "metrics",
+                "spec": {
+                    "type": "text",
+                    "default": "",
+                    "required": false,
+                    "multiline": false
+                },
+                "type": "array",
+                "label": "",
+                "required": false
+            }
+        ]
+    }
+}

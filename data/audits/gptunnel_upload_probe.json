@@ -1,0 +1,77 @@
+{
+  "probes": [
+    {
+      "method": "POST",
+      "url_path": "/media/upload",
+      "status": 404,
+      "content_type": "application/json; charset=utf-8",
+      "body_len": 72,
+      "body_prefix": "{\"code\":99,\"message\":\"API method not found, please check url you call.\"}"
+    },
+    {
+      "method": "POST",
+      "url_path": "/files",
+      "status": 405,
+      "content_type": "application/json; charset=utf-8",
+      "body_len": 112,
+      "body_prefix": "{\"error\":{\"message\":\"Not allowed to POST on /v1/files\",\"type\":\"invalid_request_error\",\"param\":null,\"code\":null}}"
+    },
+    {
+      "method": "POST",
+      "url_path": "/files/upload",
+      "status": 405,
+      "content_type": "application/json; charset=utf-8",
+      "body_len": 119,
+      "body_prefix": "{\"error\":{\"message\":\"Not allowed to POST on /v1/files/upload\",\"type\":\"invalid_request_error\",\"param\":null,\"code\":null}}"
+    },
+    {
+      "method": "POST",
+      "url_path": "/v1/files",
+      "status": 405,
+      "content_type": "application/json; charset=utf-8",
+      "body_len": 112,
+      "body_prefix": "{\"error\":{\"message\":\"Not allowed to POST on /v1/files\",\"type\":\"invalid_request_error\",\"param\":null,\"code\":null}}"
+    },
+    {
+      "method": "GET",
+      "url_path": "/media/upload",
+      "status": 404,
+      "content_type": "application/json; charset=utf-8",
+      "body_len": 72,
+      "body_prefix": "{\"code\":99,\"message\":\"API method not found, please check url you call.\"}"
+    },
+    {
+      "method": "POST",
+      "url_path": "/media/file",
+      "status": 404,
+      "content_type": "application/json; charset=utf-8",
+      "body_len": 72,
+      "body_prefix": "{\"code\":99,\"message\":\"API method not found, please check url you call.\"}"
+    },
+    {
+      "method": "POST",
+      "url_path": "/upload",
+      "status": 405,
+      "content_type": "application/json; charset=utf-8",
+      "body_len": 113,
+      "body_prefix": "{\"error\":{\"message\":\"Not allowed to POST on /v1/upload\",\"type\":\"invalid_request_error\",\"param\":null,\"code\":null}}"
+    },
+    {
+      "method": "OPTIONS",
+      "url_path": "/media/upload",
+      "status": 204,
+      "content_type": "",
+      "body_len": 0,
+      "body_prefix": ""
+    },
+    {
+      "method": "POST",
+      "url_path": "/media/models",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "body_len": 17745,
+      "body_prefix": "{\"code\":0,\"models\":[{\"id\":\"@LivePhotos\",\"price\":54,\"modelration\":\"strict\"},{\"id\":\"flux-2-flex\",\"price_input\":12,\"price\":"
+    }
+  ],
+  "note": "no multipart payloads; no generation"
+}

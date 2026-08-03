@@ -1,0 +1,582 @@
+{
+  "library_version": "0.1.0-frozen",
+  "schema_bundle_version": "0.1.0",
+  "pattern_count": 20,
+  "unique_practice_count": 24,
+  "pattern_entries": [
+    {
+      "pattern_id": "checkpoint_and_resume",
+      "tier": "core",
+      "pattern_category": "reliability",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "checkpoint_before_expensive_step"
+      ],
+      "source_workflow_ids": [
+        "wf-6114836577421bab",
+        "wf-6d6ba3d5c2233d5f"
+      ],
+      "audit_id": "audit-core-checkpoint_and_resume",
+      "semantic_hash": "0f89fa563f5b6aaa52cf09d4c0b06075303e7bb0eb79a9667b300e7fe57aeac3",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Checkpoint store format not standardized across providers."
+      ]
+    },
+    {
+      "pattern_id": "customer_feedback_to_learning_candidate",
+      "tier": "core",
+      "pattern_category": "marketing_learning",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "feedback_to_knowledge_candidate"
+      ],
+      "source_workflow_ids": [
+        "wf-7227ff0544f5cbd2",
+        "wf-770099f8fbf34352"
+      ],
+      "audit_id": "audit-core-customer_feedback_to_learning_candidate",
+      "semantic_hash": "861c5a46566371737fb188c166dff9abcb88b7eed935277174408f8128c06e80",
+      "approval_sensitive": true,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Does not modify canonical Knowledge Core or CIM.",
+        "Does not auto-promote findings or cross tenants.",
+        "owner_review_required on all knowledge_candidate outputs."
+      ]
+    },
+    {
+      "pattern_id": "dead_letter_queue",
+      "tier": "core",
+      "pattern_category": "reliability",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "terminal_dead_letter_handling"
+      ],
+      "source_workflow_ids": [
+        "wf-4e833d762f583631",
+        "wf-7227ff0544f5cbd2"
+      ],
+      "audit_id": "audit-core-dead_letter_queue",
+      "semantic_hash": "447457b5f90ba1a696ec885dbb7da0d5ef5ba5d53b82cd1d4d73e13bd6eaf689",
+      "approval_sensitive": true,
+      "publication_sensitive": true,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Dead-letter retention policy is tenant-specific."
+      ]
+    },
+    {
+      "pattern_id": "draft_to_human_approval",
+      "tier": "pilot",
+      "pattern_category": "control_and_safety",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "draft_review_resume",
+        "human_approval_before_write_or_publication"
+      ],
+      "source_workflow_ids": [
+        "wf-febea81827b8ad6b",
+        "wf-de3f478cf93ab7e0"
+      ],
+      "audit_id": "audit-draft_to_human_approval",
+      "semantic_hash": "752a967226d3ddecf46e213207d40c0a4cbe0a45d36ae6e2fee997c5a0a8ab8e",
+      "approval_sensitive": true,
+      "publication_sensitive": true,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Decision lineage format not standardized across approval_interface variants.",
+        "Pilot does not include auto-resume after timeout."
+      ]
+    },
+    {
+      "pattern_id": "error_workflow_or_recovery",
+      "tier": "pilot",
+      "pattern_category": "reliability",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "explicit_error_workflow",
+        "recovery_and_terminal_failure_path"
+      ],
+      "source_workflow_ids": [
+        "wf-b6e1676935a48901",
+        "wf-580f7458a07243a7"
+      ],
+      "audit_id": "audit-error_workflow_or_recovery",
+      "semantic_hash": "5d2ae59128835f408ed82dcb63fa83e9d61d3d72c12436d0214bf49e34912210",
+      "approval_sensitive": true,
+      "publication_sensitive": true,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Recovery semantics vary by transport provider.",
+        "Error workflow linkage not executed or validated in pilot."
+      ]
+    },
+    {
+      "pattern_id": "evidence_grounded_generation",
+      "tier": "pilot",
+      "pattern_category": "knowledge_and_rag",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "evidence_grounded_generation",
+        "prompt_injection_boundary"
+      ],
+      "source_workflow_ids": [
+        "wf-b144bd6927caa092",
+        "wf-9c87e7783b3cb118"
+      ],
+      "audit_id": "audit-evidence_grounded_generation",
+      "semantic_hash": "c55ca02b4c3b368f99ca2e8fb41502b1c2a31b8f16aa2cf09b49d991abf2cf97",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "No source → no grounded claim policy enforced at pattern level.",
+        "Prompt-injection boundary requires elevated review before LLM_provider call.",
+        "Vector store specifics deferred to implementation variants."
+      ]
+    },
+    {
+      "pattern_id": "human_approval_before_publication",
+      "tier": "pilot",
+      "pattern_category": "control_and_safety",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "human_approval_before_write_or_publication"
+      ],
+      "source_workflow_ids": [
+        "wf-febea81827b8ad6b",
+        "wf-16b82581942c24a9"
+      ],
+      "audit_id": "audit-human_approval_before_publication",
+      "semantic_hash": "9d517782071707e146ffce6457f14d3c7b94e4a41634e2b79f5f32ebd1a5e288",
+      "approval_sensitive": true,
+      "publication_sensitive": true,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Pilot abstraction only; channel-specific payload mapping deferred to variants.",
+        "Requires Connector Gateway for publication_target binding."
+      ]
+    },
+    {
+      "pattern_id": "human_edit_then_resume",
+      "tier": "core",
+      "pattern_category": "control_and_safety",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "manual_edit_resume"
+      ],
+      "source_workflow_ids": [
+        "wf-7227ff0544f5cbd2",
+        "wf-c18641f0b4421b0a"
+      ],
+      "audit_id": "audit-core-human_edit_then_resume",
+      "semantic_hash": "633da64ba4ec5e7774b4a4941c535313ae2944086a4895458bc5296af821c5e4",
+      "approval_sensitive": true,
+      "publication_sensitive": true,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Edit interface variants not standardized."
+      ]
+    },
+    {
+      "pattern_id": "lead_capture_to_qualification",
+      "tier": "pilot",
+      "pattern_category": "lead_generation",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "lead_qualification_boundary"
+      ],
+      "source_workflow_ids": [
+        "wf-353be45a7de607a0",
+        "wf-bdf26007404af6a3"
+      ],
+      "audit_id": "audit-lead_capture_to_qualification",
+      "semantic_hash": "01160d23995fa5ca9d72ec62257d5ad970198d1224f886833311fccf99f563e2",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Personal-data handling requires tenant policy review before production.",
+        "CRM_provider field mapping not included in pilot abstraction."
+      ]
+    },
+    {
+      "pattern_id": "pagination_and_batching",
+      "tier": "core",
+      "pattern_category": "data_flow",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "pagination_until_exhausted",
+        "bounded_batch_processing"
+      ],
+      "source_workflow_ids": [
+        "wf-860ed73d41feb4fd",
+        "wf-4795f50628f182d5"
+      ],
+      "audit_id": "audit-core-pagination_and_batching",
+      "semantic_hash": "cd41cabbaa0499a537e1e2564bc32cb5c497e6a51f843862d38299e3708a0936",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "max_batch_size and max_pages must be configured per tenant.",
+        "Termination inferred from catalog splitInBatches metadata."
+      ]
+    },
+    {
+      "pattern_id": "provider_rate_limit_handling",
+      "tier": "core",
+      "pattern_category": "reliability",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "rate_limit_backoff"
+      ],
+      "source_workflow_ids": [
+        "wf-6114836577421bab",
+        "wf-b537693ad1b8ee7e"
+      ],
+      "audit_id": "audit-core-provider_rate_limit_handling",
+      "semantic_hash": "44451078a0036410a7004f404a95b9f7edd27e1ae02fcf37902fc19742afaf48",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Retry-After headers belong in implementation_variants only."
+      ]
+    },
+    {
+      "pattern_id": "publication_confirmation",
+      "tier": "core",
+      "pattern_category": "control_and_safety",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "post_publish_evidence_capture"
+      ],
+      "source_workflow_ids": [
+        "wf-497aa9eee8a759da",
+        "wf-9f3a78220a7bfbe3"
+      ],
+      "audit_id": "audit-core-publication_confirmation",
+      "semantic_hash": "b226b9a3617a71bc276c0f9a0c506c32cbdb46e1ebce3d427748cdf5b26ee525",
+      "approval_sensitive": true,
+      "publication_sensitive": true,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Channel-specific confirmation payloads in variants only."
+      ]
+    },
+    {
+      "pattern_id": "quality_gate_after_generation",
+      "tier": "core",
+      "pattern_category": "ai_integration",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "quality_gate_before_handoff"
+      ],
+      "source_workflow_ids": [
+        "wf-63b78819a2e5a190",
+        "wf-16a4bd5f71833d44"
+      ],
+      "audit_id": "audit-core-quality_gate_after_generation",
+      "semantic_hash": "f6b75809ca0cc1027490b3f83bd5effc76bc104653e85c0a4f6140f6044f8c4b",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Schema validation rules are core-level; provider shapes vary."
+      ]
+    },
+    {
+      "pattern_id": "retry_with_idempotency",
+      "tier": "pilot",
+      "pattern_category": "reliability",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "idempotency_before_retry",
+        "unknown_outcome_write_no_auto_retry"
+      ],
+      "source_workflow_ids": [
+        "wf-b6e1676935a48901",
+        "wf-60870942fc4ef5b9"
+      ],
+      "audit_id": "audit-retry_with_idempotency",
+      "semantic_hash": "f6c780052e067bc7530557780b86a6c7fc3f00461c26e65da8a8d9a98653b7b5",
+      "approval_sensitive": true,
+      "publication_sensitive": true,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Unknown transport outcomes must not auto-retry on write paths.",
+        "Provider retry headers belong in implementation variants only."
+      ]
+    },
+    {
+      "pattern_id": "source_lineage_preservation",
+      "tier": "core",
+      "pattern_category": "data_flow",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "source_lineage_preservation"
+      ],
+      "source_workflow_ids": [
+        "wf-63b78819a2e5a190",
+        "wf-b2aea5e382059f4b"
+      ],
+      "audit_id": "audit-core-source_lineage_preservation",
+      "semantic_hash": "e8699a310590c07e121e84723c846df49b90a4544b71d4223a265716c8f49ebd",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Lineage chain format is core abstraction only."
+      ]
+    },
+    {
+      "pattern_id": "specialist_subworkflow",
+      "tier": "core",
+      "pattern_category": "ai_integration",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "specialist_scope_isolation"
+      ],
+      "source_workflow_ids": [
+        "wf-b2aea5e382059f4b",
+        "wf-7c284d78aad2003d"
+      ],
+      "audit_id": "audit-core-specialist_subworkflow",
+      "semantic_hash": "c65868fc013549e904ea0d4bbd95c585e5019dd433f42e4a146c0b2908ea2f15",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Scope declaration format not yet platform-adapted."
+      ]
+    },
+    {
+      "pattern_id": "structured_LLM_to_API_request",
+      "tier": "pilot",
+      "pattern_category": "ai_integration",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "structured_output_before_API_call"
+      ],
+      "source_workflow_ids": [
+        "wf-353be45a7de607a0",
+        "wf-b6c98c93d44e4384"
+      ],
+      "audit_id": "audit-structured_LLM_to_API_request",
+      "semantic_hash": "157ed771e5f9ddc01835f1733a5f3d617c8859fdc994a0aaa9db32496cfa9f06",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Schema validation rules are pilot-level; provider response shapes vary.",
+        "LLM_provider hallucination risk requires human review for high-stakes writes."
+      ]
+    },
+    {
+      "pattern_id": "supervisor_pattern",
+      "tier": "core",
+      "pattern_category": "ai_integration",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "supervisor_does_not_execute_tools"
+      ],
+      "source_workflow_ids": [
+        "wf-6bcda126561b5f72",
+        "wf-cb28929d37f1ac61"
+      ],
+      "audit_id": "audit-core-supervisor_pattern",
+      "semantic_hash": "cd12ce222dd0f1a4fabf5657ebb5d351b75c8b43f3e669d6b0404a3c8bd5d8e8",
+      "approval_sensitive": true,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Supervisor cannot bypass tool allowlists.",
+        "Undeclared tool execution forbidden at pattern level."
+      ]
+    },
+    {
+      "pattern_id": "tool_workflow_separation",
+      "tier": "core",
+      "pattern_category": "ai_integration",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "tool_workflow_permission_boundary",
+        "specialist_scope_isolation"
+      ],
+      "source_workflow_ids": [
+        "wf-7c284d78aad2003d",
+        "wf-b2aea5e382059f4b"
+      ],
+      "audit_id": "audit-core-tool_workflow_separation",
+      "semantic_hash": "af5b523a3e901a4457d04eb7ce7dfa27386c51efeb14a1275ee36ec0617edc67",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Tool permission matrix deferred to Connector Gateway."
+      ]
+    },
+    {
+      "pattern_id": "workflow_backup",
+      "tier": "pilot",
+      "pattern_category": "operations",
+      "maturity": "reviewed",
+      "practice_ids": [
+        "workflow_backup_and_source_control"
+      ],
+      "source_workflow_ids": [
+        "wf-c7d30b91fd4e5694",
+        "wf-21966e054442133e"
+      ],
+      "audit_id": "audit-workflow_backup",
+      "semantic_hash": "d535c38819b108f6a19ba09cc1c32589f96d9c955129f08b4067135f9890105c",
+      "approval_sensitive": false,
+      "publication_sensitive": false,
+      "tenant_scope": "tenant_scoped",
+      "billing_sensitive": false,
+      "destructive": false,
+      "deferred_capabilities": [],
+      "known_limitations": [
+        "Backup scope limited to metadata-evidenced export patterns.",
+        "Restore operations out of pilot scope."
+      ]
+    }
+  ],
+  "pattern_hashes": {
+    "draft_to_human_approval": "752a967226d3ddecf46e213207d40c0a4cbe0a45d36ae6e2fee997c5a0a8ab8e",
+    "error_workflow_or_recovery": "5d2ae59128835f408ed82dcb63fa83e9d61d3d72c12436d0214bf49e34912210",
+    "evidence_grounded_generation": "c55ca02b4c3b368f99ca2e8fb41502b1c2a31b8f16aa2cf09b49d991abf2cf97",
+    "human_approval_before_publication": "9d517782071707e146ffce6457f14d3c7b94e4a41634e2b79f5f32ebd1a5e288",
+    "lead_capture_to_qualification": "01160d23995fa5ca9d72ec62257d5ad970198d1224f886833311fccf99f563e2",
+    "retry_with_idempotency": "f6c780052e067bc7530557780b86a6c7fc3f00461c26e65da8a8d9a98653b7b5",
+    "structured_LLM_to_API_request": "157ed771e5f9ddc01835f1733a5f3d617c8859fdc994a0aaa9db32496cfa9f06",
+    "workflow_backup": "d535c38819b108f6a19ba09cc1c32589f96d9c955129f08b4067135f9890105c",
+    "checkpoint_and_resume": "0f89fa563f5b6aaa52cf09d4c0b06075303e7bb0eb79a9667b300e7fe57aeac3",
+    "customer_feedback_to_learning_candidate": "861c5a46566371737fb188c166dff9abcb88b7eed935277174408f8128c06e80",
+    "dead_letter_queue": "447457b5f90ba1a696ec885dbb7da0d5ef5ba5d53b82cd1d4d73e13bd6eaf689",
+    "human_edit_then_resume": "633da64ba4ec5e7774b4a4941c535313ae2944086a4895458bc5296af821c5e4",
+    "pagination_and_batching": "cd41cabbaa0499a537e1e2564bc32cb5c497e6a51f843862d38299e3708a0936",
+    "provider_rate_limit_handling": "44451078a0036410a7004f404a95b9f7edd27e1ae02fcf37902fc19742afaf48",
+    "publication_confirmation": "b226b9a3617a71bc276c0f9a0c506c32cbdb46e1ebce3d427748cdf5b26ee525",
+    "quality_gate_after_generation": "f6b75809ca0cc1027490b3f83bd5effc76bc104653e85c0a4f6140f6044f8c4b",
+    "source_lineage_preservation": "e8699a310590c07e121e84723c846df49b90a4544b71d4223a265716c8f49ebd",
+    "specialist_subworkflow": "c65868fc013549e904ea0d4bbd95c585e5019dd433f42e4a146c0b2908ea2f15",
+    "supervisor_pattern": "cd12ce222dd0f1a4fabf5657ebb5d351b75c8b43f3e669d6b0404a3c8bd5d8e8",
+    "tool_workflow_separation": "af5b523a3e901a4457d04eb7ce7dfa27386c51efeb14a1275ee36ec0617edc67"
+  },
+  "practice_ids": [
+    "bounded_batch_processing",
+    "checkpoint_before_expensive_step",
+    "draft_review_resume",
+    "evidence_grounded_generation",
+    "explicit_error_workflow",
+    "feedback_to_knowledge_candidate",
+    "human_approval_before_write_or_publication",
+    "idempotency_before_retry",
+    "lead_qualification_boundary",
+    "manual_edit_resume",
+    "pagination_until_exhausted",
+    "post_publish_evidence_capture",
+    "prompt_injection_boundary",
+    "quality_gate_before_handoff",
+    "rate_limit_backoff",
+    "recovery_and_terminal_failure_path",
+    "source_lineage_preservation",
+    "specialist_scope_isolation",
+    "structured_output_before_API_call",
+    "supervisor_does_not_execute_tools",
+    "terminal_dead_letter_handling",
+    "tool_workflow_permission_boundary",
+    "unknown_outcome_write_no_auto_retry",
+    "workflow_backup_and_source_control"
+  ],
+  "practice_hashes": {
+    "draft_review_resume": "f4859d01040426bb9bf445b010f7df0a5fcd4a13729e25ece9bf8685ec50d234",
+    "evidence_grounded_generation": "36589821121f1116cfc41bf5bfe05bb264ca678e961944daaa8cf11316e065f4",
+    "explicit_error_workflow": "cfa74bd72433485fe51dc5566cd3b87570cf9a16dcca4002e22169dc543dc892",
+    "human_approval_before_write_or_publication": "d79e31058fb02e72edc07bb9a97aa876528678c350b6c6153f930ebefe4e04f2",
+    "idempotency_before_retry": "48e664e152fd2f6c15a3678720c7de65d4e8a82e0e43d9512ea2bef9c1e2bb54",
+    "lead_qualification_boundary": "956716ea5ee3233aa69d3dd1b262e84de7fc93deb4ed026a5330c459ce6cd870",
+    "prompt_injection_boundary": "f8a7ad660838bd23624744a5d3340eabc5574125fdd9478565894346077914af",
+    "recovery_and_terminal_failure_path": "0a442536b8eaf50577155681dd7362a124b8d1d30cf5d3fddd632b9d841aabb1",
+    "structured_output_before_API_call": "9f88bf08c528573eb7c5efecd40999cd9e4f7c6a016f596ed31d2841d6942dde",
+    "unknown_outcome_write_no_auto_retry": "ca400336d801c2e0dcb35e3fa52def9d9642b9eec086fade09827de650376047",
+    "workflow_backup_and_source_control": "5988d68e035c96abcee4cd517340e807b1625bc3bbe0a3763aa4368614dd0eba",
+    "bounded_batch_processing": "b5c1e0247375dafbe8686aae4740d55e82b01ddcab054db87fa971991da0559c",
+    "checkpoint_before_expensive_step": "d80c7830f0ac7cb5177f484554c6d55bdf5c372c66bc76be96b26b4d4a36c13d",
+    "feedback_to_knowledge_candidate": "1d03acde7da8b500810447466ae1bb5d909e27ab08526ccd9a7bba50ab31bee8",
+    "manual_edit_resume": "c11935193f719fc7cd280f47eb1d0a461e46877eb2ea40706a40ff9433151f94",
+    "pagination_until_exhausted": "9592a6edd0ca91d3f786277806b3a790788fb51db199061ae2f4749a4224d397",
+    "post_publish_evidence_capture": "123cf9503812c9c76172c25c5dc3ad2923c7ecad1987f83934552c92663f10c8",
+    "quality_gate_before_handoff": "15c47563a5d3f72146f4eda84f0758ff75d1302fb9e9fb9469c44598d038e402",
+    "rate_limit_backoff": "bad1925837409ba1a1026c8ac68ec449659e34d52694e5371f79d47db0b9862d",
+    "source_lineage_preservation": "e331eb6944d14254c0c0e2fc719d3b4cf20e0355fd21c497c4a333a90b42754a",
+    "specialist_scope_isolation": "8f153119d40d562e886e73d9d01df2a4273c53935934821c2a23f3180066ad6d",
+    "supervisor_does_not_execute_tools": "2e109a5011ba24376e33a2a40248f2564e90cb869e29569cf180ac8c6630f744",
+    "terminal_dead_letter_handling": "cd99a4889e07dccebfa627e014dc3055e1b8a01d1fe3d7267cd07ea88fe5d13e",
+    "tool_workflow_permission_boundary": "fd347e956f2d2e69277608ebbe1c0fc8185249ff81515d073ab8540a3d8f32e9"
+  },
+  "generated_at": "2026-07-23T19:19:57.534866+00:00"
+}

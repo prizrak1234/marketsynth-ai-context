@@ -1,0 +1,41 @@
+"""Pydantic data contracts — shared across API, services, and future agents."""
+
+from app.schemas.contracts import (
+    Agent,
+    AgentCapability,
+    AgentStatus,
+    AgentType,
+    ContentAsset,
+    ContentAssetType,
+    LLMProvider,
+    LLMRequest,
+    LLMRequestStatus,
+    LLMResponse,
+    MarketingBrief,
+    MemoryItem,
+    MemoryLayer,
+    Project,
+    Task,
+    TaskStatus,
+    User,
+)
+
+__all__ = [
+    "Agent",
+    "AgentCapability",
+    "AgentStatus",
+    "AgentType",
+    "ContentAsset",
+    "ContentAssetType",
+    "LLMProvider",
+    "LLMRequest",
+    "LLMRequestStatus",
+    "LLMResponse",
+    "MarketingBrief",
+    "MemoryItem",
+    "MemoryLayer",
+    "Project",
+    "Task",
+    "TaskStatus",
+    "User",
+]

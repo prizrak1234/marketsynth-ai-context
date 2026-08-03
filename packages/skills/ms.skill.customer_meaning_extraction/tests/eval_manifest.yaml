@@ -1,0 +1,6 @@
+version: 1
+skill_id: ms.skill.customer_meaning_extraction
+eval_cases:
+  - id: valid
+    fixture: tests/fixtures/output_valid_extraction.json
+    expectation: schema_valid

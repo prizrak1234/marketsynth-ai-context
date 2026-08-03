@@ -1,0 +1,775 @@
+{
+  "name": "VEO 3 LOGO GENERATE KIE AI",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1168,
+        368
+      ],
+      "id": "b3d45ba5-7787-4133-ba68-64dc9eb0b912",
+      "name": "Telegram Trigger",
+      "webhookId": "65d1731e-50f1-4a5b-99ae-e80ee13fc7a7",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "name": "={{ $json.message.photo[0].file_id }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1u2Yca9CD4J5gOnLgYM_Ftzfdf-tyiISe",
+          "mode": "list",
+          "cachedResultName": "1_Original_Image",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1u2Yca9CD4J5gOnLgYM_Ftzfdf-tyiISe"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -960,
+        368
+      ],
+      "id": "4fcb0afa-3459-4f71-97b4-62b3a6ff0ec4",
+      "name": "Google Drive (upload original)",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "190190068",
+        "text": "Работа сделана",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2208,
+        352
+      ],
+      "id": "4d8a3a37-fa28-4ea0-a736-df83260ca5a4",
+      "name": "Telegram",
+      "webhookId": "4f84e1b8-45ce-47ec-8ed9-61145d86b19f",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        976,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "83485f10-0c0a-49fa-bf3c-28763a84d03c",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api.kie.ai/api/v1/veo/record-info",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $('Generate Video').item.json.data.taskId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1056,
+        368
+      ],
+      "id": "adea52c7-db4e-492d-b13d-b6c29b3c8c6c",
+      "name": "Get Result1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c66c7c13-57ca-4191-9af3-5ab306dfedfc",
+              "name": "Video URL",
+              "value": "={{ $json.data.response.resultUrls[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1680,
+        464
+      ],
+      "id": "fbd888d1-f636-4882-8634-6b2df7b82922",
+      "name": "Result1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Video URL'] }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "=veo3"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        464
+      ],
+      "id": "f12a97dd-f566-4110-a709-0cfa542fd87a",
+      "name": "Download File",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "inputDataFieldName": "veo3",
+        "name": "=LOGO_VEO_3_{{ $now.format('dd-MM-yyyy-TT') }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "17NBhWPfWeQCDOZWJ1HPu-0g3e2ntB6JB",
+          "mode": "list",
+          "cachedResultName": "3_Video_Logo",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/17NBhWPfWeQCDOZWJ1HPu-0g3e2ntB6JB"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2240,
+        560
+      ],
+      "id": "62b4f8d7-2690-4ca9-8b70-2b2cc7f3eb31",
+      "name": "Upload file",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        608
+      ],
+      "id": "87f6b937-c7f4-491d-98fc-8adc23c4a175",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5",
+          "mode": "list",
+          "cachedResultName": "gpt-5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        576
+      ],
+      "id": "15791919-547d-46a9-b885-3bfd94cf9b5b",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        608
+      ],
+      "id": "75355a8d-f65f-4d52-90af-5f62e9bfa5b7",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=LOGO DESCRIPTION:\n{{ $('Analyze image (logo)').item.json.content }}\n\nCREATIVE DIRECTION: \n{{ $json.your_creative_direction }}\n\nTECHNICAL SETTINGS:\n- Aspect ratio preference: {{ $json.aspect_ratio }}\n- Model preference: {{ $json.model }}\n- Dialogue: {{ $json.dialogue }}\n\nTASK: Create a complete logo animation prompt. Use Think tool to plan, then output the JSON structure with stringified full_video_prompt.",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=You are a video animation expert. Your job is to create detailed prompts for logo animation videos.\n\nWhen a user gives you:\n- A logo description \n- Creative direction\n- Technical preferences\n\nYou must create a complete JSON response with:\n- aspect_ratio: \"16:9\" or \"9:16\" \n- video_model: \"veo3\" or \"veo3_fast\"\n- full_video_prompt: a stringified JSON with complete animation details\n\nThe full_video_prompt string must contain a detailed JSON object with:\n- brand_name (extract from logo)\n- overall_style (creative, professional description)\n- aspect_ratio (text description like \"Landscape 16:9\")\n- video_length: 7.8\n- background_color: {hex: \"#color\", name: \"color name\"}\n- background_fill: \"full\"\n- music: (describe music style)\n- brand_colors: array of {hex, name} colors from logo\n- scenes: exactly 3 scenes with start/end times, visual descriptions, camera movements, sounds, scene_elements, intensity, dialog: null, overlay_text: null\n\nCRITICAL: Use the Think tool first to plan your response. Analyze the logo, understand the creative direction, then build the complete animation prompt.\n\nOutput format: Pure JSON only, no markdown, no explanations.\n\nExample structure:\n{\n  \"aspect_ratio\": \"16:9\",\n  \"video_model\": \"veo3\", \n  \"full_video_prompt\": \"{\\\"brand_name\\\":\\\"BrandName\\\",\\\"overall_style\\\":\\\"dynamic, professional\\\",\\\"video_length\\\":7.8,\\\"scenes\\\":[{\\\"start\\\":0.0,\\\"end\\\":2.2,\\\"visual\\\":\\\"Logo appears with smooth animation\\\",\\\"camera\\\":\\\"slow dolly in\\\",\\\"sound\\\":\\\"gentle chimes\\\",\\\"scene_elements\\\":[\\\"floating particles\\\"],\\\"intensity\\\":40,\\\"dialog\\\":null,\\\"overlay_text\\\":null}]}\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -144,
+        368
+      ],
+      "id": "38448580-8f9f-424f-83c3-b8ebe70bebb8",
+      "name": "Logo Animator AI Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7eb58ce6-86d9-41e8-833e-5f5d856b7b43",
+              "name": "your_creative_direction",
+              "value": "Make a dynamic logo animation that's on-brand for this product.\nSuggest a visual style and elements that are also on-brand.\nInclude several elements to be animated in the background and make the camera dynamic.",
+              "type": "string"
+            },
+            {
+              "id": "a499b10f-5a73-415b-a8a8-717fe7ab422e",
+              "name": "aspect_ratio",
+              "value": "horizontal",
+              "type": "string"
+            },
+            {
+              "id": "424db6fc-1543-46af-af72-affa5a79f8b5",
+              "name": "model",
+              "value": "veo3_fast",
+              "type": "string"
+            },
+            {
+              "id": "56f70ff9-9fbc-4d77-af61-a7c4fcf0baf7",
+              "name": "dialogue",
+              "value": "no voiceover please",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -512,
+        368
+      ],
+      "id": "1dc90612-4783-4829-babc-6828436b342a",
+      "name": "Your Creative Direction"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "=Return the analysis in YAML format with the following fields:\n\nbrand_name: (Name of the brand shown in the image, if visible or inferable)\ncolor_scheme:\n  - hex: (Hex code of each prominent color used)\n    name: (Descriptive name of the color)\nfont_style: (Describe the font family or style used: serif/sans-serif, bold/thin, etc.)\nvisual_description: (A full sentence or two summarizing what is seen in the image, ignoring the background)\n\nOnly return the YAML. Do not explain or add any other comments.",
+        "imageUrls": "=https://drive.google.com/uc?export=download&id={{ $json.id }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -736,
+        368
+      ],
+      "id": "592d6e06-c262-458f-9e8f-e5241d4e87ce",
+      "name": "Analyze image (logo)",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        832,
+        368
+      ],
+      "id": "73c27b1c-8901-48a6-bcfb-0a3bbdfb38df",
+      "name": "3 Minutes",
+      "webhookId": "caad73e3-58d8-4fbd-a3e9-c42424f2d1ee"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1280,
+        432
+      ],
+      "id": "9b34be5e-44c5-4492-b010-a7e4a4d61dbf",
+      "name": "30 Seconds",
+      "webhookId": "5f6bbd1e-a155-48de-b737-a225c6fd7a84"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/veo/generate",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": {{ $json.full_video_prompt }},\n  \"model\": \"{{ $json.video_model }}\",\n  \"aspectRatio\": \"{{ $json.aspect_ratio }}\",\n  \"imageUrls\": \"https://drive.google.com/uc?export=download&id={{ $('Google Drive (upload original)').item.json.id }}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        368
+      ],
+      "id": "d0157e5d-82e8-4850-b46c-a05f1aceb22f",
+      "name": "Generate Video",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Обработка идеального ответа агента\nconst rawOutput = $input.first().json.output;\n\ntry {\n  // Парсим основной JSON\n  const parsed = JSON.parse(rawOutput);\n  \n  // Проверяем что все нужные поля есть\n  if (!parsed.aspect_ratio || !parsed.video_model || !parsed.full_video_prompt) {\n    throw new Error('Missing required fields');\n  }\n  \n  // Возвращаем готовый результат\n  return [{\n    json: {\n      aspect_ratio: parsed.aspect_ratio,\n      video_model: parsed.video_model, \n      full_video_prompt: parsed.full_video_prompt\n    }\n  }];\n  \n} catch (error) {\n  // В случае ошибки показываем подробности\n  throw new Error(`Parse error: ${error.message}. Raw: ${rawOutput.substring(0, 200)}...`);\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        368
+      ],
+      "id": "bd5f552f-2488-4ddb-853b-48e3175e2f65",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -464,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "66c84aea-96ec-4b05-983f-3ca0c02d37f8",
+      "name": "Sticky Note8",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Telegram n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2000,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "60561124-2106-491a-bbdd-c28d73380c48",
+      "name": "Sticky Note9",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/yyj9Hyr86ag",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1088,
+        576
+      ],
+      "typeVersion": 1,
+      "id": "98a0d5f4-df3f-4eb7-a64c-6e8f526b3f48",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок Яндекс Диск в n8n: https://youtu.be/ky3YWN-xg1Y",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -800,
+        688
+      ],
+      "typeVersion": 1,
+      "id": "cb0f6072-2180-447a-a6c0-21c2eff61b5c",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Fallback Model: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        816
+      ],
+      "typeVersion": 1,
+      "id": "e723fd4d-d556-488d-ad59-981438c86758",
+      "name": "Sticky Note17",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## ЧАСТЬ 1. АНАЛИЗ ЛОГОТИПА",
+        "height": 272,
+        "width": 912,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1232,
+        288
+      ],
+      "typeVersion": 1,
+      "id": "08b85ef0-9f49-41db-bf2f-b7597f8efeeb",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## ЧАСТЬ 2. ГЕНЕРАЦИЯ ПРОМПТА",
+        "height": 464,
+        "width": 832,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -288,
+        288
+      ],
+      "typeVersion": 1,
+      "id": "9fc3a27e-fd2f-45c1-b6fd-d29871cd3068",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## ЧАСТЬ 3. ГЕНЕРАЦИЯ ВИДЕО ЛОГОТИПА",
+        "height": 464,
+        "width": 896,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        592,
+        288
+      ],
+      "typeVersion": 1,
+      "id": "5f252e59-421d-41c5-b4ec-48d8a7966f16",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## ЧАСТЬ 4. ОТПРАВКА",
+        "height": 464,
+        "width": 944,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1536,
+        288
+      ],
+      "typeVersion": 1,
+      "id": "5e8a177b-8854-4938-a277-555147448392",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive (upload original)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive (upload original)": {
+      "main": [
+        [
+          {
+            "node": "Analyze image (logo)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Result1": {
+      "main": [
+        [
+          {
+            "node": "Result1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "30 Seconds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Result1": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Logo Animator AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Logo Animator AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        []
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Logo Animator AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Logo Animator AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Your Creative Direction": {
+      "main": [
+        [
+          {
+            "node": "Logo Animator AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image (logo)": {
+      "main": [
+        [
+          {
+            "node": "Your Creative Direction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Get Result1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "30 Seconds": {
+      "main": [
+        [
+          {
+            "node": "Get Result1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Video": {
+      "main": [
+        [
+          {
+            "node": "3 Minutes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Generate Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5dc03bf9-b7b1-4609-8fd9-62a5684c38e1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "cFKioGcD0K6ZkFpa",
+  "tags": []
+}

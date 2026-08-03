@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.customer_meaning_extraction/output/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "extraction_id": {
+      "type": "string"
+    },
+    "skill_id": {
+      "type": "string",
+      "const": "ms.skill.customer_meaning_extraction"
+    },
+    "skill_version": {
+      "type": "string"
+    },
+    "source_cim_reference": {
+      "type": "object"
+    },
+    "source_evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "customer_meanings": {
+      "type": "array",
+      "items": {
+        "$ref": "schemas/customer-meaning.schema.json"
+      }
+    },
+    "desire_to_benefit_maps": {
+      "type": "array",
+      "items": {
+        "$ref": "schemas/desire-to-benefit-map.schema.json"
+      }
+    },
+    "transformation_maps": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "fear_objection_maps": {
+      "type": "array",
+      "items": {
+        "$ref": "schemas/fear-objection-map.schema.json"
+      }
+    },
+    "trust_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "service_expectations": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "price_value_concerns": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "promise_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "unsupported_promises": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "inferences": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      },
+      "maxItems": 30
+    },
+    "coverage": {
+      "type": "string",
+      "enum": [
+        "full",
+        "partial",
+        "minimal",
+        "unknown"
+      ]
+    },
+    "evidence_quality": {
+      "type": "string",
+      "enum": [
+        "comprehensive",
+        "partial",
+        "insufficient",
+        "conflicted",
+        "unknown"
+      ]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partially_complete",
+        "insufficient_sources",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "downstream_positioning_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "downstream_claim_substantiation_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "downstream_offer_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "input_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "output_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    }
+  },
+  "required": [
+    "extraction_id",
+    "skill_id",
+    "skill_version",
+    "source_cim_reference",
+    "customer_meanings",
+    "desire_to_benefit_maps",
+    "fear_objection_maps",
+    "promise_candidates",
+    "unsupported_promises",
+    "evidence_gaps",
+    "coverage",
+    "evidence_quality",
+    "research_status",
+    "provenance",
+    "input_hash",
+    "output_hash"
+  ]
+}

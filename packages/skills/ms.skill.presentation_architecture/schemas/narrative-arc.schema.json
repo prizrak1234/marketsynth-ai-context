@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "narrative-arc.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "arc_id": { "type": "string" },
+    "arc_type": {
+      "type": "string",
+      "enum": [
+        "problem_solution", "situation_complication_resolution", "evidence_conclusion",
+        "before_after_bridge", "opportunity_strategy_action", "educational_progression",
+        "chronological", "comparison", "decision_memo", "technical_system_walkthrough", "custom"
+      ]
+    },
+    "opening": { "type": "string" },
+    "context": { "type": "string" },
+    "problem_or_question": { "type": "string" },
+    "evidence_development": { "type": "string" },
+    "central_insight": { "type": "string" },
+    "recommendation_or_solution": { "type": "string" },
+    "proof": { "type": "string" },
+    "objections_or_risks": { "type": "string" },
+    "conclusion": { "type": "string" },
+    "call_to_action": { "type": "string" },
+    "target_audience_effect": { "type": "string" },
+    "source_references": { "type": "array", "items": { "type": "object" } },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "limitations": { "type": "array", "items": { "type": "string" } },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "arc_id", "arc_type", "opening", "conclusion", "source_references", "provenance"
+  ]
+}

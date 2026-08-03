@@ -1,0 +1,712 @@
+{
+  "name": "1_IZ_Threads_SCR_AI",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        176
+      ],
+      "id": "95d8aaaf-4660-45f8-bcbb-2367924ec7eb",
+      "name": "Telegram Trigger",
+      "webhookId": "1d6a36b7-6798-4126-a139-de8a7aefee63",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        464
+      ],
+      "id": "5219ebff-e30b-4867-95b6-61d2271bf138",
+      "name": "Send a chat action",
+      "webhookId": "65f60d4e-f690-4d22-8f96-048bb284106e",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "d0f75300-d3c1-4eb4-8087-b9d1a5da2420"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ca9cc06c-dcf8-457b-854b-4c03d3d15dcc",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -160,
+        176
+      ],
+      "id": "84d26201-e722-49c9-a6bb-ebf936199aa2",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9d8e573-3830-4e93-9f74-4838b5ff49b5",
+              "name": "text",
+              "value": "={{ $('Telegram Trigger').item.json.message.text }}\n{{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        160
+      ],
+      "id": "031455fc-4e5b-4475-b443-af8d8cb3f43d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1024,
+        400
+      ],
+      "id": "213fdca8-1fbb-4fed-9761-4da8edc4ed6d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-5-20250929",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1168,
+        400
+      ],
+      "id": "5f88e0c4-a78d-463e-9cec-a4f93d7d3fa8",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        112,
+        320
+      ],
+      "id": "038e9ac4-d1b5-47a1-963c-6f1d786f0276",
+      "name": "Telegram3",
+      "webhookId": "d6ab3ac8-330a-461e-ac0c-26b6488be885",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        368,
+        320
+      ],
+      "id": "68096870-ff63-46cd-b0f4-181efe7c6e86",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1856,
+        160
+      ],
+      "id": "193466ad-09cf-4e73-aafe-9d45ddaf1889",
+      "name": "Send a text message",
+      "webhookId": "cfadedcf-3e97-4ec6-aed9-65ff600bd5c0",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "cb940146-26dd-412b-bc10-2ebc7114566e",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 116,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "fa4d1282-fd3f-40af-964f-37553317c174",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ И ПРОВЕРКА",
+        "height": 589,
+        "width": 1453,
+        "color": 3
+      },
+      "id": "5d1785e8-33a5-4454-9212-d91b07756fde",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -576,
+        64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 96,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1424,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "816961c0-c13f-40c6-92b8-35692c865d6c",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## УРОК: НОДА REDIS https://youtu.be/TEr9L6DRKKA",
+        "height": 116,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1808,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "dac1b71e-4371-4370-acf5-9eaf4496f966",
+      "name": "Sticky Note13",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Instagram AI Агент",
+        "height": 656,
+        "width": 1264,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        928,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "c38edcf9-9398-4cdf-8d75-c81d173c0868",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 116,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        928,
+        688
+      ],
+      "typeVersion": 1,
+      "id": "6245b2e1-9493-419f-91e6-d25a3c59c8f2",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=## 🤖 Threads AI Agent — Strict Operating Rules\n\nYou are an AI agent for Threads. Your task is to ALWAYS use available tools to retrieve real data.\n\n### ⚠️ CRITICAL RULE: NEVER RESPOND WITHOUT USING TOOLS!\n\nIf a user requests data from Threads — you MUST call a tool and wait for the result.\n\n---\n\n### 📚 YOUR 3 TOOLS:\n\n#### 1️⃣ Get threads user posts\n**When to use:** @username, profile link, request for user's posts\n**Parameter:** username (without @)\n**Examples:**\n- \"Analyze @igorzuevich\" → username=\"igorzuevich\"\n- \"Posts from user @user\" → username=\"user\"\n\n#### 2️⃣ Get threads post  \n**When to use:** Full link to ONE specific post\n**Parameter:** URL (full link)\n**Examples:**\n- \"Open https://threads.com/@user/post/ABC\" → URL=\"https://threads.com/@user/post/ABC\"\n\n#### 3️⃣ Search threads\n**When to use:** Search by keyword/topic\n**Parameter:** Query (word/phrase)\n**Examples:**\n- \"Find posts about n8n\" → Query=\"n8n\"\n- \"Search AI automation\" → Query=\"AI automation\"\n\n---\n\n### 🧭 ALGORITHM (STRICT!):\n\n**STEP 1:** Identify request type\n- Has @username or profile link? → `Get threads user posts`\n- Has post link with /post/? → `Get threads post`\n- Has keyword? → `Search threads`\n\n**STEP 2:** Call tool with correct parameters\n\n**STEP 3:** WAIT for response (don't make up data!)\n\n**STEP 4:** Process JSON and give a beautiful response in Russian\n\n---\n\n### ✅ EXAMPLES OF CORRECT RESPONSES:\n\n**Profile analysis:**\n\"✅ Analyzed @igorzuevich!\n\n📊 Found 15 posts\n🔥 Top-3:\n1. https://threads.com/@igorzuevich/post/ABC (250 likes)\n2. https://threads.com/@igorzuevich/post/DEF (180 likes)\n3. https://threads.com/@igorzuevich/post/GHI (120 likes)\"\n\n**Search:**\n\"🔍 Found 27 posts for query «n8n»\n\n🏆 Top-3:\n1. https://threads.com/@user1/post/AAA (420 likes)\n2. https://threads.com/@user2/post/BBB (350 likes)\n3. https://threads.com/@user3/post/CCC (280 likes)\"\n\n**Post analysis:**\n\"✅ Post analyzed!\n\n👤 Author: @igorzuevich\n❤️ Likes: 156\n💬 Comments: 23\n🔗 https://threads.com/@igorzuevich/post/DPtcLuCgIiq\"\n\n---\n\n### ❌ DON'T DO:\n- ❌ Respond without calling a tool\n- ❌ Make up data\n- ❌ Show raw JSON\n- ❌ Use the wrong tool\n\n### ✅ ALWAYS:\n- ✅ Call tools\n- ✅ Wait for real data\n- ✅ Format beautifully in Russian\n- ✅ Use emojis for clarity"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1296,
+        160
+      ],
+      "id": "40d01aac-22b5-437c-a649-414b59e84c07",
+      "name": "Threads AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=tg_ID_THRDS_{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1328,
+        560
+      ],
+      "id": "40dbb980-1eae-440e-9543-dac52cd8f05f",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Retrieves a list of public posts from a Threads user profile by username (without @).\n\nWHEN TO USE:\n- User mentions @username\n- Threads profile link\n- Request to analyze user's posts\n\nPARAMETER:\n- username (string) — Username WITHOUT @ symbol\n  Example: \"igorzuevich\"\n\nRETURNS:\nJSON array with posts including text, likes, hashtags, links, dates.\n\nEXAMPLE REQUESTS:\n- \"Analyze @igorzuevich\"\n- \"Posts from user igorzuevich\"\n- \"What does @username post?\"",
+        "workflowId": {
+          "__rl": true,
+          "value": "jmxEfjgDvVlxrsVp",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/jmxEfjgDvVlxrsVp",
+          "cachedResultName": "2_IZ_Threads_SCR_Get threads user posts"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('username', `Threads handle of the user (without @).\nExample: igorzuevich`, 'string') }}"
+          },
+          "matchingColumns": [
+            "username"
+          ],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1536,
+        448
+      ],
+      "id": "2bbb97c6-15a7-4587-9daf-9397db256a28",
+      "name": "Get threads user posts"
+    },
+    {
+      "parameters": {
+        "description": "Analyzes ONE specific Threads post by its direct link.\n\nWHEN TO USE:\n- User provides full post link\n- Request to analyze individual post\n- Link contains /post/ in URL\n\nPARAMETER:\n- URL (string) — Full link format:\n  https://www.threads.com/@username/post/post_id\n\nRETURNS:\nJSON with post data: author, text, likes, comments, date.\n\nEXAMPLE REQUESTS:\n- \"Analyze https://www.threads.com/@igorzuevich/post/DPtcLuCgIiq\"\n- \"Open post [link]\"\n\nIMPORTANT: Only for direct post links!",
+        "workflowId": {
+          "__rl": true,
+          "value": "4xgeA7zxj9iFxYd4",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/4xgeA7zxj9iFxYd4",
+          "cachedResultName": "3_IZ_Threads_SCR_Get threads post"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "URL": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', `URL of a specific Threads post.\nMust be a full link in the following format:\nhttps://www.threads.com/@{username}/post/{post_id}\n\nExample:\nhttps://www.threads.com/@igorzuevich/post/DPtcLuCgIiq`, 'string') }}"
+          },
+          "matchingColumns": [
+            "URL"
+          ],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1696,
+        448
+      ],
+      "id": "a55d6a68-e3dd-40f2-bee6-7fd385464e86",
+      "name": "Get threads post"
+    },
+    {
+      "parameters": {
+        "description": "Searches for public posts on Threads by keyword or phrase.\n\nWHEN TO USE:\n- Search by topic or keyword\n- User looking for threads on specific topic\n- NO specific username or link provided\n\nPARAMETER:\n- Query (string) — Keyword or phrase\n  Can be in any language\n\nRETURNS:\nJSON array with found posts including author, text, likes, links.\n\nEXAMPLE REQUESTS:\n- \"Find posts about n8n\"\n- \"Search AI marketing\"\n- \"What do people write about automation?\"\n\nIMPORTANT: \n- DON'T use @ in Query\n- DON'T pass URLs in Query\n- Only words/phrases",
+        "workflowId": {
+          "__rl": true,
+          "value": "NM29dMKOBMfwntqU",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/NM29dMKOBMfwntqU",
+          "cachedResultName": "4_IZ_Threads_SCR_Search threads"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', `Keyword or phrase to search for in Threads posts.\n\nExample queries:\nn8n\nyoutube automation\nai маркетинг\ndogs\n\n👉 The query must be a plain string without @ or full URLs.`, 'string') }}"
+          },
+          "matchingColumns": [
+            "URL"
+          ],
+          "schema": [
+            {
+              "id": "Query",
+              "displayName": "Query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1856,
+        448
+      ],
+      "id": "56291964-1ff5-45c6-ad56-8960e00435fa",
+      "name": "Search threads"
+    },
+    {
+      "parameters": {
+        "content": "# 🚀 СКРЫТЫЙ ПОТЕНЦИАЛ THREADS AI АГЕНТА\n\n## 💎 20+ Способов Применения и Использования\n\n---\n\n## 📊 КАТЕГОРИЯ 1: МАРКЕТИНГ И ПРОДВИЖЕНИЕ\n\n### 1. **Мониторинг упоминаний бренда**\n**Как использовать:** Ежедневно запрашивайте поиск по названию вашего бренда/продукта\n**Пример:** \"Найди все посты про [название бренда]\"\n**Выгода:** Отслеживайте, что говорят о вас в Threads, реагируйте на отзывы\n\n### 2. **Анализ конкурентов**\n**Как использовать:** Регулярно анализируйте профили конкурентов\n**Пример:** \"Проанализируй профиль @competitor и покажи их самые популярные посты\"\n**Выгода:** Узнайте, какой контент работает у конкурентов, адаптируйте стратегию\n\n### 3. **Поиск влиятельных авторов в нише**\n**Как использовать:** Ищите посты по вашей тематике, анализируйте авторов\n**Пример:** \"Найди посты про AI marketing\" → анализируйте, кто пишет популярный контент\n**Выгода:** Найдите инфлюенсеров для коллабораций и партнерств\n\n### 4. **Генерация идей для контента**\n**Как использовать:** Ищите популярные посты в вашей нише\n**Пример:** \"Найди самые популярные посты про n8n за последнее время\"\n**Выгода:** Вдохновляйтесь успешными темами, создавайте актуальный контент\n\n### 5. **Трендспоттинг в реальном времени**\n**Как использовать:** Ежедневно ищите посты по ключевым словам вашей индустрии\n**Пример:** \"Найди свежие посты про automation\" → следите за трендами\n**Выгода:** Будьте в курсе актуальных тем, опережайте конкурентов\n\n---\n\n## 🎯 КАТЕГОРИЯ 2: ПРОДАЖИ И ЛИДОГЕНЕРАЦИЯ\n\n### 6. **Поиск потенциальных клиентов**\n**Как использовать:** Ищите людей, которые обсуждают проблемы, которые решает ваш продукт\n**Пример:** \"Найди посты про 'как автоматизировать рутину'\"\n**Выгода:** Находите теплых лидов, которые уже ищут решение\n\n### 7. **Анализ болей аудитории**\n**Как использовать:** Ищите посты с жалобами и проблемами в вашей нише\n**Пример:** \"Найди посты про сложности с email маркетингом\"\n**Выгода:** Понимайте реальные боли клиентов, улучшайте продукт/сервис\n\n### 8. **Мониторинг отзывов о продукте**\n**Как использовать:** Регулярно ищите упоминания вашего продукта\n**Пример:** \"Найди все посты, где упоминается [ваш продукт]\"\n**Выгода:** Собирайте фидбек, быстро реагируйте на негатив\n\n### 9. **Поиск партнеров и коллабораций**\n**Как использовать:** Анализируйте профили успешных создателей контента в смежных нишах\n**Пример:** \"Проанализируй профиль @potential_partner\"\n**Выгода:** Находите подходящих партнеров для кросс-промо\n\n---\n\n## 📈 КАТЕГОРИЯ 3: КОНТЕНТ-СТРАТЕГИЯ И АНАЛИТИКА\n\n### 10. **Бенчмаркинг вовлеченности**\n**Как использовать:** Сравнивайте вовлеченность ваших постов с конкурентами\n**Пример:** Анализируйте топ-посты конкурентов по лайкам/комментариям\n**Выгода:** Понимайте, что работает, улучшайте свои метрики\n\n### 11. **А/Б тестирование контент-идей**\n**Как использовать:** Анализируйте, какие темы/форматы получают больше вовлеченности\n**Пример:** \"Найди посты про [тема1] и [тема2]\" → сравните метрики\n**Выгода:** Принимайте решения на основе данных, не интуиции\n\n### 12. **Анализ хэштегов**\n**Как использовать:** Ищите популярные посты и смотрите, какие хэштеги используются\n**Пример:** \"Найди самые популярные посты про marketing\"\n**Выгода:** Используйте правильные хэштеги для максимального охвата\n\n### 13. **Исследование аудитории**\n**Как использовать:** Анализируйте, кто пишет о вашей теме, что их интересует\n**Пример:** \"Найди посты про [ваша тема]\" → изучите профили авторов\n**Выгода:** Глубже понимайте свою целевую аудиторию\n\n---\n\n## 🔍 КАТЕГОРИЯ 4: РАЗВЕДКА И АНАЛИТИКА РЫНКА\n\n### 14. **Мониторинг запусков конкурентов**\n**Как использовать:** Следите за анонсами новых продуктов в вашей нише\n**Пример:** \"Найди посты про 'новый продукт' + [ваша ниша]\"\n**Выгода:** Быстро реагируйте на действия конкурентов\n\n### 15. **Анализ вирусного контента**\n**Как использовать:** Находите посты с аномально высокой вовлеченностью\n**Пример:** Регулярно ищите и анализируйте топовые посты в нише\n**Выгода:** Понимайте механику вирального контента\n\n### 16. **Отслеживание изменений в индустрии**\n**Как использовать:** Ежедневный поиск по ключевым терминам индустрии\n**Пример:** \"Найди новые посты про AI regulations\"\n**Выгода:** Будьте в курсе последних изменений и новостей\n\n### 17. **Sentiment-анализ рынка**\n**Как использовать:** Анализируйте тональность постов о вашей теме/продукте\n**Пример:** Собирайте посты и оценивайте, позитивные они или негативные\n**Выгода:** Понимайте настроения рынка, адаптируйте коммуникацию\n\n---\n\n## 🎓 КАТЕГОРИЯ 5: ОБУЧЕНИЕ И РАЗВИТИЕ\n\n### 18. **Сбор образовательного контента**\n**Как использовать:** Находите полезные посты и советы в вашей области\n**Пример:** \"Найди посты с советами по SEO\"\n**Выгода:** Постоянно учитесь у экспертов, собирайте знания\n\n### 19. **Создание контент-библиотеки**\n**Как использовать:** Регулярно сохраняйте лучшие посты по темам\n**Пример:** Создайте коллекцию лучших постов для вдохновения\n**Выгода:** Быстрый доступ к качественным примерам\n\n### 20. **Анализ экспертных мнений**\n**Как использовать:** Следите за тем, что говорят лидеры мнений\n**Пример:** \"Проанализируй профиль @industry_expert\"\n**Выгода:** Получайте инсайты от лучших в индустрии\n\n---\n\n## 💡 КАТЕГОРИЯ 6: АВТОМАТИЗАЦИЯ И МАСШТАБИРОВАНИЕ\n\n### 21. **Автоматический дейли-дайджест**\n**Как использовать:** Настройте ежедневную сводку по ключевым темам\n**Пример:** Каждое утро получайте подборку новых постов по вашим темам\n**Выгода:** Экономьте часы на ручной мониторинг\n\n### 22. **Мониторинг кризисных ситуаций**\n**Как использовать:** Отслеживайте негативные упоминания в реальном времени\n**Пример:** Настройте алерты на негативные слова + название бренда\n**Выгода:** Быстро реагируйте на PR-кризисы\n\n### 23. **Сбор UGC (User-Generated Content)**\n**Как использовать:** Находите контент пользователей о вашем продукте\n**Пример:** \"Найди посты, где люди используют [ваш продукт]\"\n**Выгода:** Собирайте отзывы и кейсы для маркетинга\n\n---\n\n## 🔥 ПРОДВИНУТЫЕ СЦЕНАРИИ ИСПОЛЬЗОВАНИЯ\n\n### 24. **Построение карты влияния**\n**Что делать:**\n1. Найдите топ-20 авторов в вашей нише (через поиск популярных постов)\n2. Проанализируйте каждый профиль\n3. Оцените их аудиторию и вовлеченность\n4. Составьте список для коллабораций\n\n**Выгода:** Стратегический подход к работе с инфлюенсерами\n\n### 25. **Контент-аудит конкурентов**\n**Что делать:**\n1. Соберите все посты конкурента за месяц\n2. Категоризируйте по темам\n3. Проанализируйте, какие темы работают лучше\n4. Найдите пробелы в их контенте\n\n**Выгода:** Найдите возможности для дифференциации\n\n### 26. **Predictive Content Planning**\n**Что делать:**\n1. Анализируйте, какие темы набирают популярность\n2. Отслеживайте паттерны (что становится вирусным)\n3. Планируйте контент на основе трендов\n\n**Выгода:** Публикуйте контент до того, как тема станет мейнстримом\n\n### 27. **Audience Insights Dashboard**\n**Что делать:**\n1. Регулярно собирайте данные о постах в нише\n2. Анализируйте: время публикации, длину постов, форматы\n3. Находите оптимальные параметры для вашей ниши\n\n**Выгода:** Оптимизируйте каждый аспект вашего контента\n\n---\n\n## 🎯 СПЕЦИФИЧЕСКИЕ КЕЙСЫ ПО ИНДУСТРИЯМ\n\n### 28. **Для E-commerce**\n- Мониторинг упоминаний продуктов\n- Поиск reviews и unboxing контента\n- Отслеживание трендов в продуктах\n- Анализ сезонных запросов\n\n### 29. **Для SaaS компаний**\n- Мониторинг технических вопросов\n- Поиск feature requests в постах\n- Отслеживание чурна (жалоб на продукт)\n- Анализ онбординга конкурентов\n\n### 30. **Для инфобизнеса**\n- Поиск популярных тем для курсов\n- Анализ вопросов аудитории\n- Мониторинг отзывов о курсах\n- Поиск спикеров для коллабораций\n\n### 31. **Для агентств**\n- Поиск клиентов (кто жалуется на проблемы)\n- Сбор кейсов и примеров\n- Анализ конкурентных предложений\n- Мониторинг трендов в услугах\n\n---\n\n## 🚀 ИНТЕГРАЦИИ И РАСШИРЕНИЯ\n\n### 32. **Интеграция с CRM**\n**Что можно сделать:**\n- Автоматически добавлять потенциальных лидов из Threads в CRM\n- Обогащать профили клиентов данными из Threads\n- Создавать сегменты на основе активности в Threads\n\n### 33. **Интеграция с аналитикой**\n**Что можно сделать:**\n- Отправлять данные в Google Sheets для анализа\n- Строить дашборды в Data Studio\n- Создавать еженедельные отчеты автоматически\n\n### 34. **Интеграция с маркетинговыми инструментами**\n**Что можно сделать:**\n- Автоматически создавать рекламные креативы на основе популярных постов\n- Синхронизировать контент-календарь с трендами из Threads\n- Автоматизировать email-кампании на основе инсайтов\n\n---\n\n## 💰 ROI И БИЗНЕС-МЕТРИКИ\n\n### Как измерять эффективность агента:\n\n**Для маркетинга:**\n- Время экономии на мониторинг: 2-3 часа/день → ~$3000-5000/месяц\n- Увеличение вовлеченности: анализ лучших практик → +20-40%\n- Рост органического трафика: контент на основе трендов → +30-50%\n\n**Для продаж:**\n- Генерация лидов: 10-20 квалифицированных лидов/неделя\n- Сокращение цикла продаж: понимание болей → -15-25%\n- Увеличение конверсии: персонализация под инсайты → +10-20%\n\n**Для продукта:**\n- Feature prioritization: 20-30 запросов пользователей/неделя\n- Раннее обнаружение проблем: мониторинг негатива\n- Customer retention: быстрая реакция на жалобы → +5-10%\n\n---\n\n## 🎓 УРОВНИ ЗРЕЛОСТИ ИСПОЛЬЗОВАНИЯ\n\n### **УРОВЕНЬ 1: НАЧИНАЮЩИЙ (0-1 месяц)**\n- Мониторинг бренда\n- Анализ конкурентов\n- Поиск популярного контента\n\n### **УРОВЕНЬ 2: ПРОДВИНУТЫЙ (1-3 месяца)**\n- Регулярный трендспоттинг\n- Лидогенерация\n- Контент-планирование на основе данных\n\n### **УРОВЕНЬ 3: ЭКСПЕРТ (3-6 месяцев)**\n- Автоматизированные пайплайны\n- Интеграция с другими системами\n- Predictive analytics\n- Полноценная аналитическая система\n\n### **УРОВЕНЬ 4: МАСТЕР (6+ месяцев)**\n- AI-driven content strategy\n- Полная автоматизация SMM\n- Кастомные ML-модели поверх данных\n- Конкурентная разведка в реальном времени\n\n---\n\n## 🔧 ТЕХНИЧЕСКИЕ ВОЗМОЖНОСТИ РАСШИРЕНИЯ\n\n### Что можно добавить к агенту:\n\n1. **Sentiment Analysis** — анализ тональности постов\n2. **Entity Recognition** — извлечение упоминаний брендов, людей, продуктов\n3. **Topic Modeling** — автоматическая категоризация постов\n4. **Image Analysis** — анализ визуального контента в постах\n5. **Network Analysis** — построение графов влияния\n6. **Predictive Scoring** — предсказание вирусности контента\n7. **Automated Reporting** — автоматические еженедельные отчеты\n8. **Real-time Alerts** — уведомления о важных упоминаниях\n\n---\n\n## 💡 КРЕАТИВНЫЕ СПОСОБЫ ИСПОЛЬЗОВАНИЯ\n\n### 35. **Создание \"Threads Университета\"**\nСобирайте лучшие образовательные посты по темам → создавайте структурированную базу знаний\n\n### 36. **Threads-Based Newsletter**\nЕженедельная рассылка с лучшими инсайтами из Threads вашей ниши\n\n### 37. **Конкурентная карта рынка**\nВизуализация: кто, о чем, когда и с каким успехом публикует контент\n\n### 38. **Прогноз трендов**\nАнализируйте, какие темы начинают набирать популярность → предсказывайте будущие тренды\n\n### 39. **Персональный ассистент для команды**\nКаждое утро агент готовит брифинг для всей команды: что обсуждают в индустрии\n\n### 40. **Crisis Management Dashboard**\nМониторинг негативных упоминаний → мгновенное реагирование\n\n---\n\n## 🎯 ИТОГО: КЛЮЧЕВЫЕ ПРЕИМУЩЕСТВА\n\n✅ **Экономия времени:** 10-15 часов/неделю на ручной мониторинг  \n✅ **Конкурентное преимущество:** вы знаете рынок лучше конкурентов  \n✅ **Больше лидов:** находите потенциальных клиентов автоматически  \n✅ **Лучший контент:** создаете на основе данных, а не догадок  \n✅ **Быстрая реакция:** узнаете о проблемах раньше всех  \n✅ **Масштабируемость:** один агент = работа 2-3 специалистов  \n\n---\n\n## 🚀 СЛЕДУЮЩИЕ ШАГИ\n\n1. **Определите 3-5 приоритетных кейса** из списка выше\n2. **Настройте регулярные запросы** для этих кейсов\n3. **Автоматизируйте сбор данных** (например, ежедневно в 9:00)\n4. **Интегрируйте с другими инструментами** (CRM, аналитика, etc.)\n5. **Масштабируйте** по мере роста потребностей\n\n---\n\n**💎 Ваш Threads AI Agent — это не просто инструмент, это конкурентное преимущество!**\n\nНачните с простого, масштабируйте по мере роста. Успехов! 🚀",
+        "height": 8448,
+        "width": 1264,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4128,
+        -2112
+      ],
+      "typeVersion": 1,
+      "id": "813050a5-cd48-446d-b4e3-ea5054ade179",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a chat action",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Telegram3": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Threads AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get threads user posts": {
+      "ai_tool": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get threads post": {
+      "ai_tool": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search threads": {
+      "ai_tool": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f048cec1-b145-4551-b8ff-aa405dce55de",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "a4Dl1dSaYgDFUAQw",
+  "tags": []
+}

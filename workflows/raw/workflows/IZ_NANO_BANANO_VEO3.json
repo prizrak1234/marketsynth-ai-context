@@ -1,0 +1,1680 @@
+{
+  "name": "IZ_NANO_BANANO_VEO3",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "name": "={{ $('Telegram Trigger1').item.json.message.message_id }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1ZkrVfsXsZvP7FNKAYogsoLUlw2u8jXUX",
+          "mode": "list",
+          "cachedResultName": "IMAGE_n8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1ZkrVfsXsZvP7FNKAYogsoLUlw2u8jXUX"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        576,
+        112
+      ],
+      "id": "78e9e588-0a2f-421b-bb4d-d4f770907697",
+      "name": "Upload file",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 1. ВЫГРУЗКА ФАЙЛА",
+        "height": 864,
+        "width": 896,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        -512
+      ],
+      "typeVersion": 1,
+      "id": "b21c0fb5-830e-4bc1-bbaa-a7508c0a5be1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        112
+      ],
+      "id": "987bf3f1-c954-4ccc-b5b6-39187eaaf8fa",
+      "name": "Telegram Trigger1",
+      "webhookId": "0e4bd5e0-e859-40ff-8842-65447f42f6ea",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/playground/createTask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"google/nano-banana-edit\",\n  \"input\": {\n    \"prompt\": \"{{ $json.prompt }}\",\n    \"image_urls\": [\"{{ $json.image_URL_2 }}\"]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2048,
+        112
+      ],
+      "id": "d016ab4b-7333-43c1-a4cf-e3b2291d9746",
+      "name": "Nano-banana",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Detailed description of the image: {{ $json.content }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=You are a helpful assistant.\n\n## Role:\nYou are a creative director. You create short advertising character descriptions for an automated system.\n\n## Task:\nBased on the image description, generate a concise English text (max 300 characters) that describes one human character who naturally fits into the scene and advertises the product/service.\n\n## Requirements:\n- Plain text only, one paragraph, no markdown, no lists.\n- Must include: age, gender, clothing, hairstyle, facial expression.\n- Add how the character interacts with the product.\n- Keep it simple and natural for use as a direct prompt.\n\n## Output format:\nOne plain text line, <=300 characters. No special symbols, no line breaks.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1296,
+        112
+      ],
+      "id": "c3dcd6da-2a92-46c0-958b-b21f7c3e8afc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7e9a8077-ce8e-40d0-a227-fc047bed6f2f",
+              "name": "prompt",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "834c70f4-6e3c-4c15-90ba-d07a84ba8610",
+              "name": "image_URL_2",
+              "value": "=https://api.telegram.org/file/bot7600877404:AAE03_aOkIs0eXEGZwNjeUbMM793ifSM2KE/{{ $('Get a file').item.json.result.file_path }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1664,
+        112
+      ],
+      "id": "e3366cf2-d675-4a5d-ac57-87abe684c731",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "=# Detailed Image Analysis with ChatGPT Vision\n\n## Role: \nYou are a computer vision and image analysis expert. You perform tasks for an automated visual content processing system in n8n.\n\n## Context: \nA maximally detailed image description is required for further processing in automated workflows. The accuracy and completeness of analysis is critical for the correct operation of subsequent steps in the workflow.\n\n## Task: \nAnalyze the uploaded image and provide an exhaustive description of ALL visual elements down to the smallest details. Start with the central object, but MUST describe the ENTIRE environment: background, walls, floor, ceiling, lighting, shadows, decor, furniture, accessories, and any other objects in the frame.\n\n## Style: \nTechnical, maximally detailed, as if describing an image for a blind person.\n\n## Requirements:\n- **Language:** English\n- **MANDATORY:** Describe absolutely everything visible in the frame\n- Description structure:\n  1. **Overall composition and planes** (foreground, middle ground, background)\n  2. **Central object** (in detail)\n  3. **Surrounding environment** (walls, floor, ceiling, corners)\n  4. **Additional objects** (all furniture, decor, accessories)\n  5. **Lighting and atmosphere** (light sources, shadows, reflections)\n  6. **Text and inscriptions** (any visible letters, numbers, logos)\n  7. **Materials and textures** (of all surfaces in frame)\n  8. **Color palette** (of all scene elements)\n- Specify exact positions of ALL objects\n- Don't skip even the most insignificant details\n\n## Examples of bad and good responses:\n\n**Bad:** \n\"The image shows a room with a round white table in the center.\"\n\n**Good:**\n\"**Overall composition:** Interior scene in a room with corner positioning against a wall.\n\n**Central object:** In the center of the frame is positioned a round dining table made of white MDF, approximately 90 cm in diameter, 75 cm in height, with a matte surface free of scratches. Four wooden legs made of light beech with vertical wood grain texture extend at angles from the central support.\n\n**Surrounding environment:** The background is formed by a corner junction of two walls at a 90-degree angle. The left wall is painted in light gray color (approximately #E8E8E8), the right wall in a similar shade. Wall surfaces have a matte texture with barely visible roller paint streaks. In the corner between walls, a white baseboard is visible, 7-8 cm in height.\n\n**Floor covering:** The floor is laid with ceramic tiles 30x30 cm in light beige color with barely noticeable grout lines 2-3 mm wide. The tiles have a slight glossy sheen, with thin veining visible on the surface imitating natural stone.\n\n**Lighting:** Artificial lighting falls evenly from above, creating soft shadows from the table legs on the floor. Shadows are directed toward the lower right corner of the frame, indicating the light source is positioned in the upper left sector. No reflections or glare are observed on the table surface due to its matte finish.\n\n**Additional details:** In the lower right corner of the frame on the floor, a slight darkening is noticeable, possibly from a shadow beyond the frame boundaries...\"\n\n## Final checklist:\n- ✅ Is the central object described in detail?\n- ✅ Are ALL walls, corners, surfaces described?\n- ✅ Is floor/ceiling covering analyzed?\n- ✅ Are ALL additional items found and described?\n- ✅ Are lighting and all shadows described?\n- ✅ Is all visible text extracted?\n- ✅ Are materials of ALL surfaces specified?\n- ✅ Are all corners and frame edges analyzed?\n\n## Prohibited:\n- Don't skip ANY visible element\n- Don't limit yourself to only the central object\n- Don't use phrases like \"and other details\", \"various furniture\"\n- Don't skip corners, frame edges, background elements\n- Don't ignore small environmental details\n\n## Additional resources:\n- [OpenAI Vision API Documentation](https://platform.openai.com/docs/guides/vision)\n- [n8n Image Processing Best Practices](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.openai/)\n\n## Errors and solutions:\n\n| Problem | Solution |\n|---------|----------|\n| Missing background details | Systematically scan frame by sectors |\n| Incomplete environment description | Add requirement to describe each corner |\n| Focus only on center | Structure analysis: center → environment |\n| Missing small objects | Increase detail of peripheral zones |",
+        "imageUrls": "=https://drive.google.com/uc?export=download&id={{ $json.id }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1040,
+        112
+      ],
+      "id": "aaace02b-d4cc-46b6-a85c-cccd981ae012",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2272,
+        112
+      ],
+      "id": "f0e6728e-9753-4544-8f69-40d923c10d85",
+      "name": "Wait",
+      "webhookId": "79f2d7dc-9597-4e76-bf36-5196ecf978c2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Nano-banana').item.json.msg }}",
+                    "rightValue": "success",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "37a68d4c-cc95-4f2c-8fe4-435bef39946c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": " success"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "46f97818-f6d6-4a8a-9361-3137491c4854",
+                    "leftValue": "={{ $('Nano-banana').item.json.msg }}",
+                    "rightValue": "nosuccess",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "nosuccess"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2544,
+        112
+      ],
+      "id": "bb8cf675-4789-414a-8eb1-985aa62a5ba5",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message?.document?.file_id ?? $json.message?.photo?.[$json.message.photo.length - 1]?.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        112
+      ],
+      "id": "739e30b2-6192-4913-92be-f9fe01040052",
+      "name": "Get a file",
+      "webhookId": "31c4aec7-be20-48ce-9b02-ce1990c4af41",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1168,
+        368
+      ],
+      "id": "72314b5d-7496-4849-ba26-1427f8402b40",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2720,
+        224
+      ],
+      "id": "9094db30-38cd-4a98-8fcc-8dcfae65fedb",
+      "name": "Wait1",
+      "webhookId": "41c435e5-5a08-4098-bfc7-ca463c71df9d"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/playground/recordInfo",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2896,
+        384
+      ],
+      "id": "93779d98-c6e1-4e36-b260-708cc22ab695",
+      "name": "GET_IMAGE",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.image_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3968,
+        496
+      ],
+      "id": "8b602bb1-b257-4469-8291-122f4501837c",
+      "name": "Downloud",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        4400,
+        48
+      ],
+      "id": "7e66bc12-84d8-47ed-96d1-975f46ee9759",
+      "name": "Send a photo message",
+      "webhookId": "62d51351-4b0b-4ace-9f2e-71e9d6223736",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/playground/recordInfo",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3424,
+        496
+      ],
+      "id": "0414cb18-8b1d-4f8c-8d9f-d570c7381709",
+      "name": "GET_IMAGE1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Берём resultJson из входного item\nconst resultJson = $json.data.resultJson;\n\n// Парсим строку в объект\nconst parsed = JSON.parse(resultJson);\n\n// Достаём первую ссылку\nconst url = parsed.resultUrls[0];\n\n// Возвращаем как json\nreturn [{ json: { image_url: url } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3648,
+        496
+      ],
+      "id": "8a044113-3c52-43a5-ba39-0a50f5d08673",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## Урок Яндекс Диск в n8n: https://youtu.be/ky3YWN-xg1Y",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -400
+      ],
+      "typeVersion": 1,
+      "id": "3ae604ed-1391-4e16-a18f-1fddca969ff9",
+      "name": "Sticky Note12",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "=https://cloud-api.yandex.net/v1/disk/resources/upload?path=/n8n_image_ya/{{ $binary.data.fileName }}&overwrite=true",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4352,
+        528
+      ],
+      "id": "242a522e-9eab-4bb9-a913-99d4515d3023",
+      "name": "YANDEX_DISK_URL_ФАЙЛА",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bAk1fO085m4ULxsc",
+          "name": "YANDEX"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4512,
+        288
+      ],
+      "id": "ce504f40-d9d8-42f2-bcde-eaf847a2f4c4",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.href }}",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4624,
+        528
+      ],
+      "id": "69f88213-0533-4af5-8482-14c78a4eb19d",
+      "name": "YANDEX_DISK_ЗАГРУЗКА_ФАЙЛА1"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "name": "={{ $json.headers['cf-ray'] }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1ZkrVfsXsZvP7FNKAYogsoLUlw2u8jXUX",
+          "mode": "list",
+          "cachedResultName": "IMAGE_n8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1ZkrVfsXsZvP7FNKAYogsoLUlw2u8jXUX"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        752,
+        1120
+      ],
+      "id": "a3accc4f-9f79-4b9d-ac22-6643182a1369",
+      "name": "Upload file1",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1328,
+        432
+      ],
+      "id": "5e4cf7c6-42be-4ddb-8b56-c7f8d82583df",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://cloud-api.yandex.net/v1/disk/resources/upload?path=/n8n_image_ya/{{ $binary.data.fileName }}&overwrite=true",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        416,
+        -240
+      ],
+      "id": "a9e87516-2f05-4a39-a4cc-33381943861e",
+      "name": "YANDEX_DISK_URL_ФАЙЛА1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bAk1fO085m4ULxsc",
+          "name": "YANDEX"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        592,
+        -432
+      ],
+      "id": "c77f5f44-eeb7-42b0-ba2f-d318c4c0197f",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.href }}",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        688,
+        -240
+      ],
+      "id": "aea21fa1-7c1a-408b-824a-7b7f5b73a855",
+      "name": "YANDEX_DISK_ЗАГРУЗКА_ФАЙЛА"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "=# Detailed Image Analysis with ChatGPT Vision\n\n## Role: \nYou are a computer vision and image analysis expert. You perform tasks for an automated visual content processing system in n8n.\n\n## Context: \nA maximally detailed image description is required for further processing in automated workflows. The accuracy and completeness of analysis is critical for the correct operation of subsequent steps in the workflow.\n\n## Task: \nAnalyze the uploaded image and provide an exhaustive description of ALL visual elements down to the smallest details. Start with the central object, but MUST describe the ENTIRE environment: background, walls, floor, ceiling, lighting, shadows, decor, furniture, accessories, and any other objects in the frame.\n\n## Style: \nTechnical, maximally detailed, as if describing an image for a blind person.\n\n## Requirements:\n- **Language:** English\n- **MANDATORY:** Describe absolutely everything visible in the frame\n- Description structure:\n  1. **Overall composition and planes** (foreground, middle ground, background)\n  2. **Central object** (in detail)\n  3. **Surrounding environment** (walls, floor, ceiling, corners)\n  4. **Additional objects** (all furniture, decor, accessories)\n  5. **Lighting and atmosphere** (light sources, shadows, reflections)\n  6. **Text and inscriptions** (any visible letters, numbers, logos)\n  7. **Materials and textures** (of all surfaces in frame)\n  8. **Color palette** (of all scene elements)\n- Specify exact positions of ALL objects\n- Don't skip even the most insignificant details\n\n## Examples of bad and good responses:\n\n**Bad:** \n\"The image shows a room with a round white table in the center.\"\n\n**Good:**\n\"**Overall composition:** Interior scene in a room with corner positioning against a wall.\n\n**Central object:** In the center of the frame is positioned a round dining table made of white MDF, approximately 90 cm in diameter, 75 cm in height, with a matte surface free of scratches. Four wooden legs made of light beech with vertical wood grain texture extend at angles from the central support.\n\n**Surrounding environment:** The background is formed by a corner junction of two walls at a 90-degree angle. The left wall is painted in light gray color (approximately #E8E8E8), the right wall in a similar shade. Wall surfaces have a matte texture with barely visible roller paint streaks. In the corner between walls, a white baseboard is visible, 7-8 cm in height.\n\n**Floor covering:** The floor is laid with ceramic tiles 30x30 cm in light beige color with barely noticeable grout lines 2-3 mm wide. The tiles have a slight glossy sheen, with thin veining visible on the surface imitating natural stone.\n\n**Lighting:** Artificial lighting falls evenly from above, creating soft shadows from the table legs on the floor. Shadows are directed toward the lower right corner of the frame, indicating the light source is positioned in the upper left sector. No reflections or glare are observed on the table surface due to its matte finish.\n\n**Additional details:** In the lower right corner of the frame on the floor, a slight darkening is noticeable, possibly from a shadow beyond the frame boundaries...\"\n\n## Final checklist:\n- ✅ Is the central object described in detail?\n- ✅ Are ALL walls, corners, surfaces described?\n- ✅ Is floor/ceiling covering analyzed?\n- ✅ Are ALL additional items found and described?\n- ✅ Are lighting and all shadows described?\n- ✅ Is all visible text extracted?\n- ✅ Are materials of ALL surfaces specified?\n- ✅ Are all corners and frame edges analyzed?\n\n## Prohibited:\n- Don't skip ANY visible element\n- Don't limit yourself to only the central object\n- Don't use phrases like \"and other details\", \"various furniture\"\n- Don't skip corners, frame edges, background elements\n- Don't ignore small environmental details\n\n## Additional resources:\n- [OpenAI Vision API Documentation](https://platform.openai.com/docs/guides/vision)\n- [n8n Image Processing Best Practices](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.openai/)\n\n## Errors and solutions:\n\n| Problem | Solution |\n|---------|----------|\n| Missing background details | Systematically scan frame by sectors |\n| Incomplete environment description | Add requirement to describe each corner |\n| Focus only on center | Structure analysis: center → environment |\n| Missing small objects | Increase detail of peripheral zones |",
+        "imageUrls": "=https://drive.google.com/uc?export=download&id={{ $json.id }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1040,
+        1120
+      ],
+      "id": "cf80d143-e5ed-44b0-98e3-b10957a945d6",
+      "name": "Analyze image1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Detailed description of the image: {{ $json.content }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=You are a scriptwriter for short advertising videos created with the VEO 3 AI model.  \nYour task is to generate a short scenario in Russian, based on the provided image description.\n\n## Requirements:\n- Output language: Russian.\n- Format: one short paragraph.\n- The scenario must include:\n  1. A brief description of the character’s actions and emotions (gestures, facial expressions, movements).\n  2. A short spoken line (1–2 sentences, max 8 seconds when spoken).\n- The spoken line should sound natural and emotional, as if the person is talking aloud.\n- Mention 2–3 advantages of the advertised object in the line.\n- Style: soft advertising, without direct calls to action (“buy now”, etc.).\n- No markdown, no lists, no headings. Plain text only.\n\n## Output format:\nFirst describe the character’s actions and emotions, then in quotes write the short spoken line in Russian."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1360,
+        1120
+      ],
+      "id": "740bec16-68f8-4b3b-850e-72ab8b9c1ea8",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1248,
+        1328
+      ],
+      "id": "567548b9-14df-4514-b47f-5a2388d5e679",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1392,
+        1376
+      ],
+      "id": "f405e72f-904d-4c2d-9b02-9ed5f5cb35a0",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        1536,
+        1328
+      ],
+      "id": "5903ca28-fadc-4cf6-bfa8-b44fc40a2f0d",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2320,
+        1536
+      ],
+      "typeVersion": 1,
+      "id": "92cf9f0b-145e-49d6-b709-d02c41b57ba4",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api.kie.ai/api/v1/veo/record-info",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $('Generate Video').item.json.data.taskId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2640,
+        1120
+      ],
+      "id": "ac59b818-a6e8-4ed0-bfdd-c7885c63425d",
+      "name": "Get Result1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2320,
+        1120
+      ],
+      "id": "a1547156-41ec-4219-936a-4f26ff949154",
+      "name": "3 Minutes",
+      "webhookId": "caad73e3-58d8-4fbd-a3e9-c42424f2d1ee"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2912,
+        1296
+      ],
+      "id": "d23d7ff0-280d-4919-baa8-87f1e74fde7b",
+      "name": "30 Seconds",
+      "webhookId": "5f6bbd1e-a155-48de-b737-a225c6fd7a84"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/veo/generate",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "={{ $json.model }}"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $json.prompt }}"
+            },
+            {
+              "name": "aspect_ratio",
+              "value": "={{ $json.aspect_ratio }}"
+            },
+            {
+              "name": "imageUrls",
+              "value": "={{ $('Code').item.json.image_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2096,
+        1120
+      ],
+      "id": "0cb6c3e9-b5cb-4a83-a461-9bad9a4d2037",
+      "name": "Generate Video",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "424db6fc-1543-46af-af72-affa5a79f8b5",
+              "name": "model",
+              "value": "veo3_fast",
+              "type": "string"
+            },
+            {
+              "id": "d8cf0564-7674-4881-a971-e86a839d9547",
+              "name": "prompt",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "a499b10f-5a73-415b-a8a8-717fe7ab422e",
+              "name": "aspect_ratio",
+              "value": "9:16",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1808,
+        1120
+      ],
+      "id": "8199d66b-3635-4ebe-a3bf-0f29cbee7cd4",
+      "name": "Your Creative Direction"
+    },
+    {
+      "parameters": {
+        "chatId": "190190068",
+        "text": "Работа сделана",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3824,
+        992
+      ],
+      "id": "28334dcc-aba5-40f5-83c5-4f6b9f3f6f43",
+      "name": "Telegram",
+      "webhookId": "4f84e1b8-45ce-47ec-8ed9-61145d86b19f",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Video URL'] }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "=veo3"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3536,
+        1104
+      ],
+      "id": "7ad41c3a-e154-4b93-ae1d-a6c7bca9229f",
+      "name": "Download File",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "content": "## 5. ОТПРАВКА И ВЫГРУЗКА ИЗОБРАЖЕНИЯ",
+        "height": 1072,
+        "width": 1024,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3408,
+        896
+      ],
+      "typeVersion": 1,
+      "id": "f552001b-2b4e-4de2-ac5b-b34e756d9e9a",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "inputDataFieldName": "veo3",
+        "name": "=LOGO_VEO_3_{{ $now.format('dd-MM-yyyy-TT') }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1ZkrVfsXsZvP7FNKAYogsoLUlw2u8jXUX",
+          "mode": "list",
+          "cachedResultName": "IMAGE_n8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1ZkrVfsXsZvP7FNKAYogsoLUlw2u8jXUX"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        3920,
+        1200
+      ],
+      "id": "5d2df5c9-356e-4d5a-aa6d-c07cded35f9d",
+      "name": "Upload file2",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c66c7c13-57ca-4191-9af3-5ab306dfedfc",
+              "name": "Video URL",
+              "value": "={{ $json.data.response.resultUrls[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3152,
+        1104
+      ],
+      "id": "a7909d69-448a-48b5-9573-9895bac18d86",
+      "name": "Result1"
+    },
+    {
+      "parameters": {
+        "url": "=https://cloud-api.yandex.net/v1/disk/resources/upload?path=/n8n_image_ya/{{ $now.format('yyyy-MM-dd-hh-mm-ss') }}&overwrite=true",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3824,
+        1728
+      ],
+      "id": "954479da-dbdb-4546-a67b-565bffc7af80",
+      "name": "YANDEX_DISK_URL_ФАЙЛА2",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bAk1fO085m4ULxsc",
+          "name": "YANDEX"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3984,
+        1488
+      ],
+      "id": "ce03b91b-ea69-4e8b-a7cc-a47dd78e1bea",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.href }}",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4096,
+        1728
+      ],
+      "id": "450709b5-053c-4870-a7bb-d0cc20ecdc0c",
+      "name": "YANDEX_DISK_ЗАГРУЗКА_ФАЙЛА2"
+    },
+    {
+      "parameters": {
+        "content": "## 2 АНАЛИЗ ИЗОБРАЖЕНИЯ И ПОДГОТОВКА ПРОМПТА",
+        "height": 608,
+        "width": 912,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        976,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "159be102-68f0-4fe4-af1e-e6372be04d4f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 3 ГЕНЕРАЦИЯ И ВЫГРУЗКА ИЗОБРАЖЕНИЯ",
+        "height": 736,
+        "width": 2928,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1968,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "c5b53c5d-a597-4a02-ad42-1d2c6516a4ec",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 4. ГЕНЕРАЦИЯ ВИДЕО",
+        "height": 864,
+        "width": 2640,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        704,
+        896
+      ],
+      "typeVersion": 1,
+      "id": "24c8523d-ad64-419f-87c4-c8dcfd2f5d2b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/qKh7BTjQoM0",
+        "height": 120,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        464,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "3409b880-dd73-4ea7-a44d-66c52f86df33",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1248,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "3f42073d-99c4-4601-a158-352f2d564a71",
+      "name": "Sticky Note8",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Яндекс ART: https://youtu.be/f_rzNsnA0wc",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        672,
+        528
+      ],
+      "typeVersion": 1,
+      "id": "85d45a89-f43a-4e45-a3a5-cda0eca359c7",
+      "name": "Sticky Note9",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1472,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "5fdb99ca-5723-4721-87e1-4a2af7a04ad9",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2848,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "5b5071bd-a56e-4bb4-8f31-e402279aae52",
+      "name": "Sticky Note13",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3376,
+        288
+      ],
+      "typeVersion": 1,
+      "id": "167496f6-23a9-4502-a7c2-5dcc20ca3d9b",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4656,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "b1e3ecc1-80d0-4c0e-8e3f-d293d55d28f2",
+      "name": "Sticky Note14",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nano-banana": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Nano-banana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "YANDEX_DISK_URL_ФАЙЛА1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "GET_IMAGE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Downloud": {
+      "main": [
+        [
+          {
+            "node": "Send a photo message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "YANDEX_DISK_URL_ФАЙЛА",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET_IMAGE1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Downloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "GET_IMAGE1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET_IMAGE": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YANDEX_DISK_URL_ФАЙЛА": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "YANDEX_DISK_ЗАГРУЗКА_ФАЙЛА1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "YANDEX_DISK_URL_ФАЙЛА1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "YANDEX_DISK_ЗАГРУЗКА_ФАЙЛА",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Analyze image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Analyze image1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Your Creative Direction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Result1": {
+      "main": [
+        [
+          {
+            "node": "Result1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "30 Seconds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Get Result1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "30 Seconds": {
+      "main": [
+        [
+          {
+            "node": "Get Result1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Video": {
+      "main": [
+        [
+          {
+            "node": "3 Minutes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Upload file2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "YANDEX_DISK_URL_ФАЙЛА2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Your Creative Direction": {
+      "main": [
+        [
+          {
+            "node": "Generate Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Result1": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YANDEX_DISK_URL_ФАЙЛА2": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "YANDEX_DISK_ЗАГРУЗКА_ФАЙЛА2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c47dc9d9-b657-44d3-be62-0dcddd11f8dc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "iX7Qdgk6bc3Hnf8O",
+  "tags": []
+}

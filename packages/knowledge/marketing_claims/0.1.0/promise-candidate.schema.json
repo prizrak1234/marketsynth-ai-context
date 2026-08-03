@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/marketing-claims/0.1.0/promise-candidate.schema.json",
+  "title": "PromiseCandidate",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "promise_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "desired_outcome_reference": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "target_segment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proposed_statement": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "delivery_mechanism_reference": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "time_horizon": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "customer_effort": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "provider_responsibility": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "customer_responsibility": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proof_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "substantiation_status": {
+      "type": "string",
+      "enum": [
+        "unsupported",
+        "partially_supported",
+        "supported",
+        "support_conflicted",
+        "prohibited",
+        "requires_review"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unknown"
+      ]
+    },
+    "prohibited": {
+      "type": "boolean"
+    },
+    "human_review_required": {
+      "type": "boolean"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "promise_id",
+    "desired_outcome_reference",
+    "target_segment_ids",
+    "proposed_statement",
+    "evidence_references",
+    "proof_requirements",
+    "conditions",
+    "limitations",
+    "risks",
+    "substantiation_status",
+    "confidence",
+    "prohibited",
+    "human_review_required",
+    "provenance"
+  ]
+}

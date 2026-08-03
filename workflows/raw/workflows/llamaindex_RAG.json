@@ -1,0 +1,860 @@
+{
+  "name": "llamaindex_RAG",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0de3ed5a-c49f-4c44-84ff-4181a4801f72",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "SUCCESS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SUCCESS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "PENDING",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "5a63da73-efa7-443f-b81d-5d4cb1b594ef"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PENDING"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        944,
+        -464
+      ],
+      "id": "51866171-1a55-4b55-8fef-97ceb6676ea6",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        -464
+      ],
+      "id": "391a33bb-d109-4313-9d8c-95167655a375",
+      "name": "Wait",
+      "webhookId": "81fe9deb-7948-435c-9460-91199654f19d"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1232,
+        -336
+      ],
+      "id": "3952fb22-2217-4a3f-bc23-1094350731d7",
+      "name": "Wait1",
+      "webhookId": "74fa2365-f805-44de-b4c3-45042ee9e2b1"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.cloud.llamaindex.ai/api/v1/parsing/job/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1456,
+        -160
+      ],
+      "id": "1c94d275-a2b4-4ef4-b430-db6bc614eb48",
+      "name": "Get Parsing Job Details",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "0nrsqy2luSn0bCX3",
+          "name": "llamaindex AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        1968,
+        -480
+      ],
+      "id": "a5852451-9d91-40d7-8e30-ba90f699527c",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "8VSZ820sJzb40O0W",
+          "name": "Supabase YANDEX CLOUD"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1968,
+        -272
+      ],
+      "id": "97a8acb1-2d8a-447b-bbdd-4eff5b4f7e4c",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        2256,
+        -272
+      ],
+      "id": "61643e54-cd71-4741-ab19-71c632253a8a",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {
+          "splitCode": "markdown"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2304,
+        -96
+      ],
+      "id": "b0db7ff2-7f6c-45b3-a820-224bb131a828",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "content": "## Урок Яндекс Диск в n8n: https://youtu.be/ky3YWN-xg1Y",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -464,
+        128
+      ],
+      "typeVersion": 1,
+      "id": "ae2d79f6-30c5-4d18-a008-aaa8979f13d5",
+      "name": "Sticky Note12",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Ноды Http Request в n8n: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "f5a3cc98-03b7-4fe2-9838-21a9d5e4b7fc",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1328,
+        -464
+      ],
+      "id": "09390a17-a0c3-46ed-92b4-a77b406c6cad",
+      "name": "Telegram Trigger",
+      "webhookId": "0e4bd5e0-e859-40ff-8842-65447f42f6ea",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.document.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1088,
+        -464
+      ],
+      "id": "bf4468ae-9d8d-4191-944a-de10f22b33c5",
+      "name": "Get a file",
+      "webhookId": "31c4aec7-be20-48ce-9b02-ce1990c4af41",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "name": "={{ $('Telegram Trigger').item.json.message.document.file_name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1WV1U9cotj61ImPU4q-ybUfBAr2Z9-scj",
+          "mode": "list",
+          "cachedResultName": "n8n_RAG_TEST",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1WV1U9cotj61ImPU4q-ybUfBAr2Z9-scj"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -240,
+        -608
+      ],
+      "id": "edd7ca7b-96eb-42ac-bb44-43d5a81197c7",
+      "name": "Upload file",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cloud.llamaindex.ai/api/v1/parsing/upload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "model",
+              "value": "openai-gpt-4-1-mini"
+            },
+            {
+              "name": "high_res_ocr",
+              "value": "true"
+            },
+            {
+              "name": "adaptive_long_table",
+              "value": "true"
+            },
+            {
+              "name": "outlined_table_extraction",
+              "value": "true"
+            },
+            {
+              "name": "output_tables_as_HTML",
+              "value": "true"
+            },
+            {
+              "name": "language",
+              "value": "ru"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        416,
+        -464
+      ],
+      "id": "eb85aa60-1105-4cdc-90af-67904bbfaf87",
+      "name": "llamaindex",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "0nrsqy2luSn0bCX3",
+          "name": "llamaindex AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://cloud-api.yandex.net/v1/disk/resources/upload?path=/n8n_test_1/{{ $binary.data.fileName }}&overwrite=true",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -528,
+        -32
+      ],
+      "id": "dda3bd6d-313f-4dec-9835-8b5523abfd5f",
+      "name": "YANDEX_DISK_URL_ФАЙЛА",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bAk1fO085m4ULxsc",
+          "name": "YANDEX"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -272,
+        -208
+      ],
+      "id": "23417a78-526b-4255-88ff-74161948afaa",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.href }}",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        -48
+      ],
+      "id": "b3d4b78b-6533-4c8f-b765-02a4a1cccf61",
+      "name": "YANDEX_DISK_ЗАГРУЗКА_ФАЙЛА1"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.cloud.llamaindex.ai/api/v1/parsing/job/{{ $json.id }}/result/raw/markdown",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1216,
+        -608
+      ],
+      "id": "9fd568cd-f898-4eb3-8712-2bf3b824bb5e",
+      "name": "llamaindex_parsing",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "0nrsqy2luSn0bCX3",
+          "name": "llamaindex AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ВЫГРУЗКА ФАЙЛА",
+        "height": 352,
+        "width": 592,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1424,
+        -576
+      ],
+      "typeVersion": 1,
+      "id": "e0a19f10-3c78-4b7c-ba15-2b121f2f8f21",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## СОХРАНЕНИЕ ФАЙЛОВ",
+        "height": 848,
+        "width": 896,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -704,
+        -704
+      ],
+      "typeVersion": 1,
+      "id": "315ac30e-0588-4614-be90-3472d3ee3c32",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## ПАРСИНГ И ОБРАБОТКА ФАЙЛОВ",
+        "height": 848,
+        "width": 1456,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        256,
+        -704
+      ],
+      "typeVersion": 1,
+      "id": "b5b03ae6-6c8c-4bfb-b1c5-7816544992bb",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## ВЫЫГРУЗКА В БАЗУ ДАННЫХ",
+        "height": 848,
+        "width": 880,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1792,
+        -704
+      ],
+      "typeVersion": 1,
+      "id": "db554305-fd95-412b-86e1-fa08f5a6ceb4",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по RAG ИИ Агенты на YANDEX n8n: https://youtu.be/5BDCBWE25Jg",
+        "height": 100,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -704,
+        -848
+      ],
+      "typeVersion": 1,
+      "id": "29b5db41-7123-4383-94ba-b1edee51200c",
+      "name": "Sticky Note",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по RAG ИИ Агенты n8n: https://youtu.be/UrZ1sC8C_8E",
+        "height": 100,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1408,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "328d3f15-619c-46e8-9e84-4c96a384215e",
+      "name": "Sticky Note5",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Telagram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1280,
+        -704
+      ],
+      "typeVersion": 1,
+      "id": "d3260bfa-2953-4224-90b7-5abe56eee691",
+      "name": "Sticky Note6",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок Полный Гайд по Google в n8n: https://youtu.be/qKh7BTjQoM0",
+        "height": 100,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -528,
+        -384
+      ],
+      "typeVersion": 1,
+      "id": "c1e351a6-32e9-44a5-84dd-5bed59f0ab57",
+      "name": "Sticky Note7",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по настройке Supabase в n8n: https://youtu.be/xo7LGCKTzRg\n## https://youtu.be/BqrMrS5GAtI",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2272,
+        -752
+      ],
+      "typeVersion": 1,
+      "id": "aaab6856-cca8-4174-b2ad-9e03951d36a6",
+      "name": "Sticky Note16",
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 633389686,
+          "message": {
+            "message_id": 914,
+            "from": {
+              "id": 190190068,
+              "is_bot": false,
+              "first_name": "Igor",
+              "username": "igorzuevich",
+              "language_code": "ru",
+              "is_premium": true
+            },
+            "chat": {
+              "id": 190190068,
+              "first_name": "Igor",
+              "username": "igorzuevich",
+              "type": "private"
+            },
+            "date": 1756287654,
+            "document": {
+              "file_name": "wi-fi-router-tp-link-tl-wr841nd_instrukcia.pdf",
+              "mime_type": "application/pdf",
+              "thumbnail": {
+                "file_id": "AAMCAgADGQEAAgOSaK7SpqQgPfzlpjDqgNLWWzzpfXsAAhN6AAN6eUkCOuHm5bxksAEAB20AAzYE",
+                "file_unique_id": "AQADE3oAA3p5SXI",
+                "file_size": 11886,
+                "width": 226,
+                "height": 320
+              },
+              "thumb": {
+                "file_id": "AAMCAgADGQEAAgOSaK7SpqQgPfzlpjDqgNLWWzzpfXsAAhN6AAN6eUkCOuHm5bxksAEAB20AAzYE",
+                "file_unique_id": "AQADE3oAA3p5SXI",
+                "file_size": 11886,
+                "width": 226,
+                "height": 320
+              },
+              "file_id": "BQACAgIAAxkBAAIDkmiu0qakID385aYw6oDS1ls86X17AAITegADenlJAjrh5uW8ZLA2BA",
+              "file_unique_id": "AgADE3oAA3p5SQ",
+              "file_size": 2519742
+            }
+          }
+        }
+      }
+    ],
+    "llamaindex": [
+      {
+        "json": {
+          "id": "8cedff45-1891-43ac-b968-57dbe35fdf7f",
+          "status": "PENDING"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "llamaindex_parsing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Get Parsing Job Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Parsing Job Details": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "llamaindex",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "YANDEX_DISK_URL_ФАЙЛА",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YANDEX_DISK_URL_ФАЙЛА": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "YANDEX_DISK_ЗАГРУЗКА_ФАЙЛА1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "llamaindex": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "llamaindex_parsing": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "654a6552-5916-4bb5-bc5f-b81277c85407",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "rW1s96MNrntPTi3F",
+  "tags": []
+}

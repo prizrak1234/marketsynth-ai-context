@@ -1,0 +1,493 @@
+{
+  "name": "Call transcribe",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Проанализируй следующую транскрипцию телефонного звонка из колл-центра медицинского центра. Тип звонка и идентификатор, номер сотрудника и номер клиента не теряй и передавай на выходе вместе с остальной обработанной информацией.\nТип звонка: {{ $input.item.json.call_type === 'in' ? 'Входящий' : 'Исходящий' }} (type: {{ $input.item.json.call_type }}).\nИдентификатор звонка (call ID): {{ $input.item.json.megafon_callid }}.\nНомер сотрудника (user): {{ $input.item.json.user_extension }}.\nНомер клиента (phone): {{ $input.item.json.phone_number }}.\n\nПредоставь анализ в формате JSON со следующими ключами:\n- \"main_topics\": [Список строк] - Определи основные медицинские услуги, симптомы или административные вопросы, которые обсуждались (например, \"Запись на прием\", \"Консультация кардиолога\", \"Запрос результатов анализов\", \"Вопрос о стоимости\").\n- \"goal_achieved\": [Boolean] - {{ $input.item.json.call_type === 'in' ? 'Получил ли звонящий информацию или запись, которую искал?' : 'Удалось ли сотруднику донести информацию или выполнить цель звонка?' }} (true/false)\n- \"overall_sentiment\": [Строка] - Опиши общую тональность звонка (например, \"Позитивная\", \"Нейтральная\", \"Негативная\", \"Тревожная\", \"Раздраженная\").\n- \"agent_politeness\": [Строка] - Оцени вежливость сотрудника (user: {{ $input.item.json.user_extension }}) (например, \"Очень вежливый\", \"Вежливый\", \"Нейтральный\", \"Слегка невежливый\", \"Грубый\").\n- \"agent_competence\": [Строка] - Оцени компетентность сотрудника (user: {{ $input.item.json.user_extension }}) в обработке запроса (например, \"Очень компетентный\", \"Компетентный\", \"Выглядел неуверенно\", \"Некомпетентный\", \"Корректно перевел звонок\").\n- \"summary\": [Строка] - Краткое резюме цели и результата звонка (используй \"Клиент\" для обозначения звонящего) в одном предложении.\n\nТранскрипция:\n{{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e8563c33-f997-45f2-8a35-2b766e642b1d",
+      "name": "Analyze Call with OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        3580,
+        140
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ub73UUBisdNHoB6t",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "crmapi/v1/megafon-calls",
+        "options": {
+          "rawBody": true,
+          "responseData": "firstEntryJson"
+        }
+      },
+      "id": "538fdfd9-e693-42c8-9008-1a538ce48a6a",
+      "name": "Webhook Call1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        2440,
+        240
+      ],
+      "webhookId": "6d813262-38b2-4c0c-9936-8f2342"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Получаем JSON данные, которые n8n уже подготовил\nconst inputData = $input.first().json;\n// Доступ к распарсенному телу запроса\nconst body = inputData.body;\n\n// Проверки делаем напрямую по полям объекта body\nconst receivedCmd = body.cmd;\nconst receivedToken = body.crm_token ? body.crm_token.trim() : '';\nconst EXPECTED_TOKEN = 'my-secret-megafon-key-123';\nconst EXPECTED_CMD = 'history';\n\nif (receivedCmd !== EXPECTED_CMD) {\n  console.warn(`Received command '${receivedCmd}', expected '${EXPECTED_CMD}'. Ignoring.`);\n  return []; // Останавливаем обработку\n}\n\nif (receivedToken !== EXPECTED_TOKEN) {\n  console.error(`Unauthorized: Invalid token. Received: \\\"${receivedToken}\\\"`);\n  return []; // Останавливаем обработку\n}\n\nconst recordingLink = body.link || null;\nif (!recordingLink) {\n  console.warn(`No recording link (link parameter) found for call ID ${body.callid}. Skipping transcription.`);\n   return []; // Останавливаем обработку\n}\n\nconsole.log('Successfully validated webhook body:', body);\n\n// Формируем выходные данные, используя поля из body\nconst outputData = {\n  megafon_callid: body.callid || null,\n  recording_url: recordingLink, // Уже проверили, что не null\n  phone_number: body.phone || null,\n  user_extension: body.user || null,\n  call_type: body.type || null,\n  call_start_time: body.start || null,\n  call_duration_seconds: body.duration ? parseInt(body.duration, 10) : null,\n  call_status: body.status || null,\n  diversion: body.diversion || null,\n  ext: body.ext || null,\n};\n\n// Возвращаем данные для следующих узлов\nreturn [{ json: outputData }];"
+      },
+      "id": "e99237a7-68c4-4dad-84df-c7027ea1e5ab",
+      "name": "Parse & Validate Request",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.recording_url }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "6821767c-f3fa-48e4-a75b-506b9332ca09",
+      "name": "Download Recording1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2800,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "afcc27c7-bb9f-422e-bac6-afed8fc06d7c",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2980,
+        360
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ub73UUBisdNHoB6t",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "transcription",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "name": "analysisPrompt",
+              "value": "=Проанализируй следующую транскрипцию телефонного звонка из колл-центра медицинского центра.\nТип звонка: {{ $json.call_type === 'in' ? 'Входящий' : 'Исходящий' }} (type: {{ $json.call_type }}).\nИдентификатор звонка (call ID): {{ $json.megafon_callid }}.\nНомер сотрудника (user): {{ $json.user_extension }}.\nНомер клиента (phone): {{ $json.phone_number }}.\n\nПредоставь анализ в формате JSON со следующими ключами:\n- \"main_topics\": [Список строк] - Определи основные медицинские услуги, симптомы или административные вопросы, которые обсуждались (например, \"Запись на прием\", \"Консультация кардиолога\", \"Запрос результатов анализов\", \"Вопрос о стоимости\").\n- \"goal_achieved\": [Boolean] - {{ $json.call_type === 'in' ? 'Получил ли звонящий информацию или запись, которую искал?' : 'Удалось ли сотруднику донести информацию или выполнить цель звонка?' }} (true/false)\n- \"overall_sentiment\": [Строка] - Опиши общую тональность звонка (например, \"Позитивная\", \"Нейтральная\", \"Негативная\", \"Тревожная\", \"Раздраженная\").\n- \"agent_politeness\": [Строка] - Оцени вежливость сотрудника (user: {{ $json.user_extension }}) (например, \"Очень вежливый\", \"Вежливый\", \"Нейтральный\", \"Слегка невежливый\", \"Грубый\").\n- \"agent_competence\": [Строка] - Оцени компетентность сотрудника (user: {{ $json.user_extension }}) в обработке запроса (например, \"Очень компетентный\", \"Компетентный\", \"Выглядел неуверенно\", \"Некомпетентный\", \"Корректно перевел звонок\").\n- \"summary\": [Строка] - Краткое резюме цели и результата звонка в одном предложении.\n\nТранскрипция:\n{{ $json.text }}"
+            },
+            {
+              "name": "analysis",
+              "value": "=try {\n  // Путь к строке JSON из OUTPUT'а узла OpenAI\n  const contentString = $json.message?.content;\n  if (contentString) {\n    return JSON.parse(contentString);\n  } else {\n    return { error: \"message.content not found\" };\n  }\n} catch(e) {\n  console.error(\"Error parsing analysis JSON in Set node:\", e);\n  return { error: \"Failed to parse analysis JSON\", raw: $json.message?.content };\n}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "81fc91cd-eda7-46d9-a8ef-3e34067370ea",
+      "name": "Prepare Analysis Data1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        3320,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "13ggGgRn3fhKYQdwRB8p45eZk5yUuC4-2NVdh6r0hY84",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Лист1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13ggGgRn3fhKYQdwRB8p45eZk5yUuCh6r0hY84/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Тип Звонка": "={{ \"'\" + ($json.call_type === 'in' ? 'Входящий' : 'Исходящий') }}",
+            "ID Звонка": "={{ $json.megafon_callid }}",
+            "Время": "={{ $json.call_start_time_formatted }}",
+            "Телефон": "={{ $json.phone_number }}",
+            "Оператор": "={{ $json.user_extension }}",
+            "Транскрипция": "={{ $json.transcription }}",
+            "Темы": "={{ JSON.stringify($json.analysis?.main_topics) }}",
+            "Цель достигнута": "={{ $json.analysis?.goal_achieved }}",
+            "Тональность": "={{ $json.analysis?.overall_sentiment }}",
+            "Вежливость оператора": "={{ $json.analysis?.agent_politeness }}",
+            "Компетентность оператора": "={{ $json.analysis?.agent_competence }}",
+            "Резюме": "={{ $json.analysis?.summary }}",
+            "Ошибка анализа": "={{ $json.analysis_error }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Тип Звонка",
+              "displayName": "Тип Звонка",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ID Звонка",
+              "displayName": "ID Звонка",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Время",
+              "displayName": "Время",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Телефон",
+              "displayName": "Телефон",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Оператор",
+              "displayName": "Оператор",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Транскрипция",
+              "displayName": "Транскрипция",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Темы",
+              "displayName": "Темы",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Цель достигнута",
+              "displayName": "Цель достигнута",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Тональность",
+              "displayName": "Тональность",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Вежливость оператора",
+              "displayName": "Вежливость оператора",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Компетентность оператора",
+              "displayName": "Компетентность оператора",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Резюме",
+              "displayName": "Резюме",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ошибка анализа",
+              "displayName": "Ошибка анализа",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        4220,
+        -140
+      ],
+      "id": "9c6e145d-7b22-404e-81b2-e3545e8d239c",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KE4NkgvfSwDVxSvU",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        3140,
+        100
+      ],
+      "id": "c1218a8d-9e3f-48eb-a780-1712ed2bbaa2",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "7bb00f68-475b-40ac-a1f2-54fbfe8a24c9",
+      "name": "Respond OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        2820,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\nfor (const item of items) {\n  const resultData = { ...item.json };\n  // --- Начало блока форматирования времени ---\nconst startTimeUTCString = resultData.call_start_time; // Берем исходную строку времени\nlet formattedStartTime = 'Invalid Date'; // Значение по умолчанию на случай ошибки\n\n// Проверяем, что строка существует и похожа на ожидаемый формат\nif (startTimeUTCString && startTimeUTCString.length === 16 && startTimeUTCString.endsWith('Z')) {\n  try {\n    // Пересобираем строку в стандартный ISO формат, понятный new Date()\n    const year = startTimeUTCString.substring(0, 4);\n    const month = startTimeUTCString.substring(4, 6);\n    const day = startTimeUTCString.substring(6, 8);\n    const hour = startTimeUTCString.substring(9, 11);\n    const minute = startTimeUTCString.substring(11, 13);\n    const second = startTimeUTCString.substring(13, 15);\n    const isoString = `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;\n\n    const dateObject = new Date(isoString);\n\n    // Проверяем, что дата создалась корректно\n    if (!isNaN(dateObject.getTime())) {\n      // Форматируем в нужный вид по Москве (ru-RU для формата ДД.ММ.ГГГГ)\n      formattedStartTime = dateObject.toLocaleString('ru-RU', {\n        timeZone: 'Europe/Moscow', // Указываем московскую таймзону\n        day: '2-digit',\n        month: '2-digit',\n        year: 'numeric',\n        hour: '2-digit',\n        minute: '2-digit',\n        second: '2-digit',\n        hour12: false // Используем 24-часовой формат\n      });\n      // Иногда toLocaleString добавляет запятую между датой и временем, убираем её\n       formattedStartTime = formattedStartTime.replace(',', '');\n    } else {\n        console.warn(`Could not parse date from reconstructed string: \"${isoString}\"`);\n    }\n  } catch (e) {\n    console.error(`Error formatting date string \"${startTimeUTCString}\":`, e);\n  }\n} else if (startTimeUTCString) {\n     console.warn(`Unexpected date format received: \"${startTimeUTCString}\"`);\n     formattedStartTime = `Unrecognized Format: ${startTimeUTCString}`; // Помечаем, если формат не тот\n}\n\n// Добавляем отформатированное время в результат (можно назвать поле по-другому)\nresultData.call_start_time_formatted = formattedStartTime;\n// --- Конец блока форматирования времени ---\n  try {\n    const contentString = item.json.message?.content;\n    if (contentString) {\n      const analysisJson = JSON.parse(contentString);\n      resultData.analysis = analysisJson;\n    } else {\n      resultData.analysis_error = \"message.content not found\";\n      resultData.analysis_raw = JSON.stringify(item.json.message);\n    }\n  } catch (error) {\n    resultData.analysis_error = `Parse error: ${error.message}`;\n    resultData.analysis_raw = item.json.message?.content;\n  }\n  results.push({ json: resultData });\n}\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4040,
+        -140
+      ],
+      "id": "ea8d8b20-63a2-41b1-b2cb-14560895b779",
+      "name": "Extract and Merge Analysis"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        3880,
+        -140
+      ],
+      "id": "312da06a-10a2-4dd3-9ccc-715dfb0dc4b2",
+      "name": "Merge1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Analyze Call with OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Webhook Call1": {
+      "main": [
+        [
+          {
+            "node": "Parse & Validate Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Validate Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Download Recording1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Recording1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Prepare Analysis Data1": {
+      "main": [
+        [
+          {
+            "node": "Analyze Call with OpenAI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Prepare Analysis Data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract and Merge Analysis": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Extract and Merge Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "335c96b1-f518-4483-b587-f5dcc33f831a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "85d036a93ffd73d9cb1c54a53f70e386e9c0b1d79aa78120c8db98f97430d0f7"
+  },
+  "id": "VrVzuMrsAkiVQi9o",
+  "tags": []
+}

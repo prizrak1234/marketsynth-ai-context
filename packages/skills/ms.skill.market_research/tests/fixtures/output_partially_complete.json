@@ -1,0 +1,156 @@
+{
+  "research_id": "res-flowdesk-001",
+  "skill_id": "ms.skill.market_research",
+  "skill_version": "0.1.0",
+  "source_context_reference": {
+    "context_id": "ctx-flowdesk-001",
+    "skill_id": "ms.skill.product_marketing_context",
+    "skill_version": "0.1.0",
+    "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "readiness": "ready"
+  },
+  "research_questions": [
+    "What demand signals exist for async standup reduction among remote engineering teams?",
+    "Which competitor categories dominate the async PM segment?"
+  ],
+  "market_definition": [
+    {
+      "finding_id": "md-001",
+      "domain": "market_definition",
+      "claim": "B2B SaaS project management for remote software teams",
+      "observation": "PMC and user interviews scope the market to async-first PM for 5-50 engineer teams",
+      "source_reference": "ms.skill.product_marketing_context:0.1.0:output:bbbbbbbb",
+      "source_type": "prior_skill_output",
+      "verification_status": "partially_verified",
+      "confidence": "medium",
+      "supporting_evidence_ids": ["ev-001"]
+    }
+  ],
+  "market_structure": [],
+  "market_signals": [
+    {
+      "finding_id": "ms-001",
+      "domain": "market_structure",
+      "claim": "Async collaboration tool adoption is growing among distributed teams",
+      "observation": "Fictional industry report cites increased async tool adoption",
+      "source_reference": "https://example.invalid/reports/async-tools-2026",
+      "source_type": "external_source",
+      "verification_status": "partially_verified",
+      "confidence": "medium",
+      "supporting_evidence_ids": ["ev-002"]
+    }
+  ],
+  "demand_signals": [
+    {
+      "finding_id": "ds-001",
+      "domain": "demand",
+      "claim": "Standup fatigue reported by interviewed engineering leads",
+      "observation": "8 of 8 interviewed leads mention standup overhead",
+      "source_reference": "src-001",
+      "source_type": "document",
+      "verification_status": "unverified",
+      "confidence": "medium",
+      "supporting_evidence_ids": ["ev-001"],
+      "limitations": "Small sample; founder-provided interviews only"
+    }
+  ],
+  "customer_signals": [],
+  "pricing_signals": [],
+  "channel_signals": [],
+  "competitor_signals": [
+    {
+      "finding_id": "cs-001",
+      "domain": "competitor",
+      "claim": "Linear and Jira cited as competitor references in PMC",
+      "observation": "User-stated competitor references from product context",
+      "source_reference": "ms.skill.product_marketing_context:0.1.0",
+      "source_type": "prior_skill_output",
+      "verification_status": "unverified",
+      "confidence": "low",
+      "limitations": "Not independently verified competitor analysis"
+    }
+  ],
+  "regulatory_or_operational_constraints": [],
+  "source_inventory": [
+    {
+      "source_id": "src-001",
+      "source_type": "document",
+      "reference": "Founder interview notes (8 engineering leads)",
+      "verification_status": "unverified"
+    },
+    {
+      "source_id": "src-002",
+      "source_type": "market_source",
+      "reference": "https://example.invalid/reports/async-tools-2026",
+      "verification_status": "partially_verified"
+    }
+  ],
+  "supporting_evidence": [
+    {
+      "finding_id": "se-001",
+      "domain": "demand",
+      "claim": "Interview sample shows standup fatigue pattern",
+      "observation": "Qualitative pattern across 8 interviews",
+      "source_reference": "src-001",
+      "source_type": "document",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "contradictory_evidence": [],
+  "assumptions": [
+    {
+      "finding_id": "as-001",
+      "domain": "demand",
+      "claim": "50% standup time reduction is achievable",
+      "source_type": "prior_skill_output",
+      "verification_status": "unverified",
+      "confidence": "low",
+      "inference": false,
+      "limitations": "Inherited assumption from PMC value proposition"
+    }
+  ],
+  "inferences": [
+    {
+      "finding_id": "inf-001",
+      "domain": "customer",
+      "claim": "Remote teams of 5-50 engineers are plausible early adopters",
+      "observation": "Interview sample aligns with PMC customer segment claim",
+      "source_type": "system_inference",
+      "verification_status": "unverified",
+      "confidence": "medium",
+      "inference": true,
+      "supporting_evidence_ids": ["ev-001"],
+      "limitations": "Inference from small qualitative sample"
+    }
+  ],
+  "unknowns": [
+    {
+      "domain": "pricing",
+      "description": "Independent competitor pricing bands not verified",
+      "blocking": false
+    }
+  ],
+  "evidence_gaps": [
+    "Independent competitor pricing verification",
+    "Quantitative demand data beyond founder interviews"
+  ],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "recommended_next_research": [
+    "Collect independent competitor pricing from citeable market sources",
+    "Expand interview sample beyond founder network"
+  ],
+  "provenance": {
+    "skill_id": "ms.skill.market_research",
+    "skill_version": "0.1.0",
+    "generated_at": "2026-07-23T14:00:00Z",
+    "methodology_ref": "docs/skills/ms.skill.market_research.md",
+    "source_skill_id": "ms.skill.product_marketing_context",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+}

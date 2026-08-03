@@ -1,0 +1,183 @@
+{
+  "name": "MCP_PRO",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        440,
+        -160
+      ],
+      "id": "505ed83c-d47a-4983-849c-d3c7a2da219a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        -160
+      ],
+      "id": "a57be7fb-8d58-4f2b-92fd-b6bb2f22ca0b",
+      "name": "When chat message received",
+      "webhookId": "876b7158-05c3-4b4d-951c-9e4e64df49e1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        80
+      ],
+      "id": "cab91168-8c33-4e81-8b08-858bf4fb73a9",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        560,
+        80
+      ],
+      "id": "dc88cb0f-5f50-4fbd-8eae-d8d1d6e564ef",
+      "name": "List of tools",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "KxHKXQdFLoP4vmYs",
+          "name": "FireCrawl"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeTool",
+        "toolName": "={{ $fromAI('tool_name', 'the tool that user requested') }}",
+        "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+      },
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        700,
+        80
+      ],
+      "id": "808bceea-4b8d-4b27-8af4-64e275d02010",
+      "name": "Execute tool",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "KxHKXQdFLoP4vmYs",
+          "name": "FireCrawl"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Агент работает с MCP",
+        "height": 480,
+        "width": 740
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        100,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "7607df0d-f251-4a99-a772-878fc1c879a2",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Нужно больше экспертизы и знаний в ИИ? \nПрисоединяйся к Pro группе: https://t.me/iishenka_pro_bot",
+        "height": 140,
+        "width": 740,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        100,
+        260
+      ],
+      "typeVersion": 1,
+      "id": "a7e7bf5e-2c9d-4eaa-9889-86180187c734",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List of tools": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5ceadf63-256e-4ace-97d7-2ce3a47e5df5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "KrAfrvyPACPnLNYu",
+  "tags": []
+}

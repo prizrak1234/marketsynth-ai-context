@@ -1,0 +1,36 @@
+{
+  "core_version": "0.1.0-core",
+  "status": "core_reviewed",
+  "practice_count": 13,
+  "practice_ids": [
+    "bounded_batch_processing",
+    "checkpoint_before_expensive_step",
+    "feedback_to_knowledge_candidate",
+    "manual_edit_resume",
+    "pagination_until_exhausted",
+    "post_publish_evidence_capture",
+    "quality_gate_before_handoff",
+    "rate_limit_backoff",
+    "source_lineage_preservation",
+    "specialist_scope_isolation",
+    "supervisor_does_not_execute_tools",
+    "terminal_dead_letter_handling",
+    "tool_workflow_permission_boundary"
+  ],
+  "practice_hashes": {
+    "pagination_until_exhausted": "9592a6edd0ca91d3f786277806b3a790788fb51db199061ae2f4749a4224d397",
+    "bounded_batch_processing": "b5c1e0247375dafbe8686aae4740d55e82b01ddcab054db87fa971991da0559c",
+    "checkpoint_before_expensive_step": "d80c7830f0ac7cb5177f484554c6d55bdf5c372c66bc76be96b26b4d4a36c13d",
+    "terminal_dead_letter_handling": "cd99a4889e07dccebfa627e014dc3055e1b8a01d1fe3d7267cd07ea88fe5d13e",
+    "rate_limit_backoff": "bad1925837409ba1a1026c8ac68ec449659e34d52694e5371f79d47db0b9862d",
+    "quality_gate_before_handoff": "15c47563a5d3f72146f4eda84f0758ff75d1302fb9e9fb9469c44598d038e402",
+    "supervisor_does_not_execute_tools": "2e109a5011ba24376e33a2a40248f2564e90cb869e29569cf180ac8c6630f744",
+    "specialist_scope_isolation": "8f153119d40d562e886e73d9d01df2a4273c53935934821c2a23f3180066ad6d",
+    "tool_workflow_permission_boundary": "fd347e956f2d2e69277608ebbe1c0fc8185249ff81515d073ab8540a3d8f32e9",
+    "manual_edit_resume": "c11935193f719fc7cd280f47eb1d0a461e46877eb2ea40706a40ff9433151f94",
+    "post_publish_evidence_capture": "123cf9503812c9c76172c25c5dc3ad2923c7ecad1987f83934552c92663f10c8",
+    "source_lineage_preservation": "e331eb6944d14254c0c0e2fc719d3b4cf20e0355fd21c497c4a333a90b42754a",
+    "feedback_to_knowledge_candidate": "1d03acde7da8b500810447466ae1bb5d909e27ab08526ccd9a7bba50ab31bee8"
+  },
+  "generated_at": "2026-07-23T19:06:55.238287+00:00"
+}

@@ -1,0 +1,70 @@
+{
+  "booking_requests": {
+    "patterns": [
+      "Хочу записаться на {service}",
+      "Можно записать на {date} к {specialist}",
+      "Есть свободное время на {date}",
+      "Забронировать {service} на {date}",
+      "Записать меня к врачу/мастеру/на столик"
+    ],
+    "required_info": [
+      "service_type",
+      "date",
+      "time",
+      "client_name",
+      "contact"
+    ],
+    "response_template": "Отлично! Записываю вас на {service} на {date} в {time}. Подтвердите, пожалуйста, ваш номер телефона: {phone}. За 24 часа до визита пришлю напоминание."
+  },
+  "information_requests": {
+    "patterns": [
+      "Какие услуги вы предоставляете",
+      "Сколько стоит {service}",
+      "Какой график работы",
+      "Где вы находитесь",
+      "Какие специалисты работают"
+    ],
+    "response_strategy": "use_knowledge_base",
+    "fallback": "redirect_to_human"
+  },
+  "modification_requests": {
+    "patterns": [
+      "Перенести запись",
+      "Отменить бронь",
+      "Изменить время",
+      "Поменять специалиста"
+    ],
+    "required_info": [
+      "booking_id",
+      "new_date",
+      "new_time"
+    ],
+    "response_template": "Понял, переношу вашу запись с {old_date} {old_time} на {new_date} {new_time}. Подтверждаете изменения?"
+  },
+  "payment_requests": {
+    "patterns": [
+      "Как оплатить",
+      "Принимаете карты",
+      "Можно оплатить онлайн",
+      "Сколько к оплате",
+      "Выставите счет"
+    ],
+    "response_strategy": "provide_payment_options",
+    "include_info": [
+      "payment_methods",
+      "online_payment_link",
+      "invoice_generation"
+    ]
+  },
+  "complaint_feedback": {
+    "patterns": [
+      "Хочу пожаловаться",
+      "Недоволен обслуживанием",
+      "Оставить отзыв",
+      "Была проблема"
+    ],
+    "response_strategy": "empathy_and_escalate",
+    "escalation_trigger": "negative_sentiment",
+    "response_template": "Мне очень жаль, что у вас возникла такая ситуация. Это важно для нас. Передаю ваше обращение менеджеру, он свяжется с вами в течение 2 часов."
+  }
+}

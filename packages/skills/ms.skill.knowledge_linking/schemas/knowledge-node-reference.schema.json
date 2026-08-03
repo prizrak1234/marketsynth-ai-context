@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "knowledge-node-reference.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": { "type": "string" },
+    "artifact_type": {
+      "type": "string",
+      "enum": [
+        "skill", "skill_version", "workflow_pattern", "workflow_template",
+        "practice_record", "error_pattern", "knowledge_artifact", "schema_bundle",
+        "RFC", "architecture_document", "capability", "profession", "connector",
+        "tool", "audit_report", "lineage_graph", "evidence_reference",
+        "source_archive", "other"
+      ]
+    },
+    "title": { "type": "string" },
+    "version": { "type": "string" },
+    "content_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "tenant_scope": { "type": "string" },
+    "tenant_id": { "type": "string" },
+    "project_id": { "type": "string" },
+    "lifecycle_status": { "type": "string" },
+    "trust_status": { "type": "string" },
+    "source_references": { "type": "array", "items": { "type": "object" } },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "artifact_id", "artifact_type", "title", "version", "content_hash",
+    "tenant_scope", "tenant_id", "lifecycle_status", "trust_status",
+    "source_references", "provenance"
+  ]
+}

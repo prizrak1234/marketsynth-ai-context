@@ -1,0 +1,649 @@
+{
+  "name": "21 - SFS Templates",
+  "nodes": [
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.chatid }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1888,
+        192
+      ],
+      "id": "94e96267-b90d-4d21-bd50-79b331257bb8",
+      "name": "Response",
+      "webhookId": "cd258553-afef-4836-8d06-adbc8e91e85b",
+      "credentials": {
+        "telegramApi": {
+          "id": "x0dsZPmcLWDRA7MD",
+          "name": "railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        96
+      ],
+      "id": "aed61b03-dc58-4921-b3fd-f352f3f6c045",
+      "name": "Telegram Trigger",
+      "webhookId": "535c0947-cf0a-46ee-a615-e09e2626639f",
+      "credentials": {
+        "telegramApi": {
+          "id": "x0dsZPmcLWDRA7MD",
+          "name": "railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3fdd196a-1341-4033-9e04-a5c11f2cb9bb",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "04db31fe-75d5-4344-84dd-3553c77e338c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -240,
+        96
+      ],
+      "id": "379860d2-3424-473d-be40-84df2d23b70f",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "de16d8c4-ff65-46ce-ab26-31d551819660",
+      "name": "Get a file",
+      "webhookId": "9ed876b8-f8ab-4dba-b6ba-983db7a96824",
+      "credentials": {
+        "telegramApi": {
+          "id": "x0dsZPmcLWDRA7MD",
+          "name": "railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        176,
+        0
+      ],
+      "id": "173c9209-63fc-400d-9cb5-e813b1e56c8f",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4c2a372e-b595-45f2-8cf0-d1dd2c79bc2b",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        96,
+        192
+      ],
+      "id": "24d532c9-d890-4945-b7fe-0799995f394a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { \n  text: $input.first().json.text,\n  chatid: $('Telegram Trigger').first().json.message.chat.id\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        96
+      ],
+      "id": "d7ab3ba0-afc3-4aa9-8abf-b676282fce2d",
+      "name": "All the data"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://aiapi.sendforsign.com/webhook/aiapi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Sendforsign-Key"
+            },
+            {
+              "name": "clientKey"
+            },
+            {
+              "name": "secretKey"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=message",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1312,
+        96
+      ],
+      "id": "c95a5c1b-f970-4087-a9b8-d1acac4924dc",
+      "name": "SFS"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "12b518c2-8f70-4371-a2e5-169da9702c57",
+              "leftValue": "={{ $json.contract.previewURL }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1600,
+        96
+      ],
+      "id": "b48a9eb6-ffc4-40f2-b578-54ad723aca96",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.chatid }}",
+        "text": "={{ $json.output }}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Preview contract",
+                    "additionalFields": {
+                      "url": "={{ $json.contract.previewURL }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1888,
+        -16
+      ],
+      "id": "cf5ee93a-b04d-4527-b469-8ce7b9ed1e2b",
+      "name": "Response1",
+      "webhookId": "cd258553-afef-4836-8d06-adbc8e91e85b",
+      "credentials": {
+        "telegramApi": {
+          "id": "x0dsZPmcLWDRA7MD",
+          "name": "railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "1 - Если пользователь просит найти письмо то используй tool Get all messages чтобы получить все сообщения, и следом Get specific message чтобы прочитать конкретное сообщение.\n\nТвой формат ответа:\n- Укажи какой контракт создаём\n- Укажи используем ли шаблон или свободную форму\n- Верни контент этого письма без изменений, имя клиента, имейл клиента и всё что понадобится для последующего составления контракта.\n\n2 - Если не просит, то верни слова пользователя без изменений"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        752,
+        96
+      ],
+      "id": "39230e66-6ab9-4c6a-b1b9-0232be3ec23e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        624,
+        272
+      ],
+      "id": "a99e4d54-361b-4aa1-a913-3c93095b3283",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        832,
+        272
+      ],
+      "id": "a860f3e9-1ae1-467d-8741-77a4b93c9804",
+      "name": "Get all messages",
+      "webhookId": "80dd3f40-dd86-4244-927a-aafc17354a59",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "fbgp0Sor8iUn6ju1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message_ID', ``, 'string') }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        976,
+        272
+      ],
+      "id": "03a4583b-30d0-4978-9253-3a7f87d309d8",
+      "name": "Get specific message",
+      "webhookId": "6878dd25-57ed-41c5-9649-6221bfff12bd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "fbgp0Sor8iUn6ju1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Получаем сообщение",
+        "height": 544,
+        "width": 496
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -576,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "ee4baf5f-8c0c-4b73-8061-3ed8d1aba38b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Транскрибируем",
+        "height": 544,
+        "width": 608,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "26cdb131-3563-435d-9a1e-b368ffd0e3b7",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Забираем нужный имейл",
+        "height": 544,
+        "width": 608,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "0ab661a8-ba07-429c-8d89-b9575120cad8",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Передаём в Sendforsign",
+        "height": 544,
+        "width": 368,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1184,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "c17bee78-d44b-4e96-9a99-d4ada824b18b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Формируем ответ",
+        "height": 544,
+        "width": 544,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1568,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "b2168a84-0747-4cbd-af4f-f6c1a7aa4551",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "All the data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "All the data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All the data": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SFS": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Response": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Response1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Response1": {
+      "main": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "SFS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get all messages": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get specific message": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f4f2d578-48a1-4603-b3ab-9cd899afb032",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "BRb2yIUgQh8hdE1p",
+  "tags": []
+}

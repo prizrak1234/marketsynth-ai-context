@@ -1,0 +1,32 @@
+{
+  "mapping_version": "0.1.0",
+  "strategy": "preserve_frozen_icp_unchanged_with_normalization",
+  "local_package": {
+    "skill_id": "ms.skill.icp_segmentation",
+    "skill_version": "0.1.0",
+    "package_hash": "075a4f1989a9050614babec004dda54a420d7f7bd717d9ac7e8a34b41e8ae71a",
+    "local_schema_path": "schemas/customer_intelligence.schema.json",
+    "local_schema_id": "ms.skill.icp_segmentation/customer_intelligence/0.1.0-draft"
+  },
+  "shared_contract": {
+    "schema_version": "0.1.0",
+    "canonical_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+    "bundle_root": "packages/knowledge/customer_intelligence/0.1.0/"
+  },
+  "field_mappings": {
+    "cim_version": {
+      "local": "0.1.0-draft",
+      "shared": "0.1.0",
+      "normalization": "replace_local_with_shared"
+    }
+  },
+  "identity_preserved_fields": [
+    "cim_id",
+    "segments",
+    "primary_icp_candidates",
+    "market_scope",
+    "input_hash",
+    "output_hash"
+  ],
+  "notes": "ICP 0.1.0 package bytes remain frozen. Shared validation uses normalize_icp_local_cim()."
+}

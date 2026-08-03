@@ -1,0 +1,106 @@
+{
+  "context_id": "ctx-fitpulse-001",
+  "skill_id": "ms.skill.product_marketing_context",
+  "skill_version": "0.1.0",
+  "normalized_product": [
+    {
+      "claim_id": "prod-001",
+      "domain": "product_identity",
+      "statement": "FitPulse — fitness app",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "high"
+    }
+  ],
+  "normalized_business_model": [
+    {
+      "claim_id": "bm-001",
+      "domain": "business_model",
+      "statement": "One-time lifetime purchase app",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "normalized_market_scope": [
+    {
+      "claim_id": "geo-001",
+      "domain": "geography",
+      "statement": "United States",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "high"
+    }
+  ],
+  "normalized_customer_claims": [
+    {
+      "claim_id": "cust-001",
+      "domain": "customer_segment",
+      "statement": "Busy professionals aged 25-40",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "normalized_problem_claims": [
+    {
+      "claim_id": "prob-001",
+      "domain": "problem_statement",
+      "statement": "Home workouts lack personalized coaching",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "normalized_value_proposition_claims": [],
+  "normalized_pricing_claims": [
+    {
+      "claim_id": "price-a",
+      "domain": "pricing",
+      "statement": "Lifetime license at $49",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium",
+      "conflict_group_id": "cg-pricing-model"
+    },
+    {
+      "claim_id": "price-b",
+      "domain": "pricing",
+      "statement": "Monthly subscription at $9.99",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium",
+      "conflict_group_id": "cg-pricing-model"
+    }
+  ],
+  "normalized_competitor_claims": [],
+  "channel_context": [],
+  "brand_constraints": [],
+  "operational_constraints": [],
+  "evidence_inventory": [],
+  "assumptions": [],
+  "unknowns": [],
+  "conflicts": [
+    {
+      "conflict_group_id": "cg-pricing-model",
+      "domain": "pricing",
+      "claim_ids": ["price-a", "price-b"],
+      "description": "Conflicting pricing models — lifetime purchase vs monthly subscription"
+    }
+  ],
+  "clarification_questions": [
+    "Which pricing model is intended — lifetime purchase or subscription?"
+  ],
+  "readiness": "conflicted",
+  "readiness_blockers": [
+    "Material pricing model conflict"
+  ],
+  "provenance": {
+    "skill_id": "ms.skill.product_marketing_context",
+    "skill_version": "0.1.0",
+    "generated_at": "2026-07-23T12:00:00Z",
+    "methodology_ref": "docs/skills/ms.skill.product_marketing_context.md"
+  },
+  "input_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "output_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+}

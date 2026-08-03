@@ -1,0 +1,96 @@
+/**
+ * Marketsynth brand foundation — core palette + semantic tokens.
+ * Phase V2.1: token layer only. Do not scatter HEX values in components.
+ * Existing shadcn/theme tokens remain; map gradually in later UI phases.
+ */
+
+:root {
+  /* —— Core brand (from official logo) —— */
+  --brand-gold: #c8a15b;
+  --brand-gold-light: #e4c995;
+  --brand-gold-dark: #8f6b32;
+
+  --brand-blue: #168ce3;
+  --brand-blue-light: #65c7ff;
+  --brand-blue-dark: #07549a;
+
+  --brand-ink: #050a10;
+  --brand-navy: #091421;
+  --brand-surface: #101d2a;
+  --brand-surface-elevated: #172737;
+
+  --brand-white: #f5f8fc;
+  --brand-silver: #c9d5e3;
+  --brand-muted: #8796a8;
+  --brand-border: #2a3a4b;
+
+  /* —— Semantic: brand —— */
+  --ms-brand-primary: var(--brand-blue);
+  --ms-brand-primary-hover: var(--brand-blue-light);
+  --ms-brand-primary-active: var(--brand-blue-dark);
+  --ms-brand-secondary: var(--brand-gold);
+  --ms-brand-accent: var(--brand-gold-light);
+
+  /* —— Semantic: background —— */
+  --ms-bg-canvas: var(--brand-ink);
+  --ms-bg-surface: var(--brand-navy);
+  --ms-bg-elevated: var(--brand-surface-elevated);
+
+  /* —— Semantic: text —— */
+  --ms-text-primary: var(--brand-white);
+  --ms-text-secondary: var(--brand-silver);
+  --ms-text-muted: var(--brand-muted);
+  --ms-text-inverse: var(--brand-ink);
+
+  /* —— Semantic: border —— */
+  --ms-border-default: var(--brand-border);
+  --ms-border-strong: var(--brand-silver);
+  --ms-border-focus: var(--brand-blue-light);
+
+  /* —— Semantic: status (not brand gold/blue for everything) —— */
+  --ms-status-success: #2f9e6b;
+  --ms-status-warning: #d4a017;
+  --ms-status-danger: #c44b4b;
+  --ms-status-info: var(--brand-blue);
+
+  /* —— Semantic: risk —— */
+  --ms-risk-low: #2f9e6b;
+  --ms-risk-medium: #d4a017;
+  --ms-risk-high: #d77a2e;
+  --ms-risk-critical: #c44b4b;
+
+  /* —— Semantic: verdict —— */
+  --ms-verdict-go: #2f9e6b;
+  --ms-verdict-conditional-go: #d4a017;
+  --ms-verdict-no-go: #c44b4b;
+  --ms-verdict-insufficient-data: var(--brand-muted);
+
+  /* —— Semantic: evidence —— */
+  --ms-evidence-confirmed: #2f9e6b;
+  --ms-evidence-partial: #d4a017;
+  --ms-evidence-conflicting: #d77a2e;
+  --ms-evidence-missing: var(--brand-muted);
+  --ms-evidence-outdated: #8796a8;
+
+  /* —— Semantic: approval —— */
+  --ms-approval-pending: #d4a017;
+  --ms-approval-approved: #2f9e6b;
+  --ms-approval-rejected: #c44b4b;
+  --ms-approval-expired: var(--brand-muted);
+
+  /* —— Semantic: execution —— */
+  --ms-execution-ready: var(--brand-blue);
+  --ms-execution-blocked: var(--brand-muted);
+  --ms-execution-running: var(--brand-blue-light);
+  --ms-execution-verifying: #7aa2ff;
+  --ms-execution-succeeded: #2f9e6b;
+  --ms-execution-failed: #c44b4b;
+
+  /* —— Aliases (commercial components; avoid ad-hoc fallbacks in TSX) —— */
+  --ms-danger: var(--ms-status-danger);
+  --ms-success: var(--ms-status-success);
+  --ms-warning: var(--ms-status-warning);
+  --ms-accent: var(--ms-brand-accent);
+  --ms-text-on-brand: var(--brand-white);
+  --ms-border-subtle: color-mix(in srgb, var(--brand-border) 65%, transparent);
+}

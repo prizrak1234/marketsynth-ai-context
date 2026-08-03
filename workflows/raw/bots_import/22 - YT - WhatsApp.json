@@ -1,0 +1,202 @@
+{
+  "name": "22 - YT - WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        80
+      ],
+      "id": "43112c14-4aa8-4ba7-8c4e-6f15d533e386",
+      "name": "WhatsApp Trigger",
+      "webhookId": "bb30bdf1-4cf1-48dc-8bc3-d0390222450e",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "zdKMzvzumyT9jA8l",
+          "name": "WTest"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.messages[0].text.body }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        80
+      ],
+      "id": "a02ba0d1-2ab9-4c4f-8041-9f4549220111",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        224
+      ],
+      "id": "e23851a8-7389-48dd-9614-26b31a1cbde2",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "843383295515023",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        480,
+        80
+      ],
+      "id": "59494961-faa0-4db2-9690-ad8c7657f5df",
+      "name": "Send message",
+      "webhookId": "04a6f87a-088b-42a4-9e46-94844af263d5",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "QRqkObx15pWFGo7g",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Парсинг PDF из WhatsApp\nНужна усиленная автоматизация, которая принимает ПДФ-файлы из WhatsApp, парсит их и извлекает ключевые данные, а в конце кладёт результаты в таблицу?\n\nИщи в Pro-группе: https://t.me/iishenka_pro_bot",
+        "height": 336,
+        "width": 812,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        368
+      ],
+      "id": "0f029af3-e60a-4deb-92e4-f2fb208b010c",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Основной флоу",
+        "height": 336,
+        "width": 812,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        16
+      ],
+      "id": "86165ffa-8d64-49ec-96de-be3e4a4b6719",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {
+    "WhatsApp Trigger": [
+      {
+        "json": {
+          "messaging_product": "whatsapp",
+          "metadata": {
+            "display_phone_number": "15551557985",
+            "phone_number_id": "843383295515023"
+          },
+          "contacts": [
+            {
+              "profile": {
+                "name": "Ilia"
+              },
+              "wa_id": "34666395283"
+            }
+          ],
+          "messages": [
+            {
+              "from": "34666395283",
+              "id": "wamid.HBgLMzQ2NjYzOTUyODMVAgASGBQzQUM5NDc0NDM0QUNGN0ZFMDFDRQA=",
+              "timestamp": "1756198798",
+              "text": {
+                "body": "привет"
+              },
+              "type": "text"
+            }
+          ],
+          "field": "messages"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "79b048b5-6808-470f-ba51-64b0885edda8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "ZPdcTBV2SgWj7uR0",
+  "tags": []
+}

@@ -1,0 +1,567 @@
+{
+  "name": "3_NANO_BANANA_PHOTOSHOP_CREATE",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "prompt"
+            },
+            {
+              "name": "image1"
+            },
+            {
+              "name": "image2"
+            },
+            {
+              "name": "imageTitle"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -144,
+        -288
+      ],
+      "id": "bfbfee3d-de11-437b-9edc-9cc752864923",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a creative prompt generator for Instagram-worthy image combinations. Based on two image analyses and a client's request, create ONE enhanced promotional prompt (max 400 characters) that describes how to merge these images into an engaging social media visual while incorporating the client's specific vision.\n\nYour task:\n1. Analyze the product/object from image 1 and person/scene from image 2\n2. Review the client's original prompt request and preferences\n3. Create a natural interaction between the images that aligns with the client's vision\n4. Choose an appropriate location that fits both elements and the client's desired style\n5. Define emotions and mood for Instagram appeal while respecting client's intent\n6. Keep it under 400 characters\n7. Focus on lifestyle and authentic moments\n8. Enhance the client's idea by incorporating specific visual elements from both image analyses\n9. Maintain the client's core concept while making it more visually compelling\n10. Do not add hashtags, emojis, multiple options, or explanations.\n\nFormat: Output must be ONLY one single sentence or short paragraph describing the enhanced combined scene. No extra text.\n\nInput format:\nImage 1 Analysis: {{ $('Get Image 1 Info').item.json.analyze_image }}\nImage 2 Analysis: {{ $json.analyze_image }}\nClient's Original Prompt: {{ $('When Executed by Another Workflow').item.json.prompt }}\n\nOutput: One enhanced generation prompt that combines both images according to the client's enhanced request."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -288
+      ],
+      "id": "781c183f-f7fb-431e-ad98-1cc2dc270731",
+      "name": "Message a model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bS3VhMXmlWezaHfW",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1bKq3Im1W51IAlwbh8ff1I_XFKiabzTSzNaJ4zy5zIbU",
+          "mode": "list",
+          "cachedResultName": "NANO_BANANA_PHOTOSHOP_IMAGE_GENERATOT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bKq3Im1W51IAlwbh8ff1I_XFKiabzTSzNaJ4zy5zIbU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Original_Image",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bKq3Im1W51IAlwbh8ff1I_XFKiabzTSzNaJ4zy5zIbU/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id",
+              "lookupValue": "={{ $json.image1 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        48,
+        -288
+      ],
+      "id": "93b6f73b-dfd2-4405-a884-b715fed040f0",
+      "name": "Get Image 1 Info",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1bKq3Im1W51IAlwbh8ff1I_XFKiabzTSzNaJ4zy5zIbU",
+          "mode": "list",
+          "cachedResultName": "NANO_BANANA_PHOTOSHOP_IMAGE_GENERATOT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bKq3Im1W51IAlwbh8ff1I_XFKiabzTSzNaJ4zy5zIbU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Original_Image",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bKq3Im1W51IAlwbh8ff1I_XFKiabzTSzNaJ4zy5zIbU/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id",
+              "lookupValue": "={{ $('When Executed by Another Workflow').item.json.image2 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        -288
+      ],
+      "id": "d25309db-dc1f-4cf7-916c-54a853cd22f4",
+      "name": "Get Image 2 Info",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"{{ $json.content.parts[0].text }}\"\n        },\n        {\n          \"file_data\": {\n            \"file_uri\": \"{{ $('Get Image 1 Info').item.json.fileUri }}\",\n            \"mime_type\": \"{{ $('Get Image 1 Info').item.json.mimeType }}\"\n          }\n        },\n        {\n          \"file_data\": {\n            \"file_uri\": \"{{ $('Get Image 2 Info').item.json.fileUri }}\",\n            \"mime_type\": \"{{ $('Get Image 2 Info').item.json.mimeType }}\"\n          }\n        }\n      ]\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        -288
+      ],
+      "id": "18d87414-6c17-4148-9df4-ed48c75add52",
+      "name": "Nano Banana1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "qIwLft2f59qMFDe2",
+          "name": "Google Studio"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "imageBase64",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1376,
+        -288
+      ],
+      "id": "b709cee5-0703-4bd0-9a5e-98dcd82a3ae1",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "febd1426-e076-411e-a053-e159f25ff28e",
+              "name": "imageBase64",
+              "value": "={{   (     $json.candidates?.[0]?.content?.parts || []   ).find(p => (p.inlineData && p.inlineData.data))?.inlineData?.data || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "cd4b4c3b-7a1c-4984-a921-c2878cdb0831",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        -288
+      ],
+      "id": "6af67d22-6820-418a-8b6e-c5a783358b36",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c66c7c13-57ca-4191-9af3-5ab306dfedfc",
+              "name": "Response",
+              "value": "=Изображение было создано и названо \"{{ $json.name }}\". \n\nВот ссылка на изображение в Google Drive: {{ $json.URL }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2064,
+        -288
+      ],
+      "id": "2dd53fb1-61ac-4d42-b6b3-2576d770299e",
+      "name": "Result1"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1bKq3Im1W51IAlwbh8ff1I_XFKiabzTSzNaJ4zy5zIbU",
+          "mode": "list",
+          "cachedResultName": "NANO_BANANA_PHOTOSHOP_IMAGE_GENERATOT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bKq3Im1W51IAlwbh8ff1I_XFKiabzTSzNaJ4zy5zIbU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 448741247,
+          "mode": "list",
+          "cachedResultName": "AI_IMAGE",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bKq3Im1W51IAlwbh8ff1I_XFKiabzTSzNaJ4zy5zIbU/edit#gid=448741247"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "name": "={{ $json.name }}",
+            "prompt": "={{ $('When Executed by Another Workflow').item.json.prompt }}",
+            "prompt_AI": "={{ $('Message a model1').item.json.content.parts[0].text }}",
+            "URL": "={{ $json.webContentLink }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "prompt_AI",
+              "displayName": "prompt_AI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1712,
+        -288
+      ],
+      "id": "b097b332-c6c3-455f-8bfc-85254ac772c7",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "name": "={{ $('When Executed by Another Workflow').item.json.imageTitle }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1H0wMo-pcboI_vH4VasXjYpXKM_78PTud",
+          "mode": "list",
+          "cachedResultName": "READY_NBPSD",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1H0wMo-pcboI_vH4VasXjYpXKM_78PTud"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1552,
+        -288
+      ],
+      "id": "48df07eb-0ebb-4c32-97da-8bfa88b1f64b",
+      "name": "Upload file1",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Отправляем обратно",
+        "height": 272,
+        "width": 336,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1952,
+        -384
+      ],
+      "id": "73f64798-b2f7-4aea-9864-951c816bab7c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Сохраняем изображение",
+        "height": 272,
+        "width": 752,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        -384
+      ],
+      "id": "102898be-27a2-43fe-8a81-586ea8694ecd",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Генерируем изображение и промпт",
+        "height": 272,
+        "width": 576,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -384
+      ],
+      "id": "93709db3-6ae8-4337-b0a8-5c488a88e82d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Получаем данные",
+        "height": 272,
+        "width": 608,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        -384
+      ],
+      "id": "e31c803f-5ab9-4f1f-818c-34860d9ee0e6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "7330e9a3-0cb1-4faf-bb8f-3be8c11f8410",
+      "name": "Sticky Note13",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Image 1 Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Image 1 Info": {
+      "main": [
+        [
+          {
+            "node": "Get Image 2 Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Image 2 Info": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Nano Banana1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nano Banana1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Result1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7d40580e-ab69-410f-9136-7498b2a4c677",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "Y7Tyj0ykWjdz4KfH",
+  "tags": []
+}

@@ -1,0 +1,2120 @@
+{
+  "name": "25 - YT - Products Image Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1616,
+        832
+      ],
+      "id": "83a29226-4244-4119-8723-7ec92f8e54d3",
+      "name": "Telegram Trigger",
+      "webhookId": "52cdbb69-632d-4886-9606-dd8588e2af68",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "product_image_generator",
+          "mode": "list",
+          "cachedResultName": "product_image_generator"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "user_id",
+              "value": "={{ $json.message?.from?.id || $json.callback_query?.from?.id || $json.chat_join_request?.from?.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1392,
+        832
+      ],
+      "id": "d2722f9b-6bcd-49e9-acb5-13ad7929f08f",
+      "name": "Check status",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "qL9ee8PD54cIAtbp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ab50cafb-3083-4a2c-90dd-2e7aac1174df",
+              "name": "chat_id",
+              "value": "={{ $('Telegram Trigger').item.json?.message?.chat.id || $('Telegram Trigger').item.json?.callback_query?.message?.chat.id }}",
+              "type": "number"
+            },
+            {
+              "id": "b62c8063-d71a-4464-8b5a-aff51e95a5fb",
+              "name": "message_text",
+              "value": "={{ $('Telegram Trigger').item.json.message.text || $('Telegram Trigger').item.json.message.caption }}",
+              "type": "string"
+            },
+            {
+              "id": "d30d12c3-a21f-4fa8-acfb-3402479d3a0e",
+              "name": "user_id",
+              "value": "={{ $('Telegram Trigger').item.json?.message?.from?.id || $('Telegram Trigger').item.json?.callback_query?.from?.id || $('Telegram Trigger1').item.json?.chat_join_request?.from?.id}}",
+              "type": "string"
+            },
+            {
+              "id": "b7709d4e-ae17-4fcd-9191-be6b34cc21db",
+              "name": "user_name",
+              "value": "={{ $('Telegram Trigger').item.json?.message?.from?.username || $('Telegram Trigger').item.json?.callback_query?.from?.username || $('Telegram Trigger1').item.json?.chat_join_request?.from?.username }}",
+              "type": "string"
+            },
+            {
+              "id": "1b8ccd9e-1395-490b-aa98-d04fc9d6968f",
+              "name": "first_name",
+              "value": "={{ $('Telegram Trigger').item.json?.message?.from?.first_name || $('Telegram Trigger').item.json?.callback_query?.from?.first_name || $('Telegram Trigger1').item.json?.chat_join_request?.from?.first_name }}",
+              "type": "string"
+            },
+            {
+              "id": "1e09d143-25d3-4b7b-b65b-a00b938b60f1",
+              "name": "status",
+              "value": "={{ $json.status || 'NONE' }}",
+              "type": "string"
+            },
+            {
+              "id": "eca8eddd-42d6-46d3-8edc-6245fdfd61d8",
+              "name": "message_id",
+              "value": "={{ $('Telegram Trigger').item.json?.message?.message_id || $('Telegram Trigger').item.json?.callback_query?.message?.message_id }}",
+              "type": "string"
+            },
+            {
+              "id": "a5388332-795b-4def-9863-e72152aaeeb9",
+              "name": "callback",
+              "value": "={{ $('Telegram Trigger').item.json.callback_query.data }}",
+              "type": "string"
+            },
+            {
+              "id": "4a118e9e-5d6f-48f2-a6e6-44fb6d8662a0",
+              "name": "image",
+              "value": "={{ $json.image }}",
+              "type": "string"
+            },
+            {
+              "id": "75f9643f-ceeb-4aaf-8ef7-6b951f165198",
+              "name": "quantity",
+              "value": "={{ $json.quantity }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -976,
+        832
+      ],
+      "id": "79720ecd-6a69-450b-bc4e-0b26cb2e2c58",
+      "name": "All the data"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fc61c2f8-d237-4289-9068-ec6f0bc3d289",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "BLOCKED",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1184,
+        832
+      ],
+      "id": "b35ec032-9afa-4988-89ea-d082e3d34f05",
+      "name": "If not Blocked"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('All the data').item.json.message_text }}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1ee92b7a-8699-4193-a192-175898e93f2c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "start"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8529e39c-9fd6-4247-a59c-e6899e2963d5",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.photo[0].file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "photo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3bccc3e9-d970-4497-8f28-f658e214e32d",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.document.mime_type }}",
+                    "rightValue": "image/png",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "photo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "590fa146-3959-4f82-a26c-b937f27b57f1",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.document.mime_type }}",
+                    "rightValue": "image/jpg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "photo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9d1e11a8-0226-4b15-b8ba-ed594870cf08",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.document.mime_type }}",
+                    "rightValue": "image/jpeg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "photo"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -576,
+        288
+      ],
+      "id": "a9bbd8e6-3cc6-4b86-80d5-7586d27db56d",
+      "name": "Switch",
+      "alwaysOutputData": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "product_image_generator",
+          "mode": "list",
+          "cachedResultName": "product_image_generator"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('All the data').item.json.user_id }}",
+            "user_name": "={{ $('All the data').item.json.user_name }}",
+            "chat_id": "={{ $('All the data').item.json.chat_id }}",
+            "status": "CONTACTED",
+            "first_name": "={{ $('All the data').item.json.first_name }}",
+            "quantity": 1
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "first_name",
+              "displayName": "first_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "quantity",
+              "displayName": "quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        96,
+        -128
+      ],
+      "id": "01c59587-162f-4c0f-931c-506588d0545c",
+      "name": "Postgres - Create Row on Start",
+      "credentials": {
+        "postgres": {
+          "id": "qL9ee8PD54cIAtbp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d82e6a06-a2cd-4222-8bd2-4248f53d719a",
+              "leftValue": "={{ $('All the data').item.json.status }}",
+              "rightValue": "NONE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -112,
+        -128
+      ],
+      "id": "bd1a113e-46f2-4480-91ec-c6a1a51e57e4",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('All the data').item.json.chat_id }}",
+        "file": "https://fastly.picsum.photos/id/833/200/300.jpg?hmac=b_oHYH2fuGTTRs2679QZsX0IQq4rTJaywPYnYnOGPtE",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Дальше",
+                    "additionalFields": {
+                      "callback_data": "continue"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "caption": "=😊 Привет! Давай знакомиться.\n\n👋 Я Генератор ИИ Образов! Я нейросеть от команды ИИшенка, которая создаёт крутые реалистичные фото в разных стилях с твоим лицом, отражает лучшие черты и раскрывает творческий потенциал!\n\n⁉️ Давай расскажу, как это работает?"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        -128
+      ],
+      "id": "653ede5d-d675-4dca-beba-e685cbac0cdf",
+      "name": "Sub_new2",
+      "webhookId": "11da6c53-03fb-4f6d-b43f-eaff5fec8196",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('All the data').item.json.callback }}",
+                    "rightValue": "continue",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "4c9bf830-c96e-49bd-b1ca-86fed9398cc6"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "continue"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a10d72d1-5a36-44a1-889a-0b873e1b848f",
+                    "leftValue": "={{ $('All the data').item.json.callback }}",
+                    "rightValue": "examples",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "examples"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -560,
+        1280
+      ],
+      "id": "74b37264-2807-4bcf-ad48-f5091a78bdc0",
+      "name": "Callback type"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json?.message?.document?.file_id || $('Telegram Trigger').item.json?.message?.photo[3]?.file_id || $('Telegram Trigger').item.json?.message?.photo[2]?.file_id || $('Telegram Trigger').item.json?.message?.photo[1]?.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -80,
+        368
+      ],
+      "id": "ef0e2bef-7779-4138-8243-864317fec874",
+      "name": "Get a file",
+      "webhookId": "8576c3d3-17d3-4ce9-9af4-cd2e6d0f60d1",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "=data",
+        "name": "={{ $('All the data').item.json.user_id }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1q7Df1OtMs8UWJRrGo4gS7Hnx2ZDBNu-T",
+          "mode": "list",
+          "cachedResultName": "image_generator",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1q7Df1OtMs8UWJRrGo4gS7Hnx2ZDBNu-T"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        272
+      ],
+      "id": "1373e6f8-77db-428c-af9b-abe08ebed479",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YqZmUpHkVHvg9cdE",
+          "name": "aiiszdes"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "queryString": "=name contains '{{ $('All the data').item.json.user_id }}'",
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1q7Df1OtMs8UWJRrGo4gS7Hnx2ZDBNu-T",
+            "mode": "list",
+            "cachedResultName": "image_generator",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1q7Df1OtMs8UWJRrGo4gS7Hnx2ZDBNu-T"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        128,
+        368
+      ],
+      "id": "391e4b61-1234-4325-93c3-8703844435be",
+      "name": "Search files and folders",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YqZmUpHkVHvg9cdE",
+          "name": "aiiszdes"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d6f9cd92-1e74-4fc3-ac0c-19697f30a189",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        368
+      ],
+      "id": "38406129-80e2-4815-8223-10c37b7da7fb",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        624,
+        224
+      ],
+      "id": "1b886931-0b10-4977-a261-5bd5a87e7150",
+      "name": "Delete a file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YqZmUpHkVHvg9cdE",
+          "name": "aiiszdes"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        848,
+        272
+      ],
+      "id": "5779837a-aefe-4e3e-b4fa-15bfe7dbde2e",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "=data",
+        "name": "={{ $('All the data').item.json.user_id }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1q7Df1OtMs8UWJRrGo4gS7Hnx2ZDBNu-T",
+          "mode": "list",
+          "cachedResultName": "image_generator",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1q7Df1OtMs8UWJRrGo4gS7Hnx2ZDBNu-T"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        464
+      ],
+      "id": "7457b346-63dd-4ac1-914a-34849b0b820f",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YqZmUpHkVHvg9cdE",
+          "name": "aiiszdes"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        848,
+        464
+      ],
+      "id": "1d354c08-c33d-4963-910b-cb25feeba04c",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "product_image_generator",
+          "mode": "list",
+          "cachedResultName": "product_image_generator"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('All the data').item.json.user_id }}",
+            "user_name": "={{ $('All the data').item.json.user_name }}",
+            "chat_id": "={{ $('All the data').item.json.chat_id }}",
+            "status": "CONTACTED",
+            "first_name": "={{ $('All the data').item.json.first_name }}",
+            "quantity": 1,
+            "image": "={{ $('All the data').item.json.user_id }}"
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "first_name",
+              "displayName": "first_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "quantity",
+              "displayName": "quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1456,
+        368
+      ],
+      "id": "2bcbd305-4ec9-437c-9646-a8d4081cb5c4",
+      "name": "Postgres - Create Row on Start1",
+      "credentials": {
+        "postgres": {
+          "id": "qL9ee8PD54cIAtbp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d82e6a06-a2cd-4222-8bd2-4248f53d719a",
+              "leftValue": "={{ $json.image }}",
+              "rightValue": "NONE",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -272,
+        736
+      ],
+      "id": "98f9a8c7-5b56-45de-b5c2-9b4c2b9342ef",
+      "name": "IsPhoto"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d82e6a06-a2cd-4222-8bd2-4248f53d719a",
+              "leftValue": "={{ $json.quantity }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        720
+      ],
+      "id": "fdd1b1b5-f3da-41b8-b6d4-b8cacf37f5d2",
+      "name": "IsPlan"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        640,
+        720
+      ],
+      "id": "9ae22623-9988-489d-9b0e-7b19e8a37f5f",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YqZmUpHkVHvg9cdE",
+          "name": "aiiszdes"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "queryString": "=name contains '{{ $('All the data').item.json.user_id }}'",
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1q7Df1OtMs8UWJRrGo4gS7Hnx2ZDBNu-T",
+            "mode": "list",
+            "cachedResultName": "image_generator",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1q7Df1OtMs8UWJRrGo4gS7Hnx2ZDBNu-T"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        720
+      ],
+      "id": "63f4e539-e39b-496a-8671-53799fe75ce8",
+      "name": "Search files and folders1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YqZmUpHkVHvg9cdE",
+          "name": "aiiszdes"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "product_image_generator",
+          "mode": "list",
+          "cachedResultName": "product_image_generator"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('All the data').item.json.user_id }}",
+            "quantity": "={{ $('All the data').item.json.quantity - 1 }}"
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "first_name",
+              "displayName": "first_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "quantity",
+              "displayName": "quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1280,
+        720
+      ],
+      "id": "2d52af1a-de1d-4d43-9932-fbb8b362d370",
+      "name": "Postgres - Create Row on Start2",
+      "credentials": {
+        "postgres": {
+          "id": "qL9ee8PD54cIAtbp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ideogram.ai/v1/ideogram-v3/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $('All the data').item.json.message_text }}"
+            },
+            {
+              "name": "rendering_speed",
+              "value": "TURBO"
+            },
+            {
+              "name": "aspect_ratio",
+              "value": "16x9"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "character_reference_images",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "style_type",
+              "value": "AUTO"
+            },
+            {
+              "name": "num_images",
+              "value": "1"
+            },
+            {
+              "name": "magic_prompt",
+              "value": "ON"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        848,
+        720
+      ],
+      "id": "3cc1f4e9-af21-49b6-aeff-2a5f77706432",
+      "name": "Character"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c200a3cf-9364-4b23-8ab8-9118800cf41c",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.message.chat.type }}",
+                    "rightValue": "private",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "private"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d4a2dff8-5dd1-4809-b00c-f47414d673ae",
+                    "leftValue": "={{ $('Telegram Trigger').item.json.callback_query }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "callback"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -768,
+        832
+      ],
+      "id": "67e2f708-3b59-4352-9e57-977375370f04",
+      "name": "Private or callback?"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.user_id }}",
+        "text": "=📸 Ты пока не прикрепил фото. \n\n👇 Сфотографируйся прямо тут или загрузите своё лучшее прямо в этот чат!",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        944
+      ],
+      "id": "b888a035-5913-4893-a830-42a409e2cf36",
+      "name": "IsPhoto1",
+      "webhookId": "218cc1df-f4cc-41e6-8675-5009ba6665b4",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.user_id }}",
+        "text": "=❤️ У тебя закончились все генерации! \n\nЭто не беда, давайте докупим? \n👇 Выбирай опцию ниже.",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "=10 Фото ({{ $json.price10 }} Рублей)",
+                    "additionalFields": {
+                      "callback_data": "rub_10"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "=20 Фото ({{ $json.price20 }} Рублей) ",
+                    "additionalFields": {
+                      "callback_data": "rub_20"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "=40 Фото ({{ $json.price40 }} Рублей)",
+                    "additionalFields": {
+                      "callback_data": "rub_40"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        944
+      ],
+      "id": "cc95f132-59ef-4ef8-85a2-9c0c68b5793a",
+      "name": "IsPlan1",
+      "webhookId": "2d16ba9c-f05d-45ff-9229-827ca95374c8",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $json.user_id }}",
+        "file": "https://fastly.picsum.photos/id/833/200/300.jpg?hmac=b_oHYH2fuGTTRs2679QZsX0IQq4rTJaywPYnYnOGPtE",
+        "replyMarkup": "inlineKeyboard",
+        "additionalFields": {
+          "caption": "=⭐️ Концепт прост — ты даёшь мне фото — да-да, только одно — но твоё лучшее!\n\n❤️ А потом объясняешь мне, что я должен изобразить — и всё! Через пару минут (или даже быстрее) ты получишь свои фотографии, сгенерированные с твоим лицом и в описанных тобой же условиях.\n\nНу что, готов(а)?\n\n👇 Загрузи одно твоё лучшее фото, как на самом верхнем примере."
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        1216
+      ],
+      "id": "9a4355fb-a765-455c-8b74-9aeab4438f2c",
+      "name": "Continue",
+      "webhookId": "455d8963-8d7e-4dc4-ae0e-ee6637e5fe8b",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.user_id }}",
+        "text": "=🚀 Кучу примеров ищи в нашей открытой группе тут: _будет группа_\n\n🔥 Вот примеры:\n\n1️⃣ Реалистичный стиль\n```\nКинематографический портрет меня, делающего селфи с разъярённым медведем в густом лесу. Я с уверенным выражением лица держу смартфон, запечатлевая момент, в то время как огромный седой медведь с вздыбленной шерстью и сверкающими глазами угрожающе стоит совсем рядом за мной, оскалив зубы. Сквозь кроны деревьев пробивается солнечный свет, отбрасывая пятнистые тени на лесную подстилку и наполняя сцену драматичным, почти напряжённым сиянием. Общая атмосфера строится на неожиданном контрасте — сочетании обыденного действия селфи с первобытной мощью и опасностью встречи с диким зверем.```\n\n2️⃣ Драматический стиль\n```\nДраматичный бьюти-портрет на фоне яркого голубого градиента. У меня влажные растрёпанные каштановые волосы, отдельные пряди падают на лицо. Макияж подчеркнут выразительными чёрными стрелками и глянцевой розово-красной помадой. Освещение создаёт тёплый красноватый оттенок кожи с чётким контурингом и акцентом на хайлайтер. Поза — в профиль, с закрытыми глазами, что придаёт образу чувственность. В снимке чувствуется винтажная эстетика 1980-х: насыщенные цвета и высокий контраст. Кадр обрезан так, чтобы акцентировать внимание на голове и верхней части плеч, а волосы создают динамику движения в кадре. Освещение добавляет мягкий блеск текстуре «мокрых» волос.```\n\n3️⃣ Мультяшный стиль\n```\nПричудливая акварельная иллюстрация моего персонажа детского комикса — я с яркими любопытными глазами и розовыми щёчками. На мне простой, слишком большой жёлтый дождевик с большими карманами и яркими цветными заплатками, разбросанными по ткани. Я стою, слегка наклонив голову в игривой позе. За ней раскинулось поле огромных, словно конфетных, цветов, а вдали мягко тянется пейзаж, растворяющийся в нежном пастельном небе. Мягкий рассеянный свет создаёт сказочную атмосферу, а лёгкие тени подчёркивают радостное выражение моего лица.```\n\n👇 Скопируй и пришли мне или напиши свой собственный промпт.\n\n⏳ Жду!",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        1360
+      ],
+      "id": "5b84a3f8-d056-4a8f-8a9a-0cbca5c2ae30",
+      "name": "Examples",
+      "webhookId": "cf55084e-4d9d-4cb9-9c4b-71ae93ec7cb6",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.user_id }}",
+        "text": "⏳ Секундочку, загружаю...",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        368
+      ],
+      "id": "9be91918-ac28-4c3d-9115-f7a66c401866",
+      "name": "Wait",
+      "webhookId": "c321f199-589b-4a1d-8529-46b3b727e5bb",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.chat_id }}",
+        "text": "=🔥 Я запомнил это фото и теперь буду использовать его как референс! \n\n✅ Если когда-то захочешь поменять — просто кинь новое фото, я заменю.  \n\n😀 Ну а теперь пора приступать к созданию своих образов!\n\n👇 Нажми ниже, я приведу тебе пару примеров крутых промптов ну или сразу пиши свой!",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Показать примеры",
+                    "additionalFields": {
+                      "callback_data": "examples"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1280,
+        368
+      ],
+      "id": "38ac84e9-97b4-40c1-ad6f-4ba9d59bae96",
+      "name": "GotPhoto",
+      "webhookId": "145f047b-b4e7-4b14-bb67-93adfc4500dc",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.user_id }}",
+        "text": "⏰ Пошёл генерировать, скоро вернусь!",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        256,
+        720
+      ],
+      "id": "efac8cd2-82cd-4815-b40d-1d70923009d1",
+      "name": "Generating",
+      "webhookId": "76bab584-36df-4d69-8dc3-74e15be32931",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('All the data').item.json.user_id }}",
+        "file": "={{ $json.data[0].url }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1056,
+        720
+      ],
+      "id": "22e55644-c86f-4abe-8129-f433af3affa5",
+      "name": "SendPhoto",
+      "webhookId": "757fdd21-61f9-4096-8be5-1ea1662a4425",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.user_id }}",
+        "text": "=👌 Если хочешь что-то поправить в фото, то возьми изначальный промпт, внеси правки туда и пришли мне его снова.\n\nУ тебя осталось *{{ $json.quantity }}* генераций.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1472,
+        720
+      ],
+      "id": "088f68cc-4211-487f-ba3e-d4d13a613316",
+      "name": "CountPhoto",
+      "webhookId": "2819b036-5d09-4a81-a5e6-4d1e26ebb552",
+      "credentials": {
+        "telegramApi": {
+          "id": "Dat2A9kGTm6nECy1",
+          "name": "image_gen_bot"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Проверка статуса",
+        "height": 464,
+        "width": 1120
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1696,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "b0986148-fb6c-43d9-9991-27dcc4253820",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Приветственное сообщение",
+        "height": 368,
+        "width": 704,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "4858883f-6386-470e-8752-fbfd4797727d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Подгрузка фото",
+        "height": 464,
+        "width": 2016,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        176
+      ],
+      "typeVersion": 1,
+      "id": "69c53671-b9a4-47c6-8687-2a05343cf28d",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Генерация",
+        "height": 464,
+        "width": 1456,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "8cf204d8-d564-4bfe-bddf-b98b0c8ab225",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Проверки",
+        "height": 464,
+        "width": 544,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "96b3fe8b-5b56-4ecd-9c7f-2641e3719e3e",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Коллбеки",
+        "height": 384,
+        "width": 544,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        1136
+      ],
+      "typeVersion": 1,
+      "id": "f0aeb9e3-a80d-4baf-8eaf-c91f6d762ad3",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## ⭐️ Присоединяйся к Pro-группе\n\n### Это экспертные глубокие знания в ИИ, сообщество ИИ-энтузиастов и автоматизации, которые РЕАЛЬНО работают в бизнесе и продуктах. Плюс, там есть эта усиленная автоматизация, которая умеет монетизироваться.\n\n### Ищи Pro-группу тут: https://t.me/iishenka_pro_bot",
+        "height": 380,
+        "width": 1448,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        1136
+      ],
+      "typeVersion": 1,
+      "id": "b1624bec-dbfa-48f6-a247-80204bf11b6f",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check status": {
+      "main": [
+        [
+          {
+            "node": "If not Blocked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All the data": {
+      "main": [
+        [
+          {
+            "node": "Private or callback?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If not Blocked": {
+      "main": [
+        [
+          {
+            "node": "All the data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Sub_new2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IsPhoto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Create Row on Start",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sub_new2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Callback type": {
+      "main": [
+        [
+          {
+            "node": "Continue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Examples",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "GotPhoto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Delete a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a file": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "GotPhoto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IsPhoto": {
+      "main": [
+        [
+          {
+            "node": "IsPlan",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IsPhoto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IsPlan": {
+      "main": [
+        [
+          {
+            "node": "Generating",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IsPlan1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Character",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders1": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres - Create Row on Start2": {
+      "main": [
+        [
+          {
+            "node": "CountPhoto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character": {
+      "main": [
+        [
+          {
+            "node": "SendPhoto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Private or callback?": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Callback type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GotPhoto": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Create Row on Start1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generating": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SendPhoto": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Create Row on Start2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1f5545e7-034d-4378-ac3b-a6c8b7ee9b10",
+  "meta": {
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "KTJPVqmnJOFocyoc",
+  "tags": []
+}

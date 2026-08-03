@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/workflow-pattern-edge.schema.json",
+  "title": "WorkflowPatternEdge",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "edge_id": {
+      "type": "string"
+    },
+    "from_step_id": {
+      "type": "string"
+    },
+    "to_step_id": {
+      "type": "string"
+    },
+    "condition": {
+      "type": "string"
+    },
+    "on_failure": {
+      "type": "string",
+      "enum": [
+        "stop",
+        "retry",
+        "fallback",
+        "human_review",
+        "dead_letter"
+      ]
+    }
+  },
+  "required": [
+    "edge_id",
+    "from_step_id",
+    "to_step_id"
+  ]
+}

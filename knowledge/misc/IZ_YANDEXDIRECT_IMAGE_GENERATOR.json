@@ -1,0 +1,852 @@
+{
+  "name": "IZ_YANDEXDIRECT_IMAGE_GENERATOR",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        180,
+        -240
+      ],
+      "id": "980d73ac-ca4f-49c4-a801-6bf2a38fdacf",
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "Please describe this image in maximum detail for a designer or prompt engineer. List separately: background, color palette, all main objects, their position, all text (exact wording), style, brand elements (logos/icons), and any unique visual features. Highlight anything important for recreating or modifying the image.",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1040,
+        -20
+      ],
+      "id": "265deca8-5884-479c-ada5-a436c4fea213",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You're a helpful, intelligent prompt rewriting assistant. You help rewrite prompts.",
+              "role": "system"
+            },
+            {
+              "content": "=Based on the following image description, create two new prompt variants for image generation. For each variant, change at least two parameters, such as color scheme, style, main object, text, layout, decorative elements, visual effects (e.g., gradients, shadows, textures), emotional tone (e.g., friendly, energetic, serious), or stylization (e.g., retro, futuristic, flat, hand-drawn), but keep the brand/company name and main message unchanged.\n\nInput:\n{{ $json.content }}\n\nReturn the result in the following JSON format:\n{\"variants\": [\n  \"First prompt variant\",\n  \"Second prompt variant\"\n]}\n"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1300,
+        -20
+      ],
+      "id": "8c656446-f5e1-4880-8501-0daa3e651ce4",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data[0].b64_json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2960,
+        0
+      ],
+      "id": "aabc06dd-dbf3-4c97-a174-b9cc0d9b2e18",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1980,
+        -20
+      ],
+      "id": "11a936ff-4683-414c-84ed-22c2c7ba5af3",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "message.content.variants",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1720,
+        -20
+      ],
+      "id": "20e98ab9-d7b4-451e-8582-8dd245e95c62",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "chatId": "190190068",
+        "text": "Работа сделана",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2540,
+        -260
+      ],
+      "id": "9aeda73e-3e65-4eea-adba-224ea29dde9e",
+      "name": "Telegram",
+      "webhookId": "4f84e1b8-45ce-47ec-8ed9-61145d86b19f",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### ПРОМПТ АНАЛИЗА ИЗОБРАЖЕНИЯ\n\nПожалуйста, опиши это изображение максимально подробно для дизайнера или специалиста по промптам. \n\nПеречисли отдельно: фон, цветовую палитру, все основные объекты и их расположение, весь текст (точная формулировка), стиль, фирменные элементы (логотипы/иконки) и любые уникальные визуальные особенности. \n\nОбрати внимание на всё, что важно для воссоздания или изменения изображения.",
+        "height": 300,
+        "width": 360,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        480,
+        260
+      ],
+      "typeVersion": 1,
+      "id": "76fdf238-a832-45b2-8a0b-ae636bddbd02",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### ПРОМПТ ДЛЯ ПРОМПТА НОВЫХ ИЗОБРАЖЕНИЙ\n\nНа основе следующего исходного описания изображения создай пять различных вариантов промптов для генерации изображений. \n\nНа основе следующего описания изображения создай пять новых вариантов промпта для генерации изображений. В каждом варианте измени как минимум два параметра: цветовую гамму, стиль, основной объект, текст, расположение элементов или декоративные детали, но сохрани название бренда/компании и основное сообщение без изменений.\n\nВерни результат в следующем формате JSON:\n{\"variants\": [\n  \"Вариант промпта 1\",\n  \"Вариант промпта 2\",\n  \"Вариант промпта 3\",\n  \"Вариант промпта 4\",\n  \"Вариант промпта 5\"\n]}\n",
+        "height": 420,
+        "width": 500,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        940,
+        260
+      ],
+      "typeVersion": 1,
+      "id": "bdd225b2-c94e-4f6a-ac33-df337669bd3c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Слабый креатив: \nI've generated an image description. I want you to take that image description and then give me five variants of that image based on the following input:\n\nInput:\n{{ $json.content }}.\n\nReturn your output in the following JSON format:\n{\"variants\":[\"First modified image description\", \"Second modified image description\", \"Etc\"]}\n\nRules:\n– Your task is to generate new descriptions based on the changes that we will later feed into an image generation model.\n– So take the original input, modify the original description, and then generate four other variants with modifications to things like color, style, copy, etc.\n– Do not change company names.\n– Do not make large changes—only small ones.",
+        "height": 440,
+        "width": 500,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        940,
+        720
+      ],
+      "typeVersion": 1,
+      "id": "a92cfb0a-40fd-45e3-a0ff-ec3931d81b54",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## СИЛЬНЫЙ КРЕАТИВ\nBased on the following image description, create five new prompt variants for image generation. For each variant, change at least two parameters, such as color scheme, style, main object, text, layout, decorative elements, visual effects (e.g., gradients, shadows, textures), emotional tone (e.g., friendly, energetic, serious), or stylization (e.g., retro, futuristic, flat, hand-drawn). Do not change the brand/company name and main message.\n\nReturn the result in the following JSON format:\n{\"variants\": [\n  \"First prompt variant\",\n  \"Second prompt variant\",\n  \"Third prompt variant\",\n  \"Fourth prompt variant\",\n  \"Fifth prompt variant\"\n]}\n",
+        "height": 400,
+        "width": 500,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        940,
+        1200
+      ],
+      "typeVersion": 1,
+      "id": "8bac2990-73e1-4663-afd6-5b7d35b32ce6",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -100,
+        -20
+      ],
+      "id": "7129b396-11fa-47cc-9ef8-d3a7e931777c",
+      "name": "Telegram Trigger",
+      "webhookId": "65d1731e-50f1-4a5b-99ae-e80ee13fc7a7",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "fileFolder",
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1Fv1BG4VyNGdMJMAIT4UMfhmXmd_e4M5X",
+            "mode": "list",
+            "cachedResultName": "1_original",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1Fv1BG4VyNGdMJMAIT4UMfhmXmd_e4M5X"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        520,
+        -20
+      ],
+      "id": "34fa0be7-d99b-4bf4-8b3d-8842204b6bcb",
+      "name": "Google Drive (Search)",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        760,
+        -20
+      ],
+      "id": "17976a42-d5f5-4a1f-982e-29f7e8d1aebf",
+      "name": "Google Drive (donwload)",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "name": "={{ $json.name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1UBJi6mxSFu59M8BKyJekqU_82wKbrigZ",
+          "mode": "list",
+          "cachedResultName": "3_original_com",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1UBJi6mxSFu59M8BKyJekqU_82wKbrigZ"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        -240
+      ],
+      "id": "3638808f-f80d-49ee-aacf-363fcfbaef8e",
+      "name": "Google Drive (upload)",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Google Drive (Search)').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2360,
+        0
+      ],
+      "id": "ddc78535-5f76-4392-ace2-03dda8c5aeff",
+      "name": "Google Drive (download_step_2)",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/edits",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "gpt-image-1"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "image[]",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "prompt",
+              "value": "=Your task is to generate an image.\n\nHere is your prompt:\n\n{{ $('Loop Over Items').item.json['message.content.variants'] }}.\n\nRules:\n– Stick as closely as possible to the outlines of the source document.\n– Change text, colors, shapes, and styles only if explicitly specified in the prompt. If something is not specified, do not change it."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2660,
+        0
+      ],
+      "id": "0b3efad8-9383-4043-adb7-a8470df726b7",
+      "name": "Image Generator",
+      "executeOnce": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "w9TxCOMWnItv0Uqb",
+          "name": "Image_generator_chatGPT_API"
+        },
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "inputDataFieldName": "=data",
+        "name": "=im_{{ $now.format('dd-MM-yyyy.TT') }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1VPdkOEGizCNc8ea8FhiImJJ7Glf46FRk",
+          "mode": "list",
+          "cachedResultName": "2_Ready",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1VPdkOEGizCNc8ea8FhiImJJ7Glf46FRk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        3180,
+        0
+      ],
+      "id": "eb1a6f5f-5508-465b-8f9f-88d0772b92ae",
+      "name": "Google Drive (upload_new)",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# СТАРТ\n",
+        "height": 520,
+        "width": 640,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "9d110428-cc92-4b82-94fe-95e6b6efd332",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# ЧАСТЬ 1\nРабота со сценариями изображения\n",
+        "height": 520,
+        "width": 1420,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        440,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "c9ce80fe-8321-4dd0-8a03-909ef987dba1",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "# ЧАСТЬ 2\nГенерация изображений\n",
+        "height": 520,
+        "width": 1900,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1900,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "168832d1-f256-4ec2-b4d7-a586f6552baa",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## ЗАМЕТКИ:\n1. Если ручной вариант деактивируйте ноды: \n– Google Drive (Del)\n– Telegram Trigger\n– Google Drive (upload original)",
+        "height": 140,
+        "width": 400,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2100,
+        -480
+      ],
+      "typeVersion": 1,
+      "id": "23aa9ce5-6f42-4509-8fc4-ff46a0f118e9",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Google Drive (Search)').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2320,
+        -260
+      ],
+      "id": "d5729b09-6a9c-4f6f-be26-220889a281c1",
+      "name": "Google Drive (Del)",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "name": "={{ $json.message.photo[0].file_id }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1Fv1BG4VyNGdMJMAIT4UMfhmXmd_e4M5X",
+          "mode": "list",
+          "cachedResultName": "1_original",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1Fv1BG4VyNGdMJMAIT4UMfhmXmd_e4M5X"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        160,
+        -20
+      ],
+      "id": "2fc63b9d-9aac-4b3a-9ae9-1f4f3ac096d1",
+      "name": "Google Drive (upload original)",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        900,
+        -440
+      ],
+      "typeVersion": 1,
+      "id": "2cbdd4c8-4f89-4044-89a7-a45f9584c0f1",
+      "name": "Sticky Note8",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Telegram n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -220,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "5c455570-d8a9-4fff-aa6b-4418fffc9f7d",
+      "name": "Sticky Note9",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2480,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "932e8fc2-5417-4e6d-aedd-eec71d6bf8b1",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/yyj9Hyr86ag",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        200,
+        -440
+      ],
+      "typeVersion": 1,
+      "id": "df45c40f-0e19-4f1f-9744-6601610b70a7",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по ChatGPT Image Generator: https://youtu.be/Ns6FcQxfQYI",
+        "height": 100,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2280,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "983a1fe2-218f-4ab8-9306-c50c1b13b504",
+      "name": "Sticky Note12",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "amount": 20
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3400,
+        0
+      ],
+      "id": "8177ef5e-f380-446e-9568-b5571114be17",
+      "name": "Wait",
+      "webhookId": "47cc772e-0a76-4f58-aaaa-f9cafdb5e96d"
+    }
+  ],
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Google Drive (Del)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Google Drive (download_step_2)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Google Drive (upload_new)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive (upload original)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive (Search)": {
+      "main": [
+        [
+          {
+            "node": "Google Drive (donwload)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive (donwload)": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Drive (upload)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive (upload)": {
+      "main": [
+        []
+      ]
+    },
+    "Google Drive (download_step_2)": {
+      "main": [
+        [
+          {
+            "node": "Image Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Generator": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive (upload_new)": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive (Del)": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive (upload original)": {
+      "main": [
+        [
+          {
+            "node": "Google Drive (Search)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a003ecb1-22a2-4343-8bf1-010df4addafa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "TZngtHkNFT024av7",
+  "tags": []
+}

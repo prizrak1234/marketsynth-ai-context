@@ -1,0 +1,4369 @@
+{
+  "name": "IZ_Test AI Model_Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-3-7-sonnet-20250219",
+          "cachedResultName": "Claude 3.7 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        200,
+        460
+      ],
+      "id": "a621fd0c-b8bf-4df0-aed7-907e150f1962",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        200,
+        280
+      ],
+      "id": "89682351-967c-4fe7-8edf-187aa8c44020",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-2.5-pro-preview-03-25",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        200,
+        80
+      ],
+      "id": "f50c6fe9-585d-480a-9a1d-1b495a31cf20",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "ahlg6hfSuVoEk7Nv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        220,
+        -100
+      ],
+      "id": "a7b4561f-6c68-4930-afdf-9a53cce2da95",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "Yjzxdfh93FwKWjeH",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a helpful assistant whose task is to complete the provided assignment with the highest possible quality. Your goal is to demonstrate your best capabilities in fulfilling the given task.\n\nInstructions:\n1. You will be sent an assignment that needs to be completed according to the specified requirements\n2. Respond only to the substance of the assignment and in maximum detail\n3. Remember that you are participating in an experiment where your response will be compared with responses from other AI models to the same assignment\n4. Do not use introductory phrases like \"Of course, I can help with this assignment\" or \"Here is my answer\"\n5. Simply provide a direct and high-quality response to the assignment\n\nOutput format:\n{\n\"title\": \"<title of the assignment>\",\n\"content\": \"<your detailed response>\"\n}\n\nConstraints:\n- Your answer will be saved in an Airtable database for further analysis and comparison\n- Focus on demonstrating your best abilities\n- Be concise yet thorough\n- Avoid unnecessary explanations about your approach"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        260,
+        -340
+      ],
+      "id": "a5dfdbdd-ed76-4b1d-9d2f-3e9e9913c4d1",
+      "name": "AI Agent Deep Seek"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields1').item.json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a helpful assistant whose task is to complete the provided assignment with the highest possible quality. Your goal is to demonstrate your best capabilities in fulfilling the given task.\n\nInstructions:\n1. You will be sent an assignment that needs to be completed according to the specified requirements\n2. Respond only to the substance of the assignment and in maximum detail\n3. Remember that you are participating in an experiment where your response will be compared with responses from other AI models to the same assignment\n4. Do not use introductory phrases like \"Of course, I can help with this assignment\" or \"Here is my answer\"\n5. Simply provide a direct and high-quality response to the assignment\n\nOutput format:\n{\n\"title\": \"<title of the assignment>\",\n\"content\": \"<your detailed response>\"\n}\n\nConstraints:\n- Your answer will be saved in an Airtable database for further analysis and comparison\n- Focus on demonstrating your best abilities\n- Be concise yet thorough\n- Avoid unnecessary explanations about your approach"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        540,
+        -100
+      ],
+      "id": "61cd8cd8-bcae-4a83-a923-7363a5c16f76",
+      "name": "AI Agent Gemini"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields1').item.json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a helpful assistant whose task is to complete the provided assignment with the highest possible quality. Your goal is to demonstrate your best capabilities in fulfilling the given task.\n\nInstructions:\n1. You will be sent an assignment that needs to be completed according to the specified requirements\n2. Respond only to the substance of the assignment and in maximum detail\n3. Remember that you are participating in an experiment where your response will be compared with responses from other AI models to the same assignment\n4. Do not use introductory phrases like \"Of course, I can help with this assignment\" or \"Here is my answer\"\n5. Simply provide a direct and high-quality response to the assignment\n\nOutput format:\n{\n\"title\": \"<title of the assignment>\",\n\"content\": \"<your detailed response>\"\n}\n\nConstraints:\n- Your answer will be saved in an Airtable database for further analysis and comparison\n- Focus on demonstrating your best abilities\n- Be concise yet thorough\n- Avoid unnecessary explanations about your approach"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        520,
+        120
+      ],
+      "id": "76cfe8d4-7837-45c5-b6b9-ffbf0475a5c2",
+      "name": "AI Agent ChatGPT"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields1').item.json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a helpful assistant whose task is to complete the provided assignment with the highest possible quality. Your goal is to demonstrate your best capabilities in fulfilling the given task.\n\nInstructions:\n1. You will be sent an assignment that needs to be completed according to the specified requirements\n2. Respond only to the substance of the assignment and in maximum detail\n3. Remember that you are participating in an experiment where your response will be compared with responses from other AI models to the same assignment\n4. Do not use introductory phrases like \"Of course, I can help with this assignment\" or \"Here is my answer\"\n5. Simply provide a direct and high-quality response to the assignment\n\nOutput format:\n{\n\"title\": \"<title of the assignment>\",\n\"content\": \"<your detailed response>\"\n}\n\nConstraints:\n- Your answer will be saved in an Airtable database for further analysis and comparison\n- Focus on demonstrating your best abilities\n- Be concise yet thorough\n- Avoid unnecessary explanations about your approach"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        520,
+        360
+      ],
+      "id": "40b6121d-6263-4816-8184-c38c8fa2ea2a",
+      "name": "AI Agent Claude"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "AI Model": "DeepSeek",
+            "Задача": "={{ $('Edit Fields1').item.json.message.text }}",
+            "Заголовок": "={{ $json.output.title }}",
+            "Контент": "={{ $json.output.content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        680,
+        -340
+      ],
+      "id": "ece9aa23-dd6d-4743-9b9c-5db75e58b214",
+      "name": "Airtable Deep",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "AI Model": "Gemini",
+            "Задача": "={{ $('Edit Fields1').item.json.message.text }}",
+            "Заголовок": "={{ $json.output.title }}",
+            "Контент": "={{ $json.output.content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        -100
+      ],
+      "id": "93bf3b52-9ea7-4bd5-ba48-1c97491105f6",
+      "name": "Airtable Gemini",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "AI Model": "ChatGPT",
+            "Задача": "={{ $('Edit Fields1').item.json.message.text }}",
+            "Заголовок": "={{ $json.output.title }}",
+            "Контент": "={{ $json.output.content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        120
+      ],
+      "id": "ed5c6bcd-5b61-4b22-b9b4-7c79a86d71c2",
+      "name": "Airtable ChatGPT",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "AI Model": "Claude",
+            "Задача": "={{ $('Edit Fields1').item.json.message.text }}",
+            "Заголовок": "={{ $json.output.title }}",
+            "Контент": "={{ $json.output.content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        380
+      ],
+      "id": "bd6224f0-67eb-43ee-8b69-87b32034acf6",
+      "name": "Airtable Claude",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=deepseek_title_score: {{ $('AI Agent Deep Seek').item.json.output.title }}\ndeepseek_content_score: {{ $('AI Agent Deep Seek').item.json.output.content }}\ngemini_title_score: {{ $('AI Agent Gemini').item.json.output.title }}\ngemini_content_score: {{ $('AI Agent Gemini').item.json.output.content }}\nchatgpt_title_score: {{ $('AI Agent ChatGPT').item.json.output.title }}\nchatgpt_content_score: {{ $('AI Agent ChatGPT').item.json.output.content }}\nclaude_title_score: {{ $('AI Agent Claude').item.json.output.title }}\nclaude_content_score: {{ $('AI Agent Claude').item.json.output.content }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an experienced expert in evaluating AI-generated content. Your task is to analyze the content provided by four different AI models and assign objective numerical scores to each of them.\n\nInstructions:\n1. You will be given titles and text content created by four different AI models: DeepSeek, Gemini, ChatGPT, and Claude\n2. Evaluate both the title and the content of each model on a scale from 1 to 10, where:\n   - 1-3: Low quality (contains errors, unstructured, doesn't address the assignment)\n   - 4-6: Average quality (basic response, but lacks depth or creative approach)\n   - 7-8: Good quality (well-written, structured, complete answer)\n   - 9-10: Excellent quality (original, comprehensive, creative approach)\n3. Be objective in your assessment. Use YOUR OWN scores based on the quality of the content\n4. Justify each score briefly (1-2 sentences)\n5. IMPORTANT: All feedback justifications must be written in Russian language\n\nIMPORTANT! Your answer must be strictly in JSON format. Use only whole numbers from 1 to 10 for numerical scores and short text strings for justifications in Russian language. Below is only the structure of the response, DO NOT copy the numerical values from the example:\n\n{\n  \"deepseek_title_score\": [number from 1 to 10 based on your evaluation],\n  \"deepseek_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"deepseek_content_score\": [number from 1 to 10 based on your evaluation],\n  \"deepseek_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"gemini_title_score\": [number from 1 to 10 based on your evaluation],\n  \"gemini_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"gemini_content_score\": [number from 1 to 10 based on your evaluation],\n  \"gemini_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"chatgpt_title_score\": [number from 1 to 10 based on your evaluation],\n  \"chatgpt_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"chatgpt_content_score\": [number from 1 to 10 based on your evaluation],\n  \"chatgpt_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"claude_title_score\": [number from 1 to 10 based on your evaluation],\n  \"claude_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"claude_content_score\": [number from 1 to 10 based on your evaluation],\n  \"claude_content_feedback\": \"Ваше обоснование оценки контента на русском языке\"\n}\n\nEvaluation criteria:\n- Title: clarity, relevance to content, appeal, conciseness\n- Content: completeness of answer, structure, depth of analysis, creativity, absence of errors, logical flow"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1560,
+        -300
+      ],
+      "id": "43f9b1a4-d59c-4fce-b5f7-47e54d22e02f",
+      "name": "AI Agent Deep Seek1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        -100
+      ],
+      "id": "6a758252-9bac-4b8f-b7d8-35c8e52ebf00",
+      "name": "DeepSeek Chat Model1",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "Yjzxdfh93FwKWjeH",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-3-7-sonnet-20250219",
+          "cachedResultName": "Claude 3.7 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1880,
+        560
+      ],
+      "id": "1721b548-d363-4f3f-aba4-7593449d9cd0",
+      "name": "Anthropic Chat Model1",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1520,
+        300
+      ],
+      "id": "61661c29-62d1-497f-846f-0f05c327efd7",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "google/gemini-2.5-pro-preview-03-25",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1880,
+        120
+      ],
+      "id": "29813e11-c0cb-4f33-a50e-7819f2a4dbca",
+      "name": "OpenRouter Chat Model1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "ahlg6hfSuVoEk7Nv",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=deepseek_title_score: {{ $('AI Agent Deep Seek').item.json.output.title }}\ndeepseek_content_score: {{ $('AI Agent Deep Seek').item.json.output.content }}\ngemini_title_score: {{ $('AI Agent Gemini').item.json.output.title }}\ngemini_content_score: {{ $('AI Agent Gemini').item.json.output.content }}\nchatgpt_title_score: {{ $('AI Agent ChatGPT').item.json.output.title }}\nchatgpt_content_score: {{ $('AI Agent ChatGPT').item.json.output.content }}\nclaude_title_score: {{ $('AI Agent Claude').item.json.output.title }}\nclaude_content_score: {{ $('AI Agent Claude').item.json.output.content }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an experienced expert in evaluating AI-generated content. Your task is to analyze the content provided by four different AI models and assign objective numerical scores to each of them.\n\nInstructions:\n1. You will be given titles and text content created by four different AI models: DeepSeek, Gemini, ChatGPT, and Claude\n2. Evaluate both the title and the content of each model on a scale from 1 to 10, where:\n   - 1-3: Low quality (contains errors, unstructured, doesn't address the assignment)\n   - 4-6: Average quality (basic response, but lacks depth or creative approach)\n   - 7-8: Good quality (well-written, structured, complete answer)\n   - 9-10: Excellent quality (original, comprehensive, creative approach)\n3. Be objective in your assessment. Use YOUR OWN scores based on the quality of the content\n4. Justify each score briefly (1-2 sentences)\n5. IMPORTANT: All feedback justifications must be written in Russian language\n\nIMPORTANT! Your answer must be strictly in JSON format. Use only whole numbers from 1 to 10 for numerical scores and short text strings for justifications in Russian language. Below is only the structure of the response, DO NOT copy the numerical values from the example:\n\n{\n  \"deepseek_title_score\": [number from 1 to 10 based on your evaluation],\n  \"deepseek_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"deepseek_content_score\": [number from 1 to 10 based on your evaluation],\n  \"deepseek_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"gemini_title_score\": [number from 1 to 10 based on your evaluation],\n  \"gemini_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"gemini_content_score\": [number from 1 to 10 based on your evaluation],\n  \"gemini_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"chatgpt_title_score\": [number from 1 to 10 based on your evaluation],\n  \"chatgpt_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"chatgpt_content_score\": [number from 1 to 10 based on your evaluation],\n  \"chatgpt_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"claude_title_score\": [number from 1 to 10 based on your evaluation],\n  \"claude_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"claude_content_score\": [number from 1 to 10 based on your evaluation],\n  \"claude_content_feedback\": \"Ваше обоснование оценки контента на русском языке\"\n}\n\nEvaluation criteria:\n- Title: clarity, relevance to content, appeal, conciseness\n- Content: completeness of answer, structure, depth of analysis, creativity, absence of errors, logical flow"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1880,
+        -100
+      ],
+      "id": "4f464153-64a2-458c-ba9d-3ad8ce8ee06f",
+      "name": "AI Agent Gemini1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=deepseek_title_score: {{ $('AI Agent Deep Seek').item.json.output.title }}\ndeepseek_content_score: {{ $('AI Agent Deep Seek').item.json.output.content }}\ngemini_title_score: {{ $('AI Agent Gemini').item.json.output.title }}\ngemini_content_score: {{ $('AI Agent Gemini').item.json.output.content }}\nchatgpt_title_score: {{ $('AI Agent ChatGPT').item.json.output.title }}\nchatgpt_content_score: {{ $('AI Agent ChatGPT').item.json.output.content }}\nclaude_title_score: {{ $('AI Agent Claude').item.json.output.title }}\nclaude_content_score: {{ $('AI Agent Claude').item.json.output.content }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an experienced expert in evaluating AI-generated content. Your task is to analyze the content provided by four different AI models and assign objective numerical scores to each of them.\n\nInstructions:\n1. You will be given titles and text content created by four different AI models: DeepSeek, Gemini, ChatGPT, and Claude\n2. Evaluate both the title and the content of each model on a scale from 1 to 10, where:\n   - 1-3: Low quality (contains errors, unstructured, doesn't address the assignment)\n   - 4-6: Average quality (basic response, but lacks depth or creative approach)\n   - 7-8: Good quality (well-written, structured, complete answer)\n   - 9-10: Excellent quality (original, comprehensive, creative approach)\n3. Be objective in your assessment. Use YOUR OWN scores based on the quality of the content\n4. Justify each score briefly (1-2 sentences)\n5. IMPORTANT: All feedback justifications must be written in Russian language\n\nIMPORTANT! Your answer must be strictly in JSON format. Use only whole numbers from 1 to 10 for numerical scores and short text strings for justifications in Russian language. Below is only the structure of the response, DO NOT copy the numerical values from the example:\n\n{\n  \"deepseek_title_score\": [number from 1 to 10 based on your evaluation],\n  \"deepseek_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"deepseek_content_score\": [number from 1 to 10 based on your evaluation],\n  \"deepseek_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"gemini_title_score\": [number from 1 to 10 based on your evaluation],\n  \"gemini_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"gemini_content_score\": [number from 1 to 10 based on your evaluation],\n  \"gemini_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"chatgpt_title_score\": [number from 1 to 10 based on your evaluation],\n  \"chatgpt_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"chatgpt_content_score\": [number from 1 to 10 based on your evaluation],\n  \"chatgpt_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"claude_title_score\": [number from 1 to 10 based on your evaluation],\n  \"claude_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"claude_content_score\": [number from 1 to 10 based on your evaluation],\n  \"claude_content_feedback\": \"Ваше обоснование оценки контента на русском языке\"\n}\n\nEvaluation criteria:\n- Title: clarity, relevance to content, appeal, conciseness\n- Content: completeness of answer, structure, depth of analysis, creativity, absence of errors, logical flow"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1520,
+        100
+      ],
+      "id": "357f1bdd-140d-42dd-8f8d-5bd0efa67613",
+      "name": "AI Agent ChatGPT1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=deepseek_title_score: {{ $('AI Agent Deep Seek').item.json.output.title }}\ndeepseek_content_score: {{ $('AI Agent Deep Seek').item.json.output.content }}\ngemini_title_score: {{ $('AI Agent Gemini').item.json.output.title }}\ngemini_content_score: {{ $('AI Agent Gemini').item.json.output.content }}\nchatgpt_title_score: {{ $('AI Agent ChatGPT').item.json.output.title }}\nchatgpt_content_score: {{ $('AI Agent ChatGPT').item.json.output.content }}\nclaude_title_score: {{ $('AI Agent Claude').item.json.output.title }}\nclaude_content_score: {{ $('AI Agent Claude').item.json.output.content }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an experienced expert in evaluating AI-generated content. Your task is to analyze the content provided by four different AI models and assign objective numerical scores to each of them.\n\nInstructions:\n1. You will be given titles and text content created by four different AI models: DeepSeek, Gemini, ChatGPT, and Claude\n2. Evaluate both the title and the content of each model on a scale from 1 to 10, where:\n   - 1-3: Low quality (contains errors, unstructured, doesn't address the assignment)\n   - 4-6: Average quality (basic response, but lacks depth or creative approach)\n   - 7-8: Good quality (well-written, structured, complete answer)\n   - 9-10: Excellent quality (original, comprehensive, creative approach)\n3. Be objective in your assessment. Use YOUR OWN scores based on the quality of the content\n4. Justify each score briefly (1-2 sentences)\n5. IMPORTANT: All feedback justifications must be written in Russian language\n\nIMPORTANT! Your answer must be strictly in JSON format. Use only whole numbers from 1 to 10 for numerical scores and short text strings for justifications in Russian language. Below is only the structure of the response, DO NOT copy the numerical values from the example:\n\n{\n  \"deepseek_title_score\": [number from 1 to 10 based on your evaluation],\n  \"deepseek_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"deepseek_content_score\": [number from 1 to 10 based on your evaluation],\n  \"deepseek_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"gemini_title_score\": [number from 1 to 10 based on your evaluation],\n  \"gemini_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"gemini_content_score\": [number from 1 to 10 based on your evaluation],\n  \"gemini_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"chatgpt_title_score\": [number from 1 to 10 based on your evaluation],\n  \"chatgpt_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"chatgpt_content_score\": [number from 1 to 10 based on your evaluation],\n  \"chatgpt_content_feedback\": \"Ваше обоснование оценки контента на русском языке\",\n  \n  \"claude_title_score\": [number from 1 to 10 based on your evaluation],\n  \"claude_title_feedback\": \"Ваше обоснование оценки заголовка на русском языке\",\n  \"claude_content_score\": [number from 1 to 10 based on your evaluation],\n  \"claude_content_feedback\": \"Ваше обоснование оценки контента на русском языке\"\n}\n\nEvaluation criteria:\n- Title: clarity, relevance to content, appeal, conciseness\n- Content: completeness of answer, structure, depth of analysis, creativity, absence of errors, logical flow"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1880,
+        340
+      ],
+      "id": "74a5bfbd-d687-42ef-b0fc-00a5f9f7f04b",
+      "name": "AI Agent Claude1"
+    },
+    {
+      "parameters": {
+        "content": "Ты — полезный ассистент, задача которого выполнить предоставленное задание с максимально высоким качеством. Твоя цель — продемонстрировать свои лучшие возможности при выполнении поставленной задачи.\n\nИнструкции:\n1. Тебе будет отправлено задание, которое нужно выполнить в соответствии с указанными требованиями\n2. Отвечай только по существу задания и максимально подробно\n3. Помни, что ты участвуешь в эксперименте, где твой ответ будет сравниваться с ответами других ИИ-моделей на такое же задание\n4. Не используй вводные фразы типа \"Конечно, я могу помочь с этим заданием\" или \"Вот мой ответ\"\n5. Просто предоставь прямой и качественный ответ на задание\n\nФормат вывода:\n{\n\"title\": \"<заголовок задания>\",\n\"content\": \"<твой подробный ответ>\"\n}\n\nОграничения:\n- Твой ответ будет сохранен в базе данных Airtable для дальнейшего анализа и сравнения\n- Сосредоточься на демонстрации своих лучших способностей\n- Будь лаконичным, но исчерпывающим\n- Избегай ненужных объяснений о своем подходе",
+        "height": 520,
+        "width": 800,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -780,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "813bef7e-39b7-4e6e-a92c-0579d64dd926",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"title\": \"<title of the assignment>\",\n\"content\": \"<your detailed response>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        -100
+      ],
+      "id": "2542ad86-9c87-444a-b6d3-9922510b9fce",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"title\": \"<title of the assignment>\",\n\"content\": \"<your detailed response>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        360,
+        80
+      ],
+      "id": "1607196e-a1cc-4778-b398-8dce318a924d",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"title\": \"<title of the assignment>\",\n\"content\": \"<your detailed response>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        360,
+        280
+      ],
+      "id": "5cf8e437-03a8-4881-983b-51c9a0b9ada1",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"title\": \"<title of the assignment>\",\n\"content\": \"<your detailed response>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        360,
+        480
+      ],
+      "id": "57916389-f759-43dc-94eb-1d8d90630275",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"deepseek_title_score\": 0,\n  \"deepseek_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"deepseek_content_score\": 0,\n  \"deepseek_content_feedback\": \"Пример обоснования оценки контента\",\n  \"gemini_title_score\": 0,\n  \"gemini_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"gemini_content_score\": 0,\n  \"gemini_content_feedback\": \"Пример обоснования оценки контента\",\n  \"chatgpt_title_score\": 0,\n  \"chatgpt_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"chatgpt_content_score\": 0,\n  \"chatgpt_content_feedback\": \"Пример обоснования оценки контента\",\n  \"claude_title_score\": 0,\n  \"claude_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"claude_content_score\": 0,\n  \"claude_content_feedback\": \"Пример обоснования оценки контента\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1640,
+        -100
+      ],
+      "id": "5e630559-66b3-48d8-b4b9-cb267abfb4b2",
+      "name": "Structured Output Parser4"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"deepseek_title_score\": 0,\n  \"deepseek_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"deepseek_content_score\": 0,\n  \"deepseek_content_feedback\": \"Пример обоснования оценки контента\",\n  \"gemini_title_score\": 0,\n  \"gemini_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"gemini_content_score\": 0,\n  \"gemini_content_feedback\": \"Пример обоснования оценки контента\",\n  \"chatgpt_title_score\": 0,\n  \"chatgpt_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"chatgpt_content_score\": 0,\n  \"chatgpt_content_feedback\": \"Пример обоснования оценки контента\",\n  \"claude_title_score\": 0,\n  \"claude_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"claude_content_score\": 0,\n  \"claude_content_feedback\": \"Пример обоснования оценки контента\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2060,
+        120
+      ],
+      "id": "37fa4ded-20c8-4218-9d02-8e819ad61eff",
+      "name": "Structured Output Parser5"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"deepseek_title_score\": 0,\n  \"deepseek_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"deepseek_content_score\": 0,\n  \"deepseek_content_feedback\": \"Пример обоснования оценки контента\",\n  \"gemini_title_score\": 0,\n  \"gemini_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"gemini_content_score\": 0,\n  \"gemini_content_feedback\": \"Пример обоснования оценки контента\",\n  \"chatgpt_title_score\": 0,\n  \"chatgpt_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"chatgpt_content_score\": 0,\n  \"chatgpt_content_feedback\": \"Пример обоснования оценки контента\",\n  \"claude_title_score\": 0,\n  \"claude_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"claude_content_score\": 0,\n  \"claude_content_feedback\": \"Пример обоснования оценки контента\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1680,
+        320
+      ],
+      "id": "469ea083-f0f9-4f67-834f-df917aba0048",
+      "name": "Structured Output Parser6"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"deepseek_title_score\": 0,\n  \"deepseek_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"deepseek_content_score\": 0,\n  \"deepseek_content_feedback\": \"Пример обоснования оценки контента\",\n  \"gemini_title_score\": 0,\n  \"gemini_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"gemini_content_score\": 0,\n  \"gemini_content_feedback\": \"Пример обоснования оценки контента\",\n  \"chatgpt_title_score\": 0,\n  \"chatgpt_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"chatgpt_content_score\": 0,\n  \"chatgpt_content_feedback\": \"Пример обоснования оценки контента\",\n  \"claude_title_score\": 0,\n  \"claude_title_feedback\": \"Пример обоснования оценки заголовка\",\n  \"claude_content_score\": 0,\n  \"claude_content_feedback\": \"Пример обоснования оценки контента\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2060,
+        560
+      ],
+      "id": "4487e1f0-81eb-490a-b157-392e9e12ed5e",
+      "name": "Structured Output Parser7"
+    },
+    {
+      "parameters": {
+        "content": "Ты — опытный эксперт по оценке контента, созданного ИИ. Твоя задача — проанализировать предоставленный контент от четырех разных ИИ-моделей и выставить объективные числовые оценки каждому из них.\n\nИнструкции:\n1. Тебе будет предоставлен заголовок и текстовый контент, созданный четырьмя разными ИИ-моделями: DeepSeek, Gemini, ChatGPT и Claude\n2. Оцени как заголовок, так и содержание каждой модели по шкале от 1 до 10, где:\n   - 1-3: Низкое качество (содержит ошибки, неструктурированно, не отвечает на задание)\n   - 4-6: Среднее качество (базовый ответ, но без глубины или творческого подхода)\n   - 7-8: Хорошее качество (грамотный, структурированный, полный ответ)\n   - 9-10: Превосходное качество (оригинальный, исчерпывающий, творческий подход)\n3. Будь объективным в своей оценке. Используй СВОИ оценки, основанные на качестве содержания\n4. Обоснуй каждую оценку кратко (1-2 предложения)\n5. Все обоснования должны быть написаны на русском языке\n\nВАЖНО! Твой ответ должен быть строго в формате JSON. Используй только целые числа от 1 до 10 для числовых оценок и короткие текстовые строки для обоснований на русском языке. Ниже приведена только структура ответа, НЕ копируй числовые значения из примера:\n\n{\n  \"deepseek_title_score\": [число от 1 до 10 на основе твоей оценки],\n  \"deepseek_title_feedback\": \"Твое обоснование оценки заголовка на русском языке\",\n  \"deepseek_content_score\": [число от 1 до 10 на основе твоей оценки],\n  \"deepseek_content_feedback\": \"Твое обоснование оценки контента на русском языке\",\n  \n  \"gemini_title_score\": [число от 1 до 10 на основе твоей оценки],\n  \"gemini_title_feedback\": \"Твое обоснование оценки заголовка на русском языке\",\n  \"gemini_content_score\": [число от 1 до 10 на основе твоей оценки],\n  \"gemini_content_feedback\": \"Твое обоснование оценки контента на русском языке\",\n  \n  \"chatgpt_title_score\": [число от 1 до 10 на основе твоей оценки],\n  \"chatgpt_title_feedback\": \"Твое обоснование оценки заголовка на русском языке\",\n  \"chatgpt_content_score\": [число от 1 до 10 на основе твоей оценки],\n  \"chatgpt_content_feedback\": \"Твое обоснование оценки контента на русском языке\",\n  \n  \"claude_title_score\": [число от 1 до 10 на основе твоей оценки],\n  \"claude_title_feedback\": \"Твое обоснование оценки заголовка на русском языке\",\n  \"claude_content_score\": [число от 1 до 10 на основе твоей оценки],\n  \"claude_content_feedback\": \"Твое обоснование оценки контента на русском языке\"\n}\n\nКритерии оценки:\n- Заголовок: ясность, соответствие содержанию, привлекательность, лаконичность\n- Контент: полнота ответа, структура, глубина анализа, креативность, отсутствие ошибок, логика изложения",
+        "height": 940,
+        "width": 760,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2660,
+        -340
+      ],
+      "typeVersion": 1,
+      "id": "663af433-c458-4759-99ae-679981f23ff3",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record ID": "={{ $json.id }}",
+            "id": "={{ $json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        -340
+      ],
+      "id": "20657b33-dd13-4419-9753-35100e40f6d5",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "Record ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        -100
+      ],
+      "id": "7886df42-12b6-4b04-97e5-172abaacb86f",
+      "name": "Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "Record ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1140,
+        120
+      ],
+      "id": "b9078b97-81fe-4f95-ad53-5e19e670e1fc",
+      "name": "Airtable2",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "Record ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1140,
+        380
+      ],
+      "id": "ccfe08f4-99e3-4a54-be67-7cf98df03814",
+      "name": "Airtable4",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Оценка от DeepSeek КОНТЕНТ": "={{ $('AI Agent Deep Seek1').item.json.output.deepseek_content_score }}",
+            "Оценка от DeepSeek ЗАГОЛОВОК": "={{ $('AI Agent Deep Seek1').item.json.output.deepseek_title_score }}",
+            "Оценка от Gemini КОНТЕНТ": "={{ $('AI Agent Gemini1').item.json.output.deepseek_content_score }}",
+            "Оценка от Gemini ЗАГОЛОВОК": "={{ $('AI Agent Gemini1').item.json.output.deepseek_title_score }}",
+            "Оценка от Claude КОНТЕНТ": "={{ $json.output.deepseek_content_score }}",
+            "Оценка от Claude ЗАГОЛОВОК": "={{ $json.output.deepseek_title_score }}",
+            "Оценка от ChatGPT КОНТЕНТ": "={{ $('AI Agent ChatGPT1').item.json.output.deepseek_content_score }}",
+            "Оценка от ChatGPT ЗАГОЛОВОК": "={{ $('AI Agent ChatGPT1').item.json.output.deepseek_title_score }}",
+            "Record ID": "={{ $('Airtable Deep').item.json.id }}",
+            "Обоснование Оценки по ChatGPT": "=ЗАГОЛОВОК: {{ $('AI Agent ChatGPT1').item.json.output.deepseek_title_feedback }}\n----\nКОНТЕНТ: {{ $('AI Agent ChatGPT1').item.json.output.deepseek_content_feedback }}",
+            "Обоснование Оценки по Claude": "=ЗАГОЛОВОК: {{ $json.output.deepseek_title_feedback }}\n----\nКОНТЕНТ: {{ $json.output.deepseek_content_feedback }}",
+            "Обоснование Оценки по Gemini": "=ЗАГОЛОВОК: {{ $('AI Agent Gemini1').item.json.output.deepseek_title_feedback }}\n----\nКОНТЕНТ: {{ $('AI Agent Gemini1').item.json.output.deepseek_content_feedback }}",
+            "Обоснование Оценки по DeepSeek": "=ЗАГОЛОВОК: {{ $('AI Agent Deep Seek1').item.json.output.deepseek_title_feedback }}\n----\nКОНТЕНТ: {{ $('AI Agent Deep Seek1').item.json.output.deepseek_content_feedback }}"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2340,
+        -340
+      ],
+      "id": "a58e001c-1813-434d-bea1-e0eeacdc2694",
+      "name": "Airtable DEEPSEEK",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record ID": "={{ $('Airtable Gemini').item.json.id }}",
+            "Оценка от DeepSeek КОНТЕНТ": "={{ $('AI Agent Deep Seek1').item.json.output.gemini_content_score }}",
+            "Оценка от DeepSeek ЗАГОЛОВОК": "={{ $('AI Agent Deep Seek1').item.json.output.gemini_title_score }}",
+            "Оценка от Gemini КОНТЕНТ": "={{ $('AI Agent Gemini1').item.json.output.gemini_content_score }}",
+            "Оценка от Gemini ЗАГОЛОВОК": "={{ $('AI Agent Gemini1').item.json.output.gemini_title_score }}",
+            "Оценка от Claude КОНТЕНТ": "={{ $('AI Agent Claude1').item.json.output.gemini_content_score }}",
+            "Оценка от Claude ЗАГОЛОВОК": "={{ $('AI Agent Claude1').item.json.output.gemini_title_score }}",
+            "Оценка от ChatGPT КОНТЕНТ": "={{ $('AI Agent ChatGPT1').item.json.output.gemini_content_score }}",
+            "Оценка от ChatGPT ЗАГОЛОВОК": "={{ $('AI Agent ChatGPT1').item.json.output.gemini_title_score }}",
+            "Обоснование Оценки по ChatGPT": "=ЗАГОЛОВОК: {{ $('AI Agent ChatGPT1').item.json.output.gemini_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent ChatGPT1').item.json.output.gemini_content_feedback }}",
+            "Обоснование Оценки по Claude": "=ЗАГОЛОВОК: {{ $('AI Agent Claude1').item.json.output.gemini_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent Claude1').item.json.output.gemini_content_feedback }}",
+            "Обоснование Оценки по Gemini": "=ЗАГОЛОВОК: {{ $('AI Agent Gemini1').item.json.output.gemini_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent Gemini1').item.json.output.gemini_content_feedback }}",
+            "Обоснование Оценки по DeepSeek": "=ЗАГОЛОВОК: {{ $('AI Agent Deep Seek1').item.json.output.gemini_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent Deep Seek1').item.json.output.gemini_content_feedback }}"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2320,
+        -80
+      ],
+      "id": "cf34ef33-4326-4c61-8a7a-287d34fb73d1",
+      "name": "Airtable Gemini1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Оценка от DeepSeek КОНТЕНТ": "={{ $('AI Agent Deep Seek1').item.json.output.chatgpt_content_score }}",
+            "Оценка от DeepSeek ЗАГОЛОВОК": "={{ $('AI Agent Deep Seek1').item.json.output.chatgpt_title_score }}",
+            "Оценка от Gemini КОНТЕНТ": "={{ $('AI Agent Gemini1').item.json.output.chatgpt_content_score }}",
+            "Оценка от Gemini ЗАГОЛОВОК": "={{ $('AI Agent Gemini1').item.json.output.chatgpt_title_score }}",
+            "Оценка от Claude КОНТЕНТ": "={{ $('AI Agent Claude1').item.json.output.chatgpt_content_score }}",
+            "Оценка от Claude ЗАГОЛОВОК": "={{ $('AI Agent Claude1').item.json.output.chatgpt_title_score }}",
+            "Оценка от ChatGPT КОНТЕНТ": "={{ $('AI Agent ChatGPT1').item.json.output.chatgpt_content_score }}",
+            "Оценка от ChatGPT ЗАГОЛОВОК": "={{ $('AI Agent ChatGPT1').item.json.output.chatgpt_title_score }}",
+            "Обоснование Оценки по ChatGPT": "=ЗАГОЛОВОК: {{ $('AI Agent ChatGPT1').item.json.output.chatgpt_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent ChatGPT1').item.json.output.chatgpt_content_feedback }}",
+            "Обоснование Оценки по Claude": "=ЗАГОЛОВОК: {{ $('AI Agent Claude1').item.json.output.chatgpt_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent Claude1').item.json.output.chatgpt_content_feedback }}",
+            "Обоснование Оценки по Gemini": "=ЗАГОЛОВОК: {{ $('AI Agent Gemini1').item.json.output.chatgpt_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent Gemini1').item.json.output.chatgpt_content_feedback }}",
+            "Обоснование Оценки по DeepSeek": "=ЗАГОЛОВОК: {{ $('AI Agent Deep Seek1').item.json.output.chatgpt_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent Deep Seek1').item.json.output.chatgpt_content_feedback }}",
+            "Record ID": "={{ $('Airtable ChatGPT').item.json.id }}"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2320,
+        180
+      ],
+      "id": "55d9db44-3860-46b2-b420-8aa1715f023d",
+      "name": "Airtable ChatGPT1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appuHaNmykpi4G8Nk",
+          "mode": "list",
+          "cachedResultName": "Test AI Model",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVexkinoCMDRfdU",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appuHaNmykpi4G8Nk/tblVexkinoCMDRfdU"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Оценка от DeepSeek КОНТЕНТ": "={{ $('AI Agent Deep Seek1').item.json.output.claude_content_score }}",
+            "Оценка от DeepSeek ЗАГОЛОВОК": "={{ $('AI Agent Deep Seek1').item.json.output.claude_title_score }}",
+            "Оценка от Gemini КОНТЕНТ": "={{ $('AI Agent Gemini1').item.json.output.claude_content_score }}",
+            "Оценка от Gemini ЗАГОЛОВОК": "={{ $('AI Agent Gemini1').item.json.output.claude_title_score }}",
+            "Оценка от Claude КОНТЕНТ": "={{ $('AI Agent Claude1').item.json.output.claude_content_score }}",
+            "Оценка от Claude ЗАГОЛОВОК": "={{ $('AI Agent Claude1').item.json.output.claude_title_score }}",
+            "Оценка от ChatGPT КОНТЕНТ": "={{ $('AI Agent ChatGPT1').item.json.output.claude_content_score }}",
+            "Оценка от ChatGPT ЗАГОЛОВОК": "={{ $('AI Agent ChatGPT1').item.json.output.claude_title_score }}",
+            "Обоснование Оценки по ChatGPT": "=ЗАГОЛОВОК: {{ $('AI Agent ChatGPT1').item.json.output.claude_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent ChatGPT1').item.json.output.claude_content_feedback }}",
+            "Обоснование Оценки по Claude": "=ЗАГОЛОВОК: {{ $('AI Agent Claude1').item.json.output.claude_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent Claude1').item.json.output.claude_content_feedback }}",
+            "Обоснование Оценки по Gemini": "=ЗАГОЛОВОК: {{ $('AI Agent Gemini1').item.json.output.claude_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent Gemini1').item.json.output.claude_content_feedback }}",
+            "Обоснование Оценки по DeepSeek": "=ЗАГОЛОВОК: {{ $('AI Agent Deep Seek1').item.json.output.claude_title_feedback }}\n---\nКОНТЕНТ: {{ $('AI Agent Deep Seek1').item.json.output.claude_content_feedback }}",
+            "Record ID": "={{ $('Airtable Claude').item.json.id }}"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "AI Model",
+              "displayName": "AI Model",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Задача",
+              "displayName": "Задача",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Заголовок",
+              "displayName": "Заголовок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Сумма Оценок",
+              "displayName": "Сумма Оценок",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "displayName": "Оценка от ChatGPT ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от ChatGPT КОНТЕНТ",
+              "displayName": "Оценка от ChatGPT КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по ChatGPT",
+              "displayName": "Обоснование Оценки по ChatGPT",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Claude ЗАГОЛОВОК",
+              "displayName": "Оценка от Claude ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Claude КОНТЕНТ",
+              "displayName": "Оценка от Claude КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по Claude",
+              "displayName": "Обоснование Оценки по Claude",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Gemini ЗАГОЛОВОК",
+              "displayName": "Оценка от Gemini ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от Gemini КОНТЕНТ",
+              "displayName": "Оценка от Gemini КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по Gemini",
+              "displayName": "Обоснование Оценки по Gemini",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "displayName": "Оценка от DeepSeek ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Оценка от DeepSeek КОНТЕНТ",
+              "displayName": "Оценка от DeepSeek КОНТЕНТ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Обоснование Оценки по DeepSeek",
+              "displayName": "Обоснование Оценки по DeepSeek",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2300,
+        380
+      ],
+      "id": "5925c3a7-0c0c-4083-a510-4ba706569494",
+      "name": "Airtable CLaude",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6f27c169-8e93-4438-bb7e-276aeb09cc2f",
+              "name": "Text",
+              "value": "Задание выполнено",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2420,
+        660
+      ],
+      "id": "01bd50a9-6b45-4dc0-914c-9abd6f2dfe21",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1440,
+        -300
+      ],
+      "id": "db264bd0-dc95-46a8-886c-23b813ae8304",
+      "name": "Telegram Trigger1",
+      "webhookId": "79408097-d284-4034-a6d7-65bb07b242ba",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Telegram Trigger1').item.json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "dd8451ae-fc03-49d0-a19e-2678a5f4ff64"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bc42e6d3-ad50-4188-a168-9c5696e74252",
+                    "leftValue": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -740,
+        -320
+      ],
+      "id": "f34eacbc-129c-4f19-8d39-1584930e4011",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -340,
+        -200
+      ],
+      "id": "f0492a4e-6452-4d10-925a-9f5028bae2ce",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9e919bb-8d22-4855-a7b6-a9e5a9f39778",
+              "leftValue": "={{ $json.message.chat.username }}",
+              "rightValue": "=igorzuevich\n",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1240,
+        -300
+      ],
+      "id": "ade5447d-f19e-4ed8-a9cc-a44c8feb81e6",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        -320
+      ],
+      "id": "fb9d5516-7051-4bbf-973e-39ecb975c5a0",
+      "name": "Telegram2",
+      "webhookId": "4f938fd7-6e62-45f5-9f45-118ed704bc35",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dc04da2b-b648-42a4-9a04-bdf8a8d23508",
+              "name": "message.text",
+              "value": "={{ $('Telegram Trigger1').item.json.message.text }}{{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -120,
+        -340
+      ],
+      "id": "9de50509-d050-4e79-8039-122a66ca891b",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "text": "={{ $json.Text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2040,
+        740
+      ],
+      "id": "368e40ba-8ba9-4d07-9b7e-b091f6273a5e",
+      "name": "Telegram1",
+      "webhookId": "927ce694-1b0f-40c8-8622-4d925e707ca4",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -560,
+        -200
+      ],
+      "id": "015c826f-aa1e-4c90-b1cb-f51bf5f088ed",
+      "name": "Telegram3",
+      "webhookId": "0142b70e-e116-4fe0-bce6-bfc0fb8db9db",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ЧАСТЬ 2 ОЦЕНКИ",
+        "height": 1420,
+        "width": 1200,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1420,
+        -460
+      ],
+      "typeVersion": 1,
+      "id": "19d2bba0-fc66-40bd-8bc9-e7cc8551f301",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "TELEGRAM ЗАПУСК",
+        "height": 340,
+        "width": 1560,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1480,
+        -380
+      ],
+      "typeVersion": 1,
+      "id": "6ceaac34-27b7-4466-a46b-2c36ed285e4b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## ЧАСТЬ 1. СОЗДАНИЕ",
+        "height": 1120,
+        "width": 1220,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        140,
+        -460
+      ],
+      "typeVersion": 1,
+      "id": "893a480d-aada-4763-95fa-308a90d2beb8",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### TELEGRAM ИНСТРУКЦИЯ:\nhttps://youtu.be/c8bePGmxFNw",
+        "height": 80,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1180,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "ea0703b1-ba60-4f59-897d-7ff63ff0db10",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Claude",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent ChatGPT",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Gemini",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Deep Seek",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Deep Seek": {
+      "main": [
+        [
+          {
+            "node": "Airtable Deep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Gemini": {
+      "main": [
+        [
+          {
+            "node": "Airtable Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent ChatGPT": {
+      "main": [
+        [
+          {
+            "node": "Airtable ChatGPT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Claude": {
+      "main": [
+        [
+          {
+            "node": "Airtable Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable Deep": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable Gemini": {
+      "main": [
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable ChatGPT": {
+      "main": [
+        [
+          {
+            "node": "Airtable2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Deep Seek1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Gemini1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable Claude": {
+      "main": [
+        [
+          {
+            "node": "Airtable4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Deep Seek1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Claude1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent ChatGPT1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent Gemini1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Gemini1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent ChatGPT1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent ChatGPT1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Claude1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Claude1": {
+      "main": [
+        [
+          {
+            "node": "Airtable DEEPSEEK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent Deep Seek",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent Gemini",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent ChatGPT",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent Claude",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser4": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent Deep Seek1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser5": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent Gemini1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser6": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent ChatGPT1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser7": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent Claude1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent ChatGPT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Deep Seek1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable ChatGPT1": {
+      "main": [
+        [
+          {
+            "node": "Airtable CLaude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable Gemini1": {
+      "main": [
+        [
+          {
+            "node": "Airtable ChatGPT1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable DEEPSEEK": {
+      "main": [
+        [
+          {
+            "node": "Airtable Gemini1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable CLaude": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram2": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Deep Seek",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram3": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "49f9cad3-76d2-4f02-915f-49285dd8ddd8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "dJBxjGBIiI4X5Qxq",
+  "tags": [
+    {
+      "createdAt": "2025-03-21T05:05:36.109Z",
+      "updatedAt": "2025-03-21T05:05:36.109Z",
+      "id": "O7fQsEJqI16T5o0y",
+      "name": "Сделано"
+    }
+  ]
+}

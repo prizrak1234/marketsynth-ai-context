@@ -1,0 +1,1970 @@
+{
+  "name": "IZ_SUPER_AI_AGENT_TELEGRAM",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "={{ $json.prompt }}\n\nTodays date: {{ $today.format('yyyy-MM-dd') }}\n\n\nImportant:\n\n- Ensure you always call tools to get the latest information.\n- If details are provided, create without questions.\n- If you are confused, use the \"Think\" tool before proceeding.\n- When creating new tasks, expenses or bills, format them professionally."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        800,
+        1220
+      ],
+      "id": "e8798dd4-9954-4b84-aa0c-8a130270ce6a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        2320
+      ],
+      "id": "072e3ffc-0702-4791-8d09-caf510e1985f",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You perform web searches. Use the available tool to search the web.\\n\\nPresent each search result with the following details:\\nTitle: [Result Title]\\nSnippet: [Result Snippet]\\nPublish Date: [Result Publish Date]\\nURL: [Result URL]\",\n  \"memory\": \"search\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -220,
+        300
+      ],
+      "id": "de28c4ab-c757-4aaf-a600-008c3a7584d2",
+      "name": "Search Web Prompt"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {
+          "responseFormat": "text"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1040,
+        1500
+      ],
+      "id": "1989a480-aeeb-4422-a5d4-09912cf0187d",
+      "name": "4.1-nano",
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to create an event",
+        "calendar": {
+          "__rl": true,
+          "value": "63129f7f8a0ccde6960f48886dee716ef604d631a25f08205d6c7ba391ca4734@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Тестовый Календарь"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        2320
+      ],
+      "id": "3ff87fd4-6131-45c5-9254-7b92efa168e5",
+      "name": "Create Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "FmfdXK755Qes1QHO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to get an event",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "63129f7f8a0ccde6960f48886dee716ef604d631a25f08205d6c7ba391ca4734@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Тестовый Календарь"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {
+          "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1340,
+        2320
+      ],
+      "id": "519b7227-7f4c-45cb-ade4-cb92dca75f3f",
+      "name": "Get Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "FmfdXK755Qes1QHO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "63129f7f8a0ccde6960f48886dee716ef604d631a25f08205d6c7ba391ca4734@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Тестовый Календарь"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1480,
+        2320
+      ],
+      "id": "ddc1aa63-27e3-4665-b444-b334e97f1835",
+      "name": "Update Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "FmfdXK755Qes1QHO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "63129f7f8a0ccde6960f48886dee716ef604d631a25f08205d6c7ba391ca4734@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Тестовый Календарь"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1620,
+        2320
+      ],
+      "id": "8540b6f7-c432-4ccb-a089-a1fda82962b8",
+      "name": "Delete Event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "FmfdXK755Qes1QHO",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "all",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "additionalFields": {
+          "keyword": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Keyword', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.hackerNewsTool",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        2320
+      ],
+      "id": "07b21f3c-ac5a-4e03-acc2-f92993510799",
+      "name": "Hacker News"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to access Reddit",
+        "operation": "search",
+        "subreddit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subreddit', ``, 'string') }}",
+        "keyword": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Keyword', ``, 'string') }}",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "additionalFields": {
+          "sort": "hot"
+        }
+      },
+      "type": "n8n-nodes-base.redditTool",
+      "typeVersion": 1,
+      "position": [
+        1940,
+        2320
+      ],
+      "id": "77b2faba-c80a-4d60-8fd8-92512c6533cb",
+      "name": "Reddit",
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "VunGR4GJJpCi9nbb",
+          "name": "Reddit account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You manage calendar events. Use the available tools to create events, get events, update events, and delete events.\",\n  \"memory\": \"calendar\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        580
+      ],
+      "id": "fbbf23c6-1821-44c1-acfb-97b9107eb7bc",
+      "name": "Calendar Prompt"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You fetch Hacker News articles. Use the available tool to get articles.\",\n  \"memory\": \"hacker_news\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -380,
+        700
+      ],
+      "id": "06a76188-7abb-4c3f-99a0-63ffed1ce60d",
+      "name": "HackerNews Prompt"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You retrieve Reddit posts. Use the available tool to retrieve posts. Ensure you always use keywords when searching, too.\",\n  \"memory\": \"reddit\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        700
+      ],
+      "id": "e71848b4-99f5-4401-bbb2-fce79a96360e",
+      "name": "Reddit Prompt"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -380,
+        2320
+      ],
+      "id": "8ebae560-8164-4c00-94ad-1ba5b1ce600d",
+      "name": "4.1-mini",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+      "typeVersion": 1,
+      "position": [
+        2220,
+        2320
+      ],
+      "id": "812be3a3-085c-41b8-865f-823ab294a86a",
+      "name": "Wikipedia"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b8d1d130-ee6e-454d-aee9-288fd05c1347",
+              "name": "text",
+              "value": "={{ $('Set Chat').item.json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "7fa6e840-8bd4-46f8-a32e-44c4e4c8633c",
+              "name": "prompt",
+              "value": "={{ $json.prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "ae2e75c1-b4ae-4332-8f6c-f2e3b083cc3b",
+              "name": "memory",
+              "value": "={{ $json.memory }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        1220
+      ],
+      "id": "db5f480e-b257-4faa-b391-98ec8fef7ae5",
+      "name": "Chat"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7c89689e-f583-4abe-8911-83c6673543f6",
+              "name": "text",
+              "value": "={{ $('Telegram Trigger1').item.json.message.text }}{{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1260,
+        1260
+      ],
+      "id": "02741b22-4ad9-400e-96a7-64aeb1daf5cc",
+      "name": "Set Chat"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Call this tool to perform web searches",
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Content-type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{placeholder}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"basic\",\n  \"chunks_per_source\": 3,\n  \"max_results\": 1,\n  \"time_range\": null,\n  \"days\": 7,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": []\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        2080,
+        2320
+      ],
+      "id": "d7b1eb89-d8d2-46e1-82ae-ee515e4435f8",
+      "name": "Search web",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Fuba46nFrCCHTyc9",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to access YouTube API",
+        "resource": "video",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "filters": {
+          "publishedBefore": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Published_Before', ``, 'string') }}",
+          "q": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+          "regionCode": "US"
+        },
+        "options": {
+          "order": "date"
+        }
+      },
+      "type": "n8n-nodes-base.youTubeTool",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        2320
+      ],
+      "id": "f18e8600-947e-4811-beb5-9171216166a2",
+      "name": "YouTube",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "kaehDW4Ii5Pf7uw4",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You interact with YouTube. Use the available tool(s) to search for videos or perform other YouTube actions.\\\\n\\\\nFormat responses as follows:\\\\n\\\\nTitle\\\\nUpload Date: dd/mm/yyy\\\\nURL\",\n  \"memory\": \"youtube\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        20,
+        1200
+      ],
+      "id": "5705adaf-a9e7-4421-ac94-842ef3770298",
+      "name": "YouTube Prompt"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You interact with Wikipedia. Use the available tool(s) to search for articles or retrieve information.\",\n  \"memory\": \"wikipedia\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        940
+      ],
+      "id": "028ca093-c33a-468f-a588-4a91682a640f",
+      "name": "Wikipedia Prompt"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You manage expenses. Use the available tools to create, get, update, and delete expenses.\\n\\nExpense details include: name, cost, and date added.\\n\\nWhen CREATING an expense: Provide the 'name' and 'cost'. The 'date added' will automatically default to today's date. If you provide a specific date in your request, that date will be used instead.\\n\\nWhen UPDATING an expense: Specify the expense to update and the details you want to change (name, cost, or date added).\\nWhen GETTING or DELETING expenses: Identify the specific expense.\",\n  \"memory\": \"expenses\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        840
+      ],
+      "id": "00641d0b-1e51-4a8a-9490-d75ab6fc3f44",
+      "name": "Expenses Prompt"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"prompt\": \"You are the Help Assistant for this n8n super-agent system. Your only job is to explain how users can invoke the system’s capabilities by giving clear example user prompts. Do NOT call any tools or perform any actions—just show example requests.\\n\\nWhen the user asks for help (e.g. “How do I generate a Reel?”, “Help with TikTok”, “What can this system do?”), explain the relevant function and give 1–2 simple example commands.\\n\\nHere are the capabilities and example templates you should follow:\\n\\n* **HeyGen Agent:** generate avatars and auto-publish videos.\\n  * Examples:\\n    • \\\"Generate a HeyGen avatar from this script: ‘Hello, I’m Igor’ and publish it to my YouTube channel.\\\"\\n    • \\\"Create a HeyGen video using template 123 and schedule it for 10 AM tomorrow.\\\"\\n\\n* **Instagram REEL Agent:** analyze competitor content, find trending Reels, and create scripts.\\n  * Examples:\\n    • \\\"Analyze top Reels in the fitness niche and draft a script for a 30-second workout Reel.\\\"\\n    • \\\"Find trending Instagram Reels about AI marketing and create a storyboard.\\\"\\n\\n* **TikTok Agent:** discover similar TikTok profiles, analyze their best videos, and write a script for new content.\\n  * Examples:\\n    • \\\"Find TikTok profiles like @techguru, analyze their top videos, and draft a script for a similar tech hack video.\\\"\\n    • \\\"Identify top cooking creators and write a 15-second recipe TikTok script.\\\"\\n\\n* **AirTable Instagram:** search and retrieve Instagram profile records from Airtable.\\n  * Examples:\\n    • \\\"Get all profiles with over 100 K followers.\\\"\\n    • \\\"Find the record for @nature_travels and show its description.\\\"\\n\\n* **Copywriter News Agent:** define a target audience, source relevant news, and craft text posts for Telegram, Threads, or Instagram.\\n  * Examples:\\n    • \\\"For freelancers, find the latest AI news and write a Telegram post summarizing key points.\\\"\\n    • \\\"Identify news about e-commerce and draft an Instagram caption.\\\"\\n\\n* **Backup Agent:** export and back up all n8n workflows and templates on the server.\\n  * Examples:\\n    • \\\"Back up all current workflow templates with timestamped filenames.\\\"\\n    • \\\"Create a backup of my custom templates.\\\"\\n\\n* **Baza Agent:** read from and write to the database.\\n  * Examples:\\n    • \\\"Fetch user settings where status = active.\\\"\\n    • \\\"Insert a new record: name='Test', value=42.\\\"\\n\\n* **Calendar Events:** create, retrieve, update, and delete events.\\n  * Examples:\\n    • \\\"Create event 'Doctor Appointment' for tomorrow at 3 PM.\\\"\\n    • \\\"What's on my calendar today?\\\"\\n\\n* **Hacker News:** fetch top Hacker News articles.\\n  * Examples:\\n    • \\\"Get the top articles from Hacker News.\\\"\\n    • \\\"Show me the latest Hacker News posts about startups.\\\"\\n\\n* **Reddit:** retrieve posts from subreddits.\\n  * Examples:\\n    • \\\"Get posts from r/technology about AI.\\\"\\n    • \\\"Find top posts on r/python today.\\\"\\n\\n* **Web Search:** search the web (returns title, snippet, date, URL).\\n  * Examples:\\n    • \\\"Search the web for 'best Python libraries for data science'.\\\"\\n    • \\\"Find recent news about electric cars.\\\"\\n\\n* **YouTube:** search for videos.\\n  * Examples:\\n    • \\\"Search YouTube for 'learn JavaScript tutorial'.\\\"\\n    • \\\"Find music videos by Queen on YouTube.\\\"\\n\\n* **Wikipedia:** look up articles or summaries.\\n  * Examples:\\n    • \\\"Look up 'Photosynthesis' on Wikipedia.\\\"\\n    • \\\"Get the Wikipedia page for 'Paris'.\\\"\\n\\n* **Bills:** create, list, update, and delete bills.\\n  * Examples:\\n    • \\\"Create a bill: Name 'Electricity', Price $75, Date 'next Monday'.\\\"\\n    • \\\"Show me my due bills.\\\"\\n\\n* **Expenses:** log, list, update, and delete expenses.\\n  * Examples:\\n    • \\\"Add expense: Name 'Coffee', Cost $4.50, Date 'today'.\\\"\\n    • \\\"Show my expenses for this week.\\\"\\n\\n* **Contacts:** retrieve and create contacts (first name, last name, email, mobile).\\n  * Examples:\\n    • \\\"Get contact info for Mark Johnson.\\\"\\n    • \\\"Create contact: First Bob, Last Martin, email bob.m@email.com.\\\"\\n\\nRespond only with the relevant explanation and example prompts when asked for help.\",\n  \"memory\": \"helper\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -320,
+        1200
+      ],
+      "id": "222e78e1-5c09-4cae-a37c-73a7bbaf0e11",
+      "name": "Help Prompt"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Chat').item.json.memory }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryZep",
+      "typeVersion": 1.3,
+      "position": [
+        -240,
+        2320
+      ],
+      "id": "6f7a0af2-6aa1-4983-a41e-c52ab4a3bae3",
+      "name": "Zep Specifics",
+      "credentials": {
+        "zepApi": {
+          "id": "m1sCkymodecr5uW0",
+          "name": "Zep Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "all_memories"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryZep",
+      "typeVersion": 1.3,
+      "position": [
+        -240,
+        2520
+      ],
+      "id": "df35f27a-a244-4a68-8f93-5e29ebb262bc",
+      "name": "Zep All",
+      "credentials": {
+        "zepApi": {
+          "id": "m1sCkymodecr5uW0",
+          "name": "Zep Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Динамическая промпт + память",
+        "height": 80,
+        "width": 440,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        720,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "1f2039d5-987d-4e75-a3c2-2a562959c8e7",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## При желании вы можете изменить промпты.",
+        "height": 80,
+        "width": 580,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -440,
+        180
+      ],
+      "typeVersion": 1,
+      "id": "e17b51ad-d3b0-433b-ba4a-572398e5cc05",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Если вы изменяете или добавляете новые подсказки, убедитесь, что маршрутизатор также знает об этом.",
+        "height": 120,
+        "width": 540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1220,
+        1080
+      ],
+      "typeVersion": 1,
+      "id": "6804edcb-9f0a-456c-9a8e-fd1000aa4241",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "name": "HeyGen_AGENT",
+        "description": "Call this tool to perform actions in HeyGen: generate avatars and automatically publish posts.",
+        "workflowId": {
+          "__rl": true,
+          "value": "0BcEYM5yaxk2m1ip",
+          "mode": "list",
+          "cachedResultName": "HeyGen"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        80,
+        2320
+      ],
+      "id": "ce9bc6e8-2be7-4347-bd4b-84ed6d0dc4e2",
+      "name": "HeyGen AUTO"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"prompt\": \"You are a HeyGen assistant. Available tools: generate_avatar, publish_post.\\n\\nInstructions:\\n1. Use `generate_avatar` to create video avatars based on the provided script, style, voice, and template parameters.\\n2. Use `publish_post` to schedule or immediately publish the generated avatar video to the target platform or channel.\\n3. Always confirm that you have the necessary inputs (script_text, template_id, voice_id, publish_time) before calling a tool.\",\n  \"memory\": \"heygen\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -380,
+        460
+      ],
+      "id": "7002f0c2-d9ef-498f-bb70-5db09665c4d0",
+      "name": "Heygen Prompt"
+    },
+    {
+      "parameters": {
+        "name": "Instagram_REEL_Agent",
+        "description": "Call this tool to perform actions in Instagram: analyze competitor content, find trending Reels, and create Reels scripts.",
+        "workflowId": {
+          "__rl": true,
+          "value": "orDpOsjd05afKEDx",
+          "mode": "list",
+          "cachedResultName": "SHABLON_IZ_INSTAGRAM_P1_MASTER_AI_CHAT"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        2440
+      ],
+      "id": "123dab07-7417-4ba4-8aab-1aa57b050d65",
+      "name": "Instagram REELS AGENT"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You are **Instagram_REELS_Agent**. Available tools: analyze_competitors, find_reels, create_reels_script.\\n\\nInstructions:\\n1. Use `analyze_competitors` to gather insights on competitor content, including engagement metrics, posting frequency, and top-performing formats.\\n2. Use `find_reels` to discover trending or high-potential Reels in the target niche by keyword, hashtag, or competitor profile.\\n3. Use `create_reels_script` to draft a concise, engaging script or storyboard for a new Reel, incorporating insights from the competitor analysis and trending formats.\\n4. Always verify you have the target niche, competitor list, and any style guidelines before generating the script.\",\n  \"memory\": \"instagram_reels_agent\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        460
+      ],
+      "id": "7a5b9772-2f2b-40ec-a9f8-82a301b12ad5",
+      "name": "Instagram REEL Prompt"
+    },
+    {
+      "parameters": {
+        "name": "Dinamic_model_llm",
+        "description": "Call this tool (`Dinamic_model_llm`) to answer general, open-ended questions with dynamic LLM model selection.",
+        "workflowId": {
+          "__rl": true,
+          "value": "XeMsVatpIgIwHEbp",
+          "mode": "list",
+          "cachedResultName": "Динамическая модель с Telegram"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        320,
+        2320
+      ],
+      "id": "e3c31514-7e63-4cee-b33f-c0bc690324bc",
+      "name": "Dinamic model AGENT"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You are **Dinamic_model_llm**. Your task is to answer open-ended questions by automatically selecting the most suitable LLM model for each query.\\n\\nInstructions:\\n1. Analyze the user's question to assess its complexity, domain, and style.\\n2. Dynamically choose an appropriate model (e.g., GPT-4, GPT-3.5, Claude, etc.) based on that analysis.\\n3. Use the selected model to generate a clear, concise, and accurate response.\\n4. If the question is ambiguous or needs more detail, ask a clarifying follow-up.\\n5. No other tools are needed—just provide the best possible answer.\",\n  \"memory\": \"dinamic_model_llm\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -380,
+        960
+      ],
+      "id": "254d9151-bcd3-4ea3-95f6-1fa517603a3e",
+      "name": "Dinamic Model Prompt"
+    },
+    {
+      "parameters": {
+        "name": "copywriter_news_agent",
+        "description": "Call this tool (`copywriter_news_agent`) to create text content for Telegram channels, Threads, and Instagram posts by sourcing and crafting news-based material tailored to a target audience.",
+        "workflowId": {
+          "__rl": true,
+          "value": "3nmBSBTEDq3WcbQI",
+          "mode": "list",
+          "cachedResultName": "Отдел AI Agent Копирайтер Новостник (в системе)"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "2123214",
+              "displayName": "2123214",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "2242433",
+              "displayName": "2242433",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        460,
+        2440
+      ],
+      "id": "3985a333-220f-445d-a694-faf3d4e5922d",
+      "name": "Copywriter News AGENT"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You are **copywriter_news_agent**. Available tools: identify_audience, find_news, create_content.\\n\\nInstructions:\\n1. Use `identify_audience` to define the target audience, including demographics, interests, and pain points.\\n2. Use `find_news` to locate the most relevant and timely news items for that audience.\\n3. Use `create_content` to draft engaging, platform-specific text posts for Telegram, Threads, and Instagram, adjusting tone, length, and style for each.\\n4. Always confirm you have the following inputs before proceeding: audience_profile, selected_news_item, platform (Telegram/Threads/Instagram), and desired tone.\",\n  \"memory\": \"copywriter_news_agent\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -360,
+        1480
+      ],
+      "id": "b41afdde-e671-4130-ac3e-e13c029ff74f",
+      "name": "COPY NEWS Prompt"
+    },
+    {
+      "parameters": {
+        "name": "backup_agent",
+        "description": "Call this tool (`backup_agent`) to create backups of n8n workflows and templates on the server.",
+        "workflowId": {
+          "__rl": true,
+          "value": "LfeLkzmpBBYJY0mu",
+          "mode": "list",
+          "cachedResultName": "BACKUP"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        2320
+      ],
+      "id": "2f29c181-e328-48e0-a1a0-f6f3672b55b1",
+      "name": "Backup AGENT"
+    },
+    {
+      "parameters": {
+        "name": "baza_agent",
+        "description": "Call this tool (`baza_agent`) to interact with the database: read or write information.",
+        "workflowId": {
+          "__rl": true,
+          "value": "LfeLkzmpBBYJY0mu",
+          "mode": "list",
+          "cachedResultName": "BACKUP"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        680,
+        2440
+      ],
+      "id": "bfa32d0b-e2a4-467f-b2e8-ce15ed5877e9",
+      "name": "BAZA AGENT"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You are **backup_agent**. Available tools: list_templates, export_template, upload_backup.\\n\\nInstructions:\\n1. Use `list_templates` to retrieve all existing workflow templates on the n8n server.\\n2. Use `export_template` to export each template in JSON format.\\n3. Use `upload_backup` to save each exported template to the designated backup location with a timestamped filename.\\n4. Ensure you have the correct server credentials and write permissions before starting.\\n5. After completing, provide a summary of which templates were backed up and the storage paths used.\",\n  \"memory\": \"backup_agent\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        1080
+      ],
+      "id": "d97a9584-24e9-4340-983e-f8a5de883978",
+      "name": "BackUp Prompt"
+    },
+    {
+      "parameters": {
+        "name": "tiktok_agent",
+        "description": "Call this tool (`tiktok_agent`) to discover similar TikTok profiles, analyze their top content, and craft a shooting script for comparable videos.",
+        "workflowId": {
+          "__rl": true,
+          "value": "gwIeFUdVzUg6nW6U",
+          "mode": "list",
+          "cachedResultName": "SHABLON_TIKTOK_P1_MASTER_AI_SYSTEM"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "2123214",
+              "displayName": "2123214",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "2242433",
+              "displayName": "2242433",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        800,
+        2320
+      ],
+      "id": "f32fe147-9857-48ab-8fd9-b1bce41896dd",
+      "name": "TikTok AGENT"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You are **tiktok_agent**. Available tools: find_similar_profiles, analyze_content, create_script.\\n\\nInstructions:\\n1. Use `find_similar_profiles` to identify TikTok accounts in the same niche or with similar audience characteristics.\\n2. Use `analyze_content` to evaluate each profile’s top-performing videos—capture engagement metrics, trending formats, and creative hooks.\\n3. Use `create_script` to draft a concise, compelling TikTok video script that incorporates the successful elements identified in the analysis.\\n4. Before proceeding, ensure you have the following inputs: target_niche or seed_profile, number_of_profiles_to_analyze, and any specific style or branding guidelines.\",\n  \"memory\": \"tiktok_agent\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        1480
+      ],
+      "id": "6f6244f7-55a5-4573-a5d6-e1009d0c4af4",
+      "name": "TikTok Prompt"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "Instagram_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tbl7V6L6E6GwpFHfU"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        1080,
+        2320
+      ],
+      "id": "3bb5b277-62df-4ac6-af29-a4643cd68bf7",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"prompt\": \"You are **airtable_instagram**. Available tools: search_profiles.\\n\\nInstructions:\\n1. Use `search_profiles` to query the Airtable Instagram table with filters such as account_name, minimum or maximum follower_count, or keywords in profile_description.\\n2. If the user asks for a specific account, return the full record including account_name, follower_count, and profile_description.\\n3. For broader requests (e.g., top profiles by follower count or profiles matching a description keyword), return a list of matching records with key fields.\\n4. Always confirm you have the correct query parameters before calling the tool.\\n\",\n  \"memory\": \"airtable_instagram\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        1340
+      ],
+      "id": "a7432177-9560-4f27-b597-2fd3c3ed17cf",
+      "name": "AirTable Instagram Prompt"
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Web search",
+              "description": "Is this exclusively related to a web search and not Hacker News or Wikipedia?"
+            },
+            {
+              "category": "HeyGen",
+              "description": "Is this related to generating avatars and auto-publishing content using HeyGen?"
+            },
+            {
+              "category": "Instagram Reels",
+              "description": "Is this related to analyzing competitor content, finding trending Instagram Reels, and creating scripts for new Reels?"
+            },
+            {
+              "category": "Hacker News",
+              "description": "Is this related to hacker news?"
+            },
+            {
+              "category": "Reddit",
+              "description": "Is this related to Reddit?"
+            },
+            {
+              "category": "Calendar",
+              "description": "Is this a request to schedule, modify, or retrieve events in the calendar using the Calendar?"
+            },
+            {
+              "category": "Dinamic Model",
+              "description": "Only if you are asked to answer using a dynamic model."
+            },
+            {
+              "category": "Wikipedia",
+              "description": "Is this related to Wikipedia?"
+            },
+            {
+              "category": "Bills",
+              "description": "Is this related to bills?"
+            },
+            {
+              "category": "YouTube",
+              "description": "Is this related to YouTube?"
+            },
+            {
+              "category": "BackUp",
+              "description": "Is this related to creating backups of n8n workflows and templates on the server?"
+            },
+            {
+              "category": "Help",
+              "description": "Does this contain the word \"Help\"?"
+            },
+            {
+              "category": "Airtable Instagram",
+              "description": "Is this a request to search or retrieve Instagram profile data from the Airtable base?"
+            },
+            {
+              "category": "BAZA",
+              "description": "Is this a request to read from or write information to the database using the baza_agent?"
+            },
+            {
+              "category": "TikTok",
+              "description": "Is this related to finding similar TikTok profiles, analyzing their content, and creating a script for new TikTok videos?"
+            },
+            {
+              "category": "Copy News",
+              "description": "Is this related to defining a target audience, sourcing relevant news items, and crafting text posts for Telegram, Threads, or Instagram?"
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "=Please classify the text provided by the user into one of the following categories: {categories}, and use the provided formatting instructions below. Don't explain, and only output the json."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        -1000,
+        1260
+      ],
+      "id": "75ea4eb5-54d8-4551-a934-646f796650cd",
+      "name": "Text Classifier (routing Agent)"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"prompt\": \"You are **baza_agent**. Available tools: read_from_db, write_to_db.\\n\\nInstructions:\\n1. Use `read_from_db` to fetch data from the database given table names, query parameters, or filters.\\n2. Use `write_to_db` to insert, update, or delete records, ensuring data integrity and validation.\\n3. Always sanitize and validate inputs before performing any database operation.\\n4. Return the result set for read operations or a confirmation message for write operations.\",\n  \"memory\": \"baza_agent\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -180,
+        1660
+      ],
+      "id": "4fbc5e8a-ff4e-44cb-ba39-25781c609703",
+      "name": "BAZA Prompt"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2760,
+        1300
+      ],
+      "id": "4f6ba5f5-824f-4d8a-8329-6e0dd2a88589",
+      "name": "Telegram Trigger1",
+      "webhookId": "79408097-d284-4034-a6d7-65bb07b242ba",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Telegram Trigger1').item.json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "dd8451ae-fc03-49d0-a19e-2678a5f4ff64"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bc42e6d3-ad50-4188-a168-9c5696e74252",
+                    "leftValue": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2060,
+        1280
+      ],
+      "id": "d2a1e7f8-c06b-460c-8dec-792ebfcb8d21",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1780,
+        1460
+      ],
+      "id": "7cc26ab4-8987-47b8-ba61-50333cc375ad",
+      "name": "Telegram3",
+      "webhookId": "0142b70e-e116-4fe0-bce6-bfc0fb8db9db",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -1560,
+        1460
+      ],
+      "id": "4b2d447e-b884-4528-9663-c1947a99736b",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9e919bb-8d22-4855-a7b6-a9e5a9f39778",
+              "leftValue": "={{ $json.message.chat.username }}",
+              "rightValue": "=igorzuevich\n",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2560,
+        1300
+      ],
+      "id": "0dcd42f6-a6e5-4edf-8c70-22be72a0b11c",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -2280,
+        1280
+      ],
+      "id": "5b8e1c69-58e4-424f-953e-8f694d5f2868",
+      "name": "Telegram2",
+      "webhookId": "4f938fd7-6e62-45f5-9f45-118ed704bc35",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1220,
+        1220
+      ],
+      "id": "a2032b3a-1abd-4090-9b6b-9ba3f307defe",
+      "name": "Telegram1",
+      "webhookId": "927ce694-1b0f-40c8-8622-4d925e707ca4",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Видео по настройке Telegram: https://youtu.be/c8bePGmxFNw",
+        "height": 120,
+        "width": 540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2580,
+        1640
+      ],
+      "typeVersion": 1,
+      "id": "2e47b54e-d756-47f9-be61-bfd27f938207",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Видео по настройке ZEP: https://youtu.be/NHEB8G34e-Y",
+        "height": 120,
+        "width": 540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -460,
+        2700
+      ],
+      "typeVersion": 1,
+      "id": "f8d60eca-c1a0-4d65-936c-b4d74683d6e6",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Видео по настройке Think: https://youtu.be/6GwKcWVmsFo",
+        "height": 120,
+        "width": 540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -160,
+        2880
+      ],
+      "typeVersion": 1,
+      "id": "7eaee69c-faae-4eca-a55b-f80febbbea3c",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Web Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4.1-nano": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier (routing Agent)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hacker News": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HackerNews Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4.1-mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Chat": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier (routing Agent)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search web": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expenses Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Help Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zep Specifics": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HeyGen AUTO": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Heygen Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram REELS AGENT": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram REEL Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dinamic model AGENT": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dinamic Model Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copywriter News AGENT": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "COPY NEWS Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Backup AGENT": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BackUp Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BAZA AGENT": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok AGENT": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AirTable Instagram Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier (routing Agent)": {
+      "main": [
+        [
+          {
+            "node": "Search Web Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Heygen Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Instagram REEL Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HackerNews Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reddit Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Calendar Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Dinamic Model Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wikipedia Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Expenses Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "YouTube Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "BackUp Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Help Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AirTable Instagram Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "BAZA Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "TikTok Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "COPY NEWS Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BAZA Prompt": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Set Chat",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram3": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Set Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram2": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3b885203-d17d-4bd9-9f19-a945dd500e86",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "aCI403sqqcjyCjBc",
+  "tags": []
+}

@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_research/research_finding/0.1.0",
+  "title": "MarketResearchFinding",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "finding_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "market_definition",
+        "market_structure",
+        "demand",
+        "customer",
+        "pricing",
+        "channel",
+        "competitor",
+        "regulatory",
+        "operational",
+        "other"
+      ]
+    },
+    "claim": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "observation": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "source_reference": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "user_statement",
+        "document",
+        "external_source",
+        "prior_skill_output",
+        "system_inference",
+        "unknown"
+      ]
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "partially_verified",
+        "verified",
+        "contradicted",
+        "unknown"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "supporting_evidence_ids": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 50
+    },
+    "contradictory_evidence_ids": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 50
+    },
+    "inference": {
+      "type": "boolean",
+      "default": false
+    },
+    "limitations": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "required": [
+    "finding_id",
+    "domain",
+    "claim",
+    "source_type",
+    "verification_status",
+    "confidence"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "verification_status": { "const": "verified" } },
+        "required": ["verification_status"]
+      },
+      "then": { "required": ["source_reference"] }
+    },
+    {
+      "if": {
+        "properties": { "inference": { "const": true } },
+        "required": ["inference"]
+      },
+      "then": {
+        "properties": {
+          "verification_status": {
+            "not": { "const": "verified" }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "practice_id": "unknown_outcome_write_no_auto_retry",
+  "title": "Unknown outcome write must not auto-retry",
+  "domain": "reliability",
+  "context": "Transport layers where success/failure is ambiguous after timeout.",
+  "problem": "Auto-retry on unknown write outcome may duplicate charges or messages.",
+  "recommended_practice": "When outcome is unknown on a write path, route to human_review or reconciliation; never auto-retry without idempotency proof.",
+  "rationale": "Pilot pattern invariant enforced by semantic tests; aligns with methodology error paths.",
+  "prerequisites": [],
+  "implementation_pattern": "classify_outcome → unknown → human_review (no auto-retry on write)",
+  "failure_modes": [],
+  "security_notes": [],
+  "provider_version_scope": [
+    {
+      "provider": "n8n",
+      "component": "workflow_platform",
+      "documented_version": "source_archive_methodology",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Archive methodology; not re-executed in pilot hardening.",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "scope-n8n",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "tested_environment": "tests/test_kb_wpl_01_3a_pattern_extraction_pilot.py::test_24_unknown_outcome_no_auto_retry",
+  "verification_status": "regression_tested",
+  "source_references": [
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/methodology.md",
+      "content_hash": "727666fe4bb10519fe05561f2a938336b11df28718e472bc39c4e7fc52acd8e3",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-methodology",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "related_pattern_ids": [
+    "retry_with_idempotency"
+  ],
+  "tenant_scope": "tenant_scoped",
+  "provenance": {
+    "source_type": "practice_lineage_pilot",
+    "archive_id": "arc-skills-dlya-peredachi",
+    "source_id": "unknown_outcome_write_no_auto_retry",
+    "program_phase": "KB-WPL-01.3A.1"
+  }
+}

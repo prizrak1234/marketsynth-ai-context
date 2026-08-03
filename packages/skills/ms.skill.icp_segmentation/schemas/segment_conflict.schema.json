@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.icp_segmentation/segment_conflict/0.1.0",
+  "title": "SegmentConflict",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "conflict_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "conflict_type": {
+      "type": "string",
+      "enum": [
+        "duplicate_segment",
+        "overlap",
+        "inconsistent_criteria",
+        "contradictory_jtbd",
+        "budget_conflict",
+        "geography_conflict",
+        "b2b_b2c_mix",
+        "decision_role_conflict",
+        "unsupported_icp_selection",
+        "other"
+      ]
+    },
+    "involved_segment_ids": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 20
+    },
+    "description": { "type": "string", "maxLength": 4000 },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "major", "minor", "unknown"]
+    },
+    "blocking": { "type": "boolean" },
+    "recommended_resolution": { "type": "string", "maxLength": 2000 },
+    "provenance": { "$ref": "schemas/provenance_stub.schema.json" }
+  },
+  "required": ["conflict_id", "conflict_type", "description", "severity"]
+}

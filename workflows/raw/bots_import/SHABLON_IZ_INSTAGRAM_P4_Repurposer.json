@@ -1,0 +1,796 @@
+{
+  "name": "SHABLON_IZ_INSTAGRAM_P4_Repurposer",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Script: {{ $json.text }}\nCaption: {{ $('Get Record ID').item.json[\"Reel Caption\"] }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=### Role:\n\nYou are an expert at repurposing scripts, making them more engaging for viewers on video platforms such as Instagram, TikTok and YouTube.\n\n### Task:\n\nYou will repurpose the provided original scripts, which should be written in a conversational manner with 8th grade reading level. Follow the structure of the original script and do not exceed or reduce the character length of the original script by more than 5%.\n\n### Instructions:\n\n- Repurpose the original script\n- Create 3 variations of the hook\n- Create a title that flows with the script\n- Output the script and title only with line breaks between each section of the script\n- Your answer must be in Russian.\n- Also output the scripts record ID that was created:\n\n{\n\t\"script_record_ID\": \"Airtable record ID of the script\"\n}\n\n### Script Output:\n\nTime stamps:\n\n🕗 0:00 - 0:03 Hook\n...etc\n\nHook:\n\n- Create 3 variations of scroll-stopping hooks\n- Hook should be minimum of 3 seconds\n\n### Extras:\n\n- Include time stamps through-out\n- Label time stamps with 🕗 emojis for easier viewing experience\n\n### Constraints:\n\n- Do not add any extra commentary, only output the repurposed script\n- Ensure main elements remain intact such as names"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1120,
+        420
+      ],
+      "id": "a082900b-997f-40f2-b88f-c4ca951ac975",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "Record_ID"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        420
+      ],
+      "id": "d8471851-251f-4865-9a95-097a6ccda8b4",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to create caption and script",
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbltOe8idoo8BRy8j",
+          "mode": "list",
+          "cachedResultName": "СONTENT",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tbltOe8idoo8BRy8j"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name of content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name_of_content', ``, 'string') }}",
+            "Script": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Script', ``, 'string') }}",
+            "Reel Caption": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Reel_Caption', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name of content",
+              "displayName": "Name of content",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reel Caption",
+              "displayName": "Reel Caption",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Script",
+              "displayName": "Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Original video",
+              "displayName": "Original video",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Reel URL",
+              "displayName": "Reel URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        800
+      ],
+      "id": "f16e9cbd-9734-4845-a562-98e6e67ca260",
+      "name": "Create Script",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Выгрузка видео",
+        "height": 260,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        340
+      ],
+      "typeVersion": 1,
+      "id": "90f0d68b-f91d-4b6c-9db1-1734a3260ccd",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Link to Reel'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        420
+      ],
+      "id": "8d3c68c6-f2ac-4fb1-b28e-dc0767558696",
+      "name": "Get Video"
+    },
+    {
+      "parameters": {
+        "content": "## Транскрибация Видео",
+        "height": 260,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        740,
+        340
+      ],
+      "typeVersion": 1,
+      "id": "049a1b7c-6cae-416b-b14f-28f2ad6d616c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Создание похожих видео",
+        "height": 260,
+        "width": 340
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1080,
+        340
+      ],
+      "typeVersion": 1,
+      "id": "aaedf153-9ff8-4fe2-8b88-4587952cd777",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Отправка сценариев в Airtable",
+        "height": 220,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1060,
+        720
+      ],
+      "typeVersion": 1,
+      "id": "751cfa52-84f4-47ec-92ca-da6299f7c2a1",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        840,
+        420
+      ],
+      "id": "a6c8b870-f3f3-445b-993d-2f8057a90af2",
+      "name": "Whisper",
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "Instagram_Reels",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tblxCudSu6J6huIOn"
+        },
+        "id": "={{ $json.Record_ID }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        420
+      ],
+      "id": "90a470a0-486d-4685-a95e-9a0fdc7c478d",
+      "name": "Get Record ID",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"script_record_ID\": \"Airtable record ID of the script\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        740
+      ],
+      "id": "14f1330d-7655-4a1c-8435-de721810749f",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "content": "## Запрос Airtable таблицу",
+        "height": 80,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        180
+      ],
+      "typeVersion": 1,
+      "id": "7f731531-50a9-49ca-bb53-e94ac863d6e7",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Ensure OpenAI credentials are here.",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        180
+      ],
+      "typeVersion": 1,
+      "id": "b8ec55bd-3cd6-4676-bcdf-314712b26293",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Выгрузка оригинального видео",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1500,
+        260
+      ],
+      "typeVersion": 1,
+      "id": "01b66d37-d29f-45db-8ee6-4b85416f30af",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      query: \"Task has completed successfully.\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        400
+      ],
+      "id": "8a2ad164-3271-4e29-9bd0-158e3588313f",
+      "name": "Success"
+    },
+    {
+      "parameters": {
+        "content": "# Instagram Создатель контента",
+        "height": 80,
+        "width": 620
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "da8e17ce-0333-4081-8969-942ffd08114e",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        740
+      ],
+      "id": "1c2e940c-fb53-4a17-bfa1-c71a0cb9a2f2",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Role:\n\nYou are an expert at repurposing scripts, making them more engaging for viewers on video platforms such as Instagram, TikTok and YouTube.\n\n### Task:\n\nYou will repurpose the provided original scripts, which should be written in a conversational manner with 8th grade reading level. Follow the structure of the original script and do not exceed or reduce the character length of the original script by more than 5%.\n\n### Instructions:\n\n- Repurpose the original script\n- Create 3 variations of the hook\n- Create a title that flows with the script\n- Output the script and title only with line breaks between each section of the script\n- Also output the scripts record ID that was created:\n\n{\n\t\"script_record_ID\": \"Airtable record ID of the script\"\n}\n\n### Script Output:\n\nTime stamps:\n\n🕗 0:00 - 0:03 Hook\n...etc\n\nHook:\n\n- Create 3 variations of scroll-stopping hooks\n- Hook should be minimum of 3 seconds\n\n### Extras:\n\n- Include time stamps through-out\n- Label time stamps with 🕗 emojis for easier viewing experience\n\n### Constraints:\n\n- Do not add any extra commentary, only output the repurposed script\n- Ensure main elements remain intact such as names",
+        "height": 1020,
+        "width": 840
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2220,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "0a85cb78-9e01-4507-81d1-b96b90d8da5b",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "### Роль:\nТы эксперт по переработке сценариев, делающий их более привлекательными для зрителей на видеоплатформах, таких как Instagram, TikTok и YouTube.\n\n### Задача:\nТы будешь перерабатывать предоставленные оригинальные сценарии, которые должны быть написаны в разговорном стиле на уровне чтения 8-го класса. Следуй структуре оригинального сценария и не превышай и не уменьшай количество символов оригинального сценария более чем на 5%.\n\n### Инструкции:\n- Переработай оригинальный сценарий\n- Создай 3 варианта хука\n- Создай заголовок, который гармонирует со сценарием\n- Выводи только сценарий и заголовок с разрывами строк между каждым разделом сценария\n- Также выводи ID записи сценария, который был создан:\n{\n\t\"script_record_ID\": \"Airtable ID записи сценария\"\n}\n\n### Вывод сценария:\nВременные метки:\n🕗 0:00 - 0:03 Хук\n...и т.д.\nХук:\n- Создай 3 варианта цепляющих хуков, останавливающих прокрутку\n- Хук должен быть минимум 3 секунды\n\n### Дополнительно:\n- Включай временные метки на протяжении всего сценария\n- Отмечай временные метки эмодзи 🕗 для более удобного просмотра\n\n### Ограничения:\n- Не добавляй никаких дополнительных комментариев, выводи только переработанный сценарий\n- Убедись, что основные элементы остаются нетронутыми, например, имена",
+        "height": 820,
+        "width": 840
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3140,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "b7fb63c6-9457-46b4-b226-84250be4b78b",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbltOe8idoo8BRy8j",
+          "mode": "list",
+          "cachedResultName": "СONTENT",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tbltOe8idoo8BRy8j"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Script": "={{ $('Whisper').item.json.text }}",
+            "Reel Caption": "={{ $('Get Record ID').item.json['Reel Caption'] }}",
+            "Original video": "={{ $('Get Record ID').item.json['Link to Reel'] }}",
+            "Record ID": "={{ $('Get Record ID').item.json['Record ID'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name of content",
+              "displayName": "Name of content",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Reel Caption",
+              "displayName": "Reel Caption",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Script",
+              "displayName": "Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Original video",
+              "displayName": "Original video",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reel URL",
+              "displayName": "Reel URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1580,
+        420
+      ],
+      "id": "e69415bb-76a2-437e-870a-e5abf5d8a480",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbltOe8idoo8BRy8j",
+          "mode": "list",
+          "cachedResultName": "СONTENT",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tbltOe8idoo8BRy8j"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record ID": "={{ $json.fields['Record ID'] }}",
+            "Reel URL": "={{ $('Get Record ID').item.json['Reel URL'] }}"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Name of content",
+              "displayName": "Name of content",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Reel Caption",
+              "displayName": "Reel Caption",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Script",
+              "displayName": "Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Original video",
+              "displayName": "Original video",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reel URL",
+              "displayName": "Reel URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1880,
+        420
+      ],
+      "id": "451ef2f7-eda2-4745-97d3-edde049dedb8",
+      "name": "Airtable2",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "Record_ID": "recckBNnniG7xRrPR"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Record ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Script": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video": {
+      "main": [
+        [
+          {
+            "node": "Whisper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Whisper": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Record ID": {
+      "main": [
+        [
+          {
+            "node": "Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Airtable2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable2": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bb1dd674-d3a7-492c-a2bb-208a84487752",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "1E35t8OG4ivQ3kP7",
+  "tags": []
+}

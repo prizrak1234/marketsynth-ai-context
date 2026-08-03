@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "name": "dialog_plate_method",
+    "version": "1.0.2",
+    "generated_at": "2025-10-13T23:40:30+00:00",
+    "locale": "ru-RU"
+  },
+  "schema": {
+    "type": "object",
+    "required": [
+      "plate",
+      "validation"
+    ],
+    "properties": {
+      "plate": {
+        "type": "object",
+        "required": [
+          "veg_pct",
+          "protein_pct",
+          "carb_pct"
+        ],
+        "properties": {
+          "veg_pct": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "protein_pct": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "carb_pct": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      },
+      "validation": {
+        "type": "object",
+        "required": [
+          "sum_must_equal"
+        ],
+        "properties": {
+          "sum_must_equal": {
+            "type": "integer",
+            "enum": [
+              100
+            ]
+          }
+        }
+      },
+      "messages": {
+        "type": "object",
+        "properties": {
+          "coach_text": {
+            "type": "string"
+          },
+          "uncertainty_hint": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "plate": {
+    "veg_pct": 50,
+    "protein_pct": 25,
+    "carb_pct": 25
+  },
+  "validation": {
+    "sum_must_equal": 100
+  },
+  "messages": {
+    "coach_text": "Метод тарелки: 1/2 овощи, 1/4 белок, 1/4 сложные углеводы.",
+    "uncertainty_hint": "Если блюдо смешанное (жаркое/плов) — ориентируйтесь на пропорции ингредиентов по массе."
+  }
+}

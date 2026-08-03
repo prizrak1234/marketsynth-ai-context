@@ -1,0 +1,95 @@
+id: ms.skill.claim_substantiation
+name: Claim Substantiation
+version: 0.1.0
+description: >
+  Evaluate marketing claims and promise candidates for evidence support, limitations and compliance before Offer Builder.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - claim_inventory_normalization
+  - claim_evidence_matching
+  - prohibited_claim_detection
+  - financial_claim_risk_detection
+  - safety_claim_risk_detection
+  - proof_gap_detection
+  - substantiation_readiness_assessment
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - market_source
+    - audience_signal
+    - assumption
+    - inference
+  rules:
+    - id: no_runtime_execution
+      description: Skill package is candidate-only; no autonomous execution.
+    - id: no_invented_customer_answers
+      description: Output must not contain fabricated respondent answers.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.customer_meaning_extraction
+      relationship: required_dependency
+      note: ">=0.1.0,<1.0.0"
+    - id: ms.skill.positioning
+      relationship: required_dependency
+      note: ">=0.1.0,<1.0.0"
+    - id: ms.skill.market_validation
+      relationship: required_dependency
+      note: ">=0.2.0,<1.0.0"
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  customer_facing_transition:
+    approval_required: true
+    note: Human approval required before customer-facing copy or launch.
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 1
+  current_state: skeleton_only
+known_limitations:
+  - Non-executable candidate package — no runtime loader.
+  - Does not publish, spend, or authorize launch.
+  - Does not override Market Validation verdict.
+test_suite:
+  manifest: tests/eval_manifest.yaml
+provenance:
+  origin: platform_native
+  methodology:
+    - ARCHIVE-MKT-01 adapted methodology (evidence-aware rewrite)
+  external_methodology_references:
+    - audit_card: docs/research/archive-marketer/source-audit.md
+      reuse: methodology_only
+      note: Archive is methodology donor only — not trusted Skill package.
+  external_code_dependency: false
+runtime_compatibility:
+  - operator_dry_run
+  - assistant_explicit_run
+knowledge_scopes:
+  - customer_intelligence
+  - marketing_claims
+network_policy:
+  default: deny
+  allowed_hosts: []
+  allowed_connectors_only: true
+script_policy:
+  enabled: false
+  reason: ARCHIVE-MKT-01 skeleton — scripts forbidden.
+resource_limits:
+  max_package_size_mib: 10
+  max_skill_md_kib: 256

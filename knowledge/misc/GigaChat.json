@@ -1,0 +1,138 @@
+{
+  "name": "GigaChat",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ngw.devices.sberbank.ru:9443/api/v2/oauth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "RqUID",
+              "value": "7b372b29-8d2d-49ab-aeb0-773fd0eabb4a"
+            },
+            {
+              "name": "Authorization",
+              "value": "Basic <>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "scope",
+              "value": "GIGACHAT_API_PERS"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        40,
+        -180
+      ],
+      "id": "ce839b47-473b-46dd-b549-939a790b8e80",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gigachat.devices.sberbank.ru/api/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"GigaChat\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $('When chat message received').item.json.chatInput }}\"\n    }\n  ],\n  \"n\": 1,\n  \"stream\": false,\n  \"max_tokens\": 512,\n  \"repetition_penalty\": 1,\n  \"update_interval\": 0\n}",
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        -180
+      ],
+      "id": "da05afe9-d8f8-419e-8e6b-2baa3cb249b3",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -180,
+        -180
+      ],
+      "id": "7b9ede14-57fa-4480-9fa5-ff3e7a28a7a2",
+      "name": "When chat message received",
+      "webhookId": "e378e5d6-1566-4608-8fd1-824191a572d2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ebaed92d-7434-416c-a6d7-0db55a5c0f9f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2fd4b4391cab7fc4d931f751123498164bc67a979e4b6bef36aa12ed81e6d663"
+  },
+  "id": "M16BZYJbn4rXiN1h",
+  "tags": []
+}

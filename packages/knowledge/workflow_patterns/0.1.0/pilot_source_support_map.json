@@ -1,0 +1,499 @@
+{
+  "pilot_version": "0.1.0-pilot-lineage",
+  "program_phase": "KB-WPL-01.3A.1",
+  "multi_pattern_source_policy": "A workflow may support multiple patterns when each pattern cites pattern-specific supporting_signals; no source exclusivity.",
+  "entries": [
+    {
+      "pattern_id": "human_approval_before_publication",
+      "source_workflow_ids": [
+        "wf-febea81827b8ad6b",
+        "wf-16b82581942c24a9"
+      ],
+      "source_practice_ids": [
+        "human_approval_before_write_or_publication"
+      ],
+      "manual_audit_id": "audit-human_approval_before_publication",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-febea81827b8ad6b",
+          "signal_type": "approval_gate",
+          "node_or_functional_class": "n8n-nodes-base.switch",
+          "topology_location": "pre_publication_branch_moderator",
+          "supported_pattern_rule": "publication_approval_required_before_publication_target",
+          "confidence": "probable",
+          "limitations": [
+            "Switch branch semantics inferred from catalog categories, not executed."
+          ],
+          "evidence_hash": "743cf55717af74e7cc1cd2f1f21081226e4a69b847f727c37f0e17485c5c24c6"
+        },
+        {
+          "source_workflow_id": "wf-febea81827b8ad6b",
+          "signal_type": "publication_action",
+          "node_or_functional_class": "publication",
+          "topology_location": "post_approval_publish_chain",
+          "supported_pattern_rule": "evidence_after_publication_required",
+          "confidence": "probable",
+          "limitations": [
+            "Publication nodes span Telegram/LinkedIn variants."
+          ],
+          "evidence_hash": "b303a08feaea5edd88ceafc6afdaeacde0f0e8c7392fe9b322a8a5bfe853e655"
+        },
+        {
+          "source_workflow_id": "wf-16b82581942c24a9",
+          "signal_type": "human_decision",
+          "node_or_functional_class": "human_approval",
+          "topology_location": "seo_publication_pipeline",
+          "supported_pattern_rule": "human_approval_before_write_or_publication",
+          "confidence": "explicit",
+          "limitations": [
+            "Agent-assisted draft; human gate before Gmail publish."
+          ],
+          "evidence_hash": "e2162c01a645d62f1d4a38cc06e75cd2271c44ef8290c62758cf8c0efe290226"
+        },
+        {
+          "source_workflow_id": "wf-16b82581942c24a9",
+          "signal_type": "publication_action",
+          "node_or_functional_class": "n8n-nodes-base.gmail",
+          "topology_location": "downstream_publication_target",
+          "supported_pattern_rule": "publication_approval_required",
+          "confidence": "explicit",
+          "limitations": [
+            "Gmail send is publication side effect."
+          ],
+          "evidence_hash": "005cc905bd9ae41317ee60bb25b10474ad84b915974a615b7979f353d2231c9a"
+        }
+      ]
+    },
+    {
+      "pattern_id": "structured_LLM_to_API_request",
+      "source_workflow_ids": [
+        "wf-353be45a7de607a0",
+        "wf-b6c98c93d44e4384"
+      ],
+      "source_practice_ids": [
+        "structured_output_before_API_call"
+      ],
+      "manual_audit_id": "audit-structured_LLM_to_API_request",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-353be45a7de607a0",
+          "signal_type": "structured_output",
+          "node_or_functional_class": "@n8n/n8n-nodes-langchain.openAi",
+          "topology_location": "lead_enrichment_llm_stage",
+          "supported_pattern_rule": "schema_validation_before_transport",
+          "confidence": "explicit",
+          "limitations": [
+            "Shared workflow also supports lead_capture pattern via different signal."
+          ],
+          "evidence_hash": "0bbfd100cd914662992fbfad4b7b9730d71567ef7bff7d14254371b0d6645d87"
+        },
+        {
+          "source_workflow_id": "wf-353be45a7de607a0",
+          "signal_type": "schema_validation",
+          "node_or_functional_class": "n8n-nodes-base.if",
+          "topology_location": "post_llm_validation_branch",
+          "supported_pattern_rule": "invalid_payload_routes_to_human_review",
+          "confidence": "probable",
+          "limitations": [
+            "IF branch inferred from topology metadata."
+          ],
+          "evidence_hash": "42cb7a042dfc7357f03480d1345d450e75c047fa0c9c9014cf49b42125b8588f"
+        },
+        {
+          "source_workflow_id": "wf-b6c98c93d44e4384",
+          "signal_type": "structured_output",
+          "node_or_functional_class": "@n8n/n8n-nodes-langchain.agent",
+          "topology_location": "research_agent_output_stage",
+          "supported_pattern_rule": "structured_output_before_API_call",
+          "confidence": "probable",
+          "limitations": [
+            "Firecrawl tool output requires human review for high-stakes writes."
+          ],
+          "evidence_hash": "73b08caaf03ea1d503a87ff139dc8dbc73aa4296ce33fedca292a69688c8439c"
+        },
+        {
+          "source_workflow_id": "wf-b6c98c93d44e4384",
+          "signal_type": "evidence_reference",
+          "node_or_functional_class": "agent_orchestration",
+          "topology_location": "tool_retrieval_before_answer",
+          "supported_pattern_rule": "source_backed_research_not_raw_copy",
+          "confidence": "probable",
+          "limitations": [
+            "Untrusted web content flagged in catalog security findings."
+          ],
+          "evidence_hash": "c62aad36727313f84f8e5f752ce365c1e41719cbc985380b73871df58de09439"
+        }
+      ]
+    },
+    {
+      "pattern_id": "retry_with_idempotency",
+      "source_workflow_ids": [
+        "wf-b6e1676935a48901",
+        "wf-60870942fc4ef5b9"
+      ],
+      "source_practice_ids": [
+        "idempotency_before_retry",
+        "unknown_outcome_write_no_auto_retry"
+      ],
+      "manual_audit_id": "audit-retry_with_idempotency",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-b6e1676935a48901",
+          "signal_type": "retry_structure",
+          "node_or_functional_class": "n8n-nodes-base.wait",
+          "topology_location": "alert_retry_backoff_segment",
+          "supported_pattern_rule": "idempotency_before_retry",
+          "confidence": "probable",
+          "limitations": [
+            "Shared workflow also supports error_recovery via failure branch signal."
+          ],
+          "evidence_hash": "899798ca136f29848bc0c8e0fa0149d387843acaf3db0c863443ab916c511776"
+        },
+        {
+          "source_workflow_id": "wf-b6e1676935a48901",
+          "signal_type": "deduplication_key",
+          "node_or_functional_class": "n8n-nodes-base.set",
+          "topology_location": "pre_notification_key_assignment",
+          "supported_pattern_rule": "duplicate_event_prevention",
+          "confidence": "probable",
+          "limitations": [
+            "Dedup key field names not copied from source."
+          ],
+          "evidence_hash": "68aec08f4732242729cc1696ab9577ff37aa3a4999a951eaa09b91151d8b0682"
+        },
+        {
+          "source_workflow_id": "wf-60870942fc4ef5b9",
+          "signal_type": "retry_structure",
+          "node_or_functional_class": "n8n-nodes-base.if",
+          "topology_location": "expiry_alert_retry_branch",
+          "supported_pattern_rule": "bounded_retry_with_terminal_failure",
+          "confidence": "probable",
+          "limitations": [
+            "Webhook-triggered alert path."
+          ],
+          "evidence_hash": "f3e1049465d5c8eee6ed30f3f5b18c4c0744a2fef0a5be0cb7cadd1574213d71"
+        },
+        {
+          "source_workflow_id": "wf-60870942fc4ef5b9",
+          "signal_type": "branch_structure",
+          "node_or_functional_class": "publication",
+          "topology_location": "notification_outcome_classifier",
+          "supported_pattern_rule": "unknown_outcome_write_no_auto_retry",
+          "confidence": "probable",
+          "limitations": [
+            "Write vs read classification from side_effects metadata."
+          ],
+          "evidence_hash": "8a461a1892ed5b71ce2eb8afc37bbfef03a20eb80c8bcfa7323583a92a6607c0"
+        }
+      ]
+    },
+    {
+      "pattern_id": "evidence_grounded_generation",
+      "source_workflow_ids": [
+        "wf-b144bd6927caa092",
+        "wf-9c87e7783b3cb118"
+      ],
+      "source_practice_ids": [
+        "evidence_grounded_generation",
+        "prompt_injection_boundary"
+      ],
+      "manual_audit_id": "audit-evidence_grounded_generation",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-b144bd6927caa092",
+          "signal_type": "evidence_reference",
+          "node_or_functional_class": "@n8n/n8n-nodes-langchain.outputParserStructured",
+          "topology_location": "ranking_agent_structured_output",
+          "supported_pattern_rule": "source_references_required_in_output",
+          "confidence": "explicit",
+          "limitations": [
+            "Structured parser does not alone prove grounding quality."
+          ],
+          "evidence_hash": "f132862855fb625ebc4cb08f6819da8aaf4d72601c69198ae44efcc8b07bb3b9"
+        },
+        {
+          "source_workflow_id": "wf-b144bd6927caa092",
+          "signal_type": "structured_output",
+          "node_or_functional_class": "rag",
+          "topology_location": "agent_retrieval_chain",
+          "supported_pattern_rule": "no_source_no_grounded_claim",
+          "confidence": "probable",
+          "limitations": [
+            "Perplexity tool adds external retrieval variant."
+          ],
+          "evidence_hash": "d21287d8e006b48ef67c5deddbaf293a9dbc7c4e2dddf5b10de3c93f318db9aa"
+        },
+        {
+          "source_workflow_id": "wf-9c87e7783b3cb118",
+          "signal_type": "evidence_reference",
+          "node_or_functional_class": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+          "topology_location": "vector_retrieval_before_generate",
+          "supported_pattern_rule": "retrieval_provenance_before_LLM_provider",
+          "confidence": "explicit",
+          "limitations": [
+            "Postgres vector store is implementation variant only."
+          ],
+          "evidence_hash": "0c59c9e73034c096a54a8234f39967a185ccc0bb9fe7d2fbd55b4453a5167311"
+        },
+        {
+          "source_workflow_id": "wf-9c87e7783b3cb118",
+          "signal_type": "other",
+          "node_or_functional_class": "untrusted_content_to_llm",
+          "topology_location": "pre_llm_injection_boundary",
+          "supported_pattern_rule": "prompt_injection_boundary",
+          "confidence": "explicit",
+          "limitations": [
+            "Catalog security finding triggers elevated review."
+          ],
+          "evidence_hash": "0b5a9854f6755fe386663fa34adca13c53832f0a4919eb8b09760bc5c87d3a10"
+        }
+      ]
+    },
+    {
+      "pattern_id": "lead_capture_to_qualification",
+      "source_workflow_ids": [
+        "wf-353be45a7de607a0",
+        "wf-bdf26007404af6a3"
+      ],
+      "source_practice_ids": [
+        "lead_qualification_boundary"
+      ],
+      "manual_audit_id": "audit-lead_capture_to_qualification",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-353be45a7de607a0",
+          "signal_type": "branch_structure",
+          "node_or_functional_class": "n8n-nodes-base.splitInBatches",
+          "topology_location": "batch_lead_qualification_loop",
+          "supported_pattern_rule": "qualify_before_CRM_write",
+          "confidence": "explicit",
+          "limitations": [
+            "Same workflow supports structured_LLM via openAi node signal, not this branch."
+          ],
+          "evidence_hash": "119b7bf44b8a9b520ddeb4ac8c5da6d660dfdb9b59dcdc7bc89efe9c545e8b71"
+        },
+        {
+          "source_workflow_id": "wf-353be45a7de607a0",
+          "signal_type": "trigger_structure",
+          "node_or_functional_class": "n8n-nodes-base.googleDriveTrigger",
+          "topology_location": "inbound_lead_capture_entry",
+          "supported_pattern_rule": "lead_capture_to_qualification_entry",
+          "confidence": "explicit",
+          "limitations": [
+            "Drive trigger is capture variant only."
+          ],
+          "evidence_hash": "120147082b26c23180b81fa901dd004e36b114bbcae4e13530bee50295ebc5fd"
+        },
+        {
+          "source_workflow_id": "wf-bdf26007404af6a3",
+          "signal_type": "trigger_structure",
+          "node_or_functional_class": "n8n-nodes-base.formTrigger",
+          "topology_location": "map_scrape_lead_intake",
+          "supported_pattern_rule": "capture_before_qualification",
+          "confidence": "explicit",
+          "limitations": [
+            "HTTP enrichment is implementation variant."
+          ],
+          "evidence_hash": "97ed53f24edb891c064a377862cd23ae4694681139e9485ed366be370cbfd07b"
+        },
+        {
+          "source_workflow_id": "wf-bdf26007404af6a3",
+          "signal_type": "schema_validation",
+          "node_or_functional_class": "n8n-nodes-base.filter",
+          "topology_location": "pre_sheet_write_qualification_gate",
+          "supported_pattern_rule": "unqualified_leads_do_not_write",
+          "confidence": "probable",
+          "limitations": [
+            "Filter criteria not copied from source."
+          ],
+          "evidence_hash": "b031962ff8a8a6278b4e74ed0b4f19a1307cf79c34e12a0e24a9cd0a98a5ab94"
+        }
+      ]
+    },
+    {
+      "pattern_id": "draft_to_human_approval",
+      "source_workflow_ids": [
+        "wf-febea81827b8ad6b",
+        "wf-de3f478cf93ab7e0"
+      ],
+      "source_practice_ids": [
+        "draft_review_resume",
+        "human_approval_before_write_or_publication"
+      ],
+      "manual_audit_id": "audit-draft_to_human_approval",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-febea81827b8ad6b",
+          "signal_type": "human_decision",
+          "node_or_functional_class": "human_approval",
+          "topology_location": "content_moderator_draft_gate",
+          "supported_pattern_rule": "draft_review_resume",
+          "confidence": "probable",
+          "limitations": [
+            "Same workflow supports human_approval_before_publication via switch signal."
+          ],
+          "evidence_hash": "2f88bf0b9e1aac93abf471c76df2d7d8f724008e3d8c669e0cfe008c3ea50704"
+        },
+        {
+          "source_workflow_id": "wf-febea81827b8ad6b",
+          "signal_type": "branch_structure",
+          "node_or_functional_class": "social_content",
+          "topology_location": "draft_state_before_external_action",
+          "supported_pattern_rule": "resume_only_after_authoritative_decision",
+          "confidence": "probable",
+          "limitations": [
+            "Moderator role inferred from normalized name and categories."
+          ],
+          "evidence_hash": "dfec10026933db64b2c4f25c768262f52a823775d19152b7dead6d5e5ea059e3"
+        },
+        {
+          "source_workflow_id": "wf-de3f478cf93ab7e0",
+          "signal_type": "approval_gate",
+          "node_or_functional_class": "human_approval",
+          "topology_location": "legal_risk_routing_review",
+          "supported_pattern_rule": "draft_to_human_approval_before_action",
+          "confidence": "explicit",
+          "limitations": [
+            "Legal domain; marketing adaptation requires owner review."
+          ],
+          "evidence_hash": "2a3aaa824fa2d96a5bc12870518451b8c324662a3c85d049969f568595e24060"
+        },
+        {
+          "source_workflow_id": "wf-de3f478cf93ab7e0",
+          "signal_type": "provenance_capture",
+          "node_or_functional_class": "agent_orchestration",
+          "topology_location": "decision_lineage_after_review",
+          "supported_pattern_rule": "decision_lineage_preserved",
+          "confidence": "probable",
+          "limitations": [
+            "Structured parser aids decision capture variant."
+          ],
+          "evidence_hash": "51b44bcabea60ff77a4f38bda64a23768a25698a33effe164ce57eb4e6eff902"
+        }
+      ]
+    },
+    {
+      "pattern_id": "workflow_backup",
+      "source_workflow_ids": [
+        "wf-c7d30b91fd4e5694",
+        "wf-21966e054442133e"
+      ],
+      "source_practice_ids": [
+        "workflow_backup_and_source_control"
+      ],
+      "manual_audit_id": "audit-workflow_backup",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-c7d30b91fd4e5694",
+          "signal_type": "storage_action",
+          "node_or_functional_class": "n8n-nodes-base.gitlab",
+          "topology_location": "scheduled_backup_to_git",
+          "supported_pattern_rule": "workflow_backup_and_source_control",
+          "confidence": "explicit",
+          "limitations": [
+            "GitLab is storage_provider variant only."
+          ],
+          "evidence_hash": "3395ee7dc6ea365cfbefa61d9e73eeae1be27c1c8c8e189ea432867267827e05"
+        },
+        {
+          "source_workflow_id": "wf-c7d30b91fd4e5694",
+          "signal_type": "trigger_structure",
+          "node_or_functional_class": "n8n-nodes-base.scheduleTrigger",
+          "topology_location": "backup_window_entry",
+          "supported_pattern_rule": "scheduled_export_not_execution",
+          "confidence": "explicit",
+          "limitations": [
+            "n8n export node reads definitions only in abstraction."
+          ],
+          "evidence_hash": "a4af3c8cc13802f548f9eada28a543ff33d4cba11359d8ceb542b461ea1f6b5b"
+        },
+        {
+          "source_workflow_id": "wf-21966e054442133e",
+          "signal_type": "storage_action",
+          "node_or_functional_class": "workflow_backup",
+          "topology_location": "alternate_backup_variant",
+          "supported_pattern_rule": "snapshot_to_storage_provider",
+          "confidence": "probable",
+          "limitations": [
+            "Linear/cloud-cli variants are implementation-specific."
+          ],
+          "evidence_hash": "b0985573639b41d74cea67dd0a7b5313954778622c84839a385f169d7278f961"
+        },
+        {
+          "source_workflow_id": "wf-21966e054442133e",
+          "signal_type": "provenance_capture",
+          "node_or_functional_class": "n8n-nodes-base.set",
+          "topology_location": "backup_evidence_metadata",
+          "supported_pattern_rule": "backup_evidence_recorded",
+          "confidence": "probable",
+          "limitations": [
+            "Evidence format not standardized in pilot."
+          ],
+          "evidence_hash": "32a7701bdebc407bd6a8dcae8d45f2687673f31f4bd8b476dc9e9cde4686b06e"
+        }
+      ]
+    },
+    {
+      "pattern_id": "error_workflow_or_recovery",
+      "source_workflow_ids": [
+        "wf-b6e1676935a48901",
+        "wf-580f7458a07243a7"
+      ],
+      "source_practice_ids": [
+        "explicit_error_workflow",
+        "recovery_and_terminal_failure_path"
+      ],
+      "manual_audit_id": "audit-error_workflow_or_recovery",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-b6e1676935a48901",
+          "signal_type": "error_path",
+          "node_or_functional_class": "n8n-nodes-base.if",
+          "topology_location": "payment_failure_detection_branch",
+          "supported_pattern_rule": "explicit_error_workflow_or_recovery_path",
+          "confidence": "probable",
+          "limitations": [
+            "Same workflow supports retry_with_idempotency via wait/retry signal."
+          ],
+          "evidence_hash": "12363914ff23d6f232ae9829c6ec43db678126b1b27936515eb0ed8152dadeec"
+        },
+        {
+          "source_workflow_id": "wf-b6e1676935a48901",
+          "signal_type": "recovery_action",
+          "node_or_functional_class": "publication",
+          "topology_location": "operator_notification_on_failure",
+          "supported_pattern_rule": "terminal_failure_notifies_operator",
+          "confidence": "probable",
+          "limitations": [
+            "Slack/Gmail are message_channel variants."
+          ],
+          "evidence_hash": "370d5af9dd27bbfa96e202497821fa3c4e8ea13f6f534af8a6a7f4aa00d5bffb"
+        },
+        {
+          "source_workflow_id": "wf-580f7458a07243a7",
+          "signal_type": "error_path",
+          "node_or_functional_class": "n8n-nodes-base.stopAndError",
+          "topology_location": "api_mock_refresh_failure_terminal",
+          "supported_pattern_rule": "recovery_and_terminal_failure_path",
+          "confidence": "explicit",
+          "limitations": [
+            "SSRF finding requires elevated security review."
+          ],
+          "evidence_hash": "c3f7ad261ff1af30c20aed20f64cc93a14f12212ed71724104eaa0c296744724"
+        },
+        {
+          "source_workflow_id": "wf-580f7458a07243a7",
+          "signal_type": "retry_structure",
+          "node_or_functional_class": "n8n-nodes-base.httpRequest",
+          "topology_location": "recoverable_http_refresh_segment",
+          "supported_pattern_rule": "recoverable_vs_terminal_classification",
+          "confidence": "probable",
+          "limitations": [
+            "Dynamic URL risk documented in catalog security findings."
+          ],
+          "evidence_hash": "978c2eb961693c833eae4dc2d73b85ee64b57956345c0d389fbd18a66f4d33c8"
+        }
+      ]
+    }
+  ]
+}

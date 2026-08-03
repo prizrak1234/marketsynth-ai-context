@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.positioning/message_hierarchy/0.1.0",
+  "title": "MessageHierarchy",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "primary_message": { "type": "string", "maxLength": 2000 },
+    "supporting_messages": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "proof_messages": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "objection_responses": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/objection_response" },
+      "maxItems": 20
+    },
+    "segment_variants": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/segment_variant" },
+      "maxItems": 10
+    },
+    "prohibited_or_unsupported_claims": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 30
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 256 },
+      "maxItems": 30
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "const": "ms.skill.positioning" },
+        "skill_version": { "type": "string", "pattern": "^0\\.1\\.\\d+$" }
+      },
+      "required": ["skill_id", "skill_version"]
+    }
+  },
+  "required": [
+    "primary_message",
+    "supporting_messages",
+    "proof_messages",
+    "objection_responses",
+    "segment_variants",
+    "prohibited_or_unsupported_claims",
+    "evidence_references",
+    "assumptions",
+    "unknowns",
+    "provenance"
+  ],
+  "$defs": {
+    "objection_response": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "objection_ref": { "type": "string", "maxLength": 128 },
+        "response_framing": { "type": "string", "maxLength": 2000 },
+        "evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 256 },
+          "maxItems": 10
+        }
+      },
+      "required": ["objection_ref", "response_framing"]
+    },
+    "segment_variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "segment_id": { "type": "string", "maxLength": 128 },
+        "primary_message_variant": { "type": "string", "maxLength": 2000 },
+        "supporting_messages": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 10
+        }
+      },
+      "required": ["segment_id", "primary_message_variant"]
+    }
+  }
+}

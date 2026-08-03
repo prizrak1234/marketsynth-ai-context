@@ -1,0 +1,10 @@
+{
+  "blockers": [],
+  "warnings": [
+    "Legacy app/knowledge/linking/ directory remains; use app/knowledge/knowledge_linking/",
+    "Discovery alias catalog is manually governed and finite",
+    "Quarantine security scanner may produce false positives"
+  ],
+  "verdict": "READY",
+  "audit_date": "2026-07-24"
+}

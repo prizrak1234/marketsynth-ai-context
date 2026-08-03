@@ -1,0 +1,834 @@
+{
+  "name": "SHABLON_IZ_TIKTOK_P3_TOPUSERS",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://tiktok-api23.p.rapidapi.com/api/user/popular-posts",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "secUid",
+              "value": "={{ $json.secUid }}"
+            },
+            {
+              "name": "count",
+              "value": "35"
+            },
+            {
+              "name": "cursor",
+              "value": "0"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "ВАШ API КЛЮЧ"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "tiktok-api23.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        160
+      ],
+      "id": "daa4fdef-2e27-48fd-8944-f39a01f5d327",
+      "name": "Get Top Posts"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "record_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -280,
+        160
+      ],
+      "id": "10f01427-ab2d-41a5-9a2f-4b959a18c6b0",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tbl7V6L6E6GwpFHfU"
+        },
+        "id": "={{ $json.record_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -100,
+        160
+      ],
+      "id": "f68c0ae2-db11-48b7-a42b-1bfc7ab05906",
+      "name": "Get Records",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data.itemList",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        260,
+        160
+      ],
+      "id": "1b010499-6b90-48da-8dbf-0f2bac9843a7",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8cef7e22-adb1-4724-8415-7c7b6b2e15f2",
+              "name": "=Username",
+              "value": "={{ $json.author.uniqueId }}",
+              "type": "string"
+            },
+            {
+              "id": "3c0e117c-81d0-4eba-b4e9-dd07eaee3b39",
+              "name": "Views",
+              "value": "={{ $json.stats.playCount }}",
+              "type": "number"
+            },
+            {
+              "id": "a4859465-1cc3-4bff-b8b5-ea9c058b5d9c",
+              "name": "Likes",
+              "value": "={{ $json.stats.diggCount }}",
+              "type": "number"
+            },
+            {
+              "id": "02b047ca-5904-48ca-bfdf-1e1e53e75e7b",
+              "name": "Comments",
+              "value": "={{ $json.stats.commentCount }}",
+              "type": "number"
+            },
+            {
+              "id": "28498482-ba5b-4269-9beb-ac6cb75dec15",
+              "name": "Shares",
+              "value": "={{ $json.stats.shareCount }}",
+              "type": "number"
+            },
+            {
+              "id": "7fd6b54f-f96b-4ad2-8fd7-96d3d368d59a",
+              "name": "Saves",
+              "value": "={{ $json.stats.collectCount }}",
+              "type": "number"
+            },
+            {
+              "id": "5bd958ac-75c3-47e3-9b6e-a4ae89cd6775",
+              "name": "Music_Author",
+              "value": "={{ $json.music.authorName }}",
+              "type": "string"
+            },
+            {
+              "id": "1a30263f-7144-44e5-bdf3-b7e733ab4deb",
+              "name": "Music_Title",
+              "value": "={{ $json.music.title }}",
+              "type": "string"
+            },
+            {
+              "id": "b96933fd-4936-479d-8d5f-deca31c21581",
+              "name": "IDvid",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f6929145-ce12-4c84-930b-ba8b9a1ed0db",
+              "name": "Caption",
+              "value": "={{ $json.contents[0].desc }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -280,
+        420
+      ],
+      "id": "d518939e-c0e5-4de7-84c7-c812612f9f27",
+      "name": "Specifics"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n    const username = item.json.Username;\n    const videoId = item.json.IDvid;\n    const tiktokURL = `https://www.tiktok.com/@${username}`;\n    const videoURL = `https://www.tiktok.com/@${username}/video/${videoId}`;\n    \n    return {\n      json: {\n        ...item.json,\n        username,\n        tiktokURL,\n        videoURL\n      }\n    };\n  });"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        420
+      ],
+      "id": "1e3567ef-e054-47a3-93fe-57afc2951ede",
+      "name": "Get URLs"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const ViewCount = item.json[\"Views\"];\n  const LikeCount = item.json[\"Likes\"];\n\n  let calculationResult = 0;\n  if (ViewCount && ViewCount !== 0) {\n    calculationResult = (LikeCount / ViewCount) * 100;\n  }\n\n  const calculationPercentage = calculationResult.toFixed(2) + '%';\n\n  return {\n    json: {\n      ...item.json,\n      calculationResult,\n      calculationPercentage\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        420
+      ],
+      "id": "b67d4138-6b8f-4f93-9347-4d13955ae18c",
+      "name": "Calculate Share %"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_POSTS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tblxCudSu6J6huIOn"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Username": "={{ $json.Username }}",
+            "Views": "={{ $json.Views }}",
+            "Likes": "={{ $json.Likes }}",
+            "Comments": "={{ $json.Comments }}",
+            "Shares": "={{ $json.Shares }}",
+            "Engagement Calculation": "={{ $json.calculationPercentage }}",
+            "Caption": "={{ $json.Caption }}",
+            "Link to Post": "={{ $json.videoURL }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Caption",
+              "displayName": "Caption",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Views",
+              "displayName": "Views",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Likes",
+              "displayName": "Likes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Comments",
+              "displayName": "Comments",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Shares",
+              "displayName": "Shares",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Engagement Calculation",
+              "displayName": "Engagement Calculation",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Overall score",
+              "displayName": "Overall score",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Link to Post",
+              "displayName": "Link to Post",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date added",
+              "displayName": "Date added",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        640,
+        420
+      ],
+      "id": "c191b2ba-dafc-4290-ba28-ee4f948f5fe4",
+      "name": "Send the goodies",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# TOP Контента TikTok пользователя",
+        "height": 80,
+        "width": 720,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "c862c3e8-8c08-400a-a045-fd1953a01662",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      query: \"Task has completed successfully.\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        420
+      ],
+      "id": "0a4a4de4-bf5f-460c-b6ff-baa37762a2e6",
+      "name": "Success"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "211b3b26-d596-4bf0-a500-a22fb4ef482c",
+              "leftValue": "={{ $json.Views }}",
+              "rightValue": 5000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -100,
+        420
+      ],
+      "id": "7637d282-9452-4c56-b308-a24aa35c37ab",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "## Создайте свой API ключ в TikTok тут: \n\n## Ссылка: https://rapidapi.com/Lundehund/api/tiktok-api23",
+        "width": 880
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -360,
+        660
+      ],
+      "typeVersion": 1,
+      "id": "dd4f1151-4c2f-4f40-b438-19bd1d61f4ca",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Подключите Airtable таблицы\n",
+        "height": 80,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        600,
+        620
+      ],
+      "typeVersion": 1,
+      "id": "e99e99e7-2b94-454b-85e4-6018943ffaac",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Подключите свой AirTable",
+        "height": 80,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        460,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "010f47cb-a31d-40e5-a7fd-119bc8e1499b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_POSTS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tblxCudSu6J6huIOn"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Link to Post": "={{ $json.fields['Link to Post'] }}",
+            "Record ID": "={{ $json.id }}",
+            "Date added": "={{ $json.createdTime }}"
+          },
+          "matchingColumns": [
+            "Link to Post"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Caption",
+              "displayName": "Caption",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Views",
+              "displayName": "Views",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Likes",
+              "displayName": "Likes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Comments",
+              "displayName": "Comments",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Shares",
+              "displayName": "Shares",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Engagement Calculation",
+              "displayName": "Engagement Calculation",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Overall score",
+              "displayName": "Overall score",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Link to Post",
+              "displayName": "Link to Post",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date added",
+              "displayName": "Date added",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        820,
+        420
+      ],
+      "id": "a76c8b09-8f10-4386-ba70-17148e9d63b6",
+      "name": "Send the goodies1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## @igorzuevich \n**Автор** на [YouTube](https://www.youtube.com/@igorzuevich)",
+        "height": 240,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1860,
+        2380
+      ],
+      "typeVersion": 1,
+      "id": "0e161b42-0b46-4566-be3d-3129076a6166",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "record_id": "rec3wnvYZ0ap29598"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Get Top Posts": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Records": {
+      "main": [
+        [
+          {
+            "node": "Get Top Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Specifics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Specifics": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get URLs": {
+      "main": [
+        [
+          {
+            "node": "Calculate Share %",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Share %": {
+      "main": [
+        [
+          {
+            "node": "Send the goodies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send the goodies": {
+      "main": [
+        [
+          {
+            "node": "Send the goodies1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send the goodies1": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "59aeda73-c8c9-48bd-9d84-592f9aaee6fa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "9F0MkijT4umsbTPV",
+  "tags": [
+    {
+      "createdAt": "2025-03-21T05:05:36.109Z",
+      "updatedAt": "2025-03-21T05:05:36.109Z",
+      "id": "O7fQsEJqI16T5o0y",
+      "name": "Сделано"
+    }
+  ]
+}

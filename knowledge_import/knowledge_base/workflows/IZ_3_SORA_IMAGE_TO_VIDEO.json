@@ -1,0 +1,581 @@
+{
+  "name": "IZ_3_SORA_IMAGE_TO_VIDEO",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "363abbd9-5ed8-4b6a-b1a0-739893a02fff",
+              "name": "video_prompt",
+              "value": "={{ $json.prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "7e8501db-4e23-4c03-bfc3-3d32696a569e",
+              "name": "image_url",
+              "value": "={{ $json.image_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -208,
+        -224
+      ],
+      "id": "9993a4aa-a805-4ead-990c-71f1957a1b2c",
+      "name": "Video Prompt"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        -224
+      ],
+      "id": "c03f2b46-8a32-4023-bfb5-3bd9eb19149b",
+      "name": "Wait",
+      "webhookId": "56f40691-d4ac-4127-bf5c-44d5b79ed008"
+    },
+    {
+      "parameters": {
+        "url": "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $json.data.taskId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        352,
+        -224
+      ],
+      "id": "2bc8abd9-2566-45e6-a3d4-42ad6fbd126c",
+      "name": "Get Video",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4f9a9a29-cc45-4e39-a1a0-e78caadbab09",
+              "leftValue": "={{ $json.data.state }}",
+              "rightValue": "success",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        512,
+        -224
+      ],
+      "id": "62e04552-777e-4ea4-9539-1f134d6e5c86",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "714ed3d2-1e81-4aae-a977-8151769371a7",
+              "name": "video_url",
+              "value": "={{ JSON.parse($json.data.resultJson).resultUrls[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        816,
+        -400
+      ],
+      "id": "94374138-258f-48e2-b4b2-c52516da8855",
+      "name": "Video URL"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "prompt"
+            },
+            {
+              "name": "image_url"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -416,
+        -224
+      ],
+      "id": "0b5c4d43-9659-421c-9677-9d4839d7cbbf",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.video_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1248,
+        -400
+      ],
+      "id": "82590437-7a27-4a6b-806c-f3297c425113",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "path": "=/public_html/n8n/{{$json.remote_path}}"
+      },
+      "type": "n8n-nodes-base.ftp",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        -400
+      ],
+      "id": "5b1ad27a-1efa-45be-a97e-86e8c72ecf37",
+      "name": "FTP",
+      "credentials": {
+        "ftp": {
+          "id": "ZXfTecqAxCTm5hwU",
+          "name": "ftp.izn8nfiles.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  // Берём расширение файла (если Telegram отдал)\n  const ext = item.json.fileExtension || item.binary?.data?.fileExtension || 'jpg';\n\n  let mime = 'application/octet-stream'; // значение по умолчанию\n\n  if (['jpg', 'jpeg'].includes(ext.toLowerCase())) mime = 'image/jpeg';\n  if (ext.toLowerCase() === 'png') mime = 'image/png';\n  if (ext.toLowerCase() === 'gif') mime = 'image/gif';\n  if (ext.toLowerCase() === 'webp') mime = 'image/webp';\n  if (ext.toLowerCase() === 'heic') mime = 'image/heic';\n\n  // Название файла (если нет — ставим дефолт)\n  const fileName = item.json.fileName || item.binary?.data?.fileName || `file.${ext}`;\n\n  // Добавляем новые поля в JSON\n  item.json.mimeType = mime;\n  item.json.fileName = fileName;\n\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1712,
+        -400
+      ],
+      "id": "0a0ef11b-dd94-4b0f-a5a9-0a65aa87e87f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JEEz5jcoxY5N3EADkVK2btZqDXEs3WBhouiPrCphTBE",
+          "mode": "list",
+          "cachedResultName": "Telegram_document",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JEEz5jcoxY5N3EADkVK2btZqDXEs3WBhouiPrCphTBE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JEEz5jcoxY5N3EADkVK2btZqDXEs3WBhouiPrCphTBE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Дата": "={{ $now.format('dd-MM-yyyy') }}",
+            "Тип Файла (mime_type)": "={{ $json.mimeType }}",
+            "Название файла": "={{ $json.fileName }}",
+            "URL": "=https://izn8nfiles.com/n8n/{{$json.remote_path}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Дата",
+              "displayName": "Дата",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Тип Файла (mime_type)",
+              "displayName": "Тип Файла (mime_type)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Название файла",
+              "displayName": "Название файла",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1936,
+        -400
+      ],
+      "id": "a27e8302-0bae-4f10-b449-3d19aad67fb2",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mode: Run Once for All Items  (подойдет и Run Once for Each Item)\n// Language: JavaScript\n\nfunction slugify(s) {\n  return (s ?? \"\")\n    .toString()\n    .toLowerCase()\n    .normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '') // убрать диакритику\n    .replace(/[^a-z0-9]+/g, '-')                       // не буквы/цифры → \"-\"\n    .replace(/^-+|-+$/g, '')                           // края\n    .replace(/-{2,}/g, '-')                            // двойные дефисы\n    .slice(0, 60);                                     // ограничение\n}\n\n// 1) Достаём URL из входа (и/или из resultJson)\nlet url = $json.video_url;\nif (!url) {\n  try {\n    const rj = $json.data?.resultJson;\n    const parsed = typeof rj === 'string' ? JSON.parse(rj) : rj;\n    url = parsed?.resultUrl?.[0] ?? parsed?.resultURL?.[0];\n  } catch (e) {}\n}\nif (!url) {\n  throw new Error('video_url not provided');\n}\n\n// 2) Парсим путь и расширение БЕЗ класса URL\nconst noHash = url.split('#')[0];\nconst pathOnly = noHash.split('?')[0];\nconst last = decodeURIComponent((pathOnly.split('/').pop() || 'video'));\nconst dotIdx = last.lastIndexOf('.');\nlet ext = 'mp4';\nlet stemFromUrl = last;\n\nif (dotIdx > -1 && dotIdx < last.length - 1) {\n  const cand = last.slice(dotIdx + 1).toLowerCase();\n  if (cand.length > 0 && cand.length <= 5) {\n    ext = cand;\n  }\n  stemFromUrl = last.slice(0, dotIdx);\n}\n\n// 3) Подсказка для имени (если есть)\nconst hint =\n  $json.base_name ||\n  $json.prompt ||\n  $json.title ||\n  $json.character ||\n  stemFromUrl;\n\n// 4) Уникальность\nconst now = new Date();\nconst stamp = now.toISOString().replace(/[-:.TZ]/g, '').slice(0, 14); // YYYYMMDDHHMMSS\nconst rand = Math.random().toString(36).slice(2, 8);\n\n// 5) Финальные имена\nconst nameCore = slugify(hint) || 'sora-video';\nconst file_stem = `${nameCore}-${stamp}-${rand}`;\nconst file_name = `${file_stem}.${ext}`;\n\n// 6) Путь по дате\nconst ymd = stamp.slice(0, 8); // YYYYMMDD\nconst remote_path = `sora/${ymd}/${file_name}`;\n\n// 7) Возврат в формате n8n items\nreturn [{\n  json: {\n    video_url: url,\n    file_name,\n    file_stem,\n    file_ext: ext,\n    remote_path\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1024,
+        -400
+      ],
+      "id": "5ccd1fa4-56e7-4e6e-bb5f-02db19240c89",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1) Берём готовый абсолютный URL из шита, если он есть\nlet videoUrl = ($json.URL || '').toString().trim();\n\n// 2) Если абсолютной ссылки нет — собираем из remote_path\nif (!/^https?:\\/\\//i.test(videoUrl)) {\n  const BASE_URL = 'https://izn8nfiles.com/n8n/';\n  const remotePath = ($json.remote_path || $json.video_url || '').toString().replace(/^\\/+/, '');\n  videoUrl = BASE_URL + remotePath;\n}\n\n// 3) Одно короткое сообщение для агента/бота\nreturn [{\n  json: {\n    message: `✅ Видео успешно сгенерировано: ${videoUrl}`,\n    video_url: videoUrl // (на всякий случай вторым полем)\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2144,
+        -400
+      ],
+      "id": "bfd87090-b7e6-4b7c-8b9a-78dfc0d67f75",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "content": "## image to видео",
+        "height": 288,
+        "width": 944,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        -288
+      ],
+      "typeVersion": 1,
+      "id": "cb6fe406-7947-498b-8564-23c895f09ad5",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## выгрузка видео",
+        "height": 288,
+        "width": 1632,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        752,
+        -496
+      ],
+      "typeVersion": 1,
+      "id": "a64bd872-623f-45d0-8e15-b849880f191f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: по работе с FTP: https://youtu.be/T715AdufELY\n",
+        "height": 96,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1136,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "ee626e1c-9f74-4741-81bc-a371fbf6beff",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2000,
+        -592
+      ],
+      "typeVersion": 1,
+      "id": "e79697c2-bb8d-4656-8756-ace492ebb642",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/qKh7BTjQoM0",
+        "height": 120,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1872,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "185fb32c-f723-4a0d-a190-456c4ebe8052",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kie.ai/api/v1/jobs/createTask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"sora-2-image-to-video\",\n  \"input\": {\n    \"prompt\": \"{{ $json.video_prompt }}\",\n    \"image_urls\": [\n      \"{{ $json.image_url }}\"\n    ],\n    \"aspect_ratio\": \"portrait\",\n    \"n_frames\": \"10\",\n    \"remove_watermark\": true\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        -224
+      ],
+      "id": "0e9d2160-f4ba-4f1a-9b10-cabdb4e41a54",
+      "name": "Image to Video",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "SI6bYIoxuQOxPAAz",
+          "name": "KIE_AI"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "prompt": "A futuristic AI influencer with cybernetic implants and neon glasses is filming himself on a selfie camera. He looks confident and charismatic, speaking directly to the viewer in Russian:“Я уже в AI-сообществе Игоря Зуевича. У него лучшие шаблоны автоматизации — и я рад быть частью команды.” Natural handheld movement, vertical 9:16 format, soft lighting, slight background blur, subtle reflections in glasses. Modern sci-fi aesthetic, clean look, cinematic tone.",
+          "image_url": "https://izn8nfiles.com/n8n/photos/file_96.jpg"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Video Prompt": {
+      "main": [
+        [
+          {
+            "node": "Image to Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Video URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Video Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video URL": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "FTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FTP": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image to Video": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a2383fcc-72e4-4ccc-870e-a4902edb8b9a",
+  "meta": {
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "0Y0d5h3AqGHGF2B4",
+  "tags": []
+}

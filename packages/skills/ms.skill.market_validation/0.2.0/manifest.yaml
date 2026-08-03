@@ -1,0 +1,140 @@
+id: ms.skill.market_validation
+name: Market Validation
+version: 0.2.0
+description: >
+  Aggregate Product Marketing Context 0.2.x, Market Research 0.1.x, Competitor
+  Analysis 0.1.x and shared Customer Intelligence Model 0.1.x into one
+  evidence-backed commercial viability decision — without positioning, offers,
+  launch execution, or connector access.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: decision
+capabilities:
+  - validation_context_aggregation
+  - dependency_integrity_assessment
+  - product_context_quality_assessment
+  - market_evidence_quality_assessment
+  - customer_evidence_quality_assessment
+  - demand_signal_assessment
+  - competitor_pressure_assessment
+  - segment_fit_assessment
+  - reachability_assessment
+  - budget_fit_assessment
+  - pricing_plausibility_assessment
+  - operational_feasibility_assessment
+  - switching_difficulty_assessment
+  - evidence_coverage_assessment
+  - contradiction_severity_assessment
+  - regulatory_constraint_assessment
+  - critical_risk_identification
+  - blocker_classification
+  - condition_generation
+  - viability_verdict_preparation
+  - verdict_confidence_assessment
+  - next_validation_step_generation
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - market_source
+    - competitor_source
+    - demand_signal
+    - pricing_signal
+    - audience_signal
+    - assumption
+    - inference
+  rules:
+    - id: no_inference_as_fact
+      description: Inferences must not be presented as verified facts.
+    - id: high_confidence_requires_sources
+      description: >
+        High-confidence verdicts require source-backed critical dimensions and
+        complete upstream provenance unless verdict is insufficient_evidence.
+    - id: verdict_not_approval
+      description: Verdict is analytical output — not launch or spend authorization.
+    - id: no_positioning_or_offer
+      description: Output must not contain positioning, offer, or campaign fields.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.product_marketing_context
+      relationship: required_dependency
+      note: Required >=0.2.0,<1.0.0 — PMC 0.1.0 not compatible.
+    - id: ms.skill.market_research
+      relationship: required_dependency
+      note: Required >=0.1.0,<1.0.0 — preserved lineage refs.
+    - id: ms.skill.competitor_analysis
+      relationship: required_dependency
+      note: Required >=0.1.0,<1.0.0 — preserved lineage refs.
+    - id: ms.skill.icp_segmentation
+      relationship: required_dependency
+      note: Required CIM schema >=0.1.0,<1.0.0 via ICP producer output.
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  verdict_presentation:
+    external_side_effects: false
+    approval_required: false
+  launch_or_execution_transition:
+    approval_required: true
+    note: Human approval required before launch, spend, or publication.
+  paid_or_write_actions:
+    approval_required: true
+  publication:
+    governed_by: native_publication_flow
+    skill_bypass_allowed: false
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 1
+  current_state: skeleton_only
+known_limitations:
+  - Non-executable candidate package — no runtime loader in SKILL-02.6B.
+  - Does not replace CWF.1 Business Idea Validation runtime.
+  - Does not autonomously search the web or invoke connectors.
+  - Does not produce positioning, offers, or launch execution artifacts.
+  - Numeric scoring weights remain open until benchmark.
+test_suite:
+  manifest: tests/eval_manifest.yaml
+  backend_tests: tests/test_skill_02_6_market_validation_v020.py
+provenance:
+  origin: platform_native
+  methodology:
+    - SKILL-02.6A Market Validation migration design
+    - Internal Marketsynth Business Idea Validation (CWF.1) — mapping only
+  external_methodology_references:
+    - audit_card: docs/research/skills/candidates/05-market-validation.md
+      reuse: methodology_only
+      license: MIT
+      note: No direct external Skill installation or code reuse.
+  external_code_dependency: false
+  direct_external_skill_install: false
+  audit_research_id: MS-SKILL-005
+runtime_compatibility:
+  - operator_dry_run
+  - assistant_explicit_run
+knowledge_scopes:
+  - business_verdict
+  - customer_intelligence
+network_policy:
+  default: deny
+  allowed_hosts: []
+  allowed_connectors_only: true
+script_policy:
+  enabled: false
+  reason: SKILL-02.6B skeleton — scripts forbidden.
+resource_limits:
+  max_package_size_mib: 10
+  max_skill_md_kib: 256

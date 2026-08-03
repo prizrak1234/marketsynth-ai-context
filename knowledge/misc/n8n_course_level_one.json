@@ -1,0 +1,16 @@
+{
+  "source": "https://docs.n8n.io/courses/level-one/",
+  "learning_path": {
+    "module_1_basics": "Introduction to UI, nodes, and simple automation.",
+    "module_2_data_manipulation": "Filtering data, using expressions, and the 'Set' node.",
+    "module_3_external_services": "Connecting to APIs, handling authentication, and webhooks.",
+    "module_4_logic_and_flow": "Using 'If' nodes and branching logic.",
+    "module_5_deployment": "Testing, activating, and monitoring workflows."
+  },
+  "key_skills_for_agent": {
+    "mapping": "How to map data from one node to another using the UI or expressions.",
+    "filtering": "Using the 'Filter' node to process only relevant items.",
+    "looping": "Understanding that n8n loops automatically over arrays unless specified otherwise.",
+    "debugging": "Using the 'Execution' tab to inspect data at each step."
+  }
+}

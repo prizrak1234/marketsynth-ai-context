@@ -1,0 +1,362 @@
+[
+  {
+    "capability_id": "marketing.product_context",
+    "skill_id": "ms.skill.product_marketing_context",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Product Context.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.market_research",
+    "skill_id": "ms.skill.market_research",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Market Research.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.competitive_intelligence",
+    "skill_id": "ms.skill.competitor_analysis",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Competitive Intelligence.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.customer_intelligence",
+    "skill_id": "ms.skill.icp_segmentation",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Customer Intelligence.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.customer_interview_design",
+    "skill_id": "ms.skill.customer_interview_design",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Customer Interview Design.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.customer_meaning_extraction",
+    "skill_id": "ms.skill.customer_meaning_extraction",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Customer Meaning Extraction.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.market_validation",
+    "skill_id": "ms.skill.market_validation",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Market Validation.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.positioning",
+    "skill_id": "ms.skill.positioning",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Positioning.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.claim_substantiation",
+    "skill_id": "ms.skill.claim_substantiation",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Claim Substantiation.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.offer_architecture",
+    "skill_id": "ms.skill.offer_builder",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Offer Architecture.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.presentation_architecture",
+    "skill_id": "ms.skill.presentation_architecture",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Presentation Architecture.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.workflow_architecture",
+    "skill_id": "ms.skill.n8n_workflow_architecture",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Workflow Architecture.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.workflow_debugging",
+    "skill_id": "ms.skill.n8n_workflow_debugging",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Workflow Debugging.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.deployment_review",
+    "skill_id": "ms.skill.n8n_deployment_review",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Deployment Review.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.knowledge_linking",
+    "skill_id": "ms.skill.knowledge_linking",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Knowledge Linking.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.duplicate_detection",
+    "skill_id": "ms.skill.knowledge_linking",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Duplicate Detection.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.contradiction_detection",
+    "skill_id": "ms.skill.knowledge_linking",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Contradiction Detection.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.supersession_review",
+    "skill_id": "ms.skill.knowledge_linking",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Supersession Review.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.index_management",
+    "skill_id": "ms.skill.knowledge_linking",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Index Management.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.presentation_architecture",
+    "skill_id": "ms.skill.presentation_architecture",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Presentation Architecture.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.content_architecture",
+    "skill_id": "ms.skill.presentation_architecture",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Content Architecture.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.visual_briefing",
+    "skill_id": "ms.skill.presentation_architecture",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Visual Briefing.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.chart_specification",
+    "skill_id": "ms.skill.presentation_architecture",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Chart Specification.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.accessibility_review",
+    "skill_id": "ms.skill.presentation_architecture",
+    "binding_type": "required",
+    "status": "bound",
+    "applicability": "Primary methodology for Accessibility Review.",
+    "limitations": [
+      "Non-executable candidate package."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  }
+]

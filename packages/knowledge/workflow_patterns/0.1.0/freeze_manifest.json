@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1.0",
+  "canonical_uri_base": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/",
+  "schema_status": "frozen",
+  "file_hashes": {
+    "capability-reference.schema.json": "9d45c0f9091dbdb5f559b446f25c7407f29eb7ce1f65a0ed1c3ff9c089ec8b8c",
+    "connector-requirement.schema.json": "2b0dc0fea37a934a384a441e8bced0844ef0f593746614e2bd1582c382da05f1",
+    "error-pattern.schema.json": "50a4f3f4cecf00446a749b7cf32e388463649bd14bc1c3d271e6d1507950f10a",
+    "knowledge-artifact.schema.json": "41379cb50883cd439efcaed9e31ad0249d2f677448175667d0da6915092185cc",
+    "pattern-audit-report.schema.json": "54c7753580a1eb1c017c1cb673bf2e40a635cdad4e5e443e1e2397138fb2034b",
+    "practice-record.schema.json": "890404981db8621082c820d8afe23c80d564b539efec9beb9986a80055abfa0d",
+    "provenance.schema.json": "7738fa4dcb0780b695cf3a32a07a8517c2665e78399ebb3cd84bc2bc7d5e35c7",
+    "provider-constraint.schema.json": "0963eed9d01eee7955e0fe51532c64c494bebcb01fe8ca2f6098454faecc3351",
+    "quality-gate.schema.json": "c0a467da7c33d71fe855bdceaf282bdf9a74784b090a0ef291869db27b6f240b",
+    "security-finding.schema.json": "9794d19d48862becd08066a48de98acb0bbfdb7217d940fdf349a3470abbb6e9",
+    "source-reference.schema.json": "e3e5176ea8093c0fd3a9cf50144d093edd432871ea754a7bbb5da0519bc1dfdc",
+    "tool-requirement.schema.json": "fd7cee9a30f3d1578807f4a61661bdc821dc179cc57141a641cf4a9156fed6ff",
+    "workflow-pattern-edge.schema.json": "5d507a0bfe2d705e33491b005c28047507d706db363877de647955b1ed27695c",
+    "workflow-pattern-step.schema.json": "79aff032ff72135fd9e6b277789a7974595b92491d02a0e53ee31fc639e0f258",
+    "workflow-pattern.schema.json": "f3e85d0f9af03157ca19f5b84326f959fcfe8a8bf48388a05a9265c3a8f882ec",
+    "workflow-template.schema.json": "130c2621217008a2eb736a652aa5ce190ea2f28ff15626e531ddd067d2b77073"
+  },
+  "bundle_hash": "db34d8f1dbd82772d86fc921daa57d7007e748c004bf40b250023d1247823f25",
+  "generated_at": "2026-07-23T18:20:03Z"
+}

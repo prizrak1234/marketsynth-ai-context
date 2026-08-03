@@ -1,0 +1,39 @@
+{
+  "product_marketing_context": {
+    "source_skill_id": "ms.skill.product_marketing_context",
+    "source_skill_version": "0.2.0",
+    "source_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_evidence_references": [
+      "ev-pmc-001"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "pricing",
+        "description": "PMC pricing unverified"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "market_research_output": {
+    "source_skill_id": "ms.skill.market_research",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_evidence_references": [
+      "finding-cs-001"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "segment",
+        "description": "Segment size unverified"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "segmentation_objectives": [
+    "Identify primary ICP for async SaaS"
+  ],
+  "provenance": {
+    "submitted_by": "fixture-generator",
+    "submitted_at": "2026-07-23T12:00:00Z"
+  }
+}

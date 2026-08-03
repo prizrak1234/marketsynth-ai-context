@@ -1,0 +1,774 @@
+{
+  "name": "SHABLON_IZ_INSTAGRAM_P3_REELS_FIND",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "Instagram_Reels",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tblxCudSu6J6huIOn"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Views": "={{ $('Split data.items').item.json.media.ig_play_count }}",
+            "Comments": "={{ $json.media.comment_count }}",
+            "Username": "={{ $('Reels Data').item.json.Username }}",
+            "Reel Caption": "={{ $('Reels Data').item.json['Caption Text'] }}",
+            "Link to Reel": "={{ $('Reels Data').item.json.video_url }}",
+            "Reel ID": "={{ $('Split data.items').item.json.media.code }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reel Caption",
+              "displayName": "Reel Caption",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Views",
+              "displayName": "Views",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Comments",
+              "displayName": "Comments",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Link to Reel",
+              "displayName": "Link to Reel",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date added",
+              "displayName": "Date added",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Reel ID",
+              "displayName": "Reel ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reel URL",
+              "displayName": "Reel URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2200,
+        480
+      ],
+      "id": "6c908e47-ee58-4a8d-812f-1c68d97117ec",
+      "name": "Send to Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8afa13e2-39cb-44a7-a0fb-6448588b1174",
+              "name": "Username",
+              "value": "={{ $json.media.caption.user.username }}",
+              "type": "string"
+            },
+            {
+              "id": "8042f4ba-53fa-4d8e-99b0-adb39771361d",
+              "name": "Caption Text",
+              "value": "={{ $json.media.caption.text }}",
+              "type": "string"
+            },
+            {
+              "id": "5191c6fd-75ab-4fb9-a224-ebcdd7b0b0e9",
+              "name": "IG View Count",
+              "value": "={{ $json.media.ig_play_count }}",
+              "type": "number"
+            },
+            {
+              "id": "8a6fee3c-81ad-4b44-8e97-c5d4a9261244",
+              "name": "IG Like Count",
+              "value": "={{ $json.media.like_count }}",
+              "type": "number"
+            },
+            {
+              "id": "e5b8435d-1bfb-46cb-b8bd-643ded0b9664",
+              "name": "media.comment_count",
+              "value": "={{ $json.media.comment_count }}",
+              "type": "number"
+            },
+            {
+              "id": "6812b3d1-f510-42a2-b9de-8f0e6872fb5f",
+              "name": "video_url",
+              "value": "={{ $json.media.video_versions[1].url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1880,
+        480
+      ],
+      "id": "80bb9feb-f9ee-46a9-a984-af797b8b132f",
+      "name": "Reels Data"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "username"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        360,
+        80
+      ],
+      "id": "3c9d089d-5de3-4803-b185-9c76ab40f113",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "url": "https://real-time-instagram-scraper-api1.p.rapidapi.com/v1/user_reels",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "username_or_id",
+              "value": "={{ $json.username }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "VASH_API"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "real-time-instagram-scraper-api1.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        80
+      ],
+      "id": "2bb249a9-983d-408c-82ef-18cfd13e4e78",
+      "name": "Scrape Reels"
+    },
+    {
+      "parameters": {
+        "content": "## Ensure Airtable credentials are setup, too.",
+        "height": 100,
+        "width": 520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3180,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "d36cf586-eea6-4d63-9c76-2b332abad27f",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      query: \"Task has completed successfully.\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2820,
+        480
+      ],
+      "id": "1c634999-a04d-4ecc-9ae2-913dda37c4ad",
+      "name": "Success"
+    },
+    {
+      "parameters": {
+        "url": "https://real-time-instagram-scraper-api1.p.rapidapi.com/v1/media_info",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "code_or_id_or_url",
+              "value": "={{ $json['Reel ID'] }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "VASH_API"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "real-time-instagram-scraper-api1.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2400,
+        80
+      ],
+      "id": "a1138146-a7a7-4ce3-bdaf-8fdcea1dade0",
+      "name": "Get Reshares"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6d81eadf-9be7-4224-be1a-1bb0c097bc12",
+              "name": "Reel ID",
+              "value": "={{ $json.media.code }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1620,
+        0
+      ],
+      "id": "9f451d8c-4070-444e-8845-b73f41531fa7",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1860,
+        -40
+      ],
+      "id": "612ab77c-0481-4827-9399-05331ed5e7a9",
+      "name": "Loop Over Items",
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "amount": 0.25
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2640,
+        120
+      ],
+      "id": "071f2c1f-39b9-426e-be4d-18d2d35de953",
+      "name": "Wait 0.25",
+      "webhookId": "66e507e6-7296-45d0-aacf-de58bafeb7bd"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        80
+      ],
+      "id": "0e102ff2-f694-40ca-8c11-db22a64e092b",
+      "name": "Wait 5",
+      "webhookId": "d3e2686e-d35a-4061-8ada-f7cb94e69ae1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data.items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        80
+      ],
+      "id": "460a3878-f299-4755-a5f2-af292b8e2998",
+      "name": "Split data.items"
+    },
+    {
+      "parameters": {
+        "content": "## Введите свой Instagram API сюда",
+        "height": 80,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        660,
+        -20
+      ],
+      "typeVersion": 1,
+      "id": "8eb3a76f-7ecb-4ce5-a7c2-5cfb15943a23",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Анализ Reels",
+        "height": 80,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        680,
+        -300
+      ],
+      "typeVersion": 1,
+      "id": "e6e0f130-9f95-4f2f-bdc8-47f313d87361",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "\n## Просто введите свой ключ API \"Instagram Scraper\" в поле для всех нод HTTP-запросов, которые его используют.\n\n## Ссылка на Instagram API: https://rapidapi.com/allapiservice/api/real-time-instagram-scraper-api1",
+        "height": 220,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "c52e98ea-53b7-4271-ae24-2d798ce21185",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Введите свой Instagram API сюда",
+        "height": 80,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2380,
+        340
+      ],
+      "typeVersion": 1,
+      "id": "84c0cc0f-4e6b-418a-875a-e29db4f61bd0",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app2vioOyPFvFn7XE",
+          "mode": "list",
+          "cachedResultName": "Instagram_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "Instagram_Reels",
+          "cachedResultUrl": "https://airtable.com/app2vioOyPFvFn7XE/tblxCudSu6J6huIOn"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record ID": "={{ $json.id }}",
+            "Date added": "={{ $json.createdTime }}",
+            "Reel ID": "={{ $json.fields['Reel ID'] }}"
+          },
+          "matchingColumns": [
+            "Reel ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Reel Caption",
+              "displayName": "Reel Caption",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Views",
+              "displayName": "Views",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Comments",
+              "displayName": "Comments",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Link to Reel",
+              "displayName": "Link to Reel",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Date added",
+              "displayName": "Date added",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reel ID",
+              "displayName": "Reel ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reel URL",
+              "displayName": "Reel URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2560,
+        480
+      ],
+      "id": "8dcc45b0-eac7-4781-a1fd-3c823971399a",
+      "name": "Send the goodies1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "username": "igorzuevich"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Reels Data": {
+      "main": [
+        [
+          {
+            "node": "Send to Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Scrape Reels",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Reels": {
+      "main": [
+        [
+          {
+            "node": "Wait 5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Airtable": {
+      "main": [
+        [
+          {
+            "node": "Send the goodies1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Reshares": {
+      "main": [
+        [
+          {
+            "node": "Wait 0.25",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get Reshares",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 0.25": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 5": {
+      "main": [
+        [
+          {
+            "node": "Split data.items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split data.items": {
+      "main": [
+        [
+          {
+            "node": "Reels Data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send the goodies1": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d82da571-7db0-4eed-875b-875049946fae",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "aqssa5VgAmmhX5pX",
+  "tags": []
+}

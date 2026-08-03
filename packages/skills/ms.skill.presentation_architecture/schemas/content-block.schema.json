@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "content-block.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "block_id": { "type": "string" },
+    "block_type": {
+      "type": "string",
+      "enum": [
+        "headline", "short_text", "bullet_group", "quote", "metric", "comparison",
+        "process_steps", "timeline", "table", "chart_placeholder", "image_placeholder",
+        "diagram_placeholder", "callout", "warning", "source_note"
+      ]
+    },
+    "content_summary": { "type": "string" },
+    "source_references": { "type": "array", "items": { "type": "object" } },
+    "priority": { "type": "string" },
+    "maximum_density": { "type": "string" },
+    "visual_role": { "type": "string" },
+    "accessibility_text_required": { "type": "boolean" },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "block_id", "block_type", "content_summary", "source_references", "priority",
+    "maximum_density", "visual_role", "accessibility_text_required", "provenance"
+  ]
+}

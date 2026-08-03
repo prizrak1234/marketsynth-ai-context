@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_validation/validation_condition/0.2.0",
+  "title": "MarketValidationCondition",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "condition_id": { "type": "string", "maxLength": 128 },
+    "category": { "type": "string", "maxLength": 128 },
+    "statement": { "type": "string", "maxLength": 4000 },
+    "required_action": { "type": "string", "maxLength": 2000 },
+    "owner": {
+      "type": "string",
+      "enum": ["owner", "operator", "customer", "platform"]
+    },
+    "deadline_or_gate": { "type": "string", "maxLength": 500 },
+    "evidence_required": { "type": "string", "maxLength": 2000 },
+    "blocking": { "type": "boolean" },
+    "validation_method": { "type": "string", "maxLength": 2000 },
+    "status": {
+      "type": "string",
+      "enum": ["open", "satisfied", "failed", "waived", "unknown"]
+    },
+    "provenance": { "$ref": "#/$defs/provenance_stub" }
+  },
+  "required": [
+    "condition_id",
+    "category",
+    "statement",
+    "required_action",
+    "owner",
+    "deadline_or_gate",
+    "evidence_required",
+    "blocking",
+    "validation_method",
+    "status",
+    "provenance"
+  ],
+  "$defs": {
+    "provenance_stub": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "maxLength": 128 },
+        "skill_version": { "type": "string", "maxLength": 32 }
+      }
+    }
+  }
+}

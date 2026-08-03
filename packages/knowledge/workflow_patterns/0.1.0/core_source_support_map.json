@@ -1,0 +1,453 @@
+{
+  "core_version": "0.1.0-core",
+  "program_phase": "KB-WPL-01.3B",
+  "multi_pattern_source_policy": "Workflows may support multiple core patterns with pattern-specific signals.",
+  "entries": [
+    {
+      "pattern_id": "pagination_and_batching",
+      "source_workflow_ids": [
+        "wf-860ed73d41feb4fd",
+        "wf-4795f50628f182d5"
+      ],
+      "source_practice_ids": [
+        "pagination_until_exhausted",
+        "bounded_batch_processing"
+      ],
+      "manual_audit_id": "audit-core-pagination_and_batching",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-860ed73d41feb4fd",
+          "signal_type": "branch_structure",
+          "node_or_functional_class": "n8n-nodes-base.splitInBatches",
+          "topology_location": "retargeting_batch_loop",
+          "supported_pattern_rule": "bounded_batch_processing",
+          "confidence": "explicit",
+          "limitations": [
+            "WhatsApp retargeting domain-specific variant."
+          ],
+          "evidence_hash": "83f224733e677be2a2a81f273ed5a156c29a8f609fb29136344322e605f4ea01"
+        },
+        {
+          "source_workflow_id": "wf-4795f50628f182d5",
+          "signal_type": "trigger_structure",
+          "node_or_functional_class": "n8n-nodes-base.scheduleTrigger",
+          "topology_location": "scheduled_batch_entry",
+          "supported_pattern_rule": "pagination_until_exhausted",
+          "confidence": "probable",
+          "limitations": [
+            "Schedule filter batch inferred from metadata."
+          ],
+          "evidence_hash": "7156998d68f2ec288bb992661fa9dce6d98e9db4f08c58326506ffa0ec1a4ed9"
+        }
+      ]
+    },
+    {
+      "pattern_id": "checkpoint_and_resume",
+      "source_workflow_ids": [
+        "wf-6114836577421bab",
+        "wf-6d6ba3d5c2233d5f"
+      ],
+      "source_practice_ids": [
+        "checkpoint_before_expensive_step"
+      ],
+      "manual_audit_id": "audit-core-checkpoint_and_resume",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-6114836577421bab",
+          "signal_type": "retry_structure",
+          "node_or_functional_class": "n8n-nodes-base.wait",
+          "topology_location": "music_automation_wait_segment",
+          "supported_pattern_rule": "checkpoint_before_expensive_step",
+          "confidence": "probable",
+          "limitations": [
+            "Also supports rate_limit pattern via httpRequest."
+          ],
+          "evidence_hash": "eee8c2dec618f59b37c5cde1af350b4167d18be985bd1db9208f9ea9ae84a2a8"
+        },
+        {
+          "source_workflow_id": "wf-6d6ba3d5c2233d5f",
+          "signal_type": "recovery_action",
+          "node_or_functional_class": "n8n-nodes-base.wait",
+          "topology_location": "media_conversion_pause",
+          "supported_pattern_rule": "resume_from_checkpoint",
+          "confidence": "probable",
+          "limitations": [
+            "GIF conversion wait step only."
+          ],
+          "evidence_hash": "f114dd122a57e7fed44158a1ec91e3fbaaea6350f4ea09f38e282542542922bb"
+        }
+      ]
+    },
+    {
+      "pattern_id": "dead_letter_queue",
+      "source_workflow_ids": [
+        "wf-4e833d762f583631",
+        "wf-7227ff0544f5cbd2"
+      ],
+      "source_practice_ids": [
+        "terminal_dead_letter_handling"
+      ],
+      "manual_audit_id": "audit-core-dead_letter_queue",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-4e833d762f583631",
+          "signal_type": "error_path",
+          "node_or_functional_class": "n8n-nodes-base.httpRequest",
+          "topology_location": "ticket_dispatch_failure_branch",
+          "supported_pattern_rule": "terminal_dead_letter_handling",
+          "confidence": "probable",
+          "limitations": [
+            "Email dispatch failure path inferred."
+          ],
+          "evidence_hash": "5cd398176d21b3d6b70ae8a61a6bb1bd7514fd05e45ecf12eafaac67a739a755"
+        },
+        {
+          "source_workflow_id": "wf-7227ff0544f5cbd2",
+          "signal_type": "human_decision",
+          "node_or_functional_class": "human_approval",
+          "topology_location": "support_escalation_terminal",
+          "supported_pattern_rule": "operator_notification_on_terminal_failure",
+          "confidence": "explicit",
+          "limitations": [
+            "Also supports human_edit and feedback patterns."
+          ],
+          "evidence_hash": "fc101d19dbf52bd90c959deb2a071eed26983cdca0382a0af87270637e7deecf"
+        }
+      ]
+    },
+    {
+      "pattern_id": "provider_rate_limit_handling",
+      "source_workflow_ids": [
+        "wf-6114836577421bab",
+        "wf-b537693ad1b8ee7e"
+      ],
+      "source_practice_ids": [
+        "rate_limit_backoff"
+      ],
+      "manual_audit_id": "audit-core-provider_rate_limit_handling",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-6114836577421bab",
+          "signal_type": "retry_structure",
+          "node_or_functional_class": "n8n-nodes-base.httpRequest",
+          "topology_location": "external_api_retry_segment",
+          "supported_pattern_rule": "rate_limit_backoff",
+          "confidence": "probable",
+          "limitations": [
+            "Shared with checkpoint pattern on same workflow."
+          ],
+          "evidence_hash": "9e19757b9fafd07a86f9144b89efc4c557b5f18f0cad89758fba0a05aba0fa21"
+        },
+        {
+          "source_workflow_id": "wf-b537693ad1b8ee7e",
+          "signal_type": "retry_structure",
+          "node_or_functional_class": "n8n-nodes-base.httpRequest",
+          "topology_location": "creative_api_call",
+          "supported_pattern_rule": "bounded_retry_on_transient_failure",
+          "confidence": "probable",
+          "limitations": [
+            "Creative agent HTTP calls only."
+          ],
+          "evidence_hash": "540e83da733206933e91d8c38f9424b0c5ca7545f4e63822bfb76d4df0d4f34d"
+        }
+      ]
+    },
+    {
+      "pattern_id": "quality_gate_after_generation",
+      "source_workflow_ids": [
+        "wf-63b78819a2e5a190",
+        "wf-16a4bd5f71833d44"
+      ],
+      "source_practice_ids": [
+        "quality_gate_before_handoff"
+      ],
+      "manual_audit_id": "audit-core-quality_gate_after_generation",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-63b78819a2e5a190",
+          "signal_type": "structured_output",
+          "node_or_functional_class": "@n8n/n8n-nodes-langchain.outputParserStructured",
+          "topology_location": "seo_agent_output_validation",
+          "supported_pattern_rule": "quality_gate_before_handoff",
+          "confidence": "explicit",
+          "limitations": [
+            "Also supports source_lineage via aggregate nodes."
+          ],
+          "evidence_hash": "db2c5582d1e51e1bb4ede7e51af8bb70e484a655854f685f5683ee4d5fe58fd3"
+        },
+        {
+          "source_workflow_id": "wf-16a4bd5f71833d44",
+          "signal_type": "schema_validation",
+          "node_or_functional_class": "@n8n/n8n-nodes-langchain.outputParserStructured",
+          "topology_location": "credit_verification_parser",
+          "supported_pattern_rule": "block_invalid_llm_output",
+          "confidence": "explicit",
+          "limitations": [
+            "Financial domain requires elevated review."
+          ],
+          "evidence_hash": "8b7f7089457b0ad3a557c662273d4839b43812120384bb81dc53a480cd6cad0b"
+        }
+      ]
+    },
+    {
+      "pattern_id": "specialist_subworkflow",
+      "source_workflow_ids": [
+        "wf-b2aea5e382059f4b",
+        "wf-7c284d78aad2003d"
+      ],
+      "source_practice_ids": [
+        "specialist_scope_isolation"
+      ],
+      "manual_audit_id": "audit-core-specialist_subworkflow",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-b2aea5e382059f4b",
+          "signal_type": "branch_structure",
+          "node_or_functional_class": "@n8n/n8n-nodes-langchain.agent",
+          "topology_location": "facebook_content_specialist_chain",
+          "supported_pattern_rule": "specialist_scope_isolation",
+          "confidence": "probable",
+          "limitations": [
+            "Also supports tool_workflow and lineage patterns."
+          ],
+          "evidence_hash": "e1fb1cd2cba1d028468d37539788d423e07bf6beb53eb1bc027a0be72959ec24"
+        },
+        {
+          "source_workflow_id": "wf-7c284d78aad2003d",
+          "signal_type": "other",
+          "node_or_functional_class": "agent_orchestration",
+          "topology_location": "multi_tool_specialist_delegate",
+          "supported_pattern_rule": "specialist_subworkflow_invocation",
+          "confidence": "explicit",
+          "limitations": [
+            "Gmail/Telegram tools as separate invocations."
+          ],
+          "evidence_hash": "d68b6d659940ad617dd0aa1202a3ec4ce4e4a46bf2bb6e385ceab0684a2f1e93"
+        }
+      ]
+    },
+    {
+      "pattern_id": "supervisor_pattern",
+      "source_workflow_ids": [
+        "wf-6bcda126561b5f72",
+        "wf-cb28929d37f1ac61"
+      ],
+      "source_practice_ids": [
+        "supervisor_does_not_execute_tools"
+      ],
+      "manual_audit_id": "audit-core-supervisor_pattern",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-6bcda126561b5f72",
+          "signal_type": "other",
+          "node_or_functional_class": "@n8n/n8n-nodes-langchain.agentTool",
+          "topology_location": "ip_governance_supervisor_delegate",
+          "supported_pattern_rule": "supervisor_does_not_execute_tools",
+          "confidence": "explicit",
+          "limitations": [
+            "Governance domain; marketing adaptation needs review."
+          ],
+          "evidence_hash": "457942f7ddf45a28e30446b61b7cc97d5469e921abe226d67382d063c773b820"
+        },
+        {
+          "source_workflow_id": "wf-cb28929d37f1ac61",
+          "signal_type": "approval_gate",
+          "node_or_functional_class": "human_approval",
+          "topology_location": "privacy_risk_supervisor_review",
+          "supported_pattern_rule": "supervisor_orchestrates_specialists",
+          "confidence": "explicit",
+          "limitations": [
+            "PII elevated review required."
+          ],
+          "evidence_hash": "c0c7ad586e3ffae52dd1a48b3af0936d31aaf96a20b1ffada07b154bd35bdea7"
+        }
+      ]
+    },
+    {
+      "pattern_id": "tool_workflow_separation",
+      "source_workflow_ids": [
+        "wf-7c284d78aad2003d",
+        "wf-b2aea5e382059f4b"
+      ],
+      "source_practice_ids": [
+        "tool_workflow_permission_boundary",
+        "specialist_scope_isolation"
+      ],
+      "manual_audit_id": "audit-core-tool_workflow_separation",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-7c284d78aad2003d",
+          "signal_type": "other",
+          "node_or_functional_class": "n8n-nodes-base.gmailTool",
+          "topology_location": "isolated_gmail_tool_workflow",
+          "supported_pattern_rule": "tool_workflow_permission_boundary",
+          "confidence": "explicit",
+          "limitations": [
+            "Same workflow supports specialist pattern."
+          ],
+          "evidence_hash": "e4afe0d172698eee5c729dcbdc19f419dedaa0b1bf85be75f9e055bc73409435"
+        },
+        {
+          "source_workflow_id": "wf-b2aea5e382059f4b",
+          "signal_type": "other",
+          "node_or_functional_class": "n8n-nodes-base.googleDocsTool",
+          "topology_location": "document_tool_subworkflow",
+          "supported_pattern_rule": "minimal_tool_action_only",
+          "confidence": "probable",
+          "limitations": [
+            "Tool scope inferred from agentTool metadata."
+          ],
+          "evidence_hash": "a195d5d1805b30ab4cbf49520b099994cb290d1b2ff8bea9267301c8e975a54b"
+        }
+      ]
+    },
+    {
+      "pattern_id": "human_edit_then_resume",
+      "source_workflow_ids": [
+        "wf-7227ff0544f5cbd2",
+        "wf-c18641f0b4421b0a"
+      ],
+      "source_practice_ids": [
+        "manual_edit_resume"
+      ],
+      "manual_audit_id": "audit-core-human_edit_then_resume",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-7227ff0544f5cbd2",
+          "signal_type": "human_decision",
+          "node_or_functional_class": "human_approval",
+          "topology_location": "support_draft_edit_gate",
+          "supported_pattern_rule": "manual_edit_resume",
+          "confidence": "explicit",
+          "limitations": [
+            "Shared with feedback and dead_letter sources."
+          ],
+          "evidence_hash": "b3674254386df6fbbd8e5b674c70d1b114c2b5e4b9309f7a7fbe9a689405f44f"
+        },
+        {
+          "source_workflow_id": "wf-c18641f0b4421b0a",
+          "signal_type": "approval_gate",
+          "node_or_functional_class": "human_approval",
+          "topology_location": "legal_policy_edit_review",
+          "supported_pattern_rule": "resume_after_authoritative_edit",
+          "confidence": "explicit",
+          "limitations": [
+            "Legal domain adaptation deferred."
+          ],
+          "evidence_hash": "8e205e644116e6095866231156c2d836fcf46567bca32ec8005ad1fa6a13cd34"
+        }
+      ]
+    },
+    {
+      "pattern_id": "publication_confirmation",
+      "source_workflow_ids": [
+        "wf-497aa9eee8a759da",
+        "wf-9f3a78220a7bfbe3"
+      ],
+      "source_practice_ids": [
+        "post_publish_evidence_capture"
+      ],
+      "manual_audit_id": "audit-core-publication_confirmation",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-497aa9eee8a759da",
+          "signal_type": "publication_action",
+          "node_or_functional_class": "n8n-nodes-base.gmail",
+          "topology_location": "quotation_pdf_email_confirm",
+          "supported_pattern_rule": "post_publish_evidence_capture",
+          "confidence": "explicit",
+          "limitations": [
+            "PDF generation step precedes send."
+          ],
+          "evidence_hash": "2c79f29fd929717a7a6663ace42a9f63bc0a8daeb3d7412e9d7d850ad430a983"
+        },
+        {
+          "source_workflow_id": "wf-9f3a78220a7bfbe3",
+          "signal_type": "publication_action",
+          "node_or_functional_class": "publication",
+          "topology_location": "social_publish_confirm_branch",
+          "supported_pattern_rule": "publication_approval_required",
+          "confidence": "probable",
+          "limitations": [
+            "HTTP publication variant."
+          ],
+          "evidence_hash": "eb95762b81ac342b42fc3d7b50a02698fc75e4c433d9a8170e246f94ad803c81"
+        }
+      ]
+    },
+    {
+      "pattern_id": "source_lineage_preservation",
+      "source_workflow_ids": [
+        "wf-63b78819a2e5a190",
+        "wf-b2aea5e382059f4b"
+      ],
+      "source_practice_ids": [
+        "source_lineage_preservation"
+      ],
+      "manual_audit_id": "audit-core-source_lineage_preservation",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-63b78819a2e5a190",
+          "signal_type": "provenance_capture",
+          "node_or_functional_class": "n8n-nodes-base.aggregate",
+          "topology_location": "seo_research_lineage_chain",
+          "supported_pattern_rule": "source_lineage_preservation",
+          "confidence": "probable",
+          "limitations": [
+            "Also supports quality_gate on same workflow."
+          ],
+          "evidence_hash": "7fd19a60e4408611e6cf631e831243d0d0fc33a6c2532def0f8e4571bb31792b"
+        },
+        {
+          "source_workflow_id": "wf-b2aea5e382059f4b",
+          "signal_type": "evidence_reference",
+          "node_or_functional_class": "@n8n/n8n-nodes-langchain.outputParserStructured",
+          "topology_location": "repurpose_content_lineage",
+          "supported_pattern_rule": "carry_source_reference_through_transform",
+          "confidence": "probable",
+          "limitations": [
+            "Multi-channel repurposing variant."
+          ],
+          "evidence_hash": "eab5a2769fbdd24ae2bd9c3918f76b06030015e1a5ab580f743d474162210b65"
+        }
+      ]
+    },
+    {
+      "pattern_id": "customer_feedback_to_learning_candidate",
+      "source_workflow_ids": [
+        "wf-7227ff0544f5cbd2",
+        "wf-770099f8fbf34352"
+      ],
+      "source_practice_ids": [
+        "feedback_to_knowledge_candidate"
+      ],
+      "manual_audit_id": "audit-core-customer_feedback_to_learning_candidate",
+      "supporting_signals": [
+        {
+          "source_workflow_id": "wf-7227ff0544f5cbd2",
+          "signal_type": "trigger_structure",
+          "node_or_functional_class": "n8n-nodes-base.gmailTrigger",
+          "topology_location": "support_feedback_intake",
+          "supported_pattern_rule": "feedback_to_knowledge_candidate",
+          "confidence": "probable",
+          "limitations": [
+            "Customer PII requires elevated review."
+          ],
+          "evidence_hash": "f606a28e32c075c9e63463bffe4147821966d4252a82b09aba54b2a2c4c00fe8"
+        },
+        {
+          "source_workflow_id": "wf-770099f8fbf34352",
+          "signal_type": "other",
+          "node_or_functional_class": "agent_orchestration",
+          "topology_location": "nudge_feedback_capture",
+          "supported_pattern_rule": "knowledge_candidate_not_canonical_write",
+          "confidence": "probable",
+          "limitations": [
+            "Personal finance domain; marketing use needs reframing."
+          ],
+          "evidence_hash": "96feac1b2d57559c8086e13b30d15130b8c8f7c1c19a8c7a083f6c5a436d62d3"
+        }
+      ]
+    }
+  ]
+}

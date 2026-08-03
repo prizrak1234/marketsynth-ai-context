@@ -1,0 +1,19 @@
+{
+  "raw_task": "Invalid fixture — verified claim without source reference.",
+  "product_name": {
+    "value": "BadClaim Co",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "target_customer_claims": [
+    {
+      "claim_id": "bad-001",
+      "domain": "customer_segment",
+      "statement": "Enterprise buyers verified without source",
+      "source_type": "external_source",
+      "verification_status": "verified",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,649 @@
+{
+  "name": "1_IZ_Instagram_SCR_AI",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        -336
+      ],
+      "id": "53f94050-a38f-482e-a60f-496223ac953a",
+      "name": "Telegram Trigger",
+      "webhookId": "1d6a36b7-6798-4126-a139-de8a7aefee63",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        496,
+        -48
+      ],
+      "id": "f9071650-6859-45f5-aca0-4035d5c18ab2",
+      "name": "Send a chat action",
+      "webhookId": "65f60d4e-f690-4d22-8f96-048bb284106e",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "d0f75300-d3c1-4eb4-8087-b9d1a5da2420"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ca9cc06c-dcf8-457b-854b-4c03d3d15dcc",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        544,
+        -336
+      ],
+      "id": "9546e2c5-fa27-4f39-9638-44cf23b09fc9",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9d8e573-3830-4e93-9f74-4838b5ff49b5",
+              "name": "text",
+              "value": "={{ $('Telegram Trigger').item.json.message.text }}\n{{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1344,
+        -352
+      ],
+      "id": "52dc2d50-56b8-48fd-8681-5f618678301f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1808,
+        -112
+      ],
+      "id": "1f71020b-8868-47d8-b315-af93f69d1cb4",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1952,
+        -112
+      ],
+      "id": "c45e2ae4-caaa-4e07-ad03-d8afa15c9c33",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        816,
+        -192
+      ],
+      "id": "36fb39fa-868e-4430-8b99-208a45b59d22",
+      "name": "Telegram3",
+      "webhookId": "d6ab3ac8-330a-461e-ac0c-26b6488be885",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1072,
+        -192
+      ],
+      "id": "84a4d5ce-7395-45f0-b605-c26d37d5aab4",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=tg_ID_{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        2064,
+        48
+      ],
+      "id": "6fc52772-b46a-44cc-b393-02e92075f85f",
+      "name": "Redis Chat Memory1",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2560,
+        -352
+      ],
+      "id": "701a1aed-a448-4a49-acaf-c20e5bbb6f0c",
+      "name": "Send a text message",
+      "webhookId": "cfadedcf-3e97-4ec6-aed9-65ff600bd5c0",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        704,
+        -512
+      ],
+      "typeVersion": 1,
+      "id": "e947f383-a1de-4350-ab9d-08c317c1dc6e",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 116,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "3976e681-e3ea-4b20-b34d-409169d1ae1d",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ И ПРОВЕРКА",
+        "height": 589,
+        "width": 1453,
+        "color": 3
+      },
+      "id": "693c481c-d740-4919-a942-c20140c32a61",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        128,
+        -448
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 96,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2128,
+        -512
+      ],
+      "typeVersion": 1,
+      "id": "5de65f62-6540-4a27-b9be-f4b8e4a05f4d",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## УРОК: НОДА REDIS https://youtu.be/TEr9L6DRKKA",
+        "height": 116,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2512,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "47abbe9f-7bbe-4b62-8f47-d49ee646d7f7",
+      "name": "Sticky Note13",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Instagram AI Агент",
+        "height": 656,
+        "width": 1264,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "6588c291-85f2-4396-8134-75dec0b186a3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 116,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        176
+      ],
+      "typeVersion": 1,
+      "id": "c9ccd2d2-ba31-48c0-8188-d6b25fe58499",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=Your role is a router and formatter for Instagram automation. You work only with Instagram profiles and videos.  \n\nWhen the user asks to get or analyze an Instagram profile's Reels:\n\n1) Normalize input: extract the handle from @username or URL and remove @ (e.g., \"@igorzuevich\" → \"igorzuevich\").\n2) Call the tool “Get a Instagram profiles reels” ONLY to validate and fetch a basic response.\n   Required args:\n   - username (string without @)\n   - limit (1–50; default 20)\n3) Then dispatch the task to the worker workflow to process the data.\n4) When you receive the response:\n   - Extract the username and top 3 Reels links from the JSON.\n   - Format a user-friendly message in Russian.\n   - DO NOT return raw JSON or technical info.\n\n📄 Example response:\n«Я проанализировал контент пользователя @igorzuevich и нашёл 3 самых популярных Reels:\n\n1. https://www.instagram.com/reel/XXXXXXXXX/\n2. https://www.instagram.com/reel/YYYYYYYYY/\n3. https://www.instagram.com/reel/ZZZZZZZZZ/»\n\n---\n\nWhen the user asks to transcribe an Instagram video:\n\n1) Validate that the user provided a single video URL (e.g., https://www.instagram.com/reel/...).\n2) Call the tool “Get a Instagram video transcript” with this URL.\n3) Wait for the worker response.\n4) Format the output as a friendly message in Russian.\n\n📄 Example response:\n«Транскрипция видео выполнена успешно!\n\nВидео: https://www.instagram.com/reel/XXXXXXXXX/\n\nТекст сохранен в базу данных и готов к использованию.»\n\n---\n\n⚠️ Rules:\n- Do NOT use tools for hashtags or non-Instagram links.\n- Do NOT return system or JSON data to the user.\n- Always format in a simple, friendly tone in Russian.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2000,
+        -352
+      ],
+      "id": "b91d95ae-41a6-4b04-8605-90387ca4a9b4",
+      "name": "Instagram AI Agent"
+    },
+    {
+      "parameters": {
+        "description": "Retrieves a list of videos from a Instagram profile.",
+        "workflowId": {
+          "__rl": true,
+          "value": "DDuvTZjoZBxLEq8E",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/DDuvTZjoZBxLEq8E",
+          "cachedResultName": "2_IZ_Instagram_SCR_GET_PRF_REELS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('username', `Instagram handle of the user (without @).\nExample: igorzuevich`, 'string') }}",
+            "Limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', `Number of videos to fetch (1–50). Default is 20.`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Limit",
+              "displayName": "Limit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2224,
+        -48
+      ],
+      "id": "acb8a306-f37b-4d76-8e7f-c88104ddcc19",
+      "name": "Get a Instagram profiles reels"
+    },
+    {
+      "parameters": {
+        "description": "Retrieves a transcript of a Instagram video. Takes a video URL, extracts audio, transcribes it to text, and saves the result to the database. Use this tool only for individual Instagram video links, not for profiles or video lists.",
+        "workflowId": {
+          "__rl": true,
+          "value": "kQoM8KThbymEa9SD",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/kQoM8KThbymEa9SD",
+          "cachedResultName": "3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "URL": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', `URL of a specific Instagram video to transcribe. Must be a full link in one of the following formats: https://www.instagram.com/reel/XXXXXXXXXXX/ or https://www.instagram.com/p/XXXXXXXXXXX/`, 'string') }}"
+          },
+          "matchingColumns": [
+            "URL"
+          ],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        2416,
+        -48
+      ],
+      "id": "0a075aa9-063c-4d85-9b12-49049b6cdc96",
+      "name": "Get a Instagram video transcript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a chat action",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Instagram AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Instagram AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Instagram AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Telegram3": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Instagram AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a Instagram profiles reels": {
+      "ai_tool": [
+        [
+          {
+            "node": "Instagram AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a Instagram video transcript": {
+      "ai_tool": [
+        [
+          {
+            "node": "Instagram AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cc80b563-aa26-44b7-b8e4-7e0f60412dcc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "fXt0JUanabdcYITR",
+  "tags": []
+}

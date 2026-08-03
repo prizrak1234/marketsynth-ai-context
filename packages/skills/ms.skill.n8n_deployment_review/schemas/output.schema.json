@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.n8n_deployment_review/output/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "deployment_review_id": { "type": "string" },
+    "skill_id": { "type": "string", "const": "ms.skill.n8n_deployment_review" },
+    "skill_version": { "type": "string" },
+    "deployment_readiness": {
+      "type": "string",
+      "enum": [
+        "ready_for_manual_deployment",
+        "ready_with_conditions",
+        "revise_before_deployment",
+        "blocked",
+        "insufficient_evidence",
+        "out_of_scope"
+      ]
+    },
+    "architecture_conformance": { "type": "object" },
+    "review_findings": { "type": "array", "items": { "type": "object" } },
+    "blockers": { "type": "array", "items": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "credential_reference_findings": { "type": "array", "items": { "type": "object" } },
+    "provider_compatibility_findings": { "type": "object" },
+    "node_version_findings": { "type": "array", "items": { "type": "object" } },
+    "workflow_settings_findings": { "type": "array", "items": { "type": "object" } },
+    "approval_findings": { "type": "object" },
+    "publication_findings": { "type": "object" },
+    "billing_findings": { "type": "object" },
+    "retry_and_idempotency_findings": { "type": "object" },
+    "error_handling_findings": { "type": "object" },
+    "privacy_findings": { "type": "array", "items": { "type": "object" } },
+    "test_evidence_findings": { "type": "object" },
+    "rollback_findings": { "type": "object" },
+    "required_changes": { "type": "array", "items": { "type": "string" } },
+    "activation_gate": { "type": "object" },
+    "human_approval_required": { "type": "boolean" },
+    "provider_reverification_required": { "type": "boolean" },
+    "patterns_consulted": {
+      "type": "array",
+      "items": { "$ref": "schemas/pattern-selection-reference.schema.json" }
+    },
+    "practices_consulted": { "type": "array", "items": { "type": "string" } },
+    "limitations": { "type": "array", "items": { "type": "string" } },
+    "evidence_gaps": { "type": "array", "items": { "type": "string" }, "maxItems": 30 },
+    "coverage": { "type": "string", "enum": ["full", "partial", "minimal", "unknown"] },
+    "evidence_quality": {
+      "type": "string",
+      "enum": ["comprehensive", "partial", "insufficient", "conflicted", "unknown"]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": ["complete", "partially_complete", "insufficient_sources", "conflicted", "out_of_scope"]
+    },
+    "provenance": { "type": "object" },
+    "input_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "output_hash": { "type": "string", "minLength": 64, "maxLength": 64 }
+  },
+  "required": [
+    "deployment_review_id",
+    "skill_id",
+    "skill_version",
+    "deployment_readiness",
+    "architecture_conformance",
+    "review_findings",
+    "blockers",
+    "activation_gate",
+    "human_approval_required",
+    "provider_reverification_required",
+    "patterns_consulted",
+    "limitations",
+    "evidence_gaps",
+    "coverage",
+    "evidence_quality",
+    "research_status",
+    "provenance",
+    "input_hash",
+    "output_hash"
+  ]
+}

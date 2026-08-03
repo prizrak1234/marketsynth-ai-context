@@ -1,0 +1,6 @@
+{
+  "messages": [
+    "Есть ли у вас аллергии?"
+  ],
+  "allergens_ref": "allergens_master.json"
+}

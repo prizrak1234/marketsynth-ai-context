@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.claim_substantiation/schemas/claim-assessment.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "claim_id": {
+      "type": "string"
+    },
+    "original_statement": {
+      "type": "string"
+    },
+    "normalized_claim": {
+      "type": "string"
+    },
+    "substantiation_status": {
+      "type": "string",
+      "enum": [
+        "supported",
+        "supported_with_conditions",
+        "partially_supported",
+        "unsupported",
+        "prohibited",
+        "requires_legal_review",
+        "insufficient_evidence",
+        "conflicted"
+      ]
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mechanism_reference": {
+      "type": "string"
+    },
+    "proof_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_qualifiers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prohibited_phrases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "permitted_rewrite": {
+      "type": "string"
+    },
+    "residual_risk": {
+      "type": "string"
+    },
+    "human_review_required": {
+      "type": "boolean"
+    },
+    "legal_review_required": {
+      "type": "boolean"
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "claim_id",
+    "original_statement",
+    "normalized_claim",
+    "substantiation_status",
+    "evidence_references",
+    "limitations",
+    "human_review_required",
+    "legal_review_required",
+    "provenance"
+  ]
+}

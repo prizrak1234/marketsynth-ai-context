@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/provider-constraint.schema.json",
+  "title": "ProviderConstraint",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "provider": {
+      "type": "string"
+    },
+    "component": {
+      "type": "string"
+    },
+    "documented_version": {
+      "type": "string"
+    },
+    "documented_at": {
+      "type": "string"
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "claimed",
+        "source_documented",
+        "reproduced",
+        "regression_tested",
+        "contradicted",
+        "obsolete",
+        "unknown"
+      ]
+    },
+    "requires_reverification": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "provider",
+    "documented_version",
+    "documented_at",
+    "verification_status",
+    "requires_reverification",
+    "provenance"
+  ]
+}

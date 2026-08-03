@@ -1,0 +1,8 @@
+{
+  "legacy_biv_value": null,
+  "mv_020_value": "defer",
+  "compatibility": "unknown",
+  "migration_risk": "high",
+  "adapter_required": true,
+  "notes": "No direct BIV equivalent"
+}

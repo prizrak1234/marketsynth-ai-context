@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.icp_segmentation/job_to_be_done/0.1.0",
+  "title": "JobToBeDone",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "jtbd_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "job_type": {
+      "type": "string",
+      "enum": ["functional", "emotional", "social", "mixed", "unknown"]
+    },
+    "situation": { "type": "string", "maxLength": 2000 },
+    "motivation": { "type": "string", "maxLength": 2000 },
+    "desired_progress": { "type": "string", "maxLength": 2000 },
+    "functional_job": { "type": "string", "maxLength": 2000 },
+    "emotional_job": { "type": "string", "maxLength": 2000 },
+    "social_job": { "type": "string", "maxLength": 2000 },
+    "current_solution": { "type": "string", "maxLength": 2000 },
+    "switching_trigger": { "type": "string", "maxLength": 2000 },
+    "success_criteria": { "type": "string", "maxLength": 2000 },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 20
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 20
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "provenance": { "$ref": "schemas/provenance_stub.schema.json" }
+  },
+  "required": ["jtbd_id", "job_type", "situation", "confidence"]
+}

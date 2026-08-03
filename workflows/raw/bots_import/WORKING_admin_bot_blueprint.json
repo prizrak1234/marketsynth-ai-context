@@ -1,0 +1,785 @@
+{
+  "name": "Админ-бот: Административный бот",
+  "flow": [
+    {
+      "id": 1,
+      "module": "telegram:watchUpdates",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 2,
+      "module": "airtable:searchRecords",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "base": "{{connection.base}}",
+        "table": "Salons",
+        "formula": "{admin_telegram_id} = {{1.message.from.id}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 3,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "parameters": {},
+      "routes": [
+        {
+          "label": "Авторизованный админ",
+          "expression": "{{length(2.records)}} > 0"
+        },
+        {
+          "label": "Неавторизованный пользователь",
+          "expression": "{{length(2.records)}} = 0"
+        }
+      ],
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 4,
+      "module": "telegram:sendMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "chatId": "{{1.message.chat.id}}",
+        "text": "❌ **Доступ запрещён**\n\nВы не являетесь администратором салона.\nДля получения доступа обратитесь к владельцу системы.",
+        "parseMode": "Markdown"
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": -200
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 5,
+      "module": "builtin:SetVariables",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "variables": [
+          {
+            "name": "salon_id",
+            "value": "{{2.records[0].id}}"
+          },
+          {
+            "name": "salon_name",
+            "value": "{{2.records[0].name}}"
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 100
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 6,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "parameters": {},
+      "routes": [
+        {
+          "label": "Команда /start",
+          "expression": "{{1.message.text}} = \"/start\""
+        },
+        {
+          "label": "Команда /today",
+          "expression": "{{1.message.text}} = \"/today\""
+        },
+        {
+          "label": "Команда /bookings",
+          "expression": "{{1.message.text}} = \"/bookings\""
+        },
+        {
+          "label": "Команда /masters",
+          "expression": "{{1.message.text}} = \"/masters\""
+        },
+        {
+          "label": "Команда /services",
+          "expression": "{{1.message.text}} = \"/services\""
+        },
+        {
+          "label": "Команда /analytics",
+          "expression": "{{1.message.text}} = \"/analytics\""
+        },
+        {
+          "label": "Callback Query",
+          "expression": "{{1.callback_query}} exists"
+        }
+      ],
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 1200,
+          "y": 100
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 7,
+      "module": "telegram:sendMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "chatId": "{{1.message.chat.id}}",
+        "text": "👨‍💼 **Админ-панель салона \"{{5.salon_name}}\"**\n\n🎯 **Основные команды:**\n/today - Записи на сегодня\n/bookings - Все записи\n/masters - Управление мастерами\n/services - Управление услугами\n/analytics - Статистика и аналитика\n\n📊 **Быстрый доступ:**",
+        "parseMode": "Markdown",
+        "replyMarkup": {
+          "inlineKeyboard": [
+            [
+              {
+                "text": "📅 Сегодня",
+                "callbackData": "show_today"
+              },
+              {
+                "text": "📋 Все записи",
+                "callbackData": "show_bookings"
+              }
+            ],
+            [
+              {
+                "text": "👨‍💼 Мастера",
+                "callbackData": "manage_masters"
+              },
+              {
+                "text": "💇‍♀️ Услуги",
+                "callbackData": "manage_services"
+              }
+            ],
+            [
+              {
+                "text": "📊 Аналитика",
+                "callbackData": "show_analytics"
+              }
+            ]
+          ]
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 1500,
+          "y": -200
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 8,
+      "module": "airtable:searchRecords",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "base": "{{connection.base}}",
+        "table": "Bookings",
+        "formula": "AND({salon_id} = '{{5.salon_id}}', IS_SAME({booking_date}, TODAY(), 'day'), {status} != 'cancelled')",
+        "sort": [
+          {
+            "field": "booking_date",
+            "direction": "asc"
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 1500,
+          "y": -100
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 9,
+      "module": "builtin:BasicAggregator",
+      "version": 1,
+      "parameters": {
+        "feeder": 8
+      },
+      "mapper": {
+        "aggregateFunction": "text",
+        "text": "🕐 {{formatDate(8.booking_date, \"HH:mm\")}} - {{8.client_name}}\n💇‍♀️ {{8.service_name}} ({{8.master_name}})\n📱 {{8.client_phone}}\n💰 {{8.price}}₽ | 📍 {{8.status}}\n\n"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1800,
+          "y": -100
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 10,
+      "module": "builtin:BasicMath",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "operator": "sum",
+        "operands": "{{map(8.records, price)}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 2100,
+          "y": -100
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 11,
+      "module": "telegram:sendMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "chatId": "{{coalesce(1.message.chat.id, 1.callback_query.message.chat.id)}}",
+        "text": "📅 **Записи на сегодня ({{formatDate(now, \"DD.MM.YYYY\")}}):**\n\n{{if(length(8.records) > 0, 9.text, \"📭 На сегодня записей нет.\")}}\n\n📊 **Итого:** {{length(8.records)}} записей на {{10.result}}₽",
+        "parseMode": "Markdown",
+        "replyMarkup": {
+          "inlineKeyboard": [
+            [
+              {
+                "text": "📋 Все записи",
+                "callbackData": "show_bookings"
+              },
+              {
+                "text": "🔄 Обновить",
+                "callbackData": "show_today"
+              }
+            ]
+          ]
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 2400,
+          "y": -100
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 12,
+      "module": "airtable:searchRecords",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "base": "{{connection.base}}",
+        "table": "Bookings",
+        "formula": "AND({salon_id} = '{{5.salon_id}}', {booking_date} >= DATEADD(TODAY(), -7, 'days'))",
+        "sort": [
+          {
+            "field": "booking_date",
+            "direction": "desc"
+          }
+        ],
+        "limit": 20
+      },
+      "metadata": {
+        "designer": {
+          "x": 1500,
+          "y": 0
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 13,
+      "module": "builtin:BasicAggregator",
+      "version": 1,
+      "parameters": {
+        "feeder": 12
+      },
+      "mapper": {
+        "aggregateFunction": "text",
+        "text": "📅 {{formatDate(12.booking_date, \"DD.MM HH:mm\")}} - {{12.client_name}}\n💇‍♀️ {{12.service_name}} ({{12.master_name}})\n💰 {{12.price}}₽ | 📍 {{12.status}}\n\n"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1800,
+          "y": 0
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 14,
+      "module": "telegram:sendMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "chatId": "{{coalesce(1.message.chat.id, 1.callback_query.message.chat.id)}}",
+        "text": "📋 **Последние записи ({{length(12.records)}}):**\n\n{{13.text}}\n💡 Показаны последние 20 записей за неделю.",
+        "parseMode": "Markdown",
+        "replyMarkup": {
+          "inlineKeyboard": [
+            [
+              {
+                "text": "📅 На сегодня",
+                "callbackData": "show_today"
+              },
+              {
+                "text": "📊 Аналитика",
+                "callbackData": "show_analytics"
+              }
+            ]
+          ]
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 2100,
+          "y": 0
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 15,
+      "module": "airtable:searchRecords",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "base": "{{connection.base}}",
+        "table": "Masters",
+        "formula": "{salon_id} = '{{5.salon_id}}'",
+        "sort": [
+          {
+            "field": "name",
+            "direction": "asc"
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 1500,
+          "y": 100
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 16,
+      "module": "builtin:BasicAggregator",
+      "version": 1,
+      "parameters": {
+        "feeder": 15
+      },
+      "mapper": {
+        "aggregateFunction": "text",
+        "text": "👨‍💼 **{{15.name}}** {{if(15.active, \"✅\", \"❌\")}}\n📱 {{15.phone}} | ⭐ {{15.rating}}/5\n💼 услуг | 📅 {{15.schedule}}\n\n"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1800,
+          "y": 100
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 17,
+      "module": "telegram:sendMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "chatId": "{{coalesce(1.message.chat.id, 1.callback_query.message.chat.id)}}",
+        "text": "👨‍💼 **Мастера салона ({{length(15.records)}}):**\n\n{{16.text}}\n💡 ✅ - активный, ❌ - неактивный",
+        "parseMode": "Markdown",
+        "replyMarkup": {
+          "inlineKeyboard": [
+            [
+              {
+                "text": "➕ Добавить мастера",
+                "callbackData": "add_master"
+              },
+              {
+                "text": "✏️ Редактировать",
+                "callbackData": "edit_masters"
+              }
+            ]
+          ]
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 2100,
+          "y": 100
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 18,
+      "module": "airtable:searchRecords",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "base": "{{connection.base}}",
+        "table": "Services",
+        "formula": "{salon_id} = '{{5.salon_id}}'",
+        "sort": [
+          {
+            "field": "category",
+            "direction": "asc"
+          },
+          {
+            "field": "name",
+            "direction": "asc"
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 1500,
+          "y": 200
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 19,
+      "module": "builtin:BasicAggregator",
+      "version": 1,
+      "parameters": {
+        "feeder": 18
+      },
+      "mapper": {
+        "aggregateFunction": "text",
+        "text": "💇‍♀️ **{{18.name}}** {{if(18.active, \"✅\", \"❌\")}}\n⏱ {{18.duration}} мин | 💰 {{18.price}}₽\n📝 {{18.description}}\n\n"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1800,
+          "y": 200
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 20,
+      "module": "telegram:sendMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "chatId": "{{coalesce(1.message.chat.id, 1.callback_query.message.chat.id)}}",
+        "text": "💇‍♀️ **Услуги салона ({{length(18.records)}}):**\n\n{{19.text}}\n💡 ✅ - активная, ❌ - неактивная",
+        "parseMode": "Markdown",
+        "replyMarkup": {
+          "inlineKeyboard": [
+            [
+              {
+                "text": "➕ Добавить услугу",
+                "callbackData": "add_service"
+              },
+              {
+                "text": "✏️ Редактировать",
+                "callbackData": "edit_services"
+              }
+            ]
+          ]
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 2100,
+          "y": 200
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 21,
+      "module": "airtable:searchRecords",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "base": "{{connection.base}}",
+        "table": "Bookings",
+        "formula": "AND({salon_id} = '{{5.salon_id}}', {booking_date} >= DATEADD(TODAY(), -30, 'days'))"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1500,
+          "y": 300
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 22,
+      "module": "builtin:BasicMath",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "operator": "sum",
+        "operands": "{{map(filter(21.records, status = 'completed'), price)}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1800,
+          "y": 300
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 23,
+      "module": "builtin:BasicMath",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "operator": "average",
+        "operands": "{{map(filter(21.records, status = 'completed'), price)}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 2100,
+          "y": 300
+        },
+        "restore": {}
+      }
+    },
+    {
+      "id": 24,
+      "module": "telegram:sendMessage",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "chatId": "{{coalesce(1.message.chat.id, 1.callback_query.message.chat.id)}}",
+        "text": "📊 **Аналитика за 30 дней:**\n\n📈 **Основные показатели:**\n• Всего записей: {{length(21.records)}}\n• Выполнено: {{length(filter(21.records, status = 'completed'))}}\n• Отменено: {{length(filter(21.records, status = 'cancelled'))}}\n\n💰 **Финансы:**\n• Общий доход: {{22.result}}₽\n• Средний чек: {{round(23.result)}}₽\n• Конверсия: {{round(length(filter(21.records, status = 'completed')) / length(21.records) * 100)}}%",
+        "parseMode": "Markdown",
+        "replyMarkup": {
+          "inlineKeyboard": [
+            [
+              {
+                "text": "📅 На сегодня",
+                "callbackData": "show_today"
+              },
+              {
+                "text": "📋 Все записи",
+                "callbackData": "show_bookings"
+              }
+            ]
+          ]
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 2400,
+          "y": 300
+        },
+        "restore": {}
+      }
+    }
+  ],
+  "connections": [
+    {
+      "id": 2,
+      "srcModuleId": 1,
+      "srcPort": 0,
+      "dstModuleId": 2,
+      "dstPort": 0
+    },
+    {
+      "id": 3,
+      "srcModuleId": 2,
+      "srcPort": 0,
+      "dstModuleId": 3,
+      "dstPort": 0
+    },
+    {
+      "id": 4,
+      "srcModuleId": 3,
+      "srcPort": 1,
+      "dstModuleId": 4,
+      "dstPort": 0
+    },
+    {
+      "id": 5,
+      "srcModuleId": 3,
+      "srcPort": 0,
+      "dstModuleId": 5,
+      "dstPort": 0
+    },
+    {
+      "id": 6,
+      "srcModuleId": 5,
+      "srcPort": 0,
+      "dstModuleId": 6,
+      "dstPort": 0
+    },
+    {
+      "id": 7,
+      "srcModuleId": 6,
+      "srcPort": 0,
+      "dstModuleId": 7,
+      "dstPort": 0
+    },
+    {
+      "id": 8,
+      "srcModuleId": 6,
+      "srcPort": 1,
+      "dstModuleId": 8,
+      "dstPort": 0
+    },
+    {
+      "id": 9,
+      "srcModuleId": 8,
+      "srcPort": 0,
+      "dstModuleId": 9,
+      "dstPort": 0
+    },
+    {
+      "id": 10,
+      "srcModuleId": 9,
+      "srcPort": 0,
+      "dstModuleId": 10,
+      "dstPort": 0
+    },
+    {
+      "id": 11,
+      "srcModuleId": 10,
+      "srcPort": 0,
+      "dstModuleId": 11,
+      "dstPort": 0
+    },
+    {
+      "id": 12,
+      "srcModuleId": 6,
+      "srcPort": 2,
+      "dstModuleId": 12,
+      "dstPort": 0
+    },
+    {
+      "id": 13,
+      "srcModuleId": 12,
+      "srcPort": 0,
+      "dstModuleId": 13,
+      "dstPort": 0
+    },
+    {
+      "id": 14,
+      "srcModuleId": 13,
+      "srcPort": 0,
+      "dstModuleId": 14,
+      "dstPort": 0
+    },
+    {
+      "id": 15,
+      "srcModuleId": 6,
+      "srcPort": 3,
+      "dstModuleId": 15,
+      "dstPort": 0
+    },
+    {
+      "id": 16,
+      "srcModuleId": 15,
+      "srcPort": 0,
+      "dstModuleId": 16,
+      "dstPort": 0
+    },
+    {
+      "id": 17,
+      "srcModuleId": 16,
+      "srcPort": 0,
+      "dstModuleId": 17,
+      "dstPort": 0
+    },
+    {
+      "id": 18,
+      "srcModuleId": 6,
+      "srcPort": 4,
+      "dstModuleId": 18,
+      "dstPort": 0
+    },
+    {
+      "id": 19,
+      "srcModuleId": 18,
+      "srcPort": 0,
+      "dstModuleId": 19,
+      "dstPort": 0
+    },
+    {
+      "id": 20,
+      "srcModuleId": 19,
+      "srcPort": 0,
+      "dstModuleId": 20,
+      "dstPort": 0
+    },
+    {
+      "id": 21,
+      "srcModuleId": 6,
+      "srcPort": 5,
+      "dstModuleId": 21,
+      "dstPort": 0
+    },
+    {
+      "id": 22,
+      "srcModuleId": 21,
+      "srcPort": 0,
+      "dstModuleId": 22,
+      "dstPort": 0
+    },
+    {
+      "id": 23,
+      "srcModuleId": 21,
+      "srcPort": 0,
+      "dstModuleId": 23,
+      "dstPort": 0
+    },
+    {
+      "id": 24,
+      "srcModuleId": 22,
+      "srcPort": 0,
+      "dstModuleId": 24,
+      "dstPort": 0
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "slots": null,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    },
+    "zone": "eu1.make.com"
+  }
+}

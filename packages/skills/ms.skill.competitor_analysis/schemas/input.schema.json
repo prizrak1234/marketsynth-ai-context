@@ -1,0 +1,331 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.competitor_analysis/input/0.1.0",
+  "title": "CompetitorAnalysisSkillInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "product_marketing_context": { "$ref": "#/$defs/pmc_dependency_reference" },
+    "market_research_output": { "$ref": "#/$defs/research_dependency_reference" },
+    "analysis_objectives": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "market_scope": { "$ref": "#/$defs/scalar_claim" },
+    "geography": { "$ref": "#/$defs/scalar_claim" },
+    "competitor_candidates": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 100
+    },
+    "known_direct_competitors": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 50
+    },
+    "known_indirect_competitors": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 50
+    },
+    "known_substitutes": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 50
+    },
+    "known_alternatives": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 50
+    },
+    "available_competitor_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source_item" },
+      "maxItems": 100
+    },
+    "existing_price_data": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/price_data_item" },
+      "maxItems": 100
+    },
+    "existing_offer_data": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/offer_data_item" },
+      "maxItems": 100
+    },
+    "existing_channel_data": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/channel_data_item" },
+      "maxItems": 100
+    },
+    "comparison_dimensions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 256 },
+      "maxItems": 30
+    },
+    "constraints": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "required_depth": {
+      "type": "string",
+      "enum": ["overview", "standard", "deep", "unknown"]
+    },
+    "language": { "type": "string", "maxLength": 32 },
+    "provenance": { "$ref": "#/$defs/input_provenance" }
+  },
+  "required": [
+    "product_marketing_context",
+    "market_research_output",
+    "analysis_objectives",
+    "provenance"
+  ],
+  "$defs": {
+    "dependency_reference_base": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ]
+    },
+    "pmc_dependency_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": {
+          "const": "ms.skill.product_marketing_context"
+        },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "context_id": { "type": "string", "maxLength": 128 },
+        "readiness": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ],
+      "not": {
+        "properties": {
+          "source_skill_version": { "pattern": "^0\\.1\\." }
+        },
+        "required": ["source_skill_version"]
+      }
+    },
+    "research_dependency_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "const": "ms.skill.market_research" },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "research_id": { "type": "string", "maxLength": 128 },
+        "research_status": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ]
+    },
+    "scalar_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "string", "maxLength": 4000 },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "document",
+            "external_source",
+            "prior_skill_output",
+            "system_inference",
+            "unknown"
+          ]
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "partially_verified",
+            "verified",
+            "contradicted",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        }
+      },
+      "required": ["value", "source_type", "verification_status", "confidence"]
+    },
+    "source_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_id": { "type": "string", "maxLength": 128 },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "document",
+            "external_source",
+            "prior_skill_output",
+            "competitor_source",
+            "market_source",
+            "unknown"
+          ]
+        },
+        "reference": { "type": "string", "maxLength": 2000 },
+        "notes": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["source_id", "source_type"]
+    },
+    "price_data_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "competitor_name": { "type": "string", "maxLength": 256 },
+        "amount": { "type": "number" },
+        "currency": { "type": "string", "minLength": 3, "maxLength": 3 },
+        "billing_period": {
+          "type": "string",
+          "enum": ["monthly", "annual", "one_time", "usage", "unknown"]
+        },
+        "observed_at": { "type": "string", "format": "date" },
+        "source_reference": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["source_reference"]
+    },
+    "offer_data_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "competitor_name": { "type": "string", "maxLength": 256 },
+        "offer_summary": { "type": "string", "maxLength": 2000 },
+        "source_reference": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["source_reference"]
+    },
+    "channel_data_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "competitor_name": { "type": "string", "maxLength": 256 },
+        "channel": { "type": "string", "maxLength": 500 },
+        "source_reference": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["source_reference"]
+    },
+    "unknown_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["domain", "description"]
+    },
+    "conflict_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "conflicting_claims": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 10
+        }
+      },
+      "required": ["domain", "description"]
+    },
+    "input_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "submitted_by": { "type": "string", "maxLength": 256 },
+        "submitted_at": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string", "maxLength": 2000 }
+      }
+    }
+  }
+}

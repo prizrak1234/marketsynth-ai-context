@@ -1,0 +1,57 @@
+{
+  "practice_id": "idempotency_before_retry",
+  "title": "Idempotency before retry",
+  "domain": "reliability",
+  "context": "Alert and notification workflows with Retry On Fail on HTTP or messaging.",
+  "problem": "Retries on non-idempotent writes duplicate side effects.",
+  "recommended_practice": "Assign deduplication key before transport; classify read-only vs idempotent write before enabling retry; cap attempts with terminal failure path.",
+  "rationale": "Archive methodology §5 recommends Retry On Fail on HTTP with bounded attempts.",
+  "prerequisites": [],
+  "implementation_pattern": "assign_key → transport → classify → retry(transient)|terminal",
+  "failure_modes": [],
+  "security_notes": [],
+  "provider_version_scope": [
+    {
+      "provider": "n8n",
+      "component": "workflow_platform",
+      "documented_version": "source_archive_methodology",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Archive methodology; not re-executed in pilot hardening.",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "scope-n8n",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "tested_environment": "tests/test_kb_wpl_01_3a_pattern_extraction_pilot.py::test_23_retry_requires_idempotency",
+  "verification_status": "regression_tested",
+  "source_references": [
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/methodology.md",
+      "content_hash": "727666fe4bb10519fe05561f2a938336b11df28718e472bc39c4e7fc52acd8e3",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-methodology",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "related_pattern_ids": [
+    "retry_with_idempotency"
+  ],
+  "tenant_scope": "tenant_scoped",
+  "provenance": {
+    "source_type": "practice_lineage_pilot",
+    "archive_id": "arc-skills-dlya-peredachi",
+    "source_id": "idempotency_before_retry",
+    "program_phase": "KB-WPL-01.3A.1"
+  }
+}

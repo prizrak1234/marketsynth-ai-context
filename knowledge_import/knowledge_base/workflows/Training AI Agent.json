@@ -1,0 +1,464 @@
+{
+  "name": "Training AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "*"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        -144
+      ],
+      "id": "4b70ec13-290b-4eeb-9352-b1330c1191bd",
+      "name": "Telegram Trigger",
+      "webhookId": "61a159f2-80c3-4ae7-81fe-877b3c5f9125",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -416,
+        -400
+      ],
+      "id": "8395be2e-0685-4ff4-bed8-e60592419e19",
+      "name": "Send a chat action",
+      "webhookId": "b574d542-1f4e-4286-ba3a-34c45b85abe5",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=You are an AI assistant whose sole purpose is to retrieve the most relevant information from the company's knowledge base.\n\nCRITICAL RULES:\n- DO NOT INVENT anything - only use information from the provided documents\n- If information is not found in documents, you MUST write: \"Information not found in the provided documents\"\n- DO NOT add your own knowledge or assumptions\n- DO NOT try to supplement the answer with general facts\n- Be maximally accurate and specific\n- Only answer based on information found in the documents\n\nYour role is to be a reliable search engine for corporate knowledge base, nothing more.\n\nSYSTEM TEMPORARILY UNAVAILABLE\n\nUnfortunately, the system cannot process your request at the moment.\n\nWhat you can do:\n- Try again in 1-2 minutes\n- Contact your direct supervisor\n- Write to the general support chat\n\nEmergency contacts:\n- HR Department: @hr_support\n- Tech Support: @tech_support  \n- Management: @management\n\nWe apologize for the temporary inconvenience.\n\nINFORMATION NOT FOUND\n\nUnfortunately, there is no information on your question in the corporate knowledge base.\n\nWe recommend contacting:\n- Your direct supervisor\n- HR department for procedure questions\n- Tech support for technical questions\n\nIf the question is important and requires an urgent answer, write to the general chat or call the internal number.\n\nYour question will help us improve the knowledge base - it will be forwarded to those responsible for documentation updates.\n\nLANGUAGE SETTINGS:\n- Detect the language of the employee's question\n- Respond in the same language the question was asked\n- Supported languages: English, Russian, Spanish\n- If language cannot be determined - respond in English"
+            },
+            {
+              "content": "=Employee question: {{ $('Telegram Trigger').item.json.message.text }}\n\nBased on information from corporate documents, find and provide the most relevant information to answer this question.\n\nSEARCH INSTRUCTIONS:\n- Look for exact matches of terms from the question\n- Check synonyms and related concepts\n- Include context and details from documents\n- If there are step-by-step processes - provide them completely\n- If there are references to other sections - mention them\n\nDO NOT ADD anything that is absent from the documents."
+            }
+          ]
+        },
+        "builtInTools": {
+          "fileSearch": {
+            "vectorStoreIds": "[\"vs_691ee6b1b71081919dd769db375efef5\"]"
+          }
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        -144
+      ],
+      "id": "2435444d-5c01-49f9-8d01-5d6af767e0c0",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "CSm9tzG7OXBEcotW",
+          "name": "n8n_2025_def"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## SYSTEM PROMPT\nТы AI-ассистент, чья единственная задача - находить наиболее релевантную информацию из корпоративной базы знаний компании.\n\nКРИТИЧЕСКИ ВАЖНЫЕ ПРАВИЛА:\n- НЕ ВЫДУМЫВАЙ ничего - используй только информацию из предоставленных документов\n- Если информации нет в документах, обязательно напиши: \"Информация не найдена в предоставленных документах\"\n- НЕ добавляй свои знания или предположения\n- НЕ пытайся дополнить ответ общими фактами\n- Будь максимально точным и конкретным\n- Отвечай только на основе найденной информации в документах\n\nТвоя роль - быть надежным поисковиком по корпоративной базе знаний, не более того.",
+        "height": 352,
+        "width": 832,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        976,
+        -288
+      ],
+      "typeVersion": 1,
+      "id": "0c5cad22-8c1d-46ea-af86-beca979f5693",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## User PROMPT\nВопрос сотрудника: {{ $('Telegram Trigger').item.json.message.text }}\n\nНа основе информации из корпоративных документов, найди и предоставь наиболее релевантную информацию для ответа на этот вопрос.\n\nИНСТРУКЦИИ ПО ПОИСКУ:\n- Ищи точные совпадения терминов из вопроса\n- Проверяй синонимы и связанные понятия\n- Включай контекст и детали из документов\n- Если есть пошаговые процессы - приводи их полностью\n- Если есть ссылки на другие разделы - укажи их\n\nНЕ ДОБАВЛЯЙ ничего, что отсутствует в документах.",
+        "height": 336,
+        "width": 832,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        976,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "4e4af266-2232-423b-8a06-de6e7bd583cc",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## User PROMPT\nПреобразуй следующий длинный ответ в удобное для Telegram сообщение для сотрудника:\n\n{{ $('OpenAI Chat Model').item.json.choices[0].message.content }}\n\nПРАВИЛА ОФОРМЛЕНИЯ:\n- Начни с краткого резюме темы\n- Используй нумерованные списки для процессов (1. 2. 3.)\n- Используй буллеты (•) для перечислений\n- Выдели ключевую информацию заглавными буквами (ВАЖНО, ВНИМАНИЕ)\n- При упоминании контактов - укажи их в конце\n- Уложись в 200-250 слов\n- НЕ используй эмодзи\n- Пиши простым русским языком\n\nДлинный ответ:",
+        "height": 384,
+        "width": 832,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1856,
+        176
+      ],
+      "typeVersion": 1,
+      "id": "ae18d457-f786-4ccc-9832-c5cf843358c8",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## SYSTEM PROMPT\nТы внутренний корпоративный ассистент, который переписывает длинные ответы ИИ в короткие, понятные сообщения для Telegram для сотрудников компании.\n\nТвоя единственная задача - получить длинный детальный ответ о компании и превратить его в краткое пошаговое сообщение, которое легко читается в Telegram.\n\nПРАВИЛА ФОРМАТИРОВАНИЯ:\n- НЕ добавляй дополнительную информацию, которой нет в исходном ответе\n- НЕ упоминай, что это было сгенерировано ИИ или обработано\n- НЕ добавляй вежливые фразы типа \"Надеюсь, это поможет\"\n- НЕ используй markdown разметку (**, *, _)\n- Используй простые символы: • для списков, цифры для шагов\n- Пиши простым, понятным языком\n- Максимум 250 слов\n- Структурируй информацию логично\n\nОБЯЗАТЕЛЬНАЯ СТРУКТУРА ОТВЕТА:\n1. Краткое резюме (1-2 предложения)\n2. Основная информация (пункты или шаги)\n3. При необходимости - контактная информация\n\nБудь лаконичным, но информативным.",
+        "height": 528,
+        "width": 832,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1856,
+        -384
+      ],
+      "typeVersion": 1,
+      "id": "b149b005-d741-4165-a3d6-e579bb08a255",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        -144
+      ],
+      "id": "7bdad0a3-99c2-4cd2-bd77-872d452e5055",
+      "name": "Wait",
+      "webhookId": "707cd99b-d6f9-409a-9fff-fbe8a04217dd"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output[0].content[0].text }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        144
+      ],
+      "id": "14668e0d-0e77-4d82-848a-541d4bb8c322",
+      "name": "Send a text message",
+      "webhookId": "8c0367eb-8dfe-4955-8ce3-914ae7b2daf9",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## ЗАПУСК",
+        "height": 544,
+        "width": 384,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -608,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "a9ae3af2-2972-4872-b997-f1258bf1f5e5",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Telegram ноды в n8n:\n## https://youtu.be/d0O9IfRIdC8",
+        "height": 128,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        -576
+      ],
+      "typeVersion": 1,
+      "id": "a001bace-6315-4d9a-b233-16ed4f5cd58a",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## n8n – Разбор всех Триггеров:\n## https://youtu.be/jJavEXnfWkM",
+        "height": 128,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -960,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "50eded57-57ee-4599-b129-e46272e07eec",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## n8n для начинающих:\n## https://youtu.be/xjka9V5pFSw",
+        "height": 128,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "ed3a7deb-d62f-4b62-a79e-dbcb86c661a1",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Защитные ноды для ИИ Агента:\n## https://youtu.be/g8oQ072J82g",
+        "height": 128,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -448,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "26773149-892d-4c2c-a66a-56beea5dce9c",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## РАБОТА С БАЗОЙ",
+        "height": 240,
+        "width": 704,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -128,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "91c431d0-6fa9-4bfc-ace1-8458bf98a085",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## ОТВЕТ",
+        "height": 240,
+        "width": 704,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -128,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "ce3aa1d4-58c5-4771-ac0d-d52a2a20be35",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=You are an internal corporate assistant that rewrites long AI answers into short, clear Telegram messages for company employees.\n\nYour only task is to receive a long detailed answer about the company and turn it into a concise step-by-step message that is easy to read on Telegram.\n\nCRITICALLY IMPORTANT: ALWAYS respond ONLY in Russian language, regardless of the input message language.\n\nFORMATTING RULES:\n- DO NOT add additional information that is not in the original answer\n- DO NOT mention that this was generated by AI or processed\n- DO NOT add polite phrases like \"I hope this helps\"\n- DO NOT use markdown formatting (**, *, _)\n- Use simple symbols: • for lists, numbers for steps\n- Write in simple, clear Russian language\n- Maximum 250 words\n- Structure information logically\n\nMANDATORY RESPONSE STRUCTURE:\n1. Brief summary (1-2 sentences)\n2. Main information (bullets or steps)\n3. If needed - contact information\n\nBe concise but informative. Respond exclusively in Russian language."
+            },
+            {
+              "content": "=Transform the following long answer into a Telegram-friendly message for an employee:\n\nFORMATTING RULES:\n- Start with a brief topic summary\n- Use numbered lists for processes (1. 2. 3.)\n- Use bullets (•) for enumerations\n- Highlight key information with capital letters (IMPORTANT, ATTENTION)\n- When mentioning contacts - list them at the end\n- Stay within 200-250 words\n- DO NOT use emojis\n- Write in simple English\n\nLong answer:\n{{ $json.output[0].content[0].text }}\n\n\nAdd to User Prompt of second node:\n\"IMPORTANT: If the answer contains numbers, deadlines, or contacts - highlight them on separate lines for better readability.\""
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        144
+      ],
+      "id": "3d38c202-3763-4a14-b803-160f554932d1",
+      "name": "Message a model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "CSm9tzG7OXBEcotW",
+          "name": "n8n_2025_def"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Разбор нод от Open AI:\n## https://youtu.be/_s2Ahz88bUQ",
+        "height": 128,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        240,
+        -336
+      ],
+      "typeVersion": 1,
+      "id": "5afed19d-cbc5-4328-bb8d-72005a689515",
+      "name": "Sticky Note12"
+    }
+  ],
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 633389865,
+          "message": {
+            "message_id": 1184,
+            "from": {
+              "id": 190190068,
+              "is_bot": false,
+              "first_name": "Igor",
+              "username": "igorzuevich",
+              "language_code": "ru",
+              "is_premium": true
+            },
+            "chat": {
+              "id": 190190068,
+              "first_name": "Igor",
+              "username": "igorzuevich",
+              "type": "private"
+            },
+            "date": 1763633193,
+            "text": "Тест"
+          }
+        }
+      }
+    ],
+    "Message a model": [
+      {
+        "json": {
+          "output": [
+            {
+              "id": "msg_0bde7aab8072667800691eec035830819494847b04b28e8168",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [],
+                  "logprobs": [],
+                  "text": "В предоставленных корпоративных документах нет информации или определенного контекста, связанного с запросом \"Тест\". Пожалуйста, уточните вопрос или предоставьте больше деталей для поиска релевантной информации."
+                }
+              ],
+              "role": "assistant"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a chat action",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f1a36a65-e611-4636-9053-4735ada70375",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "Uwt1neyHuoJ1BU7Z",
+  "tags": []
+}

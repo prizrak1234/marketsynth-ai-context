@@ -1,0 +1,12 @@
+{
+  "total_rows": 1,
+  "duplicate_text_groups": 0,
+  "duplicate_text_samples": [],
+  "null_chat_route_rows": 0,
+  "null_idempotency_rows": 0,
+  "row_ids_by_text_sample": {
+    "Что такое unit-экономика SaaS и как её считать для подписной модели?": [
+      "3fa2e679-cea6-4d24-8dda-86b5971ce3aa"
+    ]
+  }
+}

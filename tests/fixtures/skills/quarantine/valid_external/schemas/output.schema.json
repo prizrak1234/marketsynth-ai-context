@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.external_market_check/output/0.1.0",
+  "title": "MarketValidationSkillOutput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "skill_id": {
+      "type": "string",
+      "const": "ms.skill.external_market_check"
+    },
+    "skill_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "proceed",
+        "proceed_with_conditions",
+        "revise",
+        "defer",
+        "stop",
+        "insufficient_evidence"
+      ]
+    },
+    "verdict_confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "executive_summary": { "type": "string", "maxLength": 8000 },
+    "supporting_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/traceable_item" }
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/traceable_item" }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/traceable_item" }
+    },
+    "evidence_gaps": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 }
+    },
+    "market_signals": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/traceable_item" }
+    },
+    "customer_fit_findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/traceable_item" }
+    },
+    "competitor_findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/traceable_item" }
+    },
+    "commercial_risks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/risk_item" }
+    },
+    "operational_risks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/risk_item" }
+    },
+    "recommended_action": { "type": "string", "maxLength": 2000 },
+    "required_changes": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 }
+    },
+    "next_validation_steps": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 }
+    },
+    "approval_required": { "type": "boolean" },
+    "provenance": { "$ref": "#/$defs/provenance" }
+  },
+  "required": [
+    "skill_id",
+    "skill_version",
+    "verdict",
+    "verdict_confidence",
+    "executive_summary",
+    "supporting_evidence",
+    "contradictory_evidence",
+    "assumptions",
+    "evidence_gaps",
+    "market_signals",
+    "customer_fit_findings",
+    "competitor_findings",
+    "commercial_risks",
+    "operational_risks",
+    "recommended_action",
+    "required_changes",
+    "next_validation_steps",
+    "approval_required",
+    "provenance"
+  ],
+  "$defs": {
+    "traceable_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "statement": { "type": "string", "maxLength": 4000 },
+        "trace_type": {
+          "type": "string",
+          "enum": ["evidence", "assumption", "inference"]
+        },
+        "evidence_class": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "market_source",
+            "competitor_source",
+            "demand_signal",
+            "pricing_signal",
+            "audience_signal",
+            "assumption",
+            "inference"
+          ]
+        },
+        "source_ref": { "type": "string", "maxLength": 2000 },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        }
+      },
+      "required": ["statement", "trace_type"]
+    },
+    "risk_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "maxLength": 240 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "linked_trace_types": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["evidence", "assumption", "inference"] }
+        }
+      },
+      "required": ["title", "description"]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string" },
+        "skill_version": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "methodology_ref": { "type": "string" }
+      },
+      "required": ["skill_id", "skill_version"]
+    }
+  }
+}
+

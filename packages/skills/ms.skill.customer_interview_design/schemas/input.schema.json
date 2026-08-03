@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.customer_interview_design/input/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "customer_intelligence_reference": {
+      "type": "object"
+    },
+    "selected_segment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "research_objectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cim_claim_catalog": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "customer_intelligence_reference",
+    "selected_segment_ids",
+    "research_objectives"
+  ]
+}

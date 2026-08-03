@@ -1,0 +1,22 @@
+{
+  "styles": [
+    {
+      "id": "BALANCED",
+      "name": "Сбалансированная",
+      "macro_split": {
+        "protein": 0.25,
+        "fat": 0.3,
+        "carb": 0.45
+      }
+    },
+    {
+      "id": "MODERATE_LOW_CARB",
+      "name": "Умеренно-низкоуглеводная",
+      "macro_split": {
+        "protein": 0.3,
+        "fat": 0.35,
+        "carb": 0.35
+      }
+    }
+  ]
+}

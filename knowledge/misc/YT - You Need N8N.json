@@ -1,0 +1,604 @@
+{
+  "name": "YT - You Need N8N",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        -192
+      ],
+      "id": "431f0ac6-7152-497f-b032-c484967d7883",
+      "name": "Telegram Trigger",
+      "webhookId": "2b7dd9a3-1ce1-4786-ba56-75614b82b8b2",
+      "credentials": {
+        "telegramApi": {
+          "id": "MB8BBZvHsCuvjypy",
+          "name": "Railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Your goal is to understand whether this is a new node from the user or the ask to create a new telegram post.  \n\nif it is a new note, return json and the note itself (and suggest a name for this note based on the content)  \n\n{\"answer\":\"note\", text: \"\", \"name\": \"\"}  \n\n\nif it is a post, return json  \n\n{\"answer\": \"post\"}"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.8,
+      "position": [
+        224,
+        -192
+      ],
+      "id": "96228910-2560-4a84-8c2d-0fb724c78b0d",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        -32
+      ],
+      "id": "21885222-2144-47bf-a3f9-902b626fbf84",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "kPhwNDcHvNvMsRIS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json.text; \n\nlet parsed;\ntry {\n  parsed = JSON.parse(input);  \n} catch (e) {\n  throw new Error(\"JSON parsing error: \" + e.message);\n}\n\nreturn [{ json: parsed }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        -192
+      ],
+      "id": "25ca07f7-b836-4997-8636-de52f76ad741",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e1d04efc-1b2c-46fd-8ccd-81640fc2aab5",
+              "leftValue": "={{ $json.answer }}",
+              "rightValue": "note",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        -192
+      ],
+      "id": "a1f8dd56-f212-41b3-975f-bfde0f76d768",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        -320
+      ],
+      "id": "8d357baa-fae4-4fab-817c-7cfee3fac6f4",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/home/node/.n8n-files/obsidian/today/{{ $('If').item.json.name }}.md",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        1104,
+        -320
+      ],
+      "id": "c2305f7d-e07b-4439-9a24-09880dc6e172",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/.n8n-files/obsidian/today/*.md",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        -48
+      ],
+      "id": "35f899ac-65c9-424b-b8b9-26033d253028",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        1104,
+        -48
+      ],
+      "id": "de957b21-acd6-4f6a-86ce-e0ef1e9798bf",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "maxItems": 3
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        -48
+      ],
+      "id": "5b816048-2ea9-4ba1-9ebc-f6eebb51f9b4",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"{{ $json.data }}\",\n  \"search_depth\": \"basic\",\n  \"chunks_per_source\": 3,\n  \"max_results\": 1,\n  \"topic\": \"general\",\n  \"time_range\": null,\n  \"start_date\": \"2025-02-09\",\n  \"end_date\": \"2025-12-29\",\n  \"include_answer\": false,\n  \"include_raw_content\": true,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_favicon\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": [],\n  \"country\": null,\n  \"auto_parameters\": false,\n  \"include_usage\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1488,
+        -48
+      ],
+      "id": "0f4ff4c2-d5be-49b7-be1a-d0b06c33203f",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "results[0].raw_content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        -48
+      ],
+      "id": "b651abe9-6cf5-4967-b35f-8f802a0fb89d",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.raw_content }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=I need you to write a post for my TG channel based on the user prompt. Keep it short, 15-20 sentences, and add there some fun and emotions."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.8,
+      "position": [
+        1904,
+        -48
+      ],
+      "id": "14593c6d-b0ab-4c60-94a7-2a83445e8585",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1904,
+        96
+      ],
+      "id": "a8b4ec49-2c86-4763-a40f-3efbe89deaa2",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "kPhwNDcHvNvMsRIS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "-1002596374427",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2256,
+        -48
+      ],
+      "id": "fc7531f2-35b8-465a-a00d-b15630422ec3",
+      "name": "Send a text message",
+      "webhookId": "6c108300-01b5-4994-9f63-9d5588e209df",
+      "credentials": {
+        "telegramApi": {
+          "id": "MB8BBZvHsCuvjypy",
+          "name": "Railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -128,
+        -192
+      ],
+      "id": "aa28d36d-4130-4238-b06a-a8c370861dbe",
+      "name": "Get a file",
+      "webhookId": "eb482faa-5c1c-4d49-817e-7579d52beb03",
+      "credentials": {
+        "telegramApi": {
+          "id": "MB8BBZvHsCuvjypy",
+          "name": "Railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        48,
+        -192
+      ],
+      "id": "0a61ed9c-fa1e-4281-a4cf-a3656890cdcd",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "kPhwNDcHvNvMsRIS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Телеграм Триггер",
+        "height": 672,
+        "width": 1168,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -368,
+        -448
+      ],
+      "typeVersion": 1,
+      "id": "af71ef04-7287-4e7e-bbb5-ef829ceb3d29",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Создание заметок",
+        "height": 304,
+        "width": 1648,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        -448
+      ],
+      "typeVersion": 1,
+      "id": "0c5162da-9c21-444e-96ca-b255898bb51e",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Чтение заметок и создание поста",
+        "height": 352,
+        "width": 1648,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "d31e8993-74bd-44e2-8bd1-c358832e1f54",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Хочешь разобраться в автоматизациях и искусственном интеллекте? \n\n### Пройди наш N8N Мастер-Класс!\n### Ищи в Pro-группе тут: https://t.me/iishenka_pro_bot\n",
+        "height": 672,
+        "width": 624,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2480,
+        -448
+      ],
+      "typeVersion": 1,
+      "id": "bc795cb5-aff0-49a1-be8f-2719b834996c",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "1d722243-c307-45d7-be3f-952ae7327ff8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e01000323930f9951ba3427ce9365f35d56a694ae3edbcd1b5275340b4ec1807"
+  },
+  "id": "ME7NOOxHKGUnhkJw",
+  "tags": []
+}

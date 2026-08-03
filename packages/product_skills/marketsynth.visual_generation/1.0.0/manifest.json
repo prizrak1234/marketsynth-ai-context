@@ -1,0 +1,29 @@
+{
+  "skill_id": "marketsynth.visual_generation",
+  "name": "Visual Generation",
+  "version": "1.0.0",
+  "description": "Генерация коммерческих изображений для Content Director (social_post_image).",
+  "type": "instruction",
+  "triggers": [
+    "social_post_image",
+    "visual_generation",
+    "image_variant"
+  ],
+  "accepted_input_types": [
+    "visual_request"
+  ],
+  "output_types": [
+    "image_candidates"
+  ],
+  "instruction_entrypoint": "SKILL.md",
+  "allowed_tools": [],
+  "allowed_network_hosts": [],
+  "required_secret_aliases": [],
+  "external_action": "none",
+  "human_approval_required": false,
+  "timeout_seconds": 120,
+  "retry_max": 1,
+  "enabled": true,
+  "provenance": "builtin:PRODUCT-CD-RUNTIME-02",
+  "checksum_sha256": null
+}

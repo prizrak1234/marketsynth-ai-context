@@ -1,0 +1,91 @@
+{
+  "version": "0.1.0",
+  "components": [
+    {
+      "component_id": "kb-wpl-01.0",
+      "name": "Archive Intake",
+      "version": "0.1.0",
+      "status": "frozen",
+      "path": "docs/research/external-archives/"
+    },
+    {
+      "component_id": "kb-wpl-01.1",
+      "name": "Shared Knowledge Contracts",
+      "version": "0.1.0",
+      "status": "frozen",
+      "path": "packages/knowledge/workflow_patterns/0.1.0/",
+      "bundle_hash_key": "wpl_schema_bundle",
+      "bundle_hash": "db34d8f1dbd82772d86fc921daa57d7007e748c004bf40b250023d1247823f25"
+    },
+    {
+      "component_id": "kb-wpl-01.2",
+      "name": "Workflow Catalog Quarantine",
+      "version": "0.1.0",
+      "status": "frozen",
+      "path": "packages/knowledge/workflow_catalog/0.1.0/",
+      "bundle_hash_key": "workflow_catalog",
+      "bundle_hash": "5389c3a7fe77a8625e4cceab76da79ee33b816437a671d05a1dac969da1365fa"
+    },
+    {
+      "component_id": "kb-wpl-01.2.1",
+      "name": "Catalog Quality Repair",
+      "version": "0.1.0",
+      "status": "frozen",
+      "path": "packages/knowledge/workflow_catalog/0.1.0/",
+      "bundle_hash_key": "workflow_catalog",
+      "bundle_hash": "5389c3a7fe77a8625e4cceab76da79ee33b816437a671d05a1dac969da1365fa"
+    },
+    {
+      "component_id": "kb-wpl-01.3",
+      "name": "Workflow Pattern Library",
+      "version": "0.1.0-frozen",
+      "status": "frozen_reviewed_library",
+      "path": "packages/knowledge/workflow_patterns/0.1.0/",
+      "bundle_hash_key": "wpl_library_semantic",
+      "bundle_hash": "1ddd0d033f6028bd5dcf5ee555186c6be0389a96459615b6221348783d9b1883"
+    },
+    {
+      "component_id": "kb-wpl-01.4",
+      "name": "n8n Engineering Knowledge Skills",
+      "version": "0.1.0",
+      "status": "frozen_candidate",
+      "path": "packages/skills/ms.skill.n8n_*"
+    },
+    {
+      "component_id": "kb-wpl-01.5",
+      "name": "Knowledge Linking Skill",
+      "version": "0.1.0",
+      "status": "frozen_candidate",
+      "path": "packages/skills/ms.skill.knowledge_linking/",
+      "skill_id": "ms.skill.knowledge_linking",
+      "skill_package_hash": "95a3ff6d7f83f2e6437b4fb724c9aec13b814be2ae8fdfbc94a5e3872d32602a"
+    },
+    {
+      "component_id": "kb-wpl-01.6",
+      "name": "Presentation Architecture Skill",
+      "version": "0.1.0",
+      "status": "frozen_candidate",
+      "path": "packages/skills/ms.skill.presentation_architecture/",
+      "skill_id": "ms.skill.presentation_architecture",
+      "skill_package_hash": "60ce698336fa21006ba203472fc6c3cef5661171ec2e45b641dcca743a42e95c"
+    },
+    {
+      "component_id": "kb-wpl-01.7",
+      "name": "Capability Model",
+      "version": "0.1.0",
+      "status": "frozen_candidate",
+      "path": "packages/knowledge/capability_model/0.1.0/",
+      "bundle_hash_key": "capability_model_bundle",
+      "bundle_hash": "e1e2bbeb025a3348944a5dab43e5661d31e2ac559e9e8de4989836c50831e42b"
+    },
+    {
+      "component_id": "kb-wpl-01.8",
+      "name": "Knowledge Discovery Read Models",
+      "version": "0.1.0",
+      "status": "frozen_candidate",
+      "path": "packages/knowledge/discovery/0.1.0/",
+      "bundle_hash_key": "discovery_bundle",
+      "bundle_hash": "9a4f05af83350893fe32ce2bacc6d7c2e963d6440d4d2b47d002a2b1b85304c8"
+    }
+  ]
+}

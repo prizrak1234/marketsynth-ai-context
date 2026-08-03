@@ -1,0 +1,57 @@
+{
+  "practice_id": "explicit_error_workflow",
+  "title": "Explicit error workflow assignment",
+  "domain": "reliability",
+  "context": "Production workflows with external side effects.",
+  "problem": "Silent failures lose operator visibility and audit trail.",
+  "recommended_practice": "Assign dedicated error_workflow: Error Trigger → format context → notify via message_channel with workflow name, node, error, timestamp.",
+  "rationale": "Archive methodology §5: Error Workflow mandatory for production workflows.",
+  "prerequisites": [],
+  "implementation_pattern": "primary_flow || error_trigger → format → notify",
+  "failure_modes": [],
+  "security_notes": [],
+  "provider_version_scope": [
+    {
+      "provider": "n8n",
+      "component": "workflow_platform",
+      "documented_version": "source_archive_methodology",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Archive methodology; not re-executed in pilot hardening.",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "scope-n8n",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "tested_environment": "archive_metadata_only",
+  "verification_status": "source_documented",
+  "source_references": [
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/methodology.md",
+      "content_hash": "727666fe4bb10519fe05561f2a938336b11df28718e472bc39c4e7fc52acd8e3",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-methodology",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "related_pattern_ids": [
+    "error_workflow_or_recovery"
+  ],
+  "tenant_scope": "tenant_scoped",
+  "provenance": {
+    "source_type": "practice_lineage_pilot",
+    "archive_id": "arc-skills-dlya-peredachi",
+    "source_id": "explicit_error_workflow",
+    "program_phase": "KB-WPL-01.3A.1"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "idea_description": "Subscription meal kits for busy remote professionals in Novosibirsk who want healthy lunches without cooking.",
+  "product_or_service": "Weekly lunch subscription with local kitchen partners",
+  "target_market": "Remote workers aged 28-45 in Novosibirsk",
+  "geography": "Novosibirsk, Russia",
+  "intended_customer": "Office and remote professionals with limited lunch prep time",
+  "business_model": "B2C subscription with partner kitchen fulfillment",
+  "pricing_assumptions": {
+    "state": "user_assumption",
+    "value": "990 RUB per lunch, 5-day plan"
+  },
+  "available_budget": "800000 RUB launch budget",
+  "launch_timeline": "Q4 2026 pilot",
+  "founder_constraints": "No paid ads until validation verdict; founder-operated delivery for pilot",
+  "known_competitors": ["LocalFoodBox fictional", "QuickLunch fictional"],
+  "available_evidence": [
+    {
+      "evidence_class": "user_statement",
+      "summary": "Founder interviewed 12 remote workers; 9 reported skipping lunch or ordering fast food.",
+      "confidence": "medium",
+      "is_assumption": false
+    },
+    {
+      "evidence_class": "market_source",
+      "summary": "Regional small-business report notes growth in prepared meal delivery in Siberia (fictional source).",
+      "source_ref": "https://example.invalid/reports/siberia-meals-2026",
+      "confidence": "medium"
+    }
+  ],
+  "user_risk_tolerance": "medium",
+  "field_states": {
+    "pricing_assumptions": "user_assumption",
+    "available_budget": "provided"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "practice_id": "human_approval_before_write_or_publication",
+  "title": "Human approval before write or publication",
+  "domain": "control_and_safety",
+  "context": "External publication and sensitive write paths in marketing workflows.",
+  "problem": "Auto-publishing or writing without human gate causes brand and compliance risk.",
+  "recommended_practice": "Route drafts through approval_interface before publication_target or CRM_provider write; block resume until authoritative human decision.",
+  "rationale": "Archive methodology §5 requires explicit validation and error paths; quality gate docs reinforce human review before external action.",
+  "prerequisites": [],
+  "implementation_pattern": "draft → approval_interface → branch(approved|rejected) → publish|revise",
+  "failure_modes": [],
+  "security_notes": [
+    "Publication without approval is a blocking defect for pilot patterns."
+  ],
+  "provider_version_scope": [
+    {
+      "provider": "n8n",
+      "component": "workflow_platform",
+      "documented_version": "source_archive_methodology",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Archive methodology; not re-executed in pilot hardening.",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "scope-n8n",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "tested_environment": "archive_metadata_only",
+  "verification_status": "source_documented",
+  "source_references": [
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/methodology.md",
+      "content_hash": "727666fe4bb10519fe05561f2a938336b11df28718e472bc39c4e7fc52acd8e3",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-methodology",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    },
+    {
+      "archive_id": "arc-bots-knowledge-rar",
+      "archive_hash": "59d69ddbd9c6783af2526276bfce4025dde374dc4d8d228927303820d5f03e2b",
+      "relative_path": "Стандарт/Скиллы/06_QUALITY_GATE.md",
+      "content_hash": "e83c24077af14b963ee9ac6a2ac8a5032b26b15d46c7af191b0484148138af21",
+      "source_category": "skill_quality",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "ref-quality-gate",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "related_pattern_ids": [
+    "human_approval_before_publication",
+    "draft_to_human_approval"
+  ],
+  "tenant_scope": "tenant_scoped",
+  "provenance": {
+    "source_type": "practice_lineage_pilot",
+    "archive_id": "arc-skills-dlya-peredachi",
+    "source_id": "human_approval_before_write_or_publication",
+    "program_phase": "KB-WPL-01.3A.1"
+  }
+}

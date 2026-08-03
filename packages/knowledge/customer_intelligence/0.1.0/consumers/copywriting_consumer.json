@@ -1,0 +1,40 @@
+{
+  "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+  "cim_version": "0.1.0",
+  "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "source_skill_id": "ms.skill.icp_segmentation",
+  "source_skill_version": "0.1.0",
+  "selected_segment_ids": [
+    "seg-remote-eng"
+  ],
+  "evidence_references": [
+    "ev-seg-seg-remote-eng"
+  ],
+  "unknowns": [
+    {
+      "domain": "budget",
+      "description": "Exact budget bands unverified",
+      "blocking": false
+    }
+  ],
+  "conflicts": [],
+  "consumer_skill_id": "ms.skill.copywriting",
+  "consumed_fields": [
+    "pain_points",
+    "desired_outcomes",
+    "objections",
+    "trust_drivers",
+    "channel_preferences"
+  ],
+  "forbidden_recompute_fields": [
+    "pain_points",
+    "objections"
+  ],
+  "redefined_fields": [],
+  "consumer_output": {
+    "copy_brief": {
+      "segment_id": "seg-remote-eng",
+      "tone": "direct"
+    }
+  }
+}

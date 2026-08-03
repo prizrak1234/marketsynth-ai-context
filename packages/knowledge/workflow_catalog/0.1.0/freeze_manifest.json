@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "schema_bundle_ref": "packages/knowledge/workflow_patterns/0.1.0/",
+  "catalog_status": "quarantined_metadata_only",
+  "file_hashes": {
+    "catalog.json": "3c4bdd999203771d4aca2bc0574ff63bca1ab95b41eea5acc6e84f9cb9965530",
+    "duplicate_families.json": "2d6bbfb892dea76c4b96093409f2463d1d465debc520cd4975c2e25396c3f25b",
+    "security_summary.json": "1c66fbd149dd6bbc1dca688bc63dd6d61a734f08e766ebc5b2672297dc6caeb2",
+    "statistics.json": "ededd9c1b6c0027e1b94f20fc3d2da6ffd72ac0f3b4b82e44303803e5e1ec117"
+  },
+  "bundle_hash": "5389c3a7fe77a8625e4cceab76da79ee33b816437a671d05a1dac969da1365fa",
+  "catalog_semantic_hash": "e600a905bcfd554e1e8654dec62b3400403efb8891f16cfee59ee907d8ad6a69",
+  "generated_at": "2026-07-23T18:37:12.375927+00:00"
+}

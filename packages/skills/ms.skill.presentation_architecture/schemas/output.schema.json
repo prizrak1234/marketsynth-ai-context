@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.presentation_architecture/output/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "presentation_id": { "type": "string" },
+    "skill_id": { "type": "string", "const": "ms.skill.presentation_architecture" },
+    "skill_version": { "type": "string" },
+    "presentation_objective": { "type": "string" },
+    "presentation_type": { "type": "string" },
+    "audience_summary": { "type": "string" },
+    "narrative_arc": { "$ref": "schemas/narrative-arc.schema.json" },
+    "slide_plan": {
+      "type": "array",
+      "items": { "$ref": "schemas/slide-specification.schema.json" }
+    },
+    "slide_count": { "type": "integer", "minimum": 0 },
+    "section_structure": { "type": "array", "items": { "type": "object" } },
+    "visual_briefs": {
+      "type": "array",
+      "items": { "$ref": "schemas/visual-brief.schema.json" }
+    },
+    "chart_requirements": {
+      "type": "array",
+      "items": { "$ref": "schemas/chart-requirement.schema.json" }
+    },
+    "image_requirements": { "type": "array", "items": { "type": "object" } },
+    "theme_recommendation": { "$ref": "schemas/theme-recommendation.schema.json" },
+    "typography_recommendation": { "type": "object" },
+    "accessibility_requirements": { "type": "object" },
+    "speaker_note_strategy": { "type": "object" },
+    "CTA_strategy": { "type": "object" },
+    "source_content_references": { "type": "array", "items": { "type": "object" } },
+    "evidence_map": { "type": "array", "items": { "type": "object" } },
+    "claim_safety_findings": { "type": "array", "items": { "type": "object" } },
+    "unsupported_claims": { "type": "array", "items": { "type": "string" } },
+    "source_content_gaps": { "type": "array", "items": { "type": "string" } },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "unknowns": { "type": "array", "items": { "type": "string" } },
+    "presentation_risks": { "type": "array", "items": { "type": "object" } },
+    "pattern_references": {
+      "type": "array",
+      "items": { "$ref": "schemas/pattern-selection-reference.schema.json" }
+    },
+    "evidence_gaps": { "type": "array", "items": { "type": "string" }, "maxItems": 30 },
+    "coverage": { "type": "string", "enum": ["full", "partial", "minimal", "unknown"] },
+    "evidence_quality": {
+      "type": "string",
+      "enum": ["comprehensive", "partial", "insufficient", "conflicted", "unknown"]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": ["complete", "partially_complete", "insufficient_sources", "conflicted", "out_of_scope"]
+    },
+    "presentation_readiness": {
+      "type": "string",
+      "enum": [
+        "ready_for_rendering_review", "partially_ready", "blocked_by_missing_content",
+        "blocked_by_claim_risk", "insufficient_information", "conflicted", "out_of_scope"
+      ]
+    },
+    "renderer_requirements": { "type": "object" },
+    "human_review_required": { "type": "boolean" },
+    "provenance": { "type": "object" },
+    "input_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "output_hash": { "type": "string", "minLength": 64, "maxLength": 64 }
+  },
+  "required": [
+    "presentation_id", "skill_id", "skill_version", "presentation_objective", "presentation_type",
+    "audience_summary", "narrative_arc", "slide_plan", "slide_count", "section_structure",
+    "visual_briefs", "chart_requirements", "image_requirements", "theme_recommendation",
+    "typography_recommendation", "accessibility_requirements", "speaker_note_strategy",
+    "CTA_strategy", "source_content_references", "evidence_map", "claim_safety_findings",
+    "unsupported_claims", "source_content_gaps", "assumptions", "unknowns", "presentation_risks",
+    "evidence_gaps", "coverage", "evidence_quality", "research_status", "presentation_readiness",
+    "renderer_requirements", "human_review_required", "provenance", "input_hash", "output_hash"
+  ]
+}

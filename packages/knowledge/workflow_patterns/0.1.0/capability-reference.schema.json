@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/capability-reference.schema.json",
+  "title": "CapabilityReference",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "capability_id": {
+      "type": "string"
+    },
+    "capability_name": {
+      "type": "string"
+    },
+    "profession_id": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "capability_id",
+    "capability_name"
+  ]
+}

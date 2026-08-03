@@ -1,0 +1,1608 @@
+{
+  "name": "RAG_CHANEL_YOUTUBE_IGORZUEVICH",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "daysInterval": 3
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -304,
+        0
+      ],
+      "id": "11529ed6-c8c4-4b22-8262-e4849bd51095",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "youtube",
+        "operation": "getYouTubeChannelVideos",
+        "handle": "={{ $json.Igorzuevich_name }}",
+        "channelId": "={{ $json.Igorzuevich_ID }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        144,
+        0
+      ],
+      "id": "d26f39c1-af2e-44f0-ac0d-024a8b3a6a29",
+      "name": "Get a you tube channel videos",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "MsLFjlj3vJe7qBWb",
+          "name": "Scrape Creators account zuuevich"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "530bfa72-f19a-447c-8ba6-3362bf6c3f9d",
+              "name": "Igorzuevich_ID",
+              "value": "UCO85GRCGUWMH08jjBZwdq7g",
+              "type": "string"
+            },
+            {
+              "id": "2df57e6d-8bfc-47af-9bd1-4a1fe4537d6c",
+              "name": "Igorzuevich_name",
+              "value": "igorzuevich",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "72ac25dd-1072-40ee-8385-2406e020da73",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "videos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        352,
+        0
+      ],
+      "id": "abca3a27-fcdf-45d1-a0a7-1a8f327a4a41",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "rowNotExists",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ilDffka7Ldxcn1d6",
+          "mode": "list",
+          "cachedResultName": "YouTube",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/ilDffka7Ldxcn1d6"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "URL",
+              "keyValue": "={{ $json.url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        0
+      ],
+      "id": "7aad2826-ba66-4f99-85b3-bda6dce82e3e",
+      "name": "If row does not exist",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "ilDffka7Ldxcn1d6",
+          "mode": "list",
+          "cachedResultName": "YouTube",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/ilDffka7Ldxcn1d6"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_video": "={{ $json.id }}",
+            "URL": "={{ $json.url }}",
+            "Title": "={{ $json.title }}",
+            "Date_published": "={{ $json.publishedTime }}",
+            "channel": "={{ $('Edit Fields1').item.json.Igorzuevich_name }}",
+            "image": "={{ $json.thumbnail }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "channel",
+              "displayName": "channel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "id_video",
+              "displayName": "id_video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date_published",
+              "displayName": "Date_published",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "transcript_tekst",
+              "displayName": "transcript_tekst",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "READY_SUPABASE",
+              "displayName": "READY_SUPABASE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "READY_GEMINI",
+              "displayName": "READY_GEMINI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1088,
+        96
+      ],
+      "id": "80a01b0b-0269-4ce8-ac6d-2595ae38ea1f",
+      "name": "Insert row",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1296,
+        96
+      ],
+      "id": "b2b35bd7-f180-4e8d-9d8d-4acfc660b780",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "resource": "youtube",
+        "operation": "getYouTubeVideoTranscript",
+        "url": "={{ $('Insert row').item.json.URL }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        112
+      ],
+      "id": "c29c021d-a65f-465b-9ac0-88477ab3dfaf",
+      "name": "Get a you tube video transcript",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "MsLFjlj3vJe7qBWb",
+          "name": "Scrape Creators account zuuevich"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ilDffka7Ldxcn1d6",
+          "mode": "list",
+          "cachedResultName": "YouTube",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/ilDffka7Ldxcn1d6"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "URL",
+              "keyValue": "={{ $('Get a you tube video transcript').item.json.url }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "transcript_tekst": "={{ $('Get a you tube video transcript').item.json.transcript_only_text }}",
+            "Transcript": "={{ $('Code in JavaScript').item.json.formattedTranscript }}",
+            "READY_SUPABASE": "YES"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "channel",
+              "displayName": "channel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "id_video",
+              "displayName": "id_video",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Date_published",
+              "displayName": "Date_published",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "transcript_tekst",
+              "displayName": "transcript_tekst",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "READY_SUPABASE",
+              "displayName": "READY_SUPABASE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "READY_GEMINI",
+              "displayName": "READY_GEMINI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2144,
+        112
+      ],
+      "id": "dd565475-7ec6-49f4-a663-eb3c65977c27",
+      "name": "Update row(s)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Получаем массив транскриптов\nconst transcripts = $input.item.json.transcript;\n\n// Функция для конвертации миллисекунд в формат времени\nfunction msToTime(ms) {\n  const totalSeconds = Math.floor(ms / 1000);\n  const hours = Math.floor(totalSeconds / 3600);\n  const minutes = Math.floor((totalSeconds % 3600) / 60);\n  const seconds = totalSeconds % 60;\n  const milliseconds = ms % 1000;\n  \n  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')},${String(milliseconds).padStart(3, '0')}`;\n}\n\n// Формируем текст транскрипции\nlet formattedTranscript = '';\n\ntranscripts.forEach((item, index) => {\n  const startTime = msToTime(item.startMs);\n  const endTime = msToTime(item.endMs);\n  \n  formattedTranscript += `${startTime} --> ${endTime}\\n`;\n  formattedTranscript += `${item.text}\\n\\n`;\n});\n\n// Возвращаем результат\nreturn {\n  json: {\n    formattedTranscript: formattedTranscript.trim()\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1856,
+        112
+      ],
+      "id": "24c5dff6-5b0e-44b1-977e-32cffea0b229",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        2384,
+        112
+      ],
+      "id": "757f7c91-0207-46dd-b9da-c9c9a81ab22f",
+      "name": "Supabase Vector Store",
+      "notesInFlow": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "MzZ4mIhmfEpRQZA5",
+          "name": "YouTube_igorzuevich"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2272,
+        336
+      ],
+      "id": "1e3c6153-24a8-4c09-a44f-3c65d5e2c00c",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{$json.transcript_tekst}}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "video_id",
+                "value": "={{ $json.id_video }}"
+              },
+              {
+                "name": "title",
+                "value": "={{ $json.Title }}"
+              },
+              {
+                "name": "url",
+                "value": "={{ $json.URL }}"
+              },
+              {
+                "name": "channel",
+                "value": "={{ $json.channel }}"
+              },
+              {
+                "name": "published_at",
+                "value": "={{ $json.Date_published }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        2512,
+        336
+      ],
+      "id": "f97cfa76-8bc8-40f9-bf49-32f096b42f6f",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chatId": "190190068",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2016,
+        -448
+      ],
+      "id": "6959b412-f24b-4dbd-bbe9-686e2a939559",
+      "name": "Send a text message",
+      "webhookId": "ec9d2dd1-8864-4abc-9a5d-8873625eb755",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5b374a27-2924-4d38-bc98-eecd284e3d68",
+              "leftValue": "={{ $json.url }}",
+              "rightValue": "={{ $json.url }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        784,
+        0
+      ],
+      "id": "fc2be6a6-fd44-4a38-bbc8-8029aa515c1c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4445c6f6-7b37-450a-8da6-183ff85caeb1",
+              "name": "text",
+              "value": "Свежего контента сегодня нет",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1584,
+        -512
+      ],
+      "id": "073dbc74-eaeb-48d7-8554-7ab2861471da",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4445c6f6-7b37-450a-8da6-183ff85caeb1",
+              "name": "text",
+              "value": "База пополнена",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1584,
+        -320
+      ],
+      "id": "e1f66316-95c8-4a07-b5ee-18d7f8b456a2",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "content": "## ПРОВЕРКА СВЕЖИХ ВИДЕО",
+        "height": 480,
+        "width": 1360,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -384,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "1c04e07d-0787-459d-a555-7873b7cf7c1f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## ФОРМИРОВАНИЕ БАЗЫ ДАННЫХ",
+        "height": 544,
+        "width": 2096,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1024,
+        -32
+      ],
+      "typeVersion": 1,
+      "id": "d5a2f63a-6fb2-4100-90be-5d7df2fd5562",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## УВЕДОМЛЕНИЕ",
+        "height": 528,
+        "width": 880,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1456,
+        -608
+      ],
+      "typeVersion": 1,
+      "id": "643c2cdc-34a0-4487-9e9e-cb89dd493587",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        976
+      ],
+      "id": "e980c2d4-f092-4653-bb00-536823b0b4de",
+      "name": "Telegram",
+      "webhookId": "d7fe1baf-5e5f-4435-bf27-0b99883ad065",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        560,
+        976
+      ],
+      "id": "5a454987-3441-4926-87e1-f99663a7b576",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ca9cc06c-dcf8-457b-854b-4c03d3d15dcc",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        16,
+        832
+      ],
+      "id": "940bb257-4b1c-4e50-9421-6d393c3bcf97",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        576
+      ],
+      "id": "ffb70f8e-410a-44c6-9b3f-f2c57ec0ded1",
+      "name": "Telegram2",
+      "webhookId": "8cd99b7a-3eca-4fd9-9b9a-168ea002f4b1",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        224,
+        512
+      ],
+      "typeVersion": 1,
+      "id": "a2f9d2a7-7c14-4a09-93e0-2ebf9cbb6bb4",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 80,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        304,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "93abf498-daf3-4599-90ae-bf43cc2cd530",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "*"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -288,
+        832
+      ],
+      "id": "bbe07293-35da-4c43-8bbe-67ebd318dcc2",
+      "name": "Telegram Trigger1",
+      "webhookId": "4a0dbc76-9e1d-4b0c-b18a-c3933ad0c064",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9d8e573-3830-4e93-9f74-4838b5ff49b5",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        816
+      ],
+      "id": "25b507e0-3143-4f36-95d8-ab86e6012401",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ",
+        "height": 672,
+        "width": 1312,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        544
+      ],
+      "typeVersion": 1,
+      "id": "c97546dd-6abb-4ae5-90d8-57fce80dcd77",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You will receive: (1) retrieved transcript context from the vector database, and (2) the user's question.\n\nTask:\n- Answer the user's question using ONLY the retrieved transcript context.\n- If multiple transcript chunks are returned, merge them into one coherent answer.\n- Do NOT quote long transcript passages unless the user explicitly asks for quotes.\n- If the answer is not present in the context, reply: \"В транскриптах этого не нашёл(ла).\" and ask one clarifying question.\n- At the end, add \"Источник:\" with the video title or URL from metadata if available.\n\nUser question:\n{{ $json.text }}\n",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=You are a RAG-based AI assistant for the YouTube channel \"Igor Zuevich\".\n\nYour task is to answer user questions using the transcripts stored in the vector database.\nAlways search the vector database before answering.\n\nRules:\n- Always respond in Russian.\n- Use the Supabase Vector Store tool to retrieve relevant transcript chunks.\n- Base your answers strictly on the retrieved content.\n- If the answer is not found in the transcripts, clearly say that it was not found and suggest refining the question.\n- If the user asks about a specific video, prioritize results matching the video URL, video ID, or title from metadata.\n- If no specific video is mentioned, search across all videos.\n- Do not invent facts or add information that is not present in the transcripts.\n\nResponse format:\n- Provide a clear, concise answer.\n- When possible, include a short “Source” section referencing the video title or URL from metadata.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1136,
+        816
+      ],
+      "id": "265dd798-fa8c-4d1f-8b4c-921fab73fdfa",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        976,
+        1088
+      ],
+      "id": "c1841a40-d5d3-4ad2-8886-568f43486ad7",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5",
+          "mode": "list",
+          "cachedResultName": "gpt-5"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        1120
+      ],
+      "id": "8a3364e1-bb60-4e7e-90f1-39e21c20dea0",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=tg_ID_{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1184,
+        1152
+      ],
+      "id": "54053f74-cb62-42ed-8a0e-30bb250ed08e",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        1136
+      ],
+      "id": "fed4f627-2faf-41b4-8a72-e7155da99733",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "=Search the YouTube transcript knowledge base of the Igor Zuevich channel.\nUse this tool to retrieve the most relevant transcript fragments to answer user questions.\nIf the user refers to a specific video, filter results using metadata such as video_id, url, or title.\nIf no specific video is mentioned, search across all available transcripts.\nReturn only the most relevant content for answering the question.\n",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        1520,
+        1024
+      ],
+      "id": "964f2e5d-1ffa-4e91-b701-5c3d86a67ada",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "MzZ4mIhmfEpRQZA5",
+          "name": "YouTube_igorzuevich"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        1216
+      ],
+      "id": "3dd85794-7182-45e1-a0a2-4d9f2d6b658e",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1840,
+        816
+      ],
+      "id": "447d5e90-7994-41b5-bb4d-dd2e70d25fa7",
+      "name": "Send a text message1",
+      "webhookId": "07b6a06a-f9a8-4e78-a8cd-d536e0fa66d2",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ",
+        "height": 672,
+        "width": 1152,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        944,
+        736
+      ],
+      "typeVersion": 1,
+      "id": "bd11b27a-fe4e-4052-9ab7-bb3e6da3f317",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по data Table:\n## https://youtu.be/C8GPQqaB7Io\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 144,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2912,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "81e410f0-6779-45be-a782-ff8dc92df8cf",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/qKh7BTjQoM0",
+        "height": 120,
+        "width": 488
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "c880f3bd-765a-4400-be7c-97a6b459eecd",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: по Нодам и Привязке GEMINI AI: https://youtu.be/XKhqGqe3FBk",
+        "height": 136,
+        "width": 550
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1504,
+        464
+      ],
+      "typeVersion": 1,
+      "id": "e13cdaac-7b94-42ce-bb71-231818971d28",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 488
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        592,
+        1248
+      ],
+      "typeVersion": 1,
+      "id": "d1019597-6a63-4b37-940f-3c9cfb2dab4e",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Защитные ноды для ИИ Агента:\n## https://youtu.be/g8oQ072J82g",
+        "height": 128,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -448,
+        1136
+      ],
+      "typeVersion": 1,
+      "id": "d3897c87-86d5-47a0-b0f9-cdc23cccde17",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## n8n – Разбор всех Триггеров:\n## https://youtu.be/jJavEXnfWkM",
+        "height": 128,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        128,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "83975570-528d-4015-b447-73cfe74df132",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "createFromText",
+        "content": "=Title: {{ $('Update row(s)').item.json.Title }}\nURL: {{ $('Update row(s)').item.json.URL }}\nChannel: {{ $('Update row(s)').item.json.channel }}\nPublished at: {{ $('Update row(s)').item.json.Date_published }}\n\nTranscript:\n{{ $('Update row(s)').item.json.transcript_tekst }}\n",
+        "name": "={{ $('Update row(s)').item.json.id_video }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1Ss1ZqEdELEj6BLXwn7PAIvLXV1tfbFs8",
+          "mode": "list",
+          "cachedResultName": "YouTube_Igor_ZUEVICH",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1Ss1ZqEdELEj6BLXwn7PAIvLXV1tfbFs8"
+        },
+        "options": {
+          "convertToGoogleDocument": true
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2736,
+        112
+      ],
+      "id": "57685812-c1b1-4e2a-959a-7c30a78181fc",
+      "name": "Create file from text",
+      "executeOnce": true,
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Get a you tube channel videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "If row does not exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a you tube channel videos": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If row does not exist": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a you tube video transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a you tube video transcript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row(s)": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "main": [
+        [
+          {
+            "node": "Create file from text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create file from text": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "8c866b7c-46fd-467f-ae33-4d968d4aa7e7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "q9XUYMnDUkR6vgSw",
+  "tags": []
+}

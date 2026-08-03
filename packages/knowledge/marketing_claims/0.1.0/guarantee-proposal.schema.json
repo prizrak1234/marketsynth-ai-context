@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/marketing-claims/0.1.0/guarantee-proposal.schema.json",
+  "title": "GuaranteeProposal",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "guarantee_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "guarantee_type": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "statement": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "scope": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "legal_review_required": {
+      "type": "boolean"
+    },
+    "outcome_guarantee": {
+      "type": "boolean"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "guarantee_id",
+    "guarantee_type",
+    "statement",
+    "scope",
+    "conditions",
+    "legal_review_required",
+    "outcome_guarantee",
+    "provenance"
+  ]
+}

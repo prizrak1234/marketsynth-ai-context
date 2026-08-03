@@ -1,0 +1,24 @@
+{
+  "nutrients": [
+    {
+      "id": "KCAL",
+      "name": "Энергия",
+      "unit": "kcal"
+    },
+    {
+      "id": "PROT",
+      "name": "Белок",
+      "unit": "g"
+    },
+    {
+      "id": "FAT",
+      "name": "Жир",
+      "unit": "g"
+    },
+    {
+      "id": "CARB",
+      "name": "Углеводы",
+      "unit": "g"
+    }
+  ]
+}

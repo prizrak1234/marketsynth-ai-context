@@ -1,0 +1,6 @@
+{
+  "consumer": "pptx_renderer_stub",
+  "reads_fields": ["presentation_id", "slide_plan", "visual_briefs", "chart_requirements"],
+  "forbidden_fields": ["pptx_path", "rendered_file"],
+  "executes_render": false
+}

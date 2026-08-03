@@ -1,0 +1,149 @@
+{
+  "context_id": "ctx-flowdesk-001",
+  "skill_id": "ms.skill.product_marketing_context",
+  "skill_version": "0.2.0",
+  "normalized_product": [
+    {
+      "claim_id": "prod-001",
+      "domain": "product_identity",
+      "statement": "FlowDesk Pro — async-first B2B SaaS project management",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "high"
+    }
+  ],
+  "normalized_business_model": [
+    {
+      "claim_id": "bm-001",
+      "domain": "business_model",
+      "statement": "Subscription per seat with freemium tier",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "high"
+    }
+  ],
+  "normalized_market_scope": [
+    {
+      "claim_id": "geo-001",
+      "domain": "geography",
+      "statement": "Global — English-speaking markets first",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "normalized_customer_claims": [
+    {
+      "claim_id": "cust-001",
+      "domain": "customer_segment",
+      "statement": "Remote software teams of 5–50 engineers",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "normalized_problem_claims": [
+    {
+      "claim_id": "prob-001",
+      "domain": "problem_statement",
+      "statement": "Existing tools create meeting overhead and async coordination gaps",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "normalized_value_proposition_claims": [
+    {
+      "claim_id": "vp-001",
+      "domain": "value_proposition",
+      "statement": "Reduce standup time by 50% with automated summaries",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "low",
+      "assumption": true
+    }
+  ],
+  "normalized_pricing_claims": [
+    {
+      "claim_id": "price-001",
+      "domain": "pricing",
+      "statement": "$12 per seat/month on paid tier",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "normalized_competitor_claims": [
+    {
+      "claim_id": "comp-001",
+      "domain": "competitor",
+      "statement": "Competes with Linear and Jira for async teams",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "channel_context": [
+    {
+      "claim_id": "chan-001",
+      "domain": "channel",
+      "statement": "Product-led growth and developer communities",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "brand_constraints": [
+    {
+      "claim_id": "brand-001",
+      "domain": "brand_constraint",
+      "statement": "Developer-friendly tone; no enterprise jargon",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "high"
+    }
+  ],
+  "operational_constraints": [
+    {
+      "claim_id": "ops-001",
+      "domain": "business_constraint",
+      "statement": "No paid ads until context readiness confirmed",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "high"
+    }
+  ],
+  "evidence_inventory": [
+    {
+      "evidence_id": "ev-001",
+      "evidence_type": "user_statement",
+      "claim": "Founder interviewed 8 engineering leads about async standups",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "assumptions": [
+    {
+      "claim_id": "vp-001",
+      "domain": "value_proposition",
+      "statement": "Reduce standup time by 50% with automated summaries",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "low",
+      "assumption": true
+    }
+  ],
+  "unknowns": [],
+  "conflicts": [],
+  "clarification_questions": [],
+  "readiness": "ready",
+  "readiness_blockers": [],
+  "provenance": {
+    "skill_id": "ms.skill.product_marketing_context",
+    "skill_version": "0.2.0",
+    "generated_at": "2026-07-23T12:00:00Z",
+    "methodology_ref": "docs/skills/ms.skill.product_marketing_context.md"
+  },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

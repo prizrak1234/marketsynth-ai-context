@@ -1,0 +1,132 @@
+{
+  "extraction_id": "cme-001",
+  "skill_id": "ms.skill.customer_meaning_extraction",
+  "skill_version": "0.1.0",
+  "source_cim_reference": {
+    "source_skill_id": "ms.skill.icp_segmentation",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+    "cim_version": "0.1.0",
+    "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "selected_segment_ids": [
+      "seg-remote-eng"
+    ],
+    "source_evidence_references": [
+      "ev-seg-seg-remote-eng"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_evidence_references": [
+    "ev-interview-001"
+  ],
+  "customer_meanings": [
+    {
+      "meaning_id": "mean-desire-1",
+      "selected_segment_ids": [
+        "seg-remote-eng"
+      ],
+      "source_statement": "We lose hours in sync meetings",
+      "normalized_meaning": "Reduce time lost to synchronous coordination",
+      "meaning_type": "desire",
+      "customer_language": "too many meetings",
+      "desired_transformation": "More async, fewer meetings",
+      "underlying_need": "Protect deep work time",
+      "evidence_references": [
+        "ev-interview-001"
+      ],
+      "contradictory_evidence": [],
+      "assumptions": [],
+      "inference": "",
+      "confidence": "medium",
+      "unknowns": [],
+      "provenance": {
+        "skill_id": "ms.skill.customer_meaning_extraction",
+        "skill_version": "0.1.0"
+      }
+    }
+  ],
+  "desire_to_benefit_maps": [
+    {
+      "map_id": "dtb-1",
+      "customer_meaning_reference": "mean-desire-1",
+      "satisfaction_status": "partially_supported",
+      "product_capability_reference": "cap-async-workflows",
+      "delivery_mechanism_reference": "mech-async-handoff",
+      "benefit_statement": "Fewer status meetings via async handoffs",
+      "evidence_references": [
+        "ev-cap-001"
+      ],
+      "conditions": [
+        "Team adopts async norms"
+      ],
+      "limitations": [
+        "Does not eliminate all meetings"
+      ],
+      "unsupported_aspects": [
+        "Exact hour savings unverified"
+      ],
+      "confidence": "medium",
+      "provenance": {
+        "skill_id": "ms.skill.customer_meaning_extraction",
+        "skill_version": "0.1.0"
+      }
+    }
+  ],
+  "transformation_maps": [],
+  "fear_objection_maps": [
+    {
+      "map_id": "fom-1",
+      "fear_category": "category_distrust",
+      "customer_meaning_reference": "mean-desire-1",
+      "underlying_concern": "Async tools failed before",
+      "proof_requirement_reference": "proof-pilot",
+      "response_constraint": "No invented counter-proof",
+      "unresolved_risk": "Adoption risk remains",
+      "evidence_references": [
+        "ev-interview-001"
+      ],
+      "provenance": {
+        "skill_id": "ms.skill.customer_meaning_extraction",
+        "skill_version": "0.1.0"
+      }
+    }
+  ],
+  "trust_requirements": [],
+  "service_expectations": [],
+  "price_value_concerns": [],
+  "promise_candidates": [
+    {
+      "promise_id": "pc-1",
+      "proposed_statement": "Reduce meeting load with async workflows",
+      "substantiation_status": "partially_supported"
+    }
+  ],
+  "unsupported_promises": [
+    {
+      "finding_id": "up-1",
+      "statement": "Guaranteed 50% fewer meetings",
+      "reason": "No verified evidence"
+    }
+  ],
+  "assumptions": [],
+  "inferences": [],
+  "unknowns": [],
+  "conflicts": [],
+  "evidence_gaps": [
+    "Quantified time savings"
+  ],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "downstream_positioning_inputs": [],
+  "downstream_claim_substantiation_inputs": [],
+  "downstream_offer_inputs": [],
+  "provenance": {
+    "skill_id": "ms.skill.customer_meaning_extraction",
+    "skill_version": "0.1.0"
+  },
+  "input_hash": "3333333333333333333333333333333333333333333333333333333333333333",
+  "output_hash": "4444444444444444444444444444444444444444444444444444444444444444"
+}

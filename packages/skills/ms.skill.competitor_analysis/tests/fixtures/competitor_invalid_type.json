@@ -1,0 +1,30 @@
+{
+  "competitor_id": "c1",
+  "name": "Bad",
+  "competitor_type": "swot_invalid_type",
+  "relationship_to_customer_problem": "Addresses async team coordination",
+  "verification_status": "partially_verified",
+  "confidence": "medium",
+  "evidence_references": [
+    "src-001"
+  ],
+  "product_or_service": "Bad",
+  "target_segments": [
+    "remote engineering teams"
+  ],
+  "geographies": [
+    "US",
+    "EU"
+  ],
+  "pricing_model": "subscription",
+  "observed_price_points": [],
+  "offer_structure": "",
+  "value_proposition_claims": [],
+  "channels": [],
+  "proof_points": [],
+  "strengths": [],
+  "weaknesses": [],
+  "assumptions": [],
+  "unknowns": [],
+  "contradictory_evidence": []
+}

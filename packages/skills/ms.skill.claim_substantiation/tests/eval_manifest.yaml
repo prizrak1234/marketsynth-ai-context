@@ -1,0 +1,6 @@
+version: 1
+skill_id: ms.skill.claim_substantiation
+eval_cases:
+  - id: valid
+    fixture: tests/fixtures/output_valid_substantiation.json
+    expectation: schema_valid

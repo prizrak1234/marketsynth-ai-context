@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.claim_substantiation/output/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "substantiation_report_id": {
+      "type": "string"
+    },
+    "skill_id": {
+      "type": "string",
+      "const": "ms.skill.claim_substantiation"
+    },
+    "skill_version": {
+      "type": "string"
+    },
+    "source_positioning_reference": {
+      "type": "object"
+    },
+    "source_meaning_reference": {
+      "type": "object"
+    },
+    "source_market_validation_reference": {
+      "type": "object"
+    },
+    "claim_assessments": {
+      "type": "array",
+      "items": {
+        "$ref": "schemas/claim-assessment.schema.json"
+      }
+    },
+    "supported_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conditional_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unsupported_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prohibited_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proof_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "legal_review_items": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_qualifiers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risk_reversal_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      },
+      "maxItems": 30
+    },
+    "coverage": {
+      "type": "string",
+      "enum": [
+        "full",
+        "partial",
+        "minimal",
+        "unknown"
+      ]
+    },
+    "evidence_quality": {
+      "type": "string",
+      "enum": [
+        "comprehensive",
+        "partial",
+        "insufficient",
+        "conflicted",
+        "unknown"
+      ]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partially_complete",
+        "insufficient_sources",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "offer_builder_claim_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "human_review_required": {
+      "type": "boolean"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "input_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "output_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    }
+  },
+  "required": [
+    "substantiation_report_id",
+    "skill_id",
+    "skill_version",
+    "claim_assessments",
+    "supported_claims",
+    "unsupported_claims",
+    "prohibited_claims",
+    "offer_builder_claim_inputs",
+    "evidence_gaps",
+    "coverage",
+    "evidence_quality",
+    "research_status",
+    "human_review_required",
+    "provenance",
+    "input_hash",
+    "output_hash"
+  ]
+}

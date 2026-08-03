@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.product_marketing_context/claim/0.1.0",
+  "title": "ProductMarketingContextClaim",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "product_identity",
+        "business_model",
+        "customer_segment",
+        "geography",
+        "market_category",
+        "problem_statement",
+        "value_proposition",
+        "pricing",
+        "competitor",
+        "channel",
+        "brand_constraint",
+        "business_constraint",
+        "objective",
+        "evidence",
+        "other"
+      ]
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "user_statement",
+        "document",
+        "external_source",
+        "prior_skill_output",
+        "system_inference",
+        "unknown"
+      ]
+    },
+    "source_reference": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "partially_verified",
+        "verified",
+        "contradicted",
+        "unknown"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 50
+    },
+    "assumption": {
+      "type": "boolean",
+      "default": false
+    },
+    "inference": {
+      "type": "boolean",
+      "default": false
+    },
+    "conflict_group_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "required": [
+    "claim_id",
+    "domain",
+    "statement",
+    "source_type",
+    "verification_status",
+    "confidence"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "verification_status": { "const": "verified" } },
+        "required": ["verification_status"]
+      },
+      "then": { "required": ["source_reference"] }
+    },
+    {
+      "if": {
+        "properties": { "inference": { "const": true } },
+        "required": ["inference"]
+      },
+      "then": {
+        "properties": {
+          "verification_status": {
+            "not": { "const": "verified" }
+          }
+        }
+      }
+    }
+  ]
+}

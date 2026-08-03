@@ -1,0 +1,41 @@
+---
+description: Brief implementation report format — no Caveman, evidence-based PASS/FAIL
+alwaysApply: true
+---
+
+# Marketsynth Delivery Report (Cursor)
+
+Use after implementation or audit tasks. **Do not** repeat full TZ. **Do not** claim PASS without evidence.
+
+## DEFAULT IMPLEMENTATION REPORT
+
+```
+Verdict: PASS | FAIL | INCONCLUSIVE
+Goal: [one line]
+Changed files: [list]
+Behavior change: before → after
+Tests executed: [commands]
+Results: [pass/fail counts or N/A]
+Reviewer verdicts: [if composite review ran]
+Limitations: [honest gaps]
+Residual risks: [if any]
+SoT updates: [files or none]
+Next approved step: [single step from owner sequence]
+```
+
+## Rules
+
+- No marketing language; no "foundation ready" without user-visible result (product tasks)
+- PASS requires: scope met, required tests green (or N/A with reason), no unaddressed blocking review findings
+- FAIL: blocking finding, failed verification, scope expansion, or unverified claims
+- INCONCLUSIVE: missing files, env blocked verification, reviewers disagree on facts
+
+## Composite review trigger
+
+Run skill **marketsynth-composite-review** after **non-trivial code changes**:
+- New/changed product logic, API, persistence, frontend flow, security-sensitive paths
+- Before owner-facing PASS on product slices
+
+**Do not run** composite review for: read-only Q&A, single-comment typo, pure governance doc edits.
+
+Reviewers are **read-only** — they report findings; implementer fixes, then re-runs review.

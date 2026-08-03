@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/provenance.schema.json",
+  "title": "Provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "source_type": {
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "archive_id": {
+      "type": "string"
+    },
+    "archive_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "relative_path": {
+      "type": "string"
+    },
+    "content_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "program_phase": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_type",
+    "archive_id"
+  ]
+}

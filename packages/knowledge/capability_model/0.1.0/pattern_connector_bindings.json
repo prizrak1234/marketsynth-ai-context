@@ -1,0 +1,100 @@
+[
+  {
+    "pattern_id": "human_approval_before_publication",
+    "connector_class": "publication_connector",
+    "conceptual_only": true,
+    "activates_connector": false,
+    "permission_granted": false,
+    "required_tool_classes": [
+      "publish"
+    ],
+    "applicability": "Conceptual binding for future Connector Gateway.",
+    "limitations": [
+      "No Connector activation in KB-WPL-01.7."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "structured_LLM_to_API_request",
+    "connector_class": "development_connector",
+    "conceptual_only": true,
+    "activates_connector": false,
+    "permission_granted": false,
+    "required_tool_classes": [
+      "write",
+      "generate_draft"
+    ],
+    "applicability": "Conceptual binding for future Connector Gateway.",
+    "limitations": [
+      "No Connector activation in KB-WPL-01.7."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "evidence_grounded_generation",
+    "connector_class": "content_generation_connector",
+    "conceptual_only": true,
+    "activates_connector": false,
+    "permission_granted": false,
+    "required_tool_classes": [
+      "generate_draft"
+    ],
+    "applicability": "Conceptual binding for future Connector Gateway.",
+    "limitations": [
+      "No Connector activation in KB-WPL-01.7."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "publication_confirmation",
+    "connector_class": "publication_connector",
+    "conceptual_only": true,
+    "activates_connector": false,
+    "permission_granted": false,
+    "required_tool_classes": [
+      "publish",
+      "read"
+    ],
+    "applicability": "Conceptual binding for future Connector Gateway.",
+    "limitations": [
+      "No Connector activation in KB-WPL-01.7."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "pattern_id": "lead_capture_to_qualification",
+    "connector_class": "CRM_connector",
+    "conceptual_only": true,
+    "activates_connector": false,
+    "permission_granted": false,
+    "required_tool_classes": [
+      "read",
+      "write"
+    ],
+    "applicability": "Conceptual binding for future Connector Gateway.",
+    "limitations": [
+      "No Connector activation in KB-WPL-01.7."
+    ],
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  }
+]

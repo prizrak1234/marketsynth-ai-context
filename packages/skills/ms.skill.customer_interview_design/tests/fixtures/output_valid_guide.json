@@ -1,0 +1,94 @@
+{
+  "interview_guide_id": "int-guide-001",
+  "skill_id": "ms.skill.customer_interview_design",
+  "skill_version": "0.1.0",
+  "cim_reference": {
+    "source_skill_id": "ms.skill.icp_segmentation",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+    "cim_version": "0.1.0",
+    "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "selected_segment_ids": [
+      "seg-remote-eng"
+    ],
+    "source_evidence_references": [
+      "ev-seg-seg-remote-eng"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "selected_segment_ids": [
+    "seg-remote-eng"
+  ],
+  "research_objectives": [
+    "Understand async collaboration pain points"
+  ],
+  "interview_sections": [
+    {
+      "section_id": "sec-1",
+      "title": "Current state",
+      "domain": "current_state"
+    }
+  ],
+  "questions": [
+    {
+      "question_id": "q-pain-1",
+      "domain": "pain_and_discomfort",
+      "question_text": "What is most frustrating about your current workflow today?",
+      "question_type": "open",
+      "evidence_objective": "Capture unprompted pain language",
+      "expected_evidence_type": "user_statement",
+      "follow_up_rules": [
+        "Ask for a recent example"
+      ],
+      "leading_risk": "low",
+      "sensitivity": "none",
+      "notes": "Non-leading open question",
+      "provenance": {
+        "skill_id": "ms.skill.customer_interview_design",
+        "skill_version": "0.1.0"
+      }
+    }
+  ],
+  "follow_up_probes": [
+    {
+      "probe_id": "probe-1",
+      "trigger": "vague answer",
+      "probe_text": "Can you describe a recent example?"
+    }
+  ],
+  "evidence_capture_fields": [
+    "pain_language",
+    "desired_outcome_language"
+  ],
+  "bias_warnings": [
+    "Avoid confirming product hypotheses during interview"
+  ],
+  "sensitive_topic_warnings": [],
+  "assumptions": [
+    {
+      "item_id": "a-1",
+      "statement": "Segment represents target buyers",
+      "evidence_class": "assumption"
+    }
+  ],
+  "unknowns": [
+    {
+      "domain": "budget",
+      "description": "Budget sensitivity not yet explored"
+    }
+  ],
+  "evidence_gaps": [],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "human_review_required": true,
+  "provenance": {
+    "skill_id": "ms.skill.customer_interview_design",
+    "skill_version": "0.1.0",
+    "source_cim_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "input_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+  "output_hash": "2222222222222222222222222222222222222222222222222222222222222222"
+}

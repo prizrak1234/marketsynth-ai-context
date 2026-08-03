@@ -1,0 +1,397 @@
+{
+  "analysis_id": "icp-sparse-001",
+  "skill_id": "ms.skill.icp_segmentation",
+  "skill_version": "0.1.0",
+  "source_context_reference": {
+    "source_skill_id": "ms.skill.product_marketing_context",
+    "source_skill_version": "0.2.0",
+    "source_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_evidence_references": [
+      "ev-pmc-001"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "pricing",
+        "description": "PMC pricing unverified"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "source_research_reference": {
+    "source_skill_id": "ms.skill.market_research",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_evidence_references": [
+      "finding-cs-001"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "segment",
+        "description": "Segment size unverified"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "source_competitor_reference": {
+    "source_skill_id": "ms.skill.competitor_analysis",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_evidence_references": [
+      "comp-linear"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "competitor",
+        "description": "Indirect set incomplete"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "customer_intelligence": {
+    "cim_id": "cim-001",
+    "cim_version": "0.1.0-draft",
+    "skill_id": "ms.skill.icp_segmentation",
+    "skill_version": "0.1.0",
+    "source_context_reference": {
+      "source_skill_id": "ms.skill.product_marketing_context",
+      "source_skill_version": "0.2.0",
+      "source_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "source_evidence_references": [
+        "ev-pmc-001"
+      ],
+      "source_unknowns": [
+        {
+          "domain": "pricing",
+          "description": "PMC pricing unverified"
+        }
+      ],
+      "source_conflicts": []
+    },
+    "source_research_reference": {
+      "source_skill_id": "ms.skill.market_research",
+      "source_skill_version": "0.1.0",
+      "source_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "source_evidence_references": [
+        "finding-cs-001"
+      ],
+      "source_unknowns": [
+        {
+          "domain": "segment",
+          "description": "Segment size unverified"
+        }
+      ],
+      "source_conflicts": []
+    },
+    "source_competitor_reference": {
+      "source_skill_id": "ms.skill.competitor_analysis",
+      "source_skill_version": "0.1.0",
+      "source_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "source_evidence_references": [
+        "comp-linear"
+      ],
+      "source_unknowns": [
+        {
+          "domain": "competitor",
+          "description": "Indirect set incomplete"
+        }
+      ],
+      "source_conflicts": []
+    },
+    "market_scope": "B2B async collaboration SaaS",
+    "segments": [
+      {
+        "segment_id": "seg-unknown",
+        "segment_name": "Unclear Segment",
+        "segment_description": "Segment Unclear Segment for async SaaS buyers",
+        "segment_type": "unknown",
+        "inclusion_criteria": [
+          "Matches Unclear Segment profile"
+        ],
+        "exclusion_criteria": [
+          "Enterprise-only procurement"
+        ],
+        "geography": [
+          "US",
+          "EU"
+        ],
+        "company_or_customer_profile": "10-200 person remote-first software teams",
+        "jobs_to_be_done": [
+          {
+            "jtbd_id": "jtbd-seg-unknown",
+            "job_type": "functional",
+            "situation": "When managing Unclear Segment workflows",
+            "motivation": "Reduce coordination overhead",
+            "desired_progress": "Async team alignment without daily meetings",
+            "functional_job": "Coordinate work across time zones",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-jtbd-seg-unknown"
+            ]
+          }
+        ],
+        "pain_points": [
+          {
+            "id": "pain-seg-unknown",
+            "claim_kind": "pain_point",
+            "statement": "Too many status meetings",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-pain-seg-unknown"
+            ]
+          }
+        ],
+        "desired_outcomes": [
+          {
+            "id": "out-seg-unknown",
+            "claim_kind": "desired_outcome",
+            "statement": "Clear async visibility",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-out-seg-unknown"
+            ]
+          }
+        ],
+        "buying_triggers": [
+          {
+            "id": "trg-seg-unknown",
+            "claim_kind": "buying_trigger",
+            "statement": "Team growth past 25 people",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-trg-seg-unknown"
+            ]
+          }
+        ],
+        "buying_barriers": [
+          {
+            "id": "bar-seg-unknown",
+            "claim_kind": "buying_barrier",
+            "statement": "Migration from existing tool",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-bar-seg-unknown"
+            ]
+          }
+        ],
+        "objections": [
+          {
+            "id": "obj-seg-unknown",
+            "claim_kind": "objection",
+            "statement": "Another tool fatigue",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-obj-seg-unknown"
+            ]
+          }
+        ],
+        "decision_roles": [
+          {
+            "role_id": "role-dm-seg-unknown",
+            "role_type": "decision_maker",
+            "description": "Engineering manager approves tooling",
+            "influence_level": "high",
+            "decision_authority": "final",
+            "confidence": "medium"
+          }
+        ],
+        "urgency": "medium",
+        "budget_sensitivity": "medium",
+        "awareness_stage": "solution_aware",
+        "market_sophistication": "high",
+        "trust_drivers": [
+          {
+            "id": "trust-seg-unknown",
+            "claim_kind": "trust_driver",
+            "statement": "Peer references from similar teams",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-trust-seg-unknown"
+            ]
+          }
+        ],
+        "proof_requirements": [
+          "Case study from similar team size"
+        ],
+        "channel_preferences": [
+          "Product-led trial",
+          "LinkedIn"
+        ],
+        "content_preferences": [
+          "Short demo videos"
+        ],
+        "buying_process": "Trial then team rollout",
+        "switching_costs": "Moderate — existing Linear/Jira workflows",
+        "competitor_overlap": [
+          "comp-linear"
+        ],
+        "alternative_solutions": [
+          "Spreadsheets",
+          "Daily standups"
+        ],
+        "segment_size_signal": "Growing remote SaaS segment",
+        "demand_signal": "Strong async tooling demand",
+        "profitability_assumptions": [
+          "Mid-market ACV viable"
+        ],
+        "strategic_fit": "strong",
+        "evidence_references": [
+          "ev-seg-seg-unknown"
+        ],
+        "confidence": "low",
+        "coverage": "minimal",
+        "priority_assessment": {
+          "strategic_fit": "strong",
+          "problem_intensity": "high",
+          "demand_signal_strength": "moderate",
+          "evidence_quality": "insufficient",
+          "budget_fit": "moderate",
+          "urgency": "medium",
+          "reachability": "medium",
+          "competitive_pressure": "medium",
+          "switching_difficulty": "medium",
+          "sales_cycle_complexity": "medium",
+          "implementation_complexity": "low",
+          "retention_potential": "high",
+          "confidence": "medium",
+          "blockers": [],
+          "priority_tier": "insufficient_evidence",
+          "tier_rationale": "Sparse data"
+        }
+      }
+    ],
+    "primary_icp_candidates": [
+      {
+        "segment_id": "seg-unknown",
+        "rank": 1,
+        "rationale": "Strongest evidence-backed problem intensity and strategic fit",
+        "evidence_references": [
+          "ev-seg-seg-unknown"
+        ]
+      }
+    ],
+    "excluded_or_low_priority_segments": [],
+    "cross_segment_patterns": [
+      "All segments cite meeting overload as core pain"
+    ],
+    "segment_conflicts": [],
+    "customer_unknowns": [
+      {
+        "domain": "budget",
+        "description": "Exact budget bands unverified",
+        "blocking": false
+      }
+    ],
+    "evidence_inventory": [
+      {
+        "evidence_id": "ev-001",
+        "reference": "User interviews n=8",
+        "evidence_type": "interview"
+      }
+    ],
+    "assumptions": [
+      "Remote-first default continues post-2026"
+    ],
+    "inferences": [
+      "Secondary segment may expand with PLG motion"
+    ],
+    "coverage": "minimal",
+    "evidence_quality": "insufficient",
+    "research_status": "insufficient_sources",
+    "readiness": "insufficient_customer_evidence",
+    "readiness_blockers": [
+      "Interview sample small"
+    ],
+    "recommended_next_research": [
+      "Validate budget sensitivity with sales calls"
+    ],
+    "downstream_consumer_notes": [
+      "Positioning is a CIM consumer, not a second segmentation engine."
+    ],
+    "provenance": {
+      "skill_id": "ms.skill.icp_segmentation",
+      "skill_version": "0.1.0",
+      "methodology_ref": "Marketsynth CIM v0.1.0-draft",
+      "generated_at": "2026-07-23T12:00:00Z"
+    },
+    "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "segment_ranking_summary": {
+    "summary": "0 primary, 0 secondary segments identified",
+    "primary_count": 0,
+    "secondary_count": 0,
+    "exploratory_count": 0,
+    "excluded_count": 0,
+    "ranking_methodology": "Explainable multi-dimension priority assessment"
+  },
+  "primary_icp_candidates": [
+    {
+      "segment_id": "seg-unknown",
+      "rank": 1,
+      "rationale": "Strongest evidence-backed problem intensity and strategic fit",
+      "evidence_references": [
+        "ev-seg-seg-unknown"
+      ],
+      "priority_tier": "primary"
+    }
+  ],
+  "secondary_segments": [],
+  "exploratory_segments": [],
+  "excluded_segments": [],
+  "cross_segment_patterns": [
+    "All segments cite meeting overload as core pain"
+  ],
+  "evidence_gaps": [
+    "Budget bands need validation"
+  ],
+  "coverage": "minimal",
+  "evidence_quality": "insufficient",
+  "research_status": "insufficient_sources",
+  "recommended_next_research": [
+    "Validate budget sensitivity with sales calls"
+  ],
+  "downstream_consumer_notes": [
+    "Positioning is a CIM consumer, not a second segmentation engine."
+  ],
+  "provenance": {
+    "skill_id": "ms.skill.icp_segmentation",
+    "skill_version": "0.1.0",
+    "generated_at": "2026-07-23T12:00:00Z",
+    "methodology_ref": "Marketsynth CIM v0.1.0-draft",
+    "source_context_skill_id": "ms.skill.product_marketing_context",
+    "source_context_skill_version": "0.2.0",
+    "source_context_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_research_skill_id": "ms.skill.market_research",
+    "source_research_skill_version": "0.1.0",
+    "source_research_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_competitor_skill_id": "ms.skill.competitor_analysis",
+    "source_competitor_skill_version": "0.1.0",
+    "source_competitor_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

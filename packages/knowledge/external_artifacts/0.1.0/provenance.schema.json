@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/provenance.schema.json",
+  "title": "ExternalArtifactProvenance",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "source_type": {
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "archive_id": {
+      "type": "string"
+    },
+    "archive_hash": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_type",
+    "archive_id"
+  ]
+}

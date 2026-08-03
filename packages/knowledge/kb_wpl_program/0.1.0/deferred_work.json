@@ -1,0 +1,61 @@
+{
+  "version": "0.1.0",
+  "items": [
+    {
+      "id": "KB-WPL-02",
+      "title": "Knowledge Core Persistence"
+    },
+    {
+      "id": "KB-WPL-03",
+      "title": "Internal Workflow Template Generator"
+    },
+    {
+      "id": "KB-WPL-04",
+      "title": "Controlled n8n Deployment Gateway"
+    },
+    {
+      "id": "KB-WPL-05",
+      "title": "Workflow Pattern Benchmarking"
+    },
+    {
+      "id": "KB-WPL-06",
+      "title": "Knowledge-Assisted Skill Draft Generation"
+    },
+    {
+      "id": "KB-WPL-07",
+      "title": "Learning and Outcome Feedback"
+    },
+    {
+      "id": "discovery-api-ui",
+      "title": "Discovery API/UI advisory panel"
+    },
+    {
+      "id": "live-registry",
+      "title": "Live Registry integration"
+    },
+    {
+      "id": "vector-retrieval",
+      "title": "Vector/semantic retrieval"
+    },
+    {
+      "id": "provider-adapters",
+      "title": "Provider runtime adapters"
+    },
+    {
+      "id": "presentation-renderers",
+      "title": "Presentation renderers"
+    },
+    {
+      "id": "connector-runtime",
+      "title": "Connector runtime"
+    },
+    {
+      "id": "graph-persistence",
+      "title": "Graph persistence"
+    },
+    {
+      "id": "external-skill-discovery",
+      "title": "External Skill discovery"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "analysis_id": "kl-input-001",
+  "tenant_id": "tenant-alpha",
+  "project_id": "proj-demo",
+  "artifact_scope": "engineering_knowledge",
+  "artifacts": [
+    {
+      "artifact_id": "skill-arch-001",
+      "artifact_type": "skill",
+      "title": "n8n Workflow Architecture",
+      "version": "0.1.0",
+      "content_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "tenant_scope": "global",
+      "tenant_id": "global",
+      "project_id": "proj-demo",
+      "lifecycle_status": "candidate",
+      "trust_status": "reviewed",
+      "source_references": [{"source_id": "wpl-0.1.0-frozen", "source_type": "workflow_pattern_library"}],
+      "provenance": {"origin": "platform_native"}
+    },
+    {
+      "artifact_id": "pattern-approval-001",
+      "artifact_type": "workflow_pattern",
+      "title": "human_approval_before_publication",
+      "version": "0.1.0",
+      "content_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+      "tenant_scope": "global",
+      "tenant_id": "global",
+      "lifecycle_status": "frozen",
+      "trust_status": "reviewed",
+      "source_references": [],
+      "provenance": {"origin": "workflow_pattern_library"}
+    }
+  ],
+  "existing_links": [],
+  "allowed_relation_types": ["uses_pattern", "depends_on", "related_to"],
+  "index_policy": {"required_indexes": ["skill_matrix"], "scope": "global"},
+  "duplicate_policy": {"merge_recommended_default": false},
+  "supersession_policy": {"preserve_history": true},
+  "contradiction_policy": {"auto_resolve": false},
+  "visibility_policy": {},
+  "required_depth": "metadata_only",
+  "provenance": {"analysis_id": "kl-input-001"}
+}

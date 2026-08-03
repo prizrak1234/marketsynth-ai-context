@@ -1,0 +1,489 @@
+{
+  "name": "19 - AI Avatar",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c006f604-f885-4ac6-a216-f2cfae9c9692",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "completed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        864,
+        0
+      ],
+      "id": "b2d4df59-b226-42d6-ae23-7ae25a971d55",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "879aa8f6-9451-40c3-b30d-9131e28adf45",
+      "name": "Wait",
+      "webhookId": "e55ca250-8f11-4b47-886e-80f010c53ce3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.heygen.com/v2/video/generate",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"video_inputs\": [\n    {\n      \"character\": {\n        \"type\": \"avatar\",\n        \"avatar_id\": \"cba9b560f1024986aa2742c2044e2118\",\n        \"avatar_style\": \"normal\"\n      },\n      \"voice\": {\n        \"type\": \"text\",\n        \"voice_id\": \"36e1f994459f4751ac108d3fb0f244b8\",\n        \"input_text\": \"{{ $json.text }}\",\n        \"speed\": 1\n      }\n    }\n  ],\n  \"dimension\": {\n    \"width\": 720,\n    \"height\": 1280\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a6f333d8-6ac9-4938-ad80-5a6cf15a1420",
+      "name": "Generate",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "a00CQaXiDL4StuPW",
+          "name": "HeyGen"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.heygen.com/v1/video_status.get",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "video_id",
+              "value": "={{ $json.data.video_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        656,
+        0
+      ],
+      "id": "3c5ddf95-27e5-4c94-9ec8-3b338f6939d5",
+      "name": "Check status",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "a00CQaXiDL4StuPW",
+          "name": "HeyGen"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Генерируем голос",
+        "height": 352,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        112,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "9948fd66-7bbc-489a-a854-f79fc7805653",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Проверяем статус",
+        "height": 352,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        352,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "20639172-57e6-4865-a10b-5bcc08bca429",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Скачиваем готовое видео",
+        "height": 352,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        816,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "8c021eac-4902-4e67-898b-30031f45366e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3fdd196a-1341-4033-9e04-a5c11f2cb9bb",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "04db31fe-75d5-4344-84dd-3553c77e338c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -496,
+        16
+      ],
+      "id": "2a40b40b-7937-42ef-8b5a-5789501d7e2a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -80,
+        -64
+      ],
+      "id": "71481109-2162-4067-b1d2-957375731eaa",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -256,
+        -64
+      ],
+      "id": "881d63f4-dfe3-49de-9e5d-bbab4f895111",
+      "name": "Get a file",
+      "webhookId": "9ed876b8-f8ab-4dba-b6ba-983db7a96824",
+      "credentials": {
+        "telegramApi": {
+          "id": "x0dsZPmcLWDRA7MD",
+          "name": "railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4c2a372e-b595-45f2-8cf0-d1dd2c79bc2b",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        112
+      ],
+      "id": "f8694493-7bb1-41fe-9f70-7d1b784e68dd",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -704,
+        16
+      ],
+      "id": "3953f04d-f5dd-4fc3-bd22-a3c97bb197c6",
+      "name": "Telegram Trigger",
+      "webhookId": "c66fd469-c52e-42a0-8299-81275044b282",
+      "credentials": {
+        "telegramApi": {
+          "id": "x0dsZPmcLWDRA7MD",
+          "name": "railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Генерируем голос",
+        "height": 352,
+        "width": 864
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -768,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "f0cb24b8-d472-4488-b7b0-3498ded75b19",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "sendVideo",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "file": "={{ $json.data.video_url }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1136,
+        16
+      ],
+      "id": "1dd1bd05-bb6e-44c2-87ab-4392e8e16f2c",
+      "name": "Send a video",
+      "webhookId": "f29cc22b-ac9c-4e91-81a7-2fbb73910784",
+      "credentials": {
+        "telegramApi": {
+          "id": "x0dsZPmcLWDRA7MD",
+          "name": "railway"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Нужна инструкция, чтобы подкдлючить собственный голос из 11Labs? \n\nИщи в Pro-группе: https://t.me/iishenka_pro_bot",
+        "height": 352,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "103b890a-68e1-43a2-8dbc-b61abba26878",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check status": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Generate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Generate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f4c0494b-7b90-4c6e-a494-6409f5e4f510",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "KktXnNE4Pjea8vYB",
+  "tags": []
+}

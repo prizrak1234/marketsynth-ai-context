@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/marketing-claims/0.1.0/claim-compliance-finding.schema.json",
+  "title": "ClaimComplianceFinding",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "finding_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "claim_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "major",
+        "minor",
+        "informational",
+        "unknown"
+      ]
+    },
+    "finding_type": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "required_action": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "legal_review_required": {
+      "type": "boolean"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "finding_id",
+    "claim_id",
+    "severity",
+    "finding_type",
+    "description",
+    "required_action",
+    "legal_review_required",
+    "provenance"
+  ]
+}

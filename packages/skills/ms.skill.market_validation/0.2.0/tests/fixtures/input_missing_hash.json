@@ -1,0 +1,75 @@
+{
+  "product_marketing_context": {
+    "source_skill_id": "ms.skill.product_marketing_context",
+    "source_skill_version": "0.2.0",
+    "source_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": [],
+    "context_id": "ctx-001",
+    "readiness": "ready"
+  },
+  "market_research_output": {
+    "source_skill_id": "ms.skill.market_research",
+    "source_skill_version": "0.1.0",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": [],
+    "research_id": "mr-001",
+    "research_status": "complete"
+  },
+  "competitor_analysis_output": {
+    "source_skill_id": "ms.skill.competitor_analysis",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": [],
+    "analysis_id": "ca-001",
+    "research_status": "complete"
+  },
+  "customer_intelligence_reference": {
+    "source_skill_id": "ms.skill.icp_segmentation",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+    "cim_version": "0.1.0",
+    "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "cim_id": "cim-001",
+    "selected_segment_ids": [
+      "seg-remote-eng"
+    ],
+    "source_status": "ready_for_downstream_use",
+    "source_evidence_references": [
+      "ev-seg-seg-remote-eng"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "budget",
+        "description": "Budget bands unverified"
+      }
+    ],
+    "source_conflicts": [],
+    "provenance": {
+      "submitted_by": "fixture"
+    }
+  },
+  "validation_objectives": [
+    "Assess commercial viability for async SaaS launch"
+  ],
+  "declared_business_scope": "B2B async collaboration SaaS",
+  "geography": "US, EU",
+  "business_model": "subscription",
+  "provenance": {
+    "submitted_by": "fixture"
+  }
+}

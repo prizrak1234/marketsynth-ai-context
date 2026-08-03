@@ -1,0 +1,344 @@
+[
+  {
+    "audit_id": "audit-core-pagination_and_batching",
+    "workflow_template_ids": [
+      "wf-860ed73d41feb4fd",
+      "wf-4795f50628f182d5"
+    ],
+    "pattern_ids": [
+      "pagination_and_batching"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for pagination_and_batching.",
+    "limitations": [
+      "max_batch_size and max_pages must be configured per tenant.",
+      "Termination inferred from catalog splitInBatches metadata."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-860ed73d41feb4fd",
+      "wf-4795f50628f182d5"
+    ],
+    "reviewed_practice_ids": [
+      "pagination_until_exhausted",
+      "bounded_batch_processing"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "3dcacf2fa6d670faca996db7b05c7b20a41027da0c1d7b63441ad37d544d5fbf"
+  },
+  {
+    "audit_id": "audit-core-checkpoint_and_resume",
+    "workflow_template_ids": [
+      "wf-6114836577421bab",
+      "wf-6d6ba3d5c2233d5f"
+    ],
+    "pattern_ids": [
+      "checkpoint_and_resume"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for checkpoint_and_resume.",
+    "limitations": [
+      "Checkpoint store format not standardized across providers."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-6114836577421bab",
+      "wf-6d6ba3d5c2233d5f"
+    ],
+    "reviewed_practice_ids": [
+      "checkpoint_before_expensive_step"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "2defa0ba3f8637af24b671c153e69e09e954192a818524f3c6f2883d09bd17c5"
+  },
+  {
+    "audit_id": "audit-core-dead_letter_queue",
+    "workflow_template_ids": [
+      "wf-4e833d762f583631",
+      "wf-7227ff0544f5cbd2"
+    ],
+    "pattern_ids": [
+      "dead_letter_queue"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for dead_letter_queue.",
+    "limitations": [
+      "Dead-letter retention policy is tenant-specific."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-4e833d762f583631",
+      "wf-7227ff0544f5cbd2"
+    ],
+    "reviewed_practice_ids": [
+      "terminal_dead_letter_handling"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "41df069a6b836106a01422c621d9626a525d630f18f0d04a5c64baf3571d50ac"
+  },
+  {
+    "audit_id": "audit-core-provider_rate_limit_handling",
+    "workflow_template_ids": [
+      "wf-6114836577421bab",
+      "wf-b537693ad1b8ee7e"
+    ],
+    "pattern_ids": [
+      "provider_rate_limit_handling"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for provider_rate_limit_handling.",
+    "limitations": [
+      "Retry-After headers belong in implementation_variants only."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-6114836577421bab",
+      "wf-b537693ad1b8ee7e"
+    ],
+    "reviewed_practice_ids": [
+      "rate_limit_backoff"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "a9c2cbb5179d2a248c4edb43ccbfd804bb63c4a2159c0a653ffd0e6ba7e20cd7"
+  },
+  {
+    "audit_id": "audit-core-quality_gate_after_generation",
+    "workflow_template_ids": [
+      "wf-63b78819a2e5a190",
+      "wf-16a4bd5f71833d44"
+    ],
+    "pattern_ids": [
+      "quality_gate_after_generation"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for quality_gate_after_generation.",
+    "limitations": [
+      "Schema validation rules are core-level; provider shapes vary."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-63b78819a2e5a190",
+      "wf-16a4bd5f71833d44"
+    ],
+    "reviewed_practice_ids": [
+      "quality_gate_before_handoff"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "96d3b693c5a56e36da559551d0fae8357f1b061b63796d458250cc742bfdbb08"
+  },
+  {
+    "audit_id": "audit-core-specialist_subworkflow",
+    "workflow_template_ids": [
+      "wf-b2aea5e382059f4b",
+      "wf-7c284d78aad2003d"
+    ],
+    "pattern_ids": [
+      "specialist_subworkflow"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for specialist_subworkflow.",
+    "limitations": [
+      "Scope declaration format not yet platform-adapted."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-b2aea5e382059f4b",
+      "wf-7c284d78aad2003d"
+    ],
+    "reviewed_practice_ids": [
+      "specialist_scope_isolation"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "e8c82349452d77af314e6be12d6228d811489e27f18c388910a45c13898559f2"
+  },
+  {
+    "audit_id": "audit-core-supervisor_pattern",
+    "workflow_template_ids": [
+      "wf-6bcda126561b5f72",
+      "wf-cb28929d37f1ac61"
+    ],
+    "pattern_ids": [
+      "supervisor_pattern"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for supervisor_pattern.",
+    "limitations": [
+      "Supervisor cannot bypass tool allowlists.",
+      "Undeclared tool execution forbidden at pattern level."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-6bcda126561b5f72",
+      "wf-cb28929d37f1ac61"
+    ],
+    "reviewed_practice_ids": [
+      "supervisor_does_not_execute_tools"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "4beb0d62933999ad4940dde094a6960a8f92a25d388224a75bae2a770c2ddfcd"
+  },
+  {
+    "audit_id": "audit-core-tool_workflow_separation",
+    "workflow_template_ids": [
+      "wf-7c284d78aad2003d",
+      "wf-b2aea5e382059f4b"
+    ],
+    "pattern_ids": [
+      "tool_workflow_separation"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for tool_workflow_separation.",
+    "limitations": [
+      "Tool permission matrix deferred to Connector Gateway."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-7c284d78aad2003d",
+      "wf-b2aea5e382059f4b"
+    ],
+    "reviewed_practice_ids": [
+      "tool_workflow_permission_boundary",
+      "specialist_scope_isolation"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "38bce134779c727708883d6cfaf8a67b32d5a35877ea7180344cb84624cbec14"
+  },
+  {
+    "audit_id": "audit-core-human_edit_then_resume",
+    "workflow_template_ids": [
+      "wf-7227ff0544f5cbd2",
+      "wf-c18641f0b4421b0a"
+    ],
+    "pattern_ids": [
+      "human_edit_then_resume"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for human_edit_then_resume.",
+    "limitations": [
+      "Edit interface variants not standardized."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-7227ff0544f5cbd2",
+      "wf-c18641f0b4421b0a"
+    ],
+    "reviewed_practice_ids": [
+      "manual_edit_resume"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "86e21996a0a51300e94043b479b4b05485824c846d419161f6b48c0702ec50ef"
+  },
+  {
+    "audit_id": "audit-core-publication_confirmation",
+    "workflow_template_ids": [
+      "wf-497aa9eee8a759da",
+      "wf-9f3a78220a7bfbe3"
+    ],
+    "pattern_ids": [
+      "publication_confirmation"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for publication_confirmation.",
+    "limitations": [
+      "Channel-specific confirmation payloads in variants only."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-497aa9eee8a759da",
+      "wf-9f3a78220a7bfbe3"
+    ],
+    "reviewed_practice_ids": [
+      "post_publish_evidence_capture"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "2a8a25ec3540eae363fc962aff04fb2e217ba04fa85f93dc9d7919996ea6e2df"
+  },
+  {
+    "audit_id": "audit-core-source_lineage_preservation",
+    "workflow_template_ids": [
+      "wf-63b78819a2e5a190",
+      "wf-b2aea5e382059f4b"
+    ],
+    "pattern_ids": [
+      "source_lineage_preservation"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for source_lineage_preservation.",
+    "limitations": [
+      "Lineage chain format is core abstraction only."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-63b78819a2e5a190",
+      "wf-b2aea5e382059f4b"
+    ],
+    "reviewed_practice_ids": [
+      "source_lineage_preservation"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "903cb71b19d3a55b8c33433fafd5bc74d4346ba2157bce79f5471d6da5af6a81"
+  },
+  {
+    "audit_id": "audit-core-customer_feedback_to_learning_candidate",
+    "workflow_template_ids": [
+      "wf-7227ff0544f5cbd2",
+      "wf-770099f8fbf34352"
+    ],
+    "pattern_ids": [
+      "customer_feedback_to_learning_candidate"
+    ],
+    "decision": "approved_for_core",
+    "rationale": "Core library expansion: catalog crosswalk + PracticeRecords + support signals for customer_feedback_to_learning_candidate.",
+    "limitations": [
+      "Does not modify canonical Knowledge Core or CIM.",
+      "Does not auto-promote findings or cross tenants.",
+      "owner_review_required on all knowledge_candidate outputs."
+    ],
+    "program_phase": "KB-WPL-01.3B",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-7227ff0544f5cbd2",
+      "wf-770099f8fbf34352"
+    ],
+    "reviewed_practice_ids": [
+      "feedback_to_knowledge_candidate"
+    ],
+    "review_timestamp": "2026-07-23T19:06:55.238287+00:00",
+    "owner_review_required": true,
+    "audit_hash": "af0b54c93f254a9545bdb5e31d67b2e9cc9cd7ca6f3e9efa93fdc39382bd9bf5"
+  }
+]

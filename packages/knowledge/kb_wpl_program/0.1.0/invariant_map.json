@@ -1,0 +1,425 @@
+{
+  "version": "0.1.0",
+  "invariants": [
+    {
+      "id": "INV-001",
+      "rule": "External Skills never execute directly.",
+      "test_ids": [
+        "test_inv_001"
+      ]
+    },
+    {
+      "id": "INV-002",
+      "rule": "Imported workflows never execute.",
+      "test_ids": [
+        "test_inv_002"
+      ]
+    },
+    {
+      "id": "INV-003",
+      "rule": "Imported scripts never execute.",
+      "test_ids": [
+        "test_inv_003"
+      ]
+    },
+    {
+      "id": "INV-004",
+      "rule": "Workflow JSON parsed only as data.",
+      "test_ids": [
+        "test_inv_004"
+      ]
+    },
+    {
+      "id": "INV-005",
+      "rule": "Secrets are redacted.",
+      "test_ids": [
+        "test_inv_005"
+      ]
+    },
+    {
+      "id": "INV-006",
+      "rule": "Credential IDs never become bindings.",
+      "test_ids": [
+        "test_inv_006"
+      ]
+    },
+    {
+      "id": "INV-007",
+      "rule": "Pattern maturity never exceeds reviewed.",
+      "test_ids": [
+        "test_inv_007"
+      ]
+    },
+    {
+      "id": "INV-008",
+      "rule": "Pattern does not grant permissions.",
+      "test_ids": [
+        "test_inv_008"
+      ]
+    },
+    {
+      "id": "INV-009",
+      "rule": "Capability mapping does not grant permissions.",
+      "test_ids": [
+        "test_inv_009"
+      ]
+    },
+    {
+      "id": "INV-010",
+      "rule": "Discovery does not activate Skills.",
+      "test_ids": [
+        "test_inv_010"
+      ]
+    },
+    {
+      "id": "INV-011",
+      "rule": "Discovery does not execute Patterns.",
+      "test_ids": [
+        "test_inv_011"
+      ]
+    },
+    {
+      "id": "INV-012",
+      "rule": "Discovery does not activate Connectors.",
+      "test_ids": [
+        "test_inv_012"
+      ]
+    },
+    {
+      "id": "INV-013",
+      "rule": "Discovery does not create credentials.",
+      "test_ids": [
+        "test_inv_013"
+      ]
+    },
+    {
+      "id": "INV-014",
+      "rule": "Discovery ranking is deterministic.",
+      "test_ids": [
+        "test_inv_014"
+      ]
+    },
+    {
+      "id": "INV-015",
+      "rule": "Discovery is tenant-safe.",
+      "test_ids": [
+        "test_inv_015"
+      ]
+    },
+    {
+      "id": "INV-016",
+      "rule": "Quarantined artifacts hidden in normal mode.",
+      "test_ids": [
+        "test_inv_016"
+      ]
+    },
+    {
+      "id": "INV-017",
+      "rule": "Rejected artifacts excluded by default.",
+      "test_ids": [
+        "test_inv_017"
+      ]
+    },
+    {
+      "id": "INV-018",
+      "rule": "Pattern cannot replace missing Skill.",
+      "test_ids": [
+        "test_inv_018"
+      ]
+    },
+    {
+      "id": "INV-019",
+      "rule": "Skill package cannot imply runtime availability.",
+      "test_ids": [
+        "test_inv_019"
+      ]
+    },
+    {
+      "id": "INV-020",
+      "rule": "Connector class cannot imply active Connector.",
+      "test_ids": [
+        "test_inv_020"
+      ]
+    },
+    {
+      "id": "INV-021",
+      "rule": "Tool class cannot imply allowlist permission.",
+      "test_ids": [
+        "test_inv_021"
+      ]
+    },
+    {
+      "id": "INV-022",
+      "rule": "Knowledge Linking never mutates files.",
+      "test_ids": [
+        "test_inv_022"
+      ]
+    },
+    {
+      "id": "INV-023",
+      "rule": "Knowledge Linking never crosses tenants.",
+      "test_ids": [
+        "test_inv_023"
+      ]
+    },
+    {
+      "id": "INV-024",
+      "rule": "Duplicate candidate never auto-merges.",
+      "test_ids": [
+        "test_inv_024"
+      ]
+    },
+    {
+      "id": "INV-025",
+      "rule": "Supersession never deletes history.",
+      "test_ids": [
+        "test_inv_025"
+      ]
+    },
+    {
+      "id": "INV-026",
+      "rule": "Contradiction never auto-selects truth.",
+      "test_ids": [
+        "test_inv_026"
+      ]
+    },
+    {
+      "id": "INV-027",
+      "rule": "Presentation Architecture never renders.",
+      "test_ids": [
+        "test_inv_027"
+      ]
+    },
+    {
+      "id": "INV-028",
+      "rule": "Presentation Architecture never publishes.",
+      "test_ids": [
+        "test_inv_028"
+      ]
+    },
+    {
+      "id": "INV-029",
+      "rule": "Presentation Architecture preserves claim evidence.",
+      "test_ids": [
+        "test_inv_029"
+      ]
+    },
+    {
+      "id": "INV-030",
+      "rule": "Engineering Skills never call n8n.",
+      "test_ids": [
+        "test_inv_030"
+      ]
+    },
+    {
+      "id": "INV-031",
+      "rule": "Engineering Skills never deploy.",
+      "test_ids": [
+        "test_inv_031"
+      ]
+    },
+    {
+      "id": "INV-032",
+      "rule": "Deployment Review never activates.",
+      "test_ids": [
+        "test_inv_032"
+      ]
+    },
+    {
+      "id": "INV-033",
+      "rule": "Debugging never live-patches.",
+      "test_ids": [
+        "test_inv_033"
+      ]
+    },
+    {
+      "id": "INV-034",
+      "rule": "Architecture Skill never emits authoritative workflow JSON.",
+      "test_ids": [
+        "test_inv_034"
+      ]
+    },
+    {
+      "id": "INV-035",
+      "rule": "Capability readiness is multidimensional.",
+      "test_ids": [
+        "test_inv_035"
+      ]
+    },
+    {
+      "id": "INV-036",
+      "rule": "Missing runtime remains visible.",
+      "test_ids": [
+        "test_inv_036"
+      ]
+    },
+    {
+      "id": "INV-037",
+      "rule": "Missing Connector remains visible.",
+      "test_ids": [
+        "test_inv_037"
+      ]
+    },
+    {
+      "id": "INV-038",
+      "rule": "Missing approval blocks publication readiness.",
+      "test_ids": [
+        "test_inv_038"
+      ]
+    },
+    {
+      "id": "INV-039",
+      "rule": "Spend remains deny-by-default.",
+      "test_ids": [
+        "test_inv_039"
+      ]
+    },
+    {
+      "id": "INV-040",
+      "rule": "Learning produces candidate only.",
+      "test_ids": [
+        "test_inv_040"
+      ]
+    },
+    {
+      "id": "INV-041",
+      "rule": "Canonical knowledge is never auto-mutated.",
+      "test_ids": [
+        "test_inv_041"
+      ]
+    },
+    {
+      "id": "INV-042",
+      "rule": "Tenant filtering occurs before ranking/linking.",
+      "test_ids": [
+        "test_inv_042"
+      ]
+    },
+    {
+      "id": "INV-043",
+      "rule": "Hidden artifacts do not leak through counts.",
+      "test_ids": [
+        "test_inv_043"
+      ]
+    },
+    {
+      "id": "INV-044",
+      "rule": "All hashes deterministic.",
+      "test_ids": [
+        "test_inv_044"
+      ]
+    },
+    {
+      "id": "INV-045",
+      "rule": "generated_at excluded from semantic hashes.",
+      "test_ids": [
+        "test_inv_045"
+      ]
+    },
+    {
+      "id": "INV-046",
+      "rule": "No absolute local paths in portable artifacts.",
+      "test_ids": [
+        "test_inv_046"
+      ]
+    },
+    {
+      "id": "INV-047",
+      "rule": "No raw workflow bodies in customer-facing metadata.",
+      "test_ids": [
+        "test_inv_047"
+      ]
+    },
+    {
+      "id": "INV-048",
+      "rule": "No raw credentials in reports.",
+      "test_ids": [
+        "test_inv_048"
+      ]
+    },
+    {
+      "id": "INV-049",
+      "rule": "No API/UI/DB introduced.",
+      "test_ids": [
+        "test_inv_049"
+      ]
+    },
+    {
+      "id": "INV-050",
+      "rule": "No MCP introduced.",
+      "test_ids": [
+        "test_inv_050"
+      ]
+    },
+    {
+      "id": "INV-051",
+      "rule": "No external network introduced.",
+      "test_ids": [
+        "test_inv_051"
+      ]
+    },
+    {
+      "id": "INV-052",
+      "rule": "CWF.1 unchanged.",
+      "test_ids": [
+        "test_inv_052"
+      ]
+    },
+    {
+      "id": "INV-053",
+      "rule": "CWF.1a unchanged.",
+      "test_ids": [
+        "test_inv_053"
+      ]
+    },
+    {
+      "id": "INV-054",
+      "rule": "Frozen marketing Skill hashes unchanged.",
+      "test_ids": [
+        "test_inv_054"
+      ]
+    },
+    {
+      "id": "INV-055",
+      "rule": "Audit readiness does not imply activation.",
+      "test_ids": [
+        "test_inv_055"
+      ]
+    },
+    {
+      "id": "INV-056",
+      "rule": "Frozen candidate does not imply production release.",
+      "test_ids": [
+        "test_inv_056"
+      ]
+    },
+    {
+      "id": "INV-057",
+      "rule": "Profession does not imply autonomous agent runtime.",
+      "test_ids": [
+        "test_inv_057"
+      ]
+    },
+    {
+      "id": "INV-058",
+      "rule": "ProfessionalTaskRoute remains advisory.",
+      "test_ids": [
+        "test_inv_058"
+      ]
+    },
+    {
+      "id": "INV-059",
+      "rule": "Safe actions exclude install/execute/deploy/publish/spend.",
+      "test_ids": [
+        "test_inv_059"
+      ]
+    },
+    {
+      "id": "INV-060",
+      "rule": "Program freeze does not authorize future runtime.",
+      "test_ids": [
+        "test_inv_060"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "pattern_id": "human_approval_before_publication",
+  "library_version": "0.1.0-frozen",
+  "library_semantic_hash": "1ddd0d033f6028bd5dcf5ee555186c6be0389a96459615b6221348783d9b1883",
+  "selection_reason": "Publication to messaging channel requires explicit human approval.",
+  "applicability": "External publication workflows",
+  "maturity": "reviewed",
+  "runtime_authorized": false
+}

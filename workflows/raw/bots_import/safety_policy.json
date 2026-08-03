@@ -1,0 +1,13 @@
+{
+  "disclaimer": "Бот не ставит диагнозы, информация не заменяет консультацию врача.",
+  "escalation_rules": [
+    {
+      "if": "red_flag_detected",
+      "then": "soft_stop_and_refer"
+    },
+    {
+      "if": "uncertainty_gt_0_1",
+      "then": "ask_clarifying_questions"
+    }
+  ]
+}

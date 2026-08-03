@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "broken-link.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "broken_link_id": { "type": "string" },
+    "source_artifact_id": { "type": "string" },
+    "expected_target_id": { "type": "string" },
+    "relation_type": { "type": "string" },
+    "failure_type": {
+      "type": "string",
+      "enum": [
+        "missing_target", "missing_version", "hash_mismatch", "unresolved_schema",
+        "stale_reference", "missing_lineage_parent", "missing_index_entry",
+        "missing_manifest_entry", "tenant_visibility_failure", "invalid_relation", "unknown"
+      ]
+    },
+    "observed_reference": { "type": "object" },
+    "expected_reference": { "type": "object" },
+    "severity": { "type": "string" },
+    "blocking": { "type": "boolean" },
+    "remediation": { "type": "string" },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "broken_link_id", "source_artifact_id", "expected_target_id", "relation_type",
+    "failure_type", "observed_reference", "expected_reference", "severity",
+    "blocking", "remediation", "provenance"
+  ]
+}

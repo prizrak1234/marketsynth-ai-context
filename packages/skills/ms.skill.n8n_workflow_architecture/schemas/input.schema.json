@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.n8n_workflow_architecture/input/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "business_objective": { "type": "string" },
+    "workflow_scope": { "type": "string" },
+    "tenant_id": { "type": "string" },
+    "project_id": { "type": "string" },
+    "trigger_requirements": { "type": "object" },
+    "input_payload_contract": { "type": "object" },
+    "output_contract": { "type": "object" },
+    "expected_volume": { "type": "string" },
+    "latency_requirements": { "type": "string" },
+    "error_tolerance": { "type": "string" },
+    "provider_constraints": {
+      "type": "array",
+      "items": { "$ref": "schemas/provider-version-scope.schema.json" }
+    },
+    "credentials_required": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "personal_data_context": { "type": "object" },
+    "publication_context": { "type": "object" },
+    "billing_context": { "type": "object" },
+    "approval_requirements": { "type": "object" },
+    "evidence_requirements": { "type": "object" },
+    "retry_requirements": { "type": "object" },
+    "idempotency_requirements": { "type": "object" },
+    "monitoring_requirements": { "type": "object" },
+    "deployment_environment": { "type": "string" },
+    "n8n_version_context": { "type": "string" },
+    "existing_workflow_metadata": { "type": "object" },
+    "selected_pattern_ids": {
+      "type": "array",
+      "items": { "$ref": "schemas/pattern-selection-reference.schema.json" }
+    },
+    "workflow_pattern_library_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "source_catalog_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "practice_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "workflow_template_metadata_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "business_objective",
+    "workflow_scope",
+    "tenant_id",
+    "project_id",
+    "trigger_requirements",
+    "approval_requirements",
+    "selected_pattern_ids",
+    "workflow_pattern_library_hash",
+    "source_catalog_hash",
+    "provenance"
+  ]
+}

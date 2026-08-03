@@ -1,0 +1,819 @@
+{
+  "name": "SHABLON_IZ_TIKTOK_P1_MASTER_AI_TELEGRAM",
+  "nodes": [
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1200,
+        -520
+      ],
+      "id": "2171d53d-af61-49e9-ba04-068cefd1bd3f",
+      "name": "Telegram",
+      "webhookId": "8e19d119-d6c6-4cdd-9a33-b5db8efbf08f",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Найти конкурентов по поисковому запросу.\n\n## Например, \"найти конкурентов по запросу: дизайн веб-сайта\"",
+        "height": 200,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -360,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "572ef701-8381-45d2-b93b-c2c3010d7ed9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Лучшие посты\n\n## 1. Сначала извлеките имена пользователей (например, Извлечь имена пользователей для меня)\n## 2. Выберите, от какого пользователя вы хотите получить лучшие посты (например, получить лучшие посты для номера 9 / justinbieber)",
+        "height": 280,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        200,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "f928d5cd-4210-4d9b-9cc8-77cb43dbba49",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Повторное использование\n\n## 1. Сначала извлеките посты (например, извлеките посты от justinbieber)\n## 2. Выберите, какой пост вы хотите повторно использовать (например, «повторное использование поста номер 4»)",
+        "height": 300,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        920,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "d4545270-1f32-47e4-933a-df1f40049c5d",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Подключите свои учетные данные Airtable.\n\n## Создайте новую базу и загрузите предоставленный .csv.",
+        "height": 120,
+        "width": 760,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        920,
+        940
+      ],
+      "typeVersion": 1,
+      "id": "ef9b5f1d-4413-4d48-a0c8-ac9fad233fcd",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "# Примечания:\n\n## Помните, что во многих видео Tik Tok люди «танцуют» и делают глупости. Так что дважды проверьте, действительно ли в видео есть говорящие люди, если вы хотите скопировать его.",
+        "height": 280,
+        "width": 680,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        200,
+        1460
+      ],
+      "typeVersion": 1,
+      "id": "6a9d3a73-be02-4240-80e5-6436ac3d10b3",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Убедитесь, что «Найти конкурентов», «Лучшие посты» и «Повторное использование» связаны с другими проектами рабочего процесса.",
+        "height": 120,
+        "width": 640,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        220,
+        940
+      ],
+      "typeVersion": 1,
+      "id": "35b15d6f-deea-4b44-832a-ca3a0209206e",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1140,
+        -500
+      ],
+      "id": "24046fc2-bc99-49c5-b1f8-03d5fe9cb60f",
+      "name": "Telegram2",
+      "webhookId": "16829d61-0c27-46c8-8f60-e938afc2e572",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9d8e573-3830-4e93-9f74-4838b5ff49b5",
+              "name": "text",
+              "value": "={{ $('Telegram Trigger1').item.json.message.text }} {{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -280,
+        -520
+      ],
+      "id": "3bc225b8-4c14-4555-aba2-8fad852ed5bc",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Telegram Trigger1').item.json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ca9cc06c-dcf8-457b-854b-4c03d3d15dcc",
+                    "leftValue": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -920,
+        -500
+      ],
+      "id": "a477bedc-bd2c-44ca-af19-497c0e6f2e64",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -480,
+        -180
+      ],
+      "id": "73f78e0a-290e-4a25-aae7-0f15cc0ab9ae",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger1').item.json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -680,
+        -200
+      ],
+      "id": "6fbbea6d-957d-4e70-b3c8-836c27cf1b37",
+      "name": "Telegram3",
+      "webhookId": "b7d85eca-45a9-4488-b15d-fb05d3568dc5",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "8933bfc4-9c42-4f70-ae1e-fda1e5f6b927",
+      "name": "Telegram Trigger1",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1580,
+        -480
+      ],
+      "webhookId": "6ba075d8-f155-4150-82a2-735d52c0604c",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fef76fb8-7518-4bcd-8107-9ddca403149b",
+              "leftValue": "={{ $json.message.chat.id }}",
+              "rightValue": "={{ $json.message.chat.id }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1380,
+        -480
+      ],
+      "id": "f3605d39-1dcb-483c-a7f8-c267b3fc63c8",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "content": "## В node \"IF\", введите свой \"Chat ID\",серию цифр, привязанных к вашей учетной записи Telegram.",
+        "height": 180,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -760,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "02c63252-3485-4aef-b823-638ae1558909",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ\n",
+        "height": 600,
+        "width": 1600
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1660,
+        -580
+      ],
+      "typeVersion": 1,
+      "id": "12613c6f-ff19-44f9-a149-41a43593ee14",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## TIKTOK АГЕНТ-ПОМОЩНИК\n\n",
+        "height": 1020,
+        "width": 1360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        60,
+        -580
+      ],
+      "typeVersion": 1,
+      "id": "29c3abd2-33e7-402d-aaac-4abc6e0f2755",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger1').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        -80
+      ],
+      "id": "09d86b76-7ceb-4bd8-9131-d887cc074e11",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "name": "Posts",
+        "description": "Call this tool for queries related to getting top posts and send the record ID only.",
+        "workflowId": {
+          "__rl": true,
+          "value": "XAMHRNecd9WKnheX",
+          "mode": "list",
+          "cachedResultName": "SHABLON_TIKTOK_P3_TOPUSERS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('record_id', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ],
+          "schema": [
+            {
+              "id": "record_id",
+              "displayName": "record_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        660,
+        260
+      ],
+      "id": "d6eef18f-ba9a-485e-8273-e0ed32200ec1",
+      "name": "Top Posts"
+    },
+    {
+      "parameters": {
+        "name": "usermanes",
+        "description": "Call this tool for queries related to finding competitors by sending the search term only.",
+        "workflowId": {
+          "__rl": true,
+          "value": "QgzcnRarCgs9HYCJ",
+          "mode": "list",
+          "cachedResultName": "SHABLON_TIKTOK_P4_COMPETITORS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "search_query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('search_query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "search_query"
+          ],
+          "schema": [
+            {
+              "id": "search_query",
+              "displayName": "search_query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        460,
+        280
+      ],
+      "id": "d42d5299-516c-4e30-906e-051fb2b7a2cf",
+      "name": "Find competitors"
+    },
+    {
+      "parameters": {
+        "name": "Repurpose",
+        "description": "Call this tool for queries related to repurposing content, send only the record ID of a record here.",
+        "workflowId": {
+          "__rl": true,
+          "value": "b7AU2LlOAdIm0QRT",
+          "mode": "list",
+          "cachedResultName": "SHABLON_TIKTOK_P2_REPURPOSE"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "record_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('record_id', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "record_id"
+          ],
+          "schema": [
+            {
+              "id": "record_id",
+              "displayName": "record_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        880,
+        280
+      ],
+      "id": "65c2fb51-3975-4c2c-82f1-668cb84ce5e5",
+      "name": "Repurpose"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        -100
+      ],
+      "id": "e99c6759-d1c1-4d2e-be9c-c9bdb01bf777",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "L72MI6qYBAu3BCux",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch Tik Tok posts.",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_POSTS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tblxCudSu6J6huIOn"
+        },
+        "filterByFormula": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        1000,
+        0
+      ],
+      "id": "1b1d0c0f-b7e7-4087-90a6-07ac1515ea14",
+      "name": "Fetch Posts",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch username records.",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl7V6L6E6GwpFHfU",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_COMPETITORS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tbl7V6L6E6GwpFHfU"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        1180,
+        -20
+      ],
+      "id": "21520ab6-a823-4e45-b679-ecd8c950bc95",
+      "name": "Fetch usernames",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=### Role:\nYou are a highly efficient, fun, and enthusiastic personal assistant specializing in Tik Tok. Your expertise allows you to expertly interpret user queries and seamlessly route them to the correct Tik Tok tool.\n\n### Task:\nProcess all Tik Tok-related requests by identifying the intent—whether fetching, analyzing, repurposing posts, finding competitors and getting top posts then acting accordingly.\n\n### Instructions:\n\n- Fetching posts: output these (caption (hyperlink to video using URL), username, views, likes, shares and Record ID)\n- Fetching usernames: Display 10 per request, output these (username (hyperlink to profile using URL), followers and Record ID)\n- Repurposing posts: fetch and send the corresponding Record ID only to the \"Repurpose\" tool.\n- Find competitors: send search term only (eg. ai automations)\n- Top Posts: fetch and send the corresponding Record ID only to the \"Top Posts\" tool.\n- Give the final answer in Russian.\n\n### Extras:\n- Notify the user if a tool fails to respond.\n- If no records exist, mention this to the user.\n- If query is unclear, inform the user of the services you can provide.\n- Format all lists extremely neatly wht line breaks.\n\n### Constraints:\n\n- Do not send the username to the \"Top Posts\" tool, but instead the Record ID.\n- Do not send the full script on completion of repurposing.\n- Never display full captions if they exceed 60 characters; always truncate appropriately.\n- If you are uncertain about the intended action, ask the user for more details before proceeding.\n- Don't use `\\n`, `&nbsp;` or other HTML/code characters - just regular spaces and line breaks.\n- Don't use emojis in your answer."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        560,
+        -480
+      ],
+      "id": "b692319d-c82c-4589-ac70-21ffba45cf4c",
+      "name": "TikTok Agent"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram2": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram3": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Top Posts": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find competitors": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repurpose": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Posts": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch usernames": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Agent": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a819ef4a-3e79-4708-8fce-5eb639246fc7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "tYDTZ4PSUmuiWQXz",
+  "tags": []
+}

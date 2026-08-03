@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.offer_builder/schemas/delivery_mechanism.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "mechanism_id": {
+      "type": "string"
+    },
+    "mechanism_name": {
+      "type": "string"
+    },
+    "plain_language_explanation": {
+      "type": "string"
+    },
+    "process_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected_intermediate_outcomes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capability_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "customer_effort": {
+      "type": "string"
+    },
+    "provider_effort": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "failure_modes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "mechanism_id",
+    "mechanism_name",
+    "plain_language_explanation",
+    "process_steps",
+    "capability_references",
+    "evidence_references",
+    "limitations",
+    "confidence",
+    "provenance"
+  ]
+}

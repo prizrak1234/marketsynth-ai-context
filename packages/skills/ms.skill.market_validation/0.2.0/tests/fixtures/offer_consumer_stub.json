@@ -1,0 +1,10 @@
+{
+  "consumer_skill_id": "ms.skill.offer_builder",
+  "consumer_skill_version": "0.2.0",
+  "mv_verdict": "proceed_with_conditions",
+  "blocking_conditions_open": [
+    "cond-budget-validation"
+  ],
+  "blockers_ignored": [],
+  "execution_authorized": false
+}

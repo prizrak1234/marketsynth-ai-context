@@ -1,0 +1,101 @@
+---
+description: Commercial Product Directive — build sellable workflows, not platform slices
+globs: app/**, web/**, tests/**, docs/**
+alwaysApply: true
+---
+
+# Commercial Product Directive
+
+Marketsynth is a **commercial product**, not a technical platform. Every slice must shorten the path to the first paying customer or increase value of an already sellable scenario.
+
+## Main invariant
+
+Any task must answer: does it shorten the path to the first paying customer, or increase value of a sellable workflow?
+
+## Eight questions (mandatory before starting)
+
+1. What user problem does this solve?
+2. What part of the result will the client pay for?
+3. How does it shorten the path to first payment?
+4. How does it fit the single Commercial Workflow?
+5. What measurable user outcome appears when done?
+6. What old path is disabled or removed after acceptance?
+7. How will the owner verify in the browser?
+8. How do we prove it works without mock, recovery, or owner preview?
+
+## UI change gate (mandatory before any commercial screen edit)
+
+Four-step order — **all must pass before code:**
+
+```
+Business Journey  →  Information Architecture  →  Design System  →  Implementation
+```
+
+| Step | Document |
+|------|----------|
+| 1 | [docs/COMMERCIAL_USER_JOURNEY_MAP.md](../docs/COMMERCIAL_USER_JOURNEY_MAP.md) |
+| 2 | [docs/INFORMATION_ARCHITECTURE.md](../docs/INFORMATION_ARCHITECTURE.md) |
+| 3 | [docs/DESIGN.md](../docs/DESIGN.md) |
+| 4 | `web/` implementation |
+
+**Four questions (all Yes required):**
+
+1. Screen exists in IA?  
+2. Screen matches Journey Map?  
+3. Screen uses Design System?  
+4. Still valid after HR / Legal / Billing / Analytics?
+
+**Any No → UI change forbidden.** IA changes are product decisions, not drive-by nav PRs.
+
+## Slice is NOT done if only
+
+- code written, tests green, APIs/contracts added, MCP connected, skill created, or architecture "ready".
+
+Slice is done only when the **commercial result is visible to the user**.
+
+## Canonical first sellable workflow (CWF.1)
+
+```
+Idea → Research → Evidence → Verdict → Offer → Launch Plan
+→ 3 Content Assets → Optional Visuals → Telegram Approval
+→ Real Publication → Delivery Evidence
+```
+
+**Product boundary — Launch Pack:** validation, verdict, risks, audience, positioning, offer, launch plan, 3 Telegram posts, 1–3 visuals, one real Telegram publish, persisted project history.
+
+**Out of scope for CWF.1:** skill marketplace, MCP marketplace, CRM, Ads, billing, analytics dashboard, video/identity expansion, multi-channel publish, new Home, parallel workflows.
+
+## Commercial quality
+
+- User-facing outputs must be understandable, argued, linked to prior steps, persisted, editable where needed, honestly limited.
+- Forbidden: JSON as product UI, agent/infrastructure names in UI, fake progress, proceed without evidence, content unrelated to approved verdict, publish without human approval, dry-run as real publish, hiding provider errors.
+
+## Old path removal
+
+After owner acceptance of new commercial path: disable old UI/routes, stop using legacy services, remove recovery/owner preview from product flow, migrate tests. No parallel active implementations. Git history is the archive.
+
+## Priority classification
+
+Before each task: A Direct revenue | B Product reliability | C Commercial safety | D Post-pilot | E Technical curiosity.
+
+**Only A, B, C are allowed.** D and E are deferred.
+
+## Owner report (after each slice)
+
+1. Commercial result added
+2. How user gets it
+3. Before vs after
+4. Old paths disabled
+5. Browser verification done
+6. Real external calls
+7. Remaining limitations
+8. Steps left to first paying customer
+9. Commit hash
+10. Next commercial slice only
+
+Do not say "foundation ready" if the user cannot get the result.
+
+## Active track
+
+- **CMVP.1 / CMVP.1.1** — Business Idea Validator (accepted).
+- **CWF.1** — Idea → Verdict → Launch Pack → Telegram (active). **Do not open CMVP.2** as abstract platform work.

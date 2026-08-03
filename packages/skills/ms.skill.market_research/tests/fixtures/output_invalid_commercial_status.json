@@ -1,0 +1,37 @@
+{
+  "research_id": "res-bad-001",
+  "skill_id": "ms.skill.market_research",
+  "skill_version": "0.1.0",
+  "source_context_reference": {
+    "skill_id": "ms.skill.product_marketing_context",
+    "skill_version": "0.1.0",
+    "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "research_questions": [],
+  "market_definition": [],
+  "market_structure": [],
+  "market_signals": [],
+  "demand_signals": [],
+  "customer_signals": [],
+  "pricing_signals": [],
+  "channel_signals": [],
+  "competitor_signals": [],
+  "regulatory_or_operational_constraints": [],
+  "source_inventory": [],
+  "supporting_evidence": [],
+  "contradictory_evidence": [],
+  "assumptions": [],
+  "inferences": [],
+  "unknowns": [],
+  "evidence_gaps": [],
+  "coverage": "unknown",
+  "evidence_quality": "unknown",
+  "research_status": "proceed",
+  "recommended_next_research": [],
+  "provenance": {
+    "skill_id": "ms.skill.market_research",
+    "skill_version": "0.1.0"
+  },
+  "input_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+  "output_hash": "2222222222222222222222222222222222222222222222222222222222222222"
+}

@@ -1,0 +1,3025 @@
+{
+  "name": "IZ_P2_VIDEO_URL_AI_CONTENT",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyFTRMIH7FwaduS",
+          "mode": "list",
+          "cachedResultName": "Links",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblyFTRMIH7FwaduS"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -40,
+        1380
+      ],
+      "id": "17fc3c3d-5e75-4b7b-89f9-88b1d58ccce9",
+      "name": "Get Links",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5649d3f7-c671-4f8d-a6a9-c2a5f5bc2aa2",
+                    "leftValue": "={{ $json['Video URL'] }}",
+                    "rightValue": "instagram",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Instagram"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Video URL'] }}",
+                    "rightValue": "youtube",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "85cb92d9-7425-4f1a-b90f-d6c7e60ef7b7"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "YouTube"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "63785c25-d46f-491f-9600-51cf86219255",
+                    "leftValue": "={{ $json['Video URL'] }}",
+                    "rightValue": "tiktok",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "TikTok"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        480,
+        1360
+      ],
+      "id": "80363f3c-14e1-4b9c-96ae-c85179c42d2d",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  // Get the binary data\n  const binaryData = item.binary.data;\n  \n  // Create a new binary object with modified properties\n  const modifiedBinary = {\n    ...binaryData,\n    mimeType: 'audio/mpeg',  // Try this MIME type instead\n    fileExtension: 'mp3',\n    fileName: `${item.json.Username || 'audio'}.mp3`,\n    contentType: 'audio/mpeg'  // Add content type explicitly\n  };\n\n  return {\n    json: {\n      ...item.json,\n    },\n    binary: {\n      audio: modifiedBinary  // Change the key to 'audio' instead of 'data'\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2500,
+        2620
+      ],
+      "id": "c1769617-1c9d-4b98-8098-6dc7194387c3",
+      "name": "Change to mpeg"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1480,
+        2600
+      ],
+      "id": "fc728a00-51a9-4bc0-8772-1fc46ce19385",
+      "name": "TikTok Link Loop"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1680,
+        1380
+      ],
+      "id": "2ee4eb93-7b4b-4059-920c-c2cbbd3828e5",
+      "name": "YouTube Link Loop"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyFTRMIH7FwaduS",
+          "mode": "list",
+          "cachedResultName": "Links",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblyFTRMIH7FwaduS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "готов",
+            "Record ID": "={{ $('Get Links').item.json['Record ID'] }}"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Social Media",
+              "displayName": "Social Media",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "не сделано",
+                  "value": "не сделано"
+                },
+                {
+                  "name": "в процессе",
+                  "value": "в процессе"
+                },
+                {
+                  "name": "готов",
+                  "value": "готов"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2200,
+        2440
+      ],
+      "id": "a35e5132-f830-4e43-ae8f-fcbb85293310",
+      "name": "TikTok Complete",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Links to videos": "={{ $json.fields['Video URL'] }}",
+            "Original Script": "={{ $('TikTok Link Loop').item.json.text }}",
+            "Type": "TikTok"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Original Script",
+              "displayName": "Original Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Repurposed Script",
+              "displayName": "Repurposed Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Links to videos",
+              "displayName": "Links to videos",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2400,
+        2440
+      ],
+      "id": "d7231e69-f668-481c-97a6-aa227744afba",
+      "name": "TikTok create",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyFTRMIH7FwaduS",
+          "mode": "list",
+          "cachedResultName": "Links",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblyFTRMIH7FwaduS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "готов",
+            "Record ID": "={{ $('Get Links').item.json['Record ID'] }}"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Social Media",
+              "displayName": "Social Media",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "не сделано",
+                  "value": "не сделано"
+                },
+                {
+                  "name": "в процессе",
+                  "value": "в процессе"
+                },
+                {
+                  "name": "готов",
+                  "value": "готов"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2500,
+        1180
+      ],
+      "id": "f34cdcbf-a8e0-4d25-9836-4439c8e1c393",
+      "name": "YouTube Complete",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Links to videos": "={{ $('Get Links').item.json['Video URL'] }}",
+            "Original Script": "={{ $('Edit Fields').item.json.content.text }}",
+            "Type": "YouTube",
+            "Created": "={{ $json.createdTime }}"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Original Script",
+              "displayName": "Original Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Repurposed Script",
+              "displayName": "Repurposed Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Links to videos",
+              "displayName": "Links to videos",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2780,
+        1180
+      ],
+      "id": "44d173cb-020b-453b-81f2-8dfa8bca820e",
+      "name": "YouTube Create",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a13faed-e2dd-463a-884c-faede362c444",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f760c590-5a0e-4bf9-89b3-c848707abdf0",
+              "name": "Original Script",
+              "value": "={{ $json.fields[\"Original Script\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3120,
+        1380
+      ],
+      "id": "e7aae75c-8819-4a8b-9aa3-f565d59858f8",
+      "name": "Select YouTube"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a13faed-e2dd-463a-884c-faede362c444",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f760c590-5a0e-4bf9-89b3-c848707abdf0",
+              "name": "Original Script",
+              "value": "={{ $json.fields[\"Original Script\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3020,
+        2480
+      ],
+      "id": "77df0b9e-3473-403e-ae9b-60f060996398",
+      "name": "Select TikTok"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        3340,
+        2440
+      ],
+      "id": "4ec5a44b-fdab-44c7-95c9-5b33178227d6",
+      "name": "Loop TikTok Scripts"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        3400,
+        1380
+      ],
+      "id": "497a0c38-e953-4690-8347-d42fcd3847bb",
+      "name": "Loop YouTube Scripts"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the JSON data from the specified path\nconst originalScript = $input.first().json[\"Original Script\"];\nconst recordID = $input.item.json[\"id\"];\n\n// Check if the field exists\nif (originalScript === undefined) {\n  return [{ error: \"Could not find 'Original script' field in the JSON data\" }];\n} else {\n  // Convert to string if it's not already a string\n  const scriptString = typeof originalScript === 'string' \n    ? originalScript \n    : JSON.stringify(originalScript);\n  \n  // Count the characters\n  const characterCount = scriptString.length;\n  \n  // Create the query string with the character count\n  const query = `Repurpose the original script in no more or less than ${characterCount} characters. Here is the Record ID: ${recordID}`;\n  \n  // Return the result as an array with a single object containing the query\n  return [\n    { query: query }\n  ];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3580,
+        2440
+      ],
+      "id": "cbf3099f-6803-44dd-8813-f9ada4d317af",
+      "name": "TikTok Get'em"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the JSON data from the specified path\nconst originalScript = $input.first().json[\"Original Script\"];\nconst recordID = $input.item.json[\"id\"];\n\n// Check if the field exists\nif (originalScript === undefined) {\n  return [{ error: \"Could not find 'Original script' field in the JSON data\" }];\n} else {\n  // Convert to string if it's not already a string\n  const scriptString = typeof originalScript === 'string' \n    ? originalScript \n    : JSON.stringify(originalScript);\n  \n  // Count the characters\n  const characterCount = scriptString.length;\n  \n  // Create the query string with the character count\n  const query = `Repurpose the original script in no more or less than ${characterCount} characters. Here is the Record ID: ${recordID}`;\n  \n  // Return the result as an array with a single object containing the query\n  return [\n    { query: query }\n  ];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3660,
+        1380
+      ],
+      "id": "f4a9c321-fe9b-4134-835c-e034e790690d",
+      "name": "YouTube Get'em"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=### Role:\n\nYou are an expert at repurposing scripts, making them more engaging for viewers on video platforms such as YouTube.\n\n### Task:\n\nYou will repurpose the provided original scripts, which should be written in a conversational manner with 8th grade reading level. Follow the structure of the original script and do not exceed or reduce the character length of the original script by more than 5%.\n\n### Instructions:\n\n- Fetch the original script with the corresponding Record ID\n- Repurpose the original script\n- Create 3 variations of the hook\n- Create a title that flows with the script\n- Answer in Russian\n- Output the script and title only with line breaks between each section of the script\n\n### Script Output:\n\nTime stamps:\n\n🕗 0:00 - 0:03 Hook\n...etc\n\nHook:\n\n- Create 3 variations of scroll-stopping hooks\n- Hook should be minimum of 3 seconds\n\nOutput:\n\n{\n\t\"title\": \"title of the script\",\n\t\"repurposed_script\": \"the contents of the repurposed script\"\n}\n\n### Extras:\n\n- Include time stamps through-out\n- Label time stamps with 🕗 emojis for easier viewing experience\n\n### Constraints:\n\n- When generating JSON output, the \"output\" field must contain a direct JSON object, not a string representation of JSON. Use format {\"output\": {\"title\": \"Title\", \"repurposed_script\": \"Content\"}} without escaping internal quotes as strings\n- Do not add any extra commentary, only output the repurposed script\n- Ensure main elements remain intact such as names"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        3860,
+        2440
+      ],
+      "id": "e24e712d-66ce-40b0-b498-0e283c8b123a",
+      "name": "TikTok Repurpose",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=### Role:\n\nYou are an expert at repurposing scripts, making them more engaging for viewers on video platforms such as YouTube.\n\n### Task:\n\nYou will repurpose the provided original scripts, which should be written in a conversational manner with 8th grade reading level. Follow the structure of the original script and do not exceed or reduce the character length of the original script by more than 5%.\n\n### Instructions:\n\n- Fetch the original script with the corresponding Record ID\n- Repurpose the original script\n- Create 3 variations of the hook\n- Answer in Russian\n- Create a title that flows with the script\n- Output the script and title only with line breaks between each section of the script\n\n### Script Output:\n\nTime stamps:\n\n🕗 0:00 - 0:03 Hook\n...etc\n\nHook:\n\n- Create 3 variations of scroll-stopping hooks\n- Hook should be minimum of 3 seconds\n\nOutput:\n\n{\n\t\"title\": \"title of the script\",\n\t\"repurposed_script\": \"the contents of the repurposed script\"\n}\n\n### Extras:\n\n- Include time stamps through-out\n- Label time stamps with 🕗 emojis for easier viewing experience\n\n### Constraints:\n\n\n- When generating JSON output, the \"output\" field must contain a direct JSON object, not a string representation of JSON. Use format {\"output\": {\"title\": \"Title\", \"repurposed_script\": \"Content\"}} without escaping internal quotes as strings.\n- Do not add any extra commentary, only output the repurposed script\n- Ensure main elements remain intact such as names"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        3860,
+        1380
+      ],
+      "id": "fb7d7ca2-bcaf-4554-a765-34636256f19b",
+      "name": "YouTube Repurpose",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Repurposed Script": "={{ $json.output.repurposed_script }}",
+            "Title": "={{ $json.output.title }}",
+            "id": "={{ $('Loop YouTube Scripts').item.json.id }}",
+            "Record ID": "={{ $('YouTube Complete').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Original Script",
+              "displayName": "Original Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Repurposed Script",
+              "displayName": "Repurposed Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Links to videos",
+              "displayName": "Links to videos",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        4220,
+        1380
+      ],
+      "id": "8a09fca7-4377-471f-bda7-1cf0988237fa",
+      "name": "Update YouTube Script",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Loop TikTok Scripts').item.json.id }}",
+            "Repurposed Script": "={{ $json.output.repurposed_script }}",
+            "Title": "={{ $json.output.title }}",
+            "Created": "={{ $('Airtable1').item.json.createdTime }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Original Script",
+              "displayName": "Original Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Repurposed Script",
+              "displayName": "Repurposed Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Links to videos",
+              "displayName": "Links to videos",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        4260,
+        2440
+      ],
+      "id": "931483d4-0fa6-459b-a8ed-f3ceadb2aac7",
+      "name": "Update TikTok Script",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch the original script",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "id": "={{ $('Loop YouTube Scripts').item.json.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        3960,
+        1660
+      ],
+      "id": "b0d41b21-d4b9-4d1a-9be3-dc237ab084f5",
+      "name": "Fetch Original Script YT",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch the original script",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "id": "={{ $('Loop TikTok Scripts').item.json.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        3920,
+        2740
+      ],
+      "id": "596136e2-428b-4d5e-b3b4-36febac1012d",
+      "name": "Fetch Original Script TT",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"title\": \"title of the script\",\n\t\"repurposed_script\": \"the contents of the repurposed script\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        4280,
+        2860
+      ],
+      "id": "3ff212c0-385c-42b8-b39e-4e6539fe33b0",
+      "name": "Parser TT"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"title\": \"title of the script\",\n\t\"repurposed_script\": \"the contents of the repurposed script\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        4140,
+        1660
+      ],
+      "id": "d59acade-c570-4e5d-9302-1ab46d989819",
+      "name": "Parser YT"
+    },
+    {
+      "parameters": {
+        "batchSize": "=1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1620,
+        300
+      ],
+      "id": "a6e263eb-c27c-4042-8281-400ef0ce464f",
+      "name": "Instagram Link Loop"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyFTRMIH7FwaduS",
+          "mode": "list",
+          "cachedResultName": "Links",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblyFTRMIH7FwaduS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "готов",
+            "Record ID": "={{ $('Get Links').item.json['Record ID'] }}"
+          },
+          "matchingColumns": [
+            "Record ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Social Media",
+              "displayName": "Social Media",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "не сделано",
+                  "value": "не сделано"
+                },
+                {
+                  "name": "в процессе",
+                  "value": "в процессе"
+                },
+                {
+                  "name": "готов",
+                  "value": "готов"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2100,
+        140
+      ],
+      "id": "127c3bd3-79f1-4d7e-b743-1d707cf69898",
+      "name": "Instagram Complete",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Type": "Instagram",
+            "Links to videos": "={{ $json.fields['Video URL'] }}",
+            "Original Script": "={{ $('Whisper IG').item.json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Original Script",
+              "displayName": "Original Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Repurposed Script",
+              "displayName": "Repurposed Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Links to videos",
+              "displayName": "Links to videos",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2340,
+        140
+      ],
+      "id": "e51d2e0c-be36-4606-9224-be894f7681f4",
+      "name": "Instagram Create",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a13faed-e2dd-463a-884c-faede362c444",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f760c590-5a0e-4bf9-89b3-c848707abdf0",
+              "name": "Original Script",
+              "value": "={{ $json.fields[\"Original Script\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2860,
+        140
+      ],
+      "id": "d22393f0-e688-447b-8030-7a77f54a2535",
+      "name": "Select Instagram"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=### Role:\n\nYou are an expert at repurposing scripts, making them more engaging for viewers on video platforms such as YouTube.\n\n### Task:\n\nYou will repurpose the provided original scripts, which should be written in a conversational manner with 8th grade reading level. Follow the structure of the original script and do not exceed or reduce the character length of the original script by more than 5%.\n\n### Instructions:\n\n- Fetch the original script with the corresponding Record ID\n- Repurpose the original script\n- Create 3 variations of the hook\n- Answer in Russian\n- Create a title that flows with the script\n- Output the script and title only with line breaks between each section of the script\n\n### Script Output:\n\nTime stamps:\n\n🕗 0:00 - 0:03 Hook\n...etc\n\nHook:\n\n- Create 3 variations of scroll-stopping hooks\n- Hook should be minimum of 3 seconds\n\nOutput:\n\n{\n\t\"title\": \"title of the script\",\n\t\"repurposed_script\": \"the contents of the repurposed script\"\n}\n\n### Extras:\n\n- Include time stamps through-out\n- Label time stamps with 🕗 emojis for easier viewing experience\n\n### Constraints:\n\n- When generating JSON output, the \"output\" field must contain a direct JSON object, not a string representation of JSON. Use format {\"output\": {\"title\": \"Title\", \"repurposed_script\": \"Content\"}} without escaping internal quotes as strings\n- Do not add any extra commentary, only output the repurposed script\n- Ensure main elements remain intact such as names"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        3580,
+        300
+      ],
+      "id": "895822ba-31dd-4a5d-9a90-21c9bdcae10d",
+      "name": "Instagram Repurpose",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to fetch the original script",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "id": "={{ $('Loop Instagram Scripts').item.json.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        3680,
+        580
+      ],
+      "id": "eface309-5968-47e0-845d-c3ae691a6273",
+      "name": "Fetch Original Script IG",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        3120,
+        300
+      ],
+      "id": "9f31ca40-21c5-4613-af52-031ae156ac59",
+      "name": "Loop Instagram Scripts"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the JSON data from the specified path\nconst originalScript = $input.first().json[\"Original Script\"];\nconst recordID = $input.item.json[\"id\"];\n\n// Check if the field exists\nif (originalScript === undefined) {\n  return [{ error: \"Could not find 'Original script' field in the JSON data\" }];\n} else {\n  // Convert to string if it's not already a string\n  const scriptString = typeof originalScript === 'string' \n    ? originalScript \n    : JSON.stringify(originalScript);\n  \n  // Count the characters\n  const characterCount = scriptString.length;\n  \n  // Create the query string with the character count\n  const query = `Repurpose the original script in no more or less than ${characterCount} characters. Here is the Record ID: ${recordID}`;\n  \n  // Return the result as an array with a single object containing the query\n  return [\n    { query: query }\n  ];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3380,
+        300
+      ],
+      "id": "ccce8772-d680-4bf2-8104-d21eb7cb8c0c",
+      "name": "Instagram Get'em"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $json.output.title }}",
+            "Repurposed Script": "={{ $json.output.repurposed_script }}",
+            "Created": "={{ $('Airtable').item.json.createdTime }}",
+            "id": "={{ $('Loop Instagram Scripts').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Original Script",
+              "displayName": "Original Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Repurposed Script",
+              "displayName": "Repurposed Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Links to videos",
+              "displayName": "Links to videos",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        3940,
+        300
+      ],
+      "id": "e940888b-47d2-4aec-baca-71b2f20e652d",
+      "name": "Update Instagram Script",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.medias[2].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2160,
+        2600
+      ],
+      "id": "19ad6d23-f8b1-4cec-8e4e-55e5e1fcb1f6",
+      "name": "Get TikTok Vid"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.medias[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2100,
+        300
+      ],
+      "id": "0fc080ea-e4ba-429f-92d8-dbe6a61e16aa",
+      "name": "Get IG Vid"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"title\": \"title of the script\",\n\t\"repurposed_script\": \"the contents of the repurposed script\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3860,
+        580
+      ],
+      "id": "25ccf4be-4695-490d-95f8-be0e9a3c8ed3",
+      "name": "Parser IG"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "execute"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -280,
+        1380
+      ],
+      "id": "da3f13ac-9560-414e-ad3f-724b1ed89038",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2300,
+        300
+      ],
+      "id": "e384d106-e31a-4767-afbf-08ca866e9bb8",
+      "name": "Whisper IG",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "binaryPropertyName": "audio",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2720,
+        2600
+      ],
+      "id": "6a7ba144-cf96-4828-8a5e-9fdbe1bec3e1",
+      "name": "Whisper TT",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://social-download-all-in-one.p.rapidapi.com/v1/social/autolink",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "VASH_API"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "social-download-all-in-one.p.rapidapi.com"
+            },
+            {
+              "name": "Content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json['Video URL'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1880,
+        2600
+      ],
+      "id": "24e7c572-40a6-49c6-9c1f-347f4150bf6c",
+      "name": "Get TikTok URL"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://social-download-all-in-one.p.rapidapi.com/v1/social/autolink",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "VASH_API"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "social-download-all-in-one.p.rapidapi.com"
+            },
+            {
+              "name": "Content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json['Video URL'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1900,
+        300
+      ],
+      "id": "87a8aaa1-cc0b-4574-8868-0eafc339e83c",
+      "name": "Get IG URL"
+    },
+    {
+      "parameters": {
+        "amount": 1.25
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2800,
+        1380
+      ],
+      "id": "9a660f26-8023-4c4a-aceb-f3929a7cbf5b",
+      "name": "Wait",
+      "webhookId": "50ccde18-17a0-4ef6-b99a-5203d3846156"
+    },
+    {
+      "parameters": {
+        "content": "## Go to: https://rapidapi.com/8v2FWW4H6AmKw89/api/youtube-transcripts\n\nAnd get your x-rapidapi-key and replace the API key within the \"Transcribe\" node.\n\nSubscribe to a plan, first plan is $0 and you get 100 requests a month.\n\nIf you need more, their cheapest plan is $5 a month.",
+        "height": 200,
+        "width": 580,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1500,
+        1600
+      ],
+      "typeVersion": 1,
+      "id": "3436e8f6-8fc9-45d1-96c2-71a2fa846545",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Перейди по ссылке: [https://rapidapi.com/nguyenmanhict-MuTUtGWD7K/api/social-download-all-in-one](https://rapidapi.com/nguyenmanhict-MuTUtGWD7K/api/social-download-all-in-one)\n\nВставь свой API-ключ `x-rapidapi-key` в узлы \"Get IG URL\" и \"Get Tiktok URL\".\n\nИх план начинается с $0 за 100 запросов в месяц, или если нужно больше, то это будет стоить $2 за 6,000 запросов в месяц.\n",
+        "height": 240,
+        "width": 660,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -100,
+        820
+      ],
+      "typeVersion": 1,
+      "id": "730795c9-1a38-4e5d-8d26-bbc6cbcd9c59",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3420,
+        560
+      ],
+      "id": "4a5aa107-5a87-47ab-9f96-5385e765e54f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Links to videos": "={{ $json.fields['Links to videos'] }}",
+            "Record ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [
+            "Links to videos"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Original Script",
+              "displayName": "Original Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Repurposed Script",
+              "displayName": "Repurposed Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Links to videos",
+              "displayName": "Links to videos",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2560,
+        140
+      ],
+      "id": "5c058368-e1c9-4f30-88a8-f400a5106a5e",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0bc5c844-2445-437e-820f-83cf73cae9dc",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "не сделано",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        200,
+        1380
+      ],
+      "id": "2141898b-fd08-4128-95ca-3f2b398a64e1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "=https://youtube-transcripts.p.rapidapi.com/youtube/transcript\n",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json['Video URL'] }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "VASH_API"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "youtube-transcripts.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {
+          "response": {}
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2180,
+        1360
+      ],
+      "id": "8ab27345-2c30-4c0f-a5ce-585b38156d26",
+      "name": "Transcribe1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4eb11523-0575-4d12-a159-cb7bc9ed3942",
+              "name": "content.text",
+              "value": "={{ $json[\"content\"] && $json[\"content\"].map(item => item.text).join(\" \") || \"\" }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2400,
+        1360
+      ],
+      "id": "074ab957-a304-4a6b-b621-21c6dc21f1b5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3720,
+        1660
+      ],
+      "id": "c1faaf00-2139-402e-be59-962f4b4d3d46",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## YOUTUBE\n\n### Role:\n\nYou are an expert at repurposing scripts, making them more engaging for viewers on video platforms such as YouTube.\n\n### Task:\n\nYou will repurpose the provided original scripts, which should be written in a conversational manner with 8th grade reading level. Follow the structure of the original script and do not exceed or reduce the character length of the original script by more than 5%.\n\n### Instructions:\n\n- Fetch the original script with the corresponding Record ID\n- Repurpose the original script\n- Create 3 variations of the hook\n- Create a title that flows with the script\n- Answer in Russian\n- Output the script and title only with line breaks between each section of the script\n\n### Script Output:\n\nTime stamps:\n\n🕗 0:00 - 0:03 Hook\n...etc\n\nHook:\n\n- Create 3 variations of scroll-stopping hooks\n- Hook should be minimum of 3 seconds\n\nOutput:\n\n{\n\t\"title\": \"title of the script\",\n\t\"repurposed_script\": \"the contents of the repurposed script\"\n}\n\n### Extras:\n\n- Include time stamps through-out\n- Label time stamps with 🕗 emojis for easier viewing experience\n\n### Constraints:\n\n\n- When generating JSON output, the \"output\" field must contain a direct JSON object, not a string representation of JSON. Use format {\"output\": {\"title\": \"Title\", \"repurposed_script\": \"Content\"}} without escaping internal quotes as strings.\n- Do not add any extra commentary, only output the repurposed script\n- Ensure main elements remain intact such as names",
+        "height": 1160,
+        "width": 1060
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        5080,
+        820
+      ],
+      "typeVersion": 1,
+      "id": "dd59ba75-136c-4766-9d55-bce83156401a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzlbI3fc1W0HbHQ",
+          "mode": "list",
+          "cachedResultName": "Video URL",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblOvGwglMgZHUNka",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appzlbI3fc1W0HbHQ/tblOvGwglMgZHUNka"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Links to videos": "={{ $json.fields['Links to videos'] }}",
+            "Record ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [
+            "Links to videos"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Original Script",
+              "displayName": "Original Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Repurposed Script",
+              "displayName": "Repurposed Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Links to videos",
+              "displayName": "Links to videos",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2680,
+        2400
+      ],
+      "id": "c3ff4167-5d82-4107-9e10-42887ba70fae",
+      "name": "Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3640,
+        2780
+      ],
+      "id": "1b2a3318-4b78-4830-9b89-0c2c2faaef87",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## YOUTUBE\n\n### Роль:\n\nТы эксперт в переработке сценариев, делая их более увлекательными для зрителей на видеоплатформах, таких как YouTube.\n\n### Задача:\n\nТы будешь перерабатывать предоставленные оригинальные сценарии, которые должны быть написаны в разговорном стиле на уровне чтения 8 класса. Следуй структуре оригинального сценария и не увеличивай или уменьшай длину текста более чем на 5%.\n\n### Инструкции:\n\n- Извлеки оригинальный сценарий с соответствующим ID записи\n- Переработай оригинальный сценарий\n- Создай 3 вариации зацепки (hook)\n- Создай заголовок, который гармонирует с сценарием\n- Ответь на русском языке\n- Выводи только сценарий и заголовок, разделяя их пробелами\n\n### Вывод сценария:\n\nВременные метки:\n\n🕗 0:00 - 0:03 Зацепка\n...и так далее\n\nЗацепка:\n\n- Создай 3 вариации зацепок, которые привлекут внимание\n- Зацепка должна длиться минимум 3 секунды\n\nВывод:\n\n{\n\t\"title\": \"Заголовок сценария\",\n\t\"repurposed_script\": \"Содержание переработанного сценария\"\n}\n\n### Дополнительно:\n\n- Включи временные метки в тексте\n- Используй эмодзи 🕗 для временных меток, чтобы упростить восприятие\n\n### Ограничения:\n\n- Когда генерируешь JSON вывод, поле \"output\" должно содержать прямой объект JSON, а не строковое представление JSON. Используй формат {\"output\": {\"title\": \"Заголовок\", \"repurposed_script\": \"Содержание\"}} без экранирования внутренних кавычек как строк.\n- Не добавляй дополнительные комментарии, выводи только переработанный сценарий\n- Убедись, что основные элементы остаются неизменными, например, имена\n",
+        "height": 1160,
+        "width": 1060
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        6360,
+        840
+      ],
+      "typeVersion": 1,
+      "id": "6f5f4454-6be2-406b-b3d4-d59de7c4eaea",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Instagram\n",
+        "height": 800,
+        "width": 3120,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1380,
+        -40
+      ],
+      "typeVersion": 1,
+      "id": "146e9cb7-c172-4e57-b7c9-350d99f2a47b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## YOYTUBE",
+        "height": 800,
+        "width": 3120,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1400,
+        1100
+      ],
+      "typeVersion": 1,
+      "id": "39f892eb-a69b-47b0-9cbe-e84de97dd176",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## TIKTOK\n",
+        "height": 800,
+        "width": 3120,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1380,
+        2200
+      ],
+      "typeVersion": 1,
+      "id": "4efc3743-8e66-4dee-bcec-342310aa51b9",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## @igorzuevich \n**Автор** на [YouTube](https://www.youtube.com/@igorzuevich)",
+        "height": 240,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        6140,
+        2400
+      ],
+      "typeVersion": 1,
+      "id": "78b02729-2fd5-4ef1-ae86-1baa676fa21b",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Links": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Instagram Link Loop",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "YouTube Link Loop",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "TikTok Link Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Change to mpeg": {
+      "main": [
+        [
+          {
+            "node": "Whisper TT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Link Loop": {
+      "main": [
+        [
+          {
+            "node": "TikTok Complete",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get TikTok URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Link Loop": {
+      "main": [
+        [
+          {
+            "node": "YouTube Complete",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Transcribe1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Complete": {
+      "main": [
+        [
+          {
+            "node": "TikTok create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok create": {
+      "main": [
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Complete": {
+      "main": [
+        [
+          {
+            "node": "YouTube Create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Create": {
+      "main": [
+        [
+          {
+            "node": "Select YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select YouTube": {
+      "main": [
+        [
+          {
+            "node": "Loop YouTube Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select TikTok": {
+      "main": [
+        [
+          {
+            "node": "Loop TikTok Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop TikTok Scripts": {
+      "main": [
+        [],
+        [
+          {
+            "node": "TikTok Get'em",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop YouTube Scripts": {
+      "main": [
+        [],
+        [
+          {
+            "node": "YouTube Get'em",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Get'em": {
+      "main": [
+        [
+          {
+            "node": "TikTok Repurpose",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Get'em": {
+      "main": [
+        [
+          {
+            "node": "YouTube Repurpose",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Repurpose": {
+      "main": [
+        [
+          {
+            "node": "Update TikTok Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Repurpose": {
+      "main": [
+        [
+          {
+            "node": "Update YouTube Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update YouTube Script": {
+      "main": [
+        [
+          {
+            "node": "Loop YouTube Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update TikTok Script": {
+      "main": [
+        [
+          {
+            "node": "Loop TikTok Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Original Script YT": {
+      "ai_tool": [
+        [
+          {
+            "node": "YouTube Repurpose",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Original Script TT": {
+      "ai_tool": [
+        [
+          {
+            "node": "TikTok Repurpose",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser TT": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "TikTok Repurpose",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser YT": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "YouTube Repurpose",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Link Loop": {
+      "main": [
+        [
+          {
+            "node": "Instagram Complete",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get IG URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Complete": {
+      "main": [
+        [
+          {
+            "node": "Instagram Create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Create": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select Instagram": {
+      "main": [
+        [
+          {
+            "node": "Loop Instagram Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Repurpose": {
+      "main": [
+        [
+          {
+            "node": "Update Instagram Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Original Script IG": {
+      "ai_tool": [
+        [
+          {
+            "node": "Instagram Repurpose",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Instagram Scripts": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Instagram Get'em",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Get'em": {
+      "main": [
+        [
+          {
+            "node": "Instagram Repurpose",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get TikTok Vid": {
+      "main": [
+        [
+          {
+            "node": "Change to mpeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get IG Vid": {
+      "main": [
+        [
+          {
+            "node": "Whisper IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser IG": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Instagram Repurpose",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Links",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Instagram Script": {
+      "main": [
+        [
+          {
+            "node": "Loop Instagram Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Whisper IG": {
+      "main": [
+        [
+          {
+            "node": "Instagram Link Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Whisper TT": {
+      "main": [
+        [
+          {
+            "node": "TikTok Link Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get TikTok URL": {
+      "main": [
+        [
+          {
+            "node": "Get TikTok Vid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get IG URL": {
+      "main": [
+        [
+          {
+            "node": "Get IG Vid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "YouTube Link Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Instagram Repurpose",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Select Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "YouTube Repurpose",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "main": [
+        [
+          {
+            "node": "Select TikTok",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "TikTok Repurpose",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "155bf910-b7cd-480a-9b13-e7572fcfca5a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "ih8mwjCX6nnDAnB6",
+  "tags": []
+}

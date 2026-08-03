@@ -1,0 +1,677 @@
+{
+  "name": "IZ_AI_YOTUBE_SHPION",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://www.youtube.com/feeds/videos.xml?channel_id={{ $json.Chanel_ID }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        600,
+        200
+      ],
+      "id": "a07ecd94-acff-4dff-bef8-7e4172385930",
+      "name": "RSS Read1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Фильтруем видео: исключаем Shorts и показываем только за последние 24 часа\nconst filteredItems = items.filter(item => {\n  const link = item.json.link;\n  const videoDate = new Date(item.json.isoDate);\n  const now = new Date();\n  \n  // Вычисляем разницу во времени в часах\n  const hoursDifference = (now - videoDate) / (1000 * 60 * 60);\n  \n  // Исключаем Shorts (они содержат /shorts/ в ссылке)\n  const isNotShorts = !link.includes('/shorts/');\n  \n  // Проверяем, что видео загружено не позже 24 часов назад\n  const isWithin24Hours = hoursDifference <= 24;\n  \n  // Возвращаем true только если оба условия выполнены\n  return isNotShorts && isWithin24Hours;\n}).map(item => {\n  // Извлекаем ID видео из ссылки\n  const link = item.json.link;\n  let videoId = '';\n  \n  // Для обычных видео: https://www.youtube.com/watch?v=VIDEO_ID\n  const watchMatch = link.match(/[?&]v=([^&]+)/);\n  if (watchMatch) {\n    videoId = watchMatch[1];\n  }\n  \n  // Добавляем ID видео к объекту\n  return {\n    ...item,\n    json: {\n      ...item.json,\n      videoId: videoId\n    }\n  };\n});\n\n// Возвращаем отфильтрованные элементы с добавленным videoId\nreturn filteredItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        200
+      ],
+      "id": "897d29d6-4b44-4fb2-9da8-f99588aa4589",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## ПОМОЩНИК:\nhttps://rss.app/rss-feed/create-youtube-rss-feed (сервис RSS)",
+        "height": 120,
+        "width": 540,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -560,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "bd31c4a6-5048-424b-a104-bd0be463bd6a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "get",
+        "videoId": "={{ $json.videoId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        200
+      ],
+      "id": "325296ff-10da-4f22-b522-e170da891b14",
+      "name": "Get a video",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "kaehDW4Ii5Pf7uw4",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1Be-5f0WmCH8x1y1aQXefhPeag6iR2AlDqBFkSruRQaE",
+          "mode": "list",
+          "cachedResultName": "YouTube Анализ конкурентов",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Be-5f0WmCH8x1y1aQXefhPeag6iR2AlDqBFkSruRQaE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Chanel_ID",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Be-5f0WmCH8x1y1aQXefhPeag6iR2AlDqBFkSruRQaE/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -160,
+        180
+      ],
+      "id": "3aeeb94f-c4c2-40e0-8675-77e625bea557",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -420,
+        180
+      ],
+      "id": "b5069ea9-eb1e-4761-b8da-1d3f62b158a4",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        100,
+        180
+      ],
+      "id": "90a462e0-8ae6-448b-82d8-93edb9fc8ef2",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.H_Image_URL }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1580,
+        200
+      ],
+      "id": "8f1f3b75-6a38-46c6-9f16-082ccf0c6053",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "190190068",
+        "binaryData": true,
+        "additionalFields": {
+          "caption": "=🛜 Вышло новое видео на канале: {{ $json.channel_Title }}\n\nНазвание видео: {{ $json.title }}\n📅 Опубликовано: {{ $json.published_At }}\n👀 Набрало просмотров: {{ $json.viewCount }}\n👍 Набрало Лайков: {{ $json.likeCount }}\n💬 Активность в Комментах: {{ $json.commentCount }}\n\nСсылка на видео: {{ $json.URL }}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1860,
+        200
+      ],
+      "id": "51286ff5-5648-4c7a-bd39-5274ffc40a7f",
+      "name": "Send a photo message",
+      "webhookId": "86a2470d-b605-4cb3-9c6e-b8a06105dac4",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "190190068",
+        "text": "=На сегодня ({{ $now.format('dd-MM-yyyy') }}) это всё. Продуктивного дня.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        620,
+        -140
+      ],
+      "id": "74b5f1d0-6979-4378-8021-a39f94015110",
+      "name": "Send a text message",
+      "webhookId": "0e8f2704-7b6b-4755-b39e-acda5612575a",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Be-5f0WmCH8x1y1aQXefhPeag6iR2AlDqBFkSruRQaE",
+          "mode": "list",
+          "cachedResultName": "YouTube Анализ конкурентов",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Be-5f0WmCH8x1y1aQXefhPeag6iR2AlDqBFkSruRQaE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 366817698,
+          "mode": "list",
+          "cachedResultName": "VIDEO_INFO",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Be-5f0WmCH8x1y1aQXefhPeag6iR2AlDqBFkSruRQaE/edit#gid=366817698"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.id }}",
+            "viewCount": "={{ $json.statistics.viewCount }}",
+            "dislikeCount": "={{ $json.statistics.dislikeCount }}",
+            "likeCount": "={{ $json.statistics.likeCount }}",
+            "commentCount": "={{ $json.statistics.commentCount }}",
+            "favorite_Count": "={{ $json.statistics.favoriteCount }}",
+            "title": "={{ $json.snippet.title }}",
+            "description": "={{ $json.snippet.description }}",
+            "S_Image_URL": "={{ $json.snippet.thumbnails.default.url }}",
+            "H_Image_URL": "={{ $json.snippet.thumbnails.standard.url }}",
+            "channel_Title": "={{ $json.snippet.channelTitle }}",
+            "tags": "={{ $json.snippet.tags.join(\", \") }}",
+            "published_At": "={{ $json.snippet.publishedAt }}",
+            "channel_Id": "={{ $json.snippet.channelId }}",
+            "URL": "=https://www.youtube.com/watch?v={{ $json.id }}",
+            "Duration": "={{ $json.contentDetails.duration }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "channel_Id",
+              "displayName": "channel_Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "channel_Title",
+              "displayName": "channel_Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "published_At",
+              "displayName": "published_At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tags",
+              "displayName": "tags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "viewCount",
+              "displayName": "viewCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "likeCount",
+              "displayName": "likeCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "dislikeCount",
+              "displayName": "dislikeCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "commentCount",
+              "displayName": "commentCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "favorite_Count",
+              "displayName": "favorite_Count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "S_Image_URL",
+              "displayName": "S_Image_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "H_Image_URL",
+              "displayName": "H_Image_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Duration",
+              "displayName": "Duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1320,
+        200
+      ],
+      "id": "549a6285-aa1c-43c0-9a57-2bedb1d2cbc7",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        340,
+        -140
+      ],
+      "id": "76f7a86f-c97b-43e9-899f-85b11c012280",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1380,
+        460
+      ],
+      "typeVersion": 1,
+      "id": "4e6bb2d7-25f1-430d-959c-d061471bbd06",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        720,
+        -280
+      ],
+      "typeVersion": 1,
+      "id": "1a6db5d6-fa51-47a9-88e0-0db168581b1f",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/yyj9Hyr86ag",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -540,
+        460
+      ],
+      "typeVersion": 1,
+      "id": "b296beab-f57b-4763-a32e-0cb9c3e6377b",
+      "name": "Sticky Note21",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## РАБОТА С КАЖДЫМ КАНАЛОМ ОТДЕЛЬНО",
+        "height": 360,
+        "width": 2100,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        120
+      ],
+      "typeVersion": 1,
+      "id": "3d545d95-a62c-4234-b920-0021043f67c9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ (1 раз в 24 часа)",
+        "height": 360,
+        "width": 560,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -580,
+        120
+      ],
+      "typeVersion": 1,
+      "id": "3d2d6ab0-d4da-4d81-a1f0-4cf11f7a21d5",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## ЗАВЕРШЕНИЕ РАБОТЫ",
+        "height": 300,
+        "width": 700,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        220,
+        -200
+      ],
+      "typeVersion": 1,
+      "id": "c3e3489a-3b74-4696-978b-cda90f5825ed",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# ПОМОЩНИК:\n\n## РАЗВЕРНУТЬ n8n на своём сервере и не платить: https://railway.com?referralCode=XgLzYp\n\n### https://www.reddit.com/r/selfhosted/comments/mgnsyg/quicktip_youtube_channels_have_an_rss_feed/\n\n### https://www.youtube.com/feeds/videos.xml?channel_id=(channel id)",
+        "height": 400,
+        "width": 720,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2260,
+        100
+      ],
+      "typeVersion": 1,
+      "id": "b03574a0-3de0-40a0-82d8-0006b76d2b48",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RSS Read1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Get a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a video": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RSS Read1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Send a photo message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a photo message": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "459aa384-aa47-4b09-b909-2d361a04b088",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "5qwszUDTLR0BWRTt",
+  "tags": []
+}

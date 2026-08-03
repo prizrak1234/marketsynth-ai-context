@@ -1,0 +1,36 @@
+{
+  "competitor_id": "c2",
+  "name": "Bad Co",
+  "competitor_type": "direct",
+  "relationship_to_customer_problem": "Addresses async team coordination",
+  "verification_status": "partially_verified",
+  "confidence": "medium",
+  "evidence_references": [
+    "src-001"
+  ],
+  "product_or_service": "Bad Co",
+  "target_segments": [
+    "remote engineering teams"
+  ],
+  "geographies": [
+    "US",
+    "EU"
+  ],
+  "pricing_model": "subscription",
+  "observed_price_points": [],
+  "offer_structure": "",
+  "value_proposition_claims": [],
+  "channels": [],
+  "proof_points": [],
+  "strengths": [],
+  "weaknesses": [
+    {
+      "claim": "Weak product",
+      "verification_status": "verified",
+      "confidence": "high"
+    }
+  ],
+  "assumptions": [],
+  "unknowns": [],
+  "contradictory_evidence": []
+}

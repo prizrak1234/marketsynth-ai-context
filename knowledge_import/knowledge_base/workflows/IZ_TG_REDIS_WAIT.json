@@ -1,0 +1,938 @@
+{
+  "name": "IZ_TG_REDIS_WAIT",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "needsFallback": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        -656
+      ],
+      "id": "a58d9586-0b48-45bd-af67-66c26a89c8d0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        864,
+        -448
+      ],
+      "id": "7277a7ea-6967-4620-ab98-e5caec26942f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=tg_ID_{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1232,
+        -448
+      ],
+      "id": "a0278988-e8fc-406f-8d7b-690c40e13a16",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {}
+      },
+      "id": "e2a7a054-ce3d-4cfd-b1f3-6516b11a14bd",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        -976,
+        -352
+      ],
+      "webhookId": "30a3f361-4607-40f0-bc7e-d1fb385430d2",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $json.message.chat.id }}"
+      },
+      "id": "bf29695d-1349-4141-866b-bab90967fd7c",
+      "name": "Send Typing action",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        -592,
+        -576
+      ],
+      "webhookId": "425443f1-117e-4aaa-84d5-74ce2a1a1b64",
+      "typeVersion": 1.2,
+      "credentials": {
+        "telegramApi": {
+          "id": "uM51Sxz9o8ReLeEf",
+          "name": "n8n_izuevich_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        -656
+      ],
+      "id": "e0ce71f0-818c-4d5f-b4a8-e8b7e4059e5a",
+      "name": "Send a text message",
+      "webhookId": "eddbf5de-479f-4c5f-9c95-8410f4f64436",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=debounce:{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "value": "=1",
+        "expire": true,
+        "ttl": 20
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -240
+      ],
+      "id": "964bd311-66fa-449e-bc1c-57220cdd64ac",
+      "name": "Redis",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        -368
+      ],
+      "id": "b8462334-3284-4751-b7a3-151e7c552a51",
+      "name": "Wait",
+      "webhookId": "ae7e7a3e-ba51-41ba-9e03-a52151768e61"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d4392770-3809-42e6-b66d-142a65138dec",
+              "leftValue": "={{ (Object.values($json)[0] ?? null) }}",
+              "rightValue": null,
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -336,
+        -352
+      ],
+      "id": "c207a4eb-0367-47a9-a7b0-e4cf664e6f50",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "=buf:{{ $json.message.chat.id }}",
+        "messageData": "={\n  \"id\": \"{{ $json.message.message_id }}\",\n  \"text\": \"{{ $json.message.text }}\",\n  \"ts\": \"{{ $now }}\"\n}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        -352
+      ],
+      "id": "eb5405a1-7aa7-4050-9220-1ec6e34e84d8",
+      "name": "Redis (save buffer)",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "debounce:",
+        "key": "=debounce:{{ $json.message.chat.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        -352
+      ],
+      "id": "9790f3f2-4b9a-4624-91c6-f82c26fc95df",
+      "name": "Redis (examination)",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pop",
+        "list": "=buf:{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "propertyName": "payload",
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        352,
+        -368
+      ],
+      "id": "e747cd21-ec9d-484a-8ae6-4ac8029af6e0",
+      "name": "Redis2",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c9580c2a-1363-4146-981a-359aecb8a55e",
+              "leftValue": "={{ $json.payload }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        528,
+        -368
+      ],
+      "id": "72af044c-061c-4157-8a82-3c9c6c131193",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.payload;\nlet obj;\ntry { obj = typeof raw === 'string' ? JSON.parse(raw) : raw; } \ncatch { obj = { text: String(raw ?? '') }; }\nreturn [{ json: { text: (obj?.text ?? '').trim() } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        -48
+      ],
+      "id": "965be417-ab94-4079-9be6-0bca5608cb07",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "agg",
+        "key": "=agg:{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        64
+      ],
+      "id": "dbe3b467-c1c4-48e9-a7c7-4ed07c439dbd",
+      "name": "Redis1",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1360,
+        -32
+      ],
+      "id": "0371bfd3-acff-47c1-a164-6e35cec160cb",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $json.agg || '';\nconst line = ($json.text || '').trim();\nconst combined = prev ? (prev + '\\n' + line) : line;\nreturn [{ json: { combined } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1632,
+        -32
+      ],
+      "id": "0395478b-0b9d-454f-a2d8-d7abb808bf5f",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=agg:{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "value": "={{ $json.combined }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        176
+      ],
+      "id": "3de38a65-5e88-4ddb-abb7-6356c2855486",
+      "name": "Redis4",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "prompt",
+        "key": "=agg:{{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -656
+      ],
+      "id": "b6f440cf-3c76-4d2d-bad3-b41963eb5bd9",
+      "name": "Redis (Get final agg)",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "=agg:{{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -832
+      ],
+      "id": "f09c1660-dcb1-46f4-80f5-551213942dce",
+      "name": "Redis (DEL agg)",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "=buf:{{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        -512
+      ],
+      "id": "6f21104c-f246-4d00-8392-c6647176d695",
+      "name": "Redis (DEL buf)",
+      "credentials": {
+        "redis": {
+          "id": "Zw3U3MdIlKer2Bxc",
+          "name": "n8n_demo (upstash)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "##  Ответ и удаление вспомогательных данных",
+        "height": 605,
+        "width": 765,
+        "color": 6
+      },
+      "id": "10373cbc-73ba-454c-be3c-74d18e26c271",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1472,
+        -896
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  Сбор всех ответов",
+        "height": 509,
+        "width": 1213,
+        "color": 6
+      },
+      "id": "ae2e9fdc-39db-4d6e-96e9-ccace94f8b06",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        -160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "##  Промпт + Ответ",
+        "height": 509,
+        "width": 653,
+        "color": 6
+      },
+      "id": "8b01e950-eb55-495d-b74d-799172f7cd10",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        -816
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ И ПРОВЕРКА",
+        "height": 589,
+        "width": 989,
+        "color": 3
+      },
+      "id": "5f1b6c21-8161-49e6-8c9e-31c6b128f3e2",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1072,
+        -640
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## ОЖИДАНИЕ",
+        "height": 429,
+        "width": 733,
+        "color": 5
+      },
+      "id": "398787ad-f206-4099-aa5a-99d45eda09b5",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -496
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        -448
+      ],
+      "id": "a830a5e7-b6b6-4bba-9ad1-da848c57695d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bS3VhMXmlWezaHfW",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1120,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "4aa617c9-7291-4b15-b05b-4b7535f1b63e",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        -672
+      ],
+      "typeVersion": 1,
+      "id": "4220b266-df88-4c04-b10d-32d71879c84f",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по настройке нод CODE: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        992,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "03901bf7-ce04-49a6-9857-b5cc860e6293",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1056,
+        -800
+      ],
+      "typeVersion": 1,
+      "id": "cfb1ed6a-2f16-40ca-b6da-5de3b102d73c",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## 3 Мощных Инструмента в n8n: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 472
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "52c33499-907c-4669-b003-dd84fcd09109",
+      "name": "Sticky Note13",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Gemini Полный Обзор: https://youtu.be/qKh7BTjQoM0",
+        "height": 104,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1376,
+        -432
+      ],
+      "typeVersion": 1,
+      "id": "df46bb1e-2a83-4cad-af83-24362b165c70",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## Урок Разбор нод Telegram: https://youtu.be/d0O9IfRIdC8",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1968,
+        -656
+      ],
+      "typeVersion": 1,
+      "id": "d4ae8b89-e529-469e-89dd-8a44ad4bce51",
+      "name": "Sticky Note16",
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 633389792,
+          "message": {
+            "message_id": 1066,
+            "from": {
+              "id": 190190068,
+              "is_bot": false,
+              "first_name": "Igor",
+              "username": "igorzuevich",
+              "language_code": "ru",
+              "is_premium": true
+            },
+            "chat": {
+              "id": 190190068,
+              "first_name": "Igor",
+              "username": "igorzuevich",
+              "type": "private"
+            },
+            "date": 1758370530,
+            "text": "Привет,"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send Typing action",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Redis (save buffer)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis (save buffer)": {
+      "main": [
+        [
+          {
+            "node": "Redis (examination)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis (examination)": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Redis (Get final agg)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Redis1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Redis4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis4": {
+      "main": [
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis (Get final agg)": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Redis (DEL agg)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Redis (DEL buf)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "adf1ffb6-2351-4ba1-89f4-aa7885cab98e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "jc45caZhLc1pJHjF",
+  "tags": []
+}

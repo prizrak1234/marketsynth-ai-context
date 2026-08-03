@@ -1,0 +1,301 @@
+{
+  "name": "47 - Hybrid",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        1168,
+        576
+      ],
+      "id": "7d80c28c-e2ef-401e-b83b-1e0acfaac00a",
+      "name": "When chat message received",
+      "webhookId": "016c1dbe-6c49-4dd1-bbc8-b4d787ada603"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select\n  *\nfrom\n  hybrid_search5(\n    '{{ $('When chat message received').item.json.chatInput }}', -- user query\n    '{{ JSON.stringify($json.data[0].embedding) }}'::vector(1536), -- embedding generated from user query\n    5\n  );\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1664,
+        576
+      ],
+      "id": "4caf2d72-ef7a-43e0-bd8f-cedb649011cf",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "pcWiko0lcbqcxmkT",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"text-embedding-3-small\",\n  \"input\": \"{{ $json.chatInput }}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1424,
+        576
+      ],
+      "id": "afe573bc-b4af-417b-9623-a9f7952d27a1",
+      "name": "HTTP Request",
+      "credentials": {
+        "openAiApi": {
+          "id": "kPhwNDcHvNvMsRIS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Hybrid Search",
+        "height": 560,
+        "width": 1072,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        928,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "64fca620-26b8-4cd7-9f31-5234e0d3cbd8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Хочешь разобраться в автоматизациях и искусственном интеллекте? \n\n### Присоединяйся к Pro-группе с Pro-Материалами по ИИ и с N8N Мастер-Классом! \n👇\n### https://t.me/iishenka_pro_bot\n",
+        "height": 1136,
+        "width": 624,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2016,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "749f7573-065b-475d-bbaa-b17d68a68ada",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1360,
+        48
+      ],
+      "id": "8290ab07-ae26-4e16-b20c-45e4eb708025",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "pcWiko0lcbqcxmkT",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1184,
+        48
+      ],
+      "id": "e345aa0e-c6b4-4117-9a72-5bcd96aea0fc",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "kPhwNDcHvNvMsRIS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1504,
+        192
+      ],
+      "id": "5080b847-670c-4115-85dc-12f2bb72e56f",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "kPhwNDcHvNvMsRIS",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant. \n\nYou MUST use the vectorStore tool EVERY TIME before the answer."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1328,
+        -144
+      ],
+      "id": "260326a1-f3ce-44d7-902e-81e2965d857a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "vectorStore",
+        "toolDescription": "this you vectorStore",
+        "tableName": {
+          "__rl": true,
+          "value": "documents5",
+          "mode": "list",
+          "cachedResultName": "documents5"
+        },
+        "options": {
+          "queryName": "match_documents5"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.2,
+      "position": [
+        1504,
+        48
+      ],
+      "id": "96c1e8c2-1709-4a92-9a6f-2c0c580325f1",
+      "name": "vectorStore",
+      "credentials": {
+        "supabaseApi": {
+          "id": "iuyN6KMYhbUARR13",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Vector Search",
+        "height": 560,
+        "width": 1072,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        928,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "2a09b4df-30bd-47c0-b168-adc950734c07",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "vectorStore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "vectorStore": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "0079d83e-fa9f-4f8c-921c-b162f068a79b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e01000323930f9951ba3427ce9365f35d56a694ae3edbcd1b5275340b4ec1807"
+  },
+  "id": "FF1E7EaDtMBVLf7P",
+  "tags": []
+}

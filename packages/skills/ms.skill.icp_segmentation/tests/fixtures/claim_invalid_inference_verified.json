@@ -1,0 +1,14 @@
+{
+  "id": "inf",
+  "claim_kind": "pain_point",
+  "statement": "Inferred pain",
+  "category": "workflow",
+  "severity_or_importance": "high",
+  "frequency_or_relevance": "frequent",
+  "verification_status": "verified",
+  "confidence": "medium",
+  "inference": true,
+  "evidence_references": [
+    "ev-x"
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.customer_interview_design/output/0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "interview_guide_id": {
+      "type": "string"
+    },
+    "skill_id": {
+      "type": "string",
+      "const": "ms.skill.customer_interview_design"
+    },
+    "skill_version": {
+      "type": "string"
+    },
+    "cim_reference": {
+      "type": "object"
+    },
+    "selected_segment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "research_objectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "interview_sections": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "$ref": "schemas/question.schema.json"
+      }
+    },
+    "follow_up_probes": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence_capture_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "bias_warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sensitive_topic_warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      },
+      "maxItems": 30
+    },
+    "coverage": {
+      "type": "string",
+      "enum": [
+        "full",
+        "partial",
+        "minimal",
+        "unknown"
+      ]
+    },
+    "evidence_quality": {
+      "type": "string",
+      "enum": [
+        "comprehensive",
+        "partial",
+        "insufficient",
+        "conflicted",
+        "unknown"
+      ]
+    },
+    "research_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "partially_complete",
+        "insufficient_sources",
+        "conflicted",
+        "out_of_scope"
+      ]
+    },
+    "human_review_required": {
+      "type": "boolean"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "input_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "output_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    }
+  },
+  "required": [
+    "interview_guide_id",
+    "skill_id",
+    "skill_version",
+    "cim_reference",
+    "selected_segment_ids",
+    "research_objectives",
+    "interview_sections",
+    "questions",
+    "follow_up_probes",
+    "evidence_capture_fields",
+    "bias_warnings",
+    "sensitive_topic_warnings",
+    "assumptions",
+    "unknowns",
+    "evidence_gaps",
+    "coverage",
+    "evidence_quality",
+    "research_status",
+    "human_review_required",
+    "provenance",
+    "input_hash",
+    "output_hash"
+  ]
+}

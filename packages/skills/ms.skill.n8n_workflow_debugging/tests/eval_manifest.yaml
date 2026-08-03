@@ -1,0 +1,9 @@
+version: 1
+skill_id: ms.skill.n8n_workflow_debugging
+eval_cases:
+  - id: postgres_type_mismatch
+    fixture: tests/fixtures/output_postgres_type_mismatch.json
+    expectation: schema_valid
+  - id: unknown_outcome
+    fixture: tests/fixtures/output_unknown_outcome.json
+    expectation: semantic_valid

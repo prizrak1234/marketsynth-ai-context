@@ -1,0 +1,109 @@
+{
+  "substantiation_report_id": "cs-safety-bad",
+  "skill_id": "ms.skill.claim_substantiation",
+  "skill_version": "0.1.0",
+  "source_positioning_reference": {
+    "source_skill_id": "ms.skill.positioning",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "cbd8283f4addaa9c8496504a9c6dbccd580e8ca317b2cf86bf628be6557e8da6",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_meaning_reference": {
+    "source_skill_id": "ms.skill.customer_meaning_extraction",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "source_market_validation_reference": {
+    "source_skill_id": "ms.skill.market_validation",
+    "source_skill_version": "0.2.0",
+    "source_output_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "source_status": "complete",
+    "source_evidence_references": [
+      "ev-upstream-001"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "claim_assessments": [
+    {
+      "claim_id": "claim-safety-bad",
+      "original_statement": "100% safety — technology cannot fail",
+      "normalized_claim": "Guaranteed income outcome",
+      "substantiation_status": "prohibited",
+      "evidence_references": [],
+      "contradictory_evidence": [],
+      "mechanism_reference": "",
+      "proof_requirements": [],
+      "limitations": [
+        "Financial outcome guarantee prohibited"
+      ],
+      "required_qualifiers": [],
+      "prohibited_phrases": [
+        "100% safety",
+        "technology cannot fail"
+      ],
+      "permitted_rewrite": "",
+      "residual_risk": "critical",
+      "human_review_required": true,
+      "legal_review_required": true,
+      "provenance": {
+        "skill_id": "ms.skill.claim_substantiation",
+        "skill_version": "0.1.0"
+      }
+    }
+  ],
+  "supported_claims": [
+    "claim-async-1"
+  ],
+  "conditional_claims": [
+    "claim-async-1"
+  ],
+  "unsupported_claims": [],
+  "prohibited_claims": [
+    "claim-safety-bad"
+  ],
+  "proof_gaps": [],
+  "legal_review_items": [
+    "claim-income-bad"
+  ],
+  "required_qualifiers": [
+    "for teams that adopt async norms"
+  ],
+  "risk_reversal_candidates": [
+    {
+      "risk_reversal_id": "rr-refund-1",
+      "reversal_type": "refund",
+      "description": "30-day refund if onboarding incomplete",
+      "reduces_commercial_risk": true,
+      "proves_outcome": false
+    }
+  ],
+  "evidence_gaps": [],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "offer_builder_claim_inputs": [
+    {
+      "claim_id": "claim-async-1",
+      "substantiation_status": "supported_with_conditions"
+    }
+  ],
+  "human_review_required": true,
+  "provenance": {
+    "skill_id": "ms.skill.claim_substantiation",
+    "skill_version": "0.1.0"
+  },
+  "input_hash": "5555555555555555555555555555555555555555555555555555555555555555",
+  "output_hash": "6666666666666666666666666666666666666666666666666666666666666666"
+}

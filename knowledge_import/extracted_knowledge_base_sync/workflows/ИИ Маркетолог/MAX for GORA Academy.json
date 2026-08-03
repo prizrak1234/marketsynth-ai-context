@@ -1,0 +1,604 @@
+{
+  "name": "MAX for GORA Academy",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "max-test",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        448,
+        400
+      ],
+      "id": "37260cac-d7aa-436b-bf59-5ac0526ce448",
+      "name": "Webhook",
+      "webhookId": "1236b347-d753-4320-bcf8-16d34d527324"
+    },
+    {
+      "parameters": {
+        "url": "https://platform-api.max.ru/subscriptions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        800,
+        80
+      ],
+      "id": "e8aecc0b-a7ec-4754-96c8-3f1d550d6055",
+      "name": "Проверка подписок",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "OxatSTFqDNVoQsLC",
+          "name": "KIE account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message.body.text }}",
+        "options": {
+          "systemMessage": "Ты — консультант онлайн‑практикума «Практикум по созданию AI-агентов» от GORA Academy.  \nТвоя задача — помочь человеку понять, что это за продукт, подойдёт ли он под его запросы и как к нему присоединиться.\n\nТвой контекст о продукте (ориентиры, на которые опираешься в ответах):\n\n- Формат: практикум‑тест‑драйв профессии разработчика AI‑агентов, упор на практику и быстрый результат.\n- Цель: за несколько дней человек создаёт своего AI‑агента/бота (чаще всего в Telegram), подключает к нему нейросеть и понимает базовую механику заработка на таких решениях.\n- Вход в продукт: пошаговый урок по созданию AI‑агента/бота с нейросетью (например, через Make и актуальные ИИ‑модели) с разбором возможных схем заработка.\n- Авторы и экспертиза: практикум ведётся командой GORA Academy, которая специализируется на нейросетях, маркетинге и практическом применении AI (боты, AI‑агенты, контент‑системы и т.п.).\n\nКак тебе общаться:\n\n1. Пиши простым, разговорным языком, избегай лишней технички.\n2. Всегда начинай с 1–2 уточняющих вопросов, чтобы понять человека:\n   - «Что вы хотите делать с помощью AI‑агентов?»\n   - «Вам это больше для заработка, для автоматизации бизнеса или просто чтобы освоить новую профессию?»\n3. Подстраивай глубину объяснений под уровень:\n   - Новичку объясняй, что AI‑агент — это «умный помощник/бот, который сам выполняет задачи по заданным сценариям и экономит время».\n   - Продвинутым можешь говорить про сценарии автоматизации, интеграции (например, Make, CRM, формы), подключение моделей и т.п.\n4. Не обещай гарантированный заработок. Всегда подчёркивай, что цифры — это примеры, а результат зависит от ниши, действий и навыков человека.\n5. Если человек сомневается, делай акцент на:\n   - пользе навыка AI‑агентов для бизнеса, фриланса и карьеры;\n   - коротком и практическом формате (быстрый тест‑драйв вместо долгого обучения);\n   - пошаговых инструкциях и том, что всё «разжёвано» для новичков.\n\nЧто важно доносить в ответах:\n\n- Что человек получит в результате:\n  - Понимание, как работает связка «бот/AI‑агент + нейросеть».\n  - Свой первый работающий AI‑агент/бот под его задачу (или чёткий шаблон, который легко доработать).\n  - Базовое понимание вариантов монетизации: услуги по созданию ботов, внедрение в бизнес‑процессы, лидогенерация, автоворонки и т.д.\n- Для кого практикум подходит:\n  - Предприниматели и маркетологи, которые хотят автоматизировать воронки, продажи, обработку заявок и рутину.\n  - Начинающие специалисты по нейросетям и фрилансеры, которые хотят добавить востребованный навык и повысить чек.\n  - Новички без тех.образования, готовые уделить несколько дней практике и пошагово повторять за уроками.\n\nСтруктура твоих ответов:\n\n1. Сначала уточни цель и уровень: «Чем вы занимаетесь и зачем вам AI‑агенты?» / «На какой вы сейчас стадии: полный новичок, уже пробовали делать ботов или что‑то посередине?»\n2. Кратко и простыми словами объясни, что за практикум и к чему он приведёт конкретно его, с привязкой к его цели.\n3. Коротко опиши формат: длительность, практическую направленность, наличие записей и понятных шагов (без перегруза теорией).\n4. Привяжи к его ситуации:\n   - Для бизнеса — какой AI‑агент поможет с заявками, лидами, консультациями.\n   - Для фриланса — какой агент/бот может стать демонстрацией навыка и услуг.\n   - Для интереса/обучения — что он научится собирать и как это можно применить дальше.\n5. Заверши конкретным предложением действия:\n   - «Могу подсказать, как забрать бесплатный урок с разбором AI‑агента».\n   - «Давайте опишем вашу нишу, и я подскажу, какого агента вы сможете собрать в рамках практикума».\n   - «Могу помочь выбрать формат участия под ваш уровень и задачи».\n\nВажно:\n\n- Не выдумывай свои условия, цены, сроки и «гарантии» — опирайся только на информацию с официального лендинга и материалов практикума.\n- Если человек спрашивает то, чего ты не знаешь (точная стоимость, расписание, доступы), честно скажи, что это лучше посмотреть на сайте или уточнить у менеджера, а сам сконцентрируйся на объяснении формата и пользы практикума.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        1200,
+        400
+      ],
+      "id": "aea5799f-987f-40a0-ac26-c16ff95fcccc",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1120,
+        640
+      ],
+      "id": "8f243dcb-5919-4845-9399-69b6f85838c7",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "content": "## Чек-лист\n### Подготовка\n- [ ] Получить токен бота (доступно только для ЮЛ и ИП\n       **Чат-боты → Интеграция → Получить токен.**\n- [ ] Настроить Header аутентификацию с полученным токеном, используйте заголовок Authorization: <token>\n\n### Интеграция\n- [ ] 1. Создать вебхук и скопировать Production URL\n- [ ] 2. Отправить запрос на подписку и проверить появился ли адрес в списке (метод POST, url — адрес вебхука)\n\n*При необходимости повторить пункты 1-2 для Test URL, чтобы работал ручной запуск сценариев*\n\n- [ ] 3. Использовать подписанный вебхук как триггер для получения сообщений. Для ответа использовать HTTP запрос (метод POST, user_id из вебхука, text — подставить ответ агента)",
+        "height": 528,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "a4b1dad2-bbfd-4ff4-a505-1f0b23cb54fd",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cd2c0575-8458-42ba-ae99-fd9e6041cdd8",
+              "leftValue": "={{ $json.body.message.sender.is_bot }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        752,
+        400
+      ],
+      "id": "b474f916-936d-45aa-b79e-f0495aa99a37",
+      "name": "Filter",
+      "notesInFlow": true,
+      "notes": "Фильтруем сообщения бота"
+    },
+    {
+      "parameters": {
+        "content": "## Подписка на вебхук и проверка\n",
+        "height": 336,
+        "width": 576,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -80
+      ],
+      "id": "fc9a85e0-aa43-49e7-922d-868e42b03541",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://platform-api.max.ru/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "user_id",
+              "value": "={{ $('Webhook').item.json.body.message.sender.user_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1664,
+        400
+      ],
+      "id": "24ae63a5-6b21-41dc-9058-f918e4159d57",
+      "name": "Ответ в MAX"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://platform-api.max.ru/subscriptions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://YOUR_DOMAIN/webhook-test/max-test"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        480,
+        80
+      ],
+      "id": "cd8ee400-d156-48b9-b792-9850796b126c",
+      "name": "Подписка",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "OxatSTFqDNVoQsLC",
+          "name": "KIE account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.message.sender.user_id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1296,
+        640
+      ],
+      "id": "3e1bbf77-b5c6-4f5d-af35-579273bf04b8",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://platform-api.max.ru/uploads",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "type",
+              "value": "image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        864,
+        864
+      ],
+      "id": "3b2131f2-05c4-4f80-aef8-d2faa8b0552c",
+      "name": "Получить upload URL",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "OxatSTFqDNVoQsLC",
+          "name": "KIE account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=<ССЫЛКА_на_файл>",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1072,
+        864
+      ],
+      "id": "b0f6ab66-dcac-4d74-b780-4f358b8465f5",
+      "name": "Скачать файл из хранилища"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Получить upload URL').item.json.url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "data",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1296,
+        864
+      ],
+      "id": "43c875a9-5cd0-4da8-a671-56e8220690c8",
+      "name": "Загрузить файл в МАХ",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "OxatSTFqDNVoQsLC",
+          "name": "KIE account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://platform-api.max.ru/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "user_id",
+              "value": "={{ $('Webhook').item.json.body.message.sender.user_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"text\": \"Реквизиты на фото\",\n  \"attachments\": [\n    {\n      \"type\": \"image\",\n      \"payload\": {\n        \"token\": \"{{ $json.token }}\"\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1776,
+        864
+      ],
+      "id": "a062e4b0-85b6-4c88-b3aa-239c70232d2f",
+      "name": "Ответ с фото",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "OxatSTFqDNVoQsLC",
+          "name": "KIE account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Правильный доступ к данным в n8n\nconst inputData = $input.first().json;  // или $input.all()[0].json\n\nconsole.log('Input structure:', JSON.stringify(inputData, null, 2));\n\n// Извлечь token из photos.{random}.token\nconst photos = inputData.photos;\nif (photos) {\n  const photoId = Object.keys(photos)[0];\n  const token = photos[photoId].token;\n  console.log('Found token:', token);\n  return [{ json: { token } }];\n}\n\nreturn [{ json: { error: 'No photos or token found', input: inputData } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1536,
+        864
+      ],
+      "id": "6f634f31-09b9-48a5-9239-3590e4f3be38",
+      "name": "Достаём токен"
+    },
+    {
+      "parameters": {
+        "content": "Достаем токен не зависимо от имени объекта",
+        "height": 208,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1472,
+        800
+      ],
+      "id": "9faa4be7-cf3e-41c8-a4c7-bbca9a2b3deb",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Настроить header аутентификацию\n",
+        "height": 256,
+        "width": 192,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        800,
+        784
+      ],
+      "id": "b49eafdf-c705-42b1-936c-5dd2f9163bd7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Настроить header аутентификацию\n[API Doc](https://dev.max.ru/docs-api/methods/POST/uploads)",
+        "height": 256,
+        "width": 192,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        784
+      ],
+      "id": "c6cc6bff-6345-4e8f-9188-526e71a0fb81",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "Настроить header аутентификацию\n",
+        "height": 256,
+        "width": 192,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        800
+      ],
+      "id": "fcda456d-e946-40a9-9ad4-f68c5fd79889",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "Настроить header аутентификацию\n[API Docs](https://dev.max.ru/docs-api/methods/POST/messages)",
+        "height": 288,
+        "width": 208,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        304
+      ],
+      "id": "62100e50-242e-42d6-9c3a-91e49d434520",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "Настроить header аутентификацию\nAuthorization: <token>\nзаменить ссылку на вебхук",
+        "height": 272,
+        "width": 192,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -32
+      ],
+      "id": "8433569c-2b22-405c-b744-d0fc69a690a2",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "Настроить header аутентификацию\nAuthorization: <token>",
+        "height": 272,
+        "width": 192,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        752,
+        -32
+      ],
+      "id": "2a57f6e9-5abd-4b25-be6a-f53a6a689648",
+      "name": "Sticky Note8"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Получить upload URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Ответ в MAX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Подписка": {
+      "main": [
+        [
+          {
+            "node": "Проверка подписок",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Получить upload URL": {
+      "main": [
+        [
+          {
+            "node": "Скачать файл из хранилища",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Скачать файл из хранилища": {
+      "main": [
+        [
+          {
+            "node": "Загрузить файл в МАХ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Загрузить файл в МАХ": {
+      "main": [
+        [
+          {
+            "node": "Достаём токен",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Достаём токен": {
+      "main": [
+        [
+          {
+            "node": "Ответ с фото",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d561f50f-4030-4fc8-808d-1dcae6a1367c",
+  "meta": {
+    "instanceId": "7442f04c99634f85733d77423e4bf7272bade6fea64db195b5a148d82cd7eda0"
+  },
+  "id": "5twPI9hkJLwkRdYA",
+  "tags": []
+}

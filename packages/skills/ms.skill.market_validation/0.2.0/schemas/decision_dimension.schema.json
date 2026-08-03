@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_validation/decision_dimension/0.2.0",
+  "title": "MarketValidationDecisionDimension",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "dimension": {
+      "type": "string",
+      "enum": [
+        "product_context_quality",
+        "market_evidence_quality",
+        "customer_evidence_quality",
+        "demand_signal_strength",
+        "competitor_pressure",
+        "segment_fit",
+        "reachability",
+        "budget_fit",
+        "pricing_plausibility",
+        "operational_feasibility",
+        "switching_difficulty",
+        "evidence_coverage",
+        "contradiction_severity",
+        "regulatory_or_external_constraints",
+        "critical_risks"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "supportive",
+        "mixed",
+        "weak",
+        "blocking",
+        "insufficient_evidence",
+        "not_applicable"
+      ]
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 100
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 100
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 50
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 50
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 20
+    },
+    "notes": { "type": "string", "maxLength": 4000 },
+    "provenance": { "$ref": "#/$defs/provenance_stub" }
+  },
+  "required": [
+    "dimension",
+    "status",
+    "evidence_references",
+    "contradictory_evidence",
+    "assumptions",
+    "unknowns",
+    "confidence",
+    "blockers",
+    "provenance"
+  ],
+  "$defs": {
+    "provenance_stub": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "maxLength": 128 },
+        "skill_version": { "type": "string", "maxLength": 32 }
+      }
+    }
+  }
+}

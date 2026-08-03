@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/marketing-claims/0.1.0/provenance.schema.json",
+  "title": "MarketingClaimProvenance",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "source_type": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "source_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "skill_id": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "skill_version": {
+      "type": "string",
+      "maxLength": 32
+    },
+    "generated_at": {
+      "type": "string",
+      "maxLength": 64
+    }
+  },
+  "required": [
+    "source_type"
+  ]
+}

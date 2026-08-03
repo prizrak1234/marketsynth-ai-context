@@ -1,0 +1,11 @@
+eval_cases:
+  - id: package_structure_valid
+    description: Package layout conforms to RFC-SKILL-002 skeleton.
+  - id: output_contract_type_research
+    description: Manifest declares output_contract_type research.
+  - id: no_commercial_verdict
+    description: Output schema has no verdict or readiness discriminators.
+  - id: source_observation_inference
+    description: Research finding model separates source, observation, inference.
+  - id: pmc_dependency
+    description: Input requires product_marketing_context reference.

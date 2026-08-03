@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_validation/hard_blocker/0.2.0",
+  "title": "MarketValidationHardBlocker",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "blocker_id": { "type": "string", "maxLength": 128 },
+    "blocker_code": {
+      "type": "string",
+      "enum": [
+        "HB-001",
+        "HB-002",
+        "HB-003",
+        "HB-004",
+        "HB-005",
+        "HB-006",
+        "HB-007",
+        "HB-008",
+        "HB-009",
+        "HB-010",
+        "HB-011"
+      ]
+    },
+    "category": { "type": "string", "maxLength": 128 },
+    "description": { "type": "string", "maxLength": 4000 },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 100
+    },
+    "contradictory_evidence": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 100
+    },
+    "remediation_type": {
+      "type": "string",
+      "enum": [
+        "none",
+        "material_change",
+        "timing_or_external",
+        "evidence_collection",
+        "clearable_condition",
+        "unknown"
+      ]
+    },
+    "remediation_possible": { "type": "boolean" },
+    "required_change": { "type": "string", "maxLength": 2000 },
+    "recommended_verdict_effect": {
+      "type": "string",
+      "enum": [
+        "stop",
+        "revise",
+        "defer",
+        "insufficient_evidence",
+        "proceed_with_conditions",
+        "unknown"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "major", "moderate", "minor"]
+    },
+    "blocking": { "type": "boolean" },
+    "owner_review_required": { "type": "boolean" },
+    "provenance": { "$ref": "#/$defs/provenance_stub" }
+  },
+  "required": [
+    "blocker_id",
+    "blocker_code",
+    "category",
+    "description",
+    "evidence_references",
+    "contradictory_evidence",
+    "remediation_type",
+    "remediation_possible",
+    "recommended_verdict_effect",
+    "severity",
+    "blocking",
+    "owner_review_required",
+    "provenance"
+  ],
+  "$defs": {
+    "provenance_stub": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "maxLength": 128 },
+        "skill_version": { "type": "string", "maxLength": 32 }
+      }
+    }
+  }
+}

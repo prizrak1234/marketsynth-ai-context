@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/practice-record.schema.json",
+  "title": "PracticeRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "practice_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "context": {
+      "type": "string"
+    },
+    "problem": {
+      "type": "string"
+    },
+    "recommended_practice": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "implementation_pattern": {
+      "type": "string"
+    },
+    "failure_modes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "security_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provider_version_scope": {
+      "type": "array",
+      "items": {
+        "$ref": "provider-constraint.schema.json"
+      },
+      "minItems": 1
+    },
+    "tested_environment": {
+      "type": "string"
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "claimed",
+        "source_documented",
+        "reproduced",
+        "regression_tested",
+        "contradicted",
+        "obsolete",
+        "unknown"
+      ]
+    },
+    "source_references": {
+      "type": "array",
+      "items": {
+        "$ref": "source-reference.schema.json"
+      }
+    },
+    "related_pattern_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tenant_scope": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "practice_id",
+    "title",
+    "domain",
+    "problem",
+    "recommended_practice",
+    "provider_version_scope",
+    "verification_status",
+    "tenant_scope",
+    "provenance"
+  ]
+}

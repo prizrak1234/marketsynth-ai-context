@@ -1,0 +1,30 @@
+{
+  "total_rows": 8,
+  "duplicate_text_groups": 1,
+  "duplicate_text_samples": [
+    {
+      "text": "Что такое unit-экономика SaaS и как её считать для подписной модели?",
+      "count": 2
+    }
+  ],
+  "null_chat_route_rows": 0,
+  "null_idempotency_rows": 0,
+  "row_ids_by_text_sample": {
+    "Что такое unit-экономика SaaS и как её считать для подписной модели?": [
+      "8010d93a-674f-4419-b636-8798bef39f4e",
+      "9ee69e56-ff4a-450b-8b24-0f13e0e35d20"
+    ],
+    "Хочу проверить бизнес-идею кофейни в центре города — аудитория офисные работники": [
+      "fdad54da-cee5-41b3-b958-5f8a0d5573c4"
+    ],
+    "Краткий тестовый вопрос: что такое CAC в маркетинге?": [
+      "a22ff52b-cc53-471f-a171-2408cf313464"
+    ],
+    "Enter race: что такое LTV в SaaS?": [
+      "9ee0de7b-d8cb-4ab3-8c7e-58f62309e7ee"
+    ],
+    "Two-tab hydrate marker-tab-g: что такое churn rate?": [
+      "6dff81fa-d690-459f-9a0a-2845175384fd"
+    ]
+  }
+}

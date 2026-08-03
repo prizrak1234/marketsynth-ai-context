@@ -1,0 +1,908 @@
+{
+  "library_version": "0.1.0-frozen",
+  "program_phase": "KB-WPL-01.3C",
+  "overlap_count": 8,
+  "entries": [
+    {
+      "source_workflow_id": "wf-16a4bd5f71833d44",
+      "supported_pattern_ids": [
+        "quality_gate_after_generation"
+      ],
+      "signal_types": [
+        "schema_validation"
+      ],
+      "supported_rules": [
+        "block_invalid_llm_output"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "quality_gate_after_generation",
+          "signal_type": "schema_validation",
+          "supported_rule": "block_invalid_llm_output",
+          "topology_location": "credit_verification_parser",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-16b82581942c24a9",
+      "supported_pattern_ids": [
+        "human_approval_before_publication"
+      ],
+      "signal_types": [
+        "human_decision",
+        "publication_action"
+      ],
+      "supported_rules": [
+        "human_approval_before_write_or_publication",
+        "publication_approval_required"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "human_approval_before_publication",
+          "signal_type": "human_decision",
+          "supported_rule": "human_approval_before_write_or_publication",
+          "topology_location": "seo_publication_pipeline",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "human_approval_before_publication",
+          "signal_type": "publication_action",
+          "supported_rule": "publication_approval_required",
+          "topology_location": "downstream_publication_target",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-21966e054442133e",
+      "supported_pattern_ids": [
+        "workflow_backup"
+      ],
+      "signal_types": [
+        "provenance_capture",
+        "storage_action"
+      ],
+      "supported_rules": [
+        "backup_evidence_recorded",
+        "snapshot_to_storage_provider"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "workflow_backup",
+          "signal_type": "storage_action",
+          "supported_rule": "snapshot_to_storage_provider",
+          "topology_location": "alternate_backup_variant",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "workflow_backup",
+          "signal_type": "provenance_capture",
+          "supported_rule": "backup_evidence_recorded",
+          "topology_location": "backup_evidence_metadata",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-353be45a7de607a0",
+      "supported_pattern_ids": [
+        "lead_capture_to_qualification",
+        "structured_LLM_to_API_request"
+      ],
+      "signal_types": [
+        "branch_structure",
+        "schema_validation",
+        "structured_output",
+        "trigger_structure"
+      ],
+      "supported_rules": [
+        "invalid_payload_routes_to_human_review",
+        "lead_capture_to_qualification_entry",
+        "qualify_before_CRM_write",
+        "schema_validation_before_transport"
+      ],
+      "independence_assessment": "pattern_specific_signals",
+      "pattern_signals": [
+        {
+          "pattern_id": "structured_LLM_to_API_request",
+          "signal_type": "structured_output",
+          "supported_rule": "schema_validation_before_transport",
+          "topology_location": "lead_enrichment_llm_stage",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "structured_LLM_to_API_request",
+          "signal_type": "schema_validation",
+          "supported_rule": "invalid_payload_routes_to_human_review",
+          "topology_location": "post_llm_validation_branch",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "lead_capture_to_qualification",
+          "signal_type": "branch_structure",
+          "supported_rule": "qualify_before_CRM_write",
+          "topology_location": "batch_lead_qualification_loop",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "lead_capture_to_qualification",
+          "signal_type": "trigger_structure",
+          "supported_rule": "lead_capture_to_qualification_entry",
+          "topology_location": "inbound_lead_capture_entry",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-4795f50628f182d5",
+      "supported_pattern_ids": [
+        "pagination_and_batching"
+      ],
+      "signal_types": [
+        "trigger_structure"
+      ],
+      "supported_rules": [
+        "pagination_until_exhausted"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "pagination_and_batching",
+          "signal_type": "trigger_structure",
+          "supported_rule": "pagination_until_exhausted",
+          "topology_location": "scheduled_batch_entry",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-497aa9eee8a759da",
+      "supported_pattern_ids": [
+        "publication_confirmation"
+      ],
+      "signal_types": [
+        "publication_action"
+      ],
+      "supported_rules": [
+        "post_publish_evidence_capture"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "publication_confirmation",
+          "signal_type": "publication_action",
+          "supported_rule": "post_publish_evidence_capture",
+          "topology_location": "quotation_pdf_email_confirm",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-4e833d762f583631",
+      "supported_pattern_ids": [
+        "dead_letter_queue"
+      ],
+      "signal_types": [
+        "error_path"
+      ],
+      "supported_rules": [
+        "terminal_dead_letter_handling"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "dead_letter_queue",
+          "signal_type": "error_path",
+          "supported_rule": "terminal_dead_letter_handling",
+          "topology_location": "ticket_dispatch_failure_branch",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-580f7458a07243a7",
+      "supported_pattern_ids": [
+        "error_workflow_or_recovery"
+      ],
+      "signal_types": [
+        "error_path",
+        "retry_structure"
+      ],
+      "supported_rules": [
+        "recoverable_vs_terminal_classification",
+        "recovery_and_terminal_failure_path"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "error_workflow_or_recovery",
+          "signal_type": "error_path",
+          "supported_rule": "recovery_and_terminal_failure_path",
+          "topology_location": "api_mock_refresh_failure_terminal",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "error_workflow_or_recovery",
+          "signal_type": "retry_structure",
+          "supported_rule": "recoverable_vs_terminal_classification",
+          "topology_location": "recoverable_http_refresh_segment",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-60870942fc4ef5b9",
+      "supported_pattern_ids": [
+        "retry_with_idempotency"
+      ],
+      "signal_types": [
+        "branch_structure",
+        "retry_structure"
+      ],
+      "supported_rules": [
+        "bounded_retry_with_terminal_failure",
+        "unknown_outcome_write_no_auto_retry"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "retry_with_idempotency",
+          "signal_type": "retry_structure",
+          "supported_rule": "bounded_retry_with_terminal_failure",
+          "topology_location": "expiry_alert_retry_branch",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "retry_with_idempotency",
+          "signal_type": "branch_structure",
+          "supported_rule": "unknown_outcome_write_no_auto_retry",
+          "topology_location": "notification_outcome_classifier",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-6114836577421bab",
+      "supported_pattern_ids": [
+        "checkpoint_and_resume",
+        "provider_rate_limit_handling"
+      ],
+      "signal_types": [
+        "retry_structure"
+      ],
+      "supported_rules": [
+        "checkpoint_before_expensive_step",
+        "rate_limit_backoff"
+      ],
+      "independence_assessment": "pattern_specific_signals",
+      "pattern_signals": [
+        {
+          "pattern_id": "checkpoint_and_resume",
+          "signal_type": "retry_structure",
+          "supported_rule": "checkpoint_before_expensive_step",
+          "topology_location": "music_automation_wait_segment",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "provider_rate_limit_handling",
+          "signal_type": "retry_structure",
+          "supported_rule": "rate_limit_backoff",
+          "topology_location": "external_api_retry_segment",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-63b78819a2e5a190",
+      "supported_pattern_ids": [
+        "quality_gate_after_generation",
+        "source_lineage_preservation"
+      ],
+      "signal_types": [
+        "provenance_capture",
+        "structured_output"
+      ],
+      "supported_rules": [
+        "quality_gate_before_handoff",
+        "source_lineage_preservation"
+      ],
+      "independence_assessment": "pattern_specific_signals",
+      "pattern_signals": [
+        {
+          "pattern_id": "quality_gate_after_generation",
+          "signal_type": "structured_output",
+          "supported_rule": "quality_gate_before_handoff",
+          "topology_location": "seo_agent_output_validation",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "source_lineage_preservation",
+          "signal_type": "provenance_capture",
+          "supported_rule": "source_lineage_preservation",
+          "topology_location": "seo_research_lineage_chain",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-6bcda126561b5f72",
+      "supported_pattern_ids": [
+        "supervisor_pattern"
+      ],
+      "signal_types": [
+        "other"
+      ],
+      "supported_rules": [
+        "supervisor_does_not_execute_tools"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "supervisor_pattern",
+          "signal_type": "other",
+          "supported_rule": "supervisor_does_not_execute_tools",
+          "topology_location": "ip_governance_supervisor_delegate",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-6d6ba3d5c2233d5f",
+      "supported_pattern_ids": [
+        "checkpoint_and_resume"
+      ],
+      "signal_types": [
+        "recovery_action"
+      ],
+      "supported_rules": [
+        "resume_from_checkpoint"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "checkpoint_and_resume",
+          "signal_type": "recovery_action",
+          "supported_rule": "resume_from_checkpoint",
+          "topology_location": "media_conversion_pause",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-7227ff0544f5cbd2",
+      "supported_pattern_ids": [
+        "customer_feedback_to_learning_candidate",
+        "dead_letter_queue",
+        "human_edit_then_resume"
+      ],
+      "signal_types": [
+        "human_decision",
+        "trigger_structure"
+      ],
+      "supported_rules": [
+        "feedback_to_knowledge_candidate",
+        "manual_edit_resume",
+        "operator_notification_on_terminal_failure"
+      ],
+      "independence_assessment": "pattern_specific_signals",
+      "pattern_signals": [
+        {
+          "pattern_id": "dead_letter_queue",
+          "signal_type": "human_decision",
+          "supported_rule": "operator_notification_on_terminal_failure",
+          "topology_location": "support_escalation_terminal",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "human_edit_then_resume",
+          "signal_type": "human_decision",
+          "supported_rule": "manual_edit_resume",
+          "topology_location": "support_draft_edit_gate",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "customer_feedback_to_learning_candidate",
+          "signal_type": "trigger_structure",
+          "supported_rule": "feedback_to_knowledge_candidate",
+          "topology_location": "support_feedback_intake",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-770099f8fbf34352",
+      "supported_pattern_ids": [
+        "customer_feedback_to_learning_candidate"
+      ],
+      "signal_types": [
+        "other"
+      ],
+      "supported_rules": [
+        "knowledge_candidate_not_canonical_write"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "customer_feedback_to_learning_candidate",
+          "signal_type": "other",
+          "supported_rule": "knowledge_candidate_not_canonical_write",
+          "topology_location": "nudge_feedback_capture",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-7c284d78aad2003d",
+      "supported_pattern_ids": [
+        "specialist_subworkflow",
+        "tool_workflow_separation"
+      ],
+      "signal_types": [
+        "other"
+      ],
+      "supported_rules": [
+        "specialist_subworkflow_invocation",
+        "tool_workflow_permission_boundary"
+      ],
+      "independence_assessment": "pattern_specific_signals",
+      "pattern_signals": [
+        {
+          "pattern_id": "specialist_subworkflow",
+          "signal_type": "other",
+          "supported_rule": "specialist_subworkflow_invocation",
+          "topology_location": "multi_tool_specialist_delegate",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "tool_workflow_separation",
+          "signal_type": "other",
+          "supported_rule": "tool_workflow_permission_boundary",
+          "topology_location": "isolated_gmail_tool_workflow",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-860ed73d41feb4fd",
+      "supported_pattern_ids": [
+        "pagination_and_batching"
+      ],
+      "signal_types": [
+        "branch_structure"
+      ],
+      "supported_rules": [
+        "bounded_batch_processing"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "pagination_and_batching",
+          "signal_type": "branch_structure",
+          "supported_rule": "bounded_batch_processing",
+          "topology_location": "retargeting_batch_loop",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-9c87e7783b3cb118",
+      "supported_pattern_ids": [
+        "evidence_grounded_generation"
+      ],
+      "signal_types": [
+        "evidence_reference",
+        "other"
+      ],
+      "supported_rules": [
+        "prompt_injection_boundary",
+        "retrieval_provenance_before_LLM_provider"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "evidence_grounded_generation",
+          "signal_type": "evidence_reference",
+          "supported_rule": "retrieval_provenance_before_LLM_provider",
+          "topology_location": "vector_retrieval_before_generate",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "evidence_grounded_generation",
+          "signal_type": "other",
+          "supported_rule": "prompt_injection_boundary",
+          "topology_location": "pre_llm_injection_boundary",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-9f3a78220a7bfbe3",
+      "supported_pattern_ids": [
+        "publication_confirmation"
+      ],
+      "signal_types": [
+        "publication_action"
+      ],
+      "supported_rules": [
+        "publication_approval_required"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "publication_confirmation",
+          "signal_type": "publication_action",
+          "supported_rule": "publication_approval_required",
+          "topology_location": "social_publish_confirm_branch",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-b144bd6927caa092",
+      "supported_pattern_ids": [
+        "evidence_grounded_generation"
+      ],
+      "signal_types": [
+        "evidence_reference",
+        "structured_output"
+      ],
+      "supported_rules": [
+        "no_source_no_grounded_claim",
+        "source_references_required_in_output"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "evidence_grounded_generation",
+          "signal_type": "evidence_reference",
+          "supported_rule": "source_references_required_in_output",
+          "topology_location": "ranking_agent_structured_output",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "evidence_grounded_generation",
+          "signal_type": "structured_output",
+          "supported_rule": "no_source_no_grounded_claim",
+          "topology_location": "agent_retrieval_chain",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-b2aea5e382059f4b",
+      "supported_pattern_ids": [
+        "source_lineage_preservation",
+        "specialist_subworkflow",
+        "tool_workflow_separation"
+      ],
+      "signal_types": [
+        "branch_structure",
+        "evidence_reference",
+        "other"
+      ],
+      "supported_rules": [
+        "carry_source_reference_through_transform",
+        "minimal_tool_action_only",
+        "specialist_scope_isolation"
+      ],
+      "independence_assessment": "pattern_specific_signals",
+      "pattern_signals": [
+        {
+          "pattern_id": "specialist_subworkflow",
+          "signal_type": "branch_structure",
+          "supported_rule": "specialist_scope_isolation",
+          "topology_location": "facebook_content_specialist_chain",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "tool_workflow_separation",
+          "signal_type": "other",
+          "supported_rule": "minimal_tool_action_only",
+          "topology_location": "document_tool_subworkflow",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "source_lineage_preservation",
+          "signal_type": "evidence_reference",
+          "supported_rule": "carry_source_reference_through_transform",
+          "topology_location": "repurpose_content_lineage",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-b537693ad1b8ee7e",
+      "supported_pattern_ids": [
+        "provider_rate_limit_handling"
+      ],
+      "signal_types": [
+        "retry_structure"
+      ],
+      "supported_rules": [
+        "bounded_retry_on_transient_failure"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "provider_rate_limit_handling",
+          "signal_type": "retry_structure",
+          "supported_rule": "bounded_retry_on_transient_failure",
+          "topology_location": "creative_api_call",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-b6c98c93d44e4384",
+      "supported_pattern_ids": [
+        "structured_LLM_to_API_request"
+      ],
+      "signal_types": [
+        "evidence_reference",
+        "structured_output"
+      ],
+      "supported_rules": [
+        "source_backed_research_not_raw_copy",
+        "structured_output_before_API_call"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "structured_LLM_to_API_request",
+          "signal_type": "structured_output",
+          "supported_rule": "structured_output_before_API_call",
+          "topology_location": "research_agent_output_stage",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "structured_LLM_to_API_request",
+          "signal_type": "evidence_reference",
+          "supported_rule": "source_backed_research_not_raw_copy",
+          "topology_location": "tool_retrieval_before_answer",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-b6e1676935a48901",
+      "supported_pattern_ids": [
+        "error_workflow_or_recovery",
+        "retry_with_idempotency"
+      ],
+      "signal_types": [
+        "deduplication_key",
+        "error_path",
+        "recovery_action",
+        "retry_structure"
+      ],
+      "supported_rules": [
+        "duplicate_event_prevention",
+        "explicit_error_workflow_or_recovery_path",
+        "idempotency_before_retry",
+        "terminal_failure_notifies_operator"
+      ],
+      "independence_assessment": "pattern_specific_signals",
+      "pattern_signals": [
+        {
+          "pattern_id": "retry_with_idempotency",
+          "signal_type": "retry_structure",
+          "supported_rule": "idempotency_before_retry",
+          "topology_location": "alert_retry_backoff_segment",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "retry_with_idempotency",
+          "signal_type": "deduplication_key",
+          "supported_rule": "duplicate_event_prevention",
+          "topology_location": "pre_notification_key_assignment",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "error_workflow_or_recovery",
+          "signal_type": "error_path",
+          "supported_rule": "explicit_error_workflow_or_recovery_path",
+          "topology_location": "payment_failure_detection_branch",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "error_workflow_or_recovery",
+          "signal_type": "recovery_action",
+          "supported_rule": "terminal_failure_notifies_operator",
+          "topology_location": "operator_notification_on_failure",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-bdf26007404af6a3",
+      "supported_pattern_ids": [
+        "lead_capture_to_qualification"
+      ],
+      "signal_types": [
+        "schema_validation",
+        "trigger_structure"
+      ],
+      "supported_rules": [
+        "capture_before_qualification",
+        "unqualified_leads_do_not_write"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "lead_capture_to_qualification",
+          "signal_type": "trigger_structure",
+          "supported_rule": "capture_before_qualification",
+          "topology_location": "map_scrape_lead_intake",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "lead_capture_to_qualification",
+          "signal_type": "schema_validation",
+          "supported_rule": "unqualified_leads_do_not_write",
+          "topology_location": "pre_sheet_write_qualification_gate",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-c18641f0b4421b0a",
+      "supported_pattern_ids": [
+        "human_edit_then_resume"
+      ],
+      "signal_types": [
+        "approval_gate"
+      ],
+      "supported_rules": [
+        "resume_after_authoritative_edit"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "human_edit_then_resume",
+          "signal_type": "approval_gate",
+          "supported_rule": "resume_after_authoritative_edit",
+          "topology_location": "legal_policy_edit_review",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-c7d30b91fd4e5694",
+      "supported_pattern_ids": [
+        "workflow_backup"
+      ],
+      "signal_types": [
+        "storage_action",
+        "trigger_structure"
+      ],
+      "supported_rules": [
+        "scheduled_export_not_execution",
+        "workflow_backup_and_source_control"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "workflow_backup",
+          "signal_type": "storage_action",
+          "supported_rule": "workflow_backup_and_source_control",
+          "topology_location": "scheduled_backup_to_git",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "workflow_backup",
+          "signal_type": "trigger_structure",
+          "supported_rule": "scheduled_export_not_execution",
+          "topology_location": "backup_window_entry",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-cb28929d37f1ac61",
+      "supported_pattern_ids": [
+        "supervisor_pattern"
+      ],
+      "signal_types": [
+        "approval_gate"
+      ],
+      "supported_rules": [
+        "supervisor_orchestrates_specialists"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "supervisor_pattern",
+          "signal_type": "approval_gate",
+          "supported_rule": "supervisor_orchestrates_specialists",
+          "topology_location": "privacy_risk_supervisor_review",
+          "confidence": "explicit"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-de3f478cf93ab7e0",
+      "supported_pattern_ids": [
+        "draft_to_human_approval"
+      ],
+      "signal_types": [
+        "approval_gate",
+        "provenance_capture"
+      ],
+      "supported_rules": [
+        "decision_lineage_preserved",
+        "draft_to_human_approval_before_action"
+      ],
+      "independence_assessment": "single_pattern",
+      "pattern_signals": [
+        {
+          "pattern_id": "draft_to_human_approval",
+          "signal_type": "approval_gate",
+          "supported_rule": "draft_to_human_approval_before_action",
+          "topology_location": "legal_risk_routing_review",
+          "confidence": "explicit"
+        },
+        {
+          "pattern_id": "draft_to_human_approval",
+          "signal_type": "provenance_capture",
+          "supported_rule": "decision_lineage_preserved",
+          "topology_location": "decision_lineage_after_review",
+          "confidence": "probable"
+        }
+      ]
+    },
+    {
+      "source_workflow_id": "wf-febea81827b8ad6b",
+      "supported_pattern_ids": [
+        "draft_to_human_approval",
+        "human_approval_before_publication"
+      ],
+      "signal_types": [
+        "approval_gate",
+        "branch_structure",
+        "human_decision",
+        "publication_action"
+      ],
+      "supported_rules": [
+        "draft_review_resume",
+        "evidence_after_publication_required",
+        "publication_approval_required_before_publication_target",
+        "resume_only_after_authoritative_decision"
+      ],
+      "independence_assessment": "pattern_specific_signals",
+      "pattern_signals": [
+        {
+          "pattern_id": "human_approval_before_publication",
+          "signal_type": "approval_gate",
+          "supported_rule": "publication_approval_required_before_publication_target",
+          "topology_location": "pre_publication_branch_moderator",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "human_approval_before_publication",
+          "signal_type": "publication_action",
+          "supported_rule": "evidence_after_publication_required",
+          "topology_location": "post_approval_publish_chain",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "draft_to_human_approval",
+          "signal_type": "human_decision",
+          "supported_rule": "draft_review_resume",
+          "topology_location": "content_moderator_draft_gate",
+          "confidence": "probable"
+        },
+        {
+          "pattern_id": "draft_to_human_approval",
+          "signal_type": "branch_structure",
+          "supported_rule": "resume_only_after_authoritative_decision",
+          "topology_location": "draft_state_before_external_action",
+          "confidence": "probable"
+        }
+      ]
+    }
+  ]
+}

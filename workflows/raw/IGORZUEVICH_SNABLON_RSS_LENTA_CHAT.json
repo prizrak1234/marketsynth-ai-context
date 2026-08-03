@@ -1,0 +1,629 @@
+{
+  "name": "IGORZUEVICH_SNABLON_RSS_LENTA_CHAT",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -620,
+        0
+      ],
+      "id": "e0400894-d30b-4f61-824b-871cffd3ff43",
+      "name": "When chat message received",
+      "webhookId": "398ce4de-d6bf-4276-87d4-2c11f178c889"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=Ты высокоэффективный чат-бот, и твоя задача — отвечать на вопросы, связанные с маркетингом, используя предоставленное тебе хранилище векторов.\n\n### Ограничения:\n\n- Ответы должны быть сгенерированы только на основе информации, предоставленной в хранилище векторов."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -120,
+        0
+      ],
+      "id": "d366ccbe-d9f6-4728-ba24-fd7a8d12e28c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -200,
+        280
+      ],
+      "id": "12fd325d-b38e-4287-ac1f-98b0d39259bd",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -40,
+        280
+      ],
+      "id": "ae7f1c13-6f48-4ef4-a5fe-55eee547b2f1",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "name": "marketing",
+        "description": "Contains data on marketing"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        240,
+        360
+      ],
+      "id": "0e645404-7578-4c72-a1f1-7fedefad57f7",
+      "name": "Answer questions with a vector store"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        360,
+        700
+      ],
+      "id": "067820a3-b9a0-43b8-b2a8-113e60452af5",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "bazamark",
+          "mode": "list",
+          "cachedResultName": "bazamark"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.1,
+      "position": [
+        100,
+        520
+      ],
+      "id": "19712324-9b0c-42c7-bcfe-c9ef169609b0",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "xHYJdGWUvOWZd8CK",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-large",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        700
+      ],
+      "id": "d93322c1-eb74-41cb-9717-4a90a3f27f9e",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## СТАРТ\n",
+        "height": 400,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -800,
+        -120
+      ],
+      "typeVersion": 1,
+      "id": "e546e66f-d61d-42ec-a66a-2a1d9317eecf",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## ИДЕЯ, ЦА И ЗАДАЧА\n",
+        "height": 1020,
+        "width": 860,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        -120
+      ],
+      "typeVersion": 1,
+      "id": "c4368b51-deca-4cf7-a773-ea7eede0c315",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "bazamark",
+          "mode": "list",
+          "cachedResultName": "bazamark"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        2320,
+        40
+      ],
+      "id": "adf118b2-8e37-4589-ac66-02bd998e51d5",
+      "name": "Pinecone Vector Store1",
+      "credentials": {
+        "pineconeApi": {
+          "id": "xHYJdGWUvOWZd8CK",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-large",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2240,
+        300
+      ],
+      "id": "e2429495-4462-49a8-88bd-a0bd7c18dad4",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "Publish Date",
+                "value": "={{ $('Clean up').item.json.publishDate }}"
+              },
+              {
+                "name": "Extraction Date",
+                "value": "={{ $('Clean up').item.json.extractedAt }}"
+              },
+              {
+                "name": "Content",
+                "value": "={{ $('Clean up').item.json.content }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2520,
+        240
+      ],
+      "id": "8c7dce53-4a6a-4d8f-9c7f-c38b02732b97",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2580,
+        440
+      ],
+      "id": "b6e2c996-7f55-497a-9fb2-384b9b5640bc",
+      "name": "Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        840,
+        120
+      ],
+      "id": "72f30b0d-c3d6-43f2-b65d-598ebb1e32c1",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1280,
+        120
+      ],
+      "id": "5fd67ecd-3c42-4a92-b9ab-0ad3b966a5d4",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.feed }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        1580,
+        240
+      ],
+      "id": "2cedf01c-e4ab-4abb-b89c-8b143c8f0cd9",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1820,
+        20
+      ],
+      "id": "83d7a0a1-9db5-4234-b4d5-e31c24151677",
+      "name": "Get HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n { json: { feed: \"https://contentmarketinginstitute.com/blog/feed\" } }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        120
+      ],
+      "id": "31442b45-9a17-4b39-a1df-f3346e50e901",
+      "name": "Input RSS Feeds here"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the HTML content from the response\nconst html = items[0].json.data;\n\n// Simple HTML to text converter function\nfunction htmlToText(html) {\n  return html\n    .replace(/<style[^>]*>.*?<\\/style>/gs, '')\n    .replace(/<script[^>]*>.*?<\\/script>/gs, '')\n    .replace(/<header[^>]*>.*?<\\/header>/gs, '')\n    .replace(/<footer[^>]*>.*?<\\/footer>/gs, '')\n    .replace(/<nav[^>]*>.*?<\\/nav>/gs, '')\n    .replace(/<aside[^>]*>.*?<\\/aside>/gs, '')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&[^;]+;/g, '')\n    .trim();\n}\n\n// Extract publish date using multiple methods\nfunction extractPublishDate(html) {\n    const metaDateMatch = html.match(/<meta property=\"article:published_time\" content=\"([^\"]+)\"/i) ||\n                         html.match(/<meta name=\"published_time\" content=\"([^\"]+)\"/i) ||\n                         html.match(/<meta name=\"date\" content=\"([^\"]+)\"/i);\n    \n    if (metaDateMatch) {\n        return new Date(metaDateMatch[1]).toISOString();\n    }\n\n    const schemaMatch = html.match(/<script type=\"application\\/ld\\+json\">[^{]*({[\\s\\S]*?})[^}]*<\\/script>/i);\n    if (schemaMatch) {\n        try {\n            const schema = JSON.parse(schemaMatch[1]);\n            if (schema.datePublished) {\n                return new Date(schema.datePublished).toISOString();\n            }\n        } catch (e) {}\n    }\n\n    const datePattern = /(?:Published|Updated|Posted on|Date):\\s*([A-Za-z]+\\s+\\d{1,2},\\s+\\d{4})|(\\d{4}-\\d{2}-\\d{2})/i;\n    const dateMatch = html.match(datePattern);\n    if (dateMatch) {\n        const dateStr = dateMatch[1] || dateMatch[2];\n        return new Date(dateStr).toISOString();\n    }\n\n    return new Date().toISOString();\n}\n\n// Extract content\nlet content = '';\nconst articleMatch = html.match(/<article[^>]*>([\\s\\S]*?)<\\/article>/i);\n\nif (articleMatch && articleMatch[1]) {\n  content = htmlToText(articleMatch[1]);\n} else {\n  content = htmlToText(html);\n}\n\n// Clean up the content\nconst cleanContent = content\n  .replace(/\\s+/g, ' ')\n  .replace(/\\n+/g, '\\n')\n  .replace(/\\t+/g, ' ')\n  .trim();\n\n// Remove common navigation text and footer text\nconst finalContent = cleanContent\n  .replace(/Menu.*?Search/g, '')\n  .replace(/Share this article/g, '')\n  .replace(/Related articles/g, '')\n  .replace(/Leave a comment/g, '');\n\nreturn {\n  json: {\n    content: finalContent,\n    publishDate: extractPublishDate(html),\n    extractedAt: new Date().toISOString()\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2060,
+        20
+      ],
+      "id": "e287f44f-d738-4316-89bf-6ee99e8d5783",
+      "name": "Clean up"
+    },
+    {
+      "parameters": {
+        "content": "## ФОРМИРОВАНИЕ БАЗЫ",
+        "height": 800,
+        "width": 2080,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        760,
+        -140
+      ],
+      "typeVersion": 1,
+      "id": "2904bcb6-c682-4703-8f05-5e70245315da",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9a7becbc-b3d1-4d5d-bec2-193ab95ea0cc",
+              "leftValue": "={{ new Date($json[\"pubDate\"]).getTime() }}",
+              "rightValue": "={{ new Date('2022-01-01T00:00:00Z').getTime() + (new Date().setHours(0, 0, 0, 0) - new Date('2022-01-01T00:00:00Z').setHours(0, 0, 0, 0)) }}",
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1520,
+        -60
+      ],
+      "id": "9da4abe5-5724-4ec0-8560-56454bedfc1d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "## @igorzuevich \n**Автор** на [YouTube](https://www.youtube.com/@igorzuevich)",
+        "height": 240,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -7800,
+        4500
+      ],
+      "typeVersion": 1,
+      "id": "f7498839-7a07-42af-a710-9f533616f4ab",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Input RSS Feeds here",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get HTML": {
+      "main": [
+        [
+          {
+            "node": "Clean up",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input RSS Feeds here": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean up": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7cf3cf35-be77-4a62-8d68-d31f87899440",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "JNyIn6VPUMKLaOPI",
+  "tags": []
+}

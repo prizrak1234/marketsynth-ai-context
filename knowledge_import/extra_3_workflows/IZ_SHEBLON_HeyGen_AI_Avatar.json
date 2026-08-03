@@ -1,0 +1,992 @@
+{
+  "name": "IZ_SHEBLON_HeyGen_AI_Avatar",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/media",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $('Get Avatar Video').item.json.data.video_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2620,
+        980
+      ],
+      "id": "528c614c-9b41-4002-bf05-9e53b29ed55c",
+      "name": "Upload to Blotato"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"instagram\"\n    },\n    \"content\": {\n      \"text\": {{ $('Prepare for Publish').item.json.final_text_long.toJsonString() }},\n      \"platform\": \"instagram\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Prepare for Publish').item.json.instagram_id }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2860,
+        180
+      ],
+      "id": "ac511c95-268f-458d-bb83-7c3120ea8911",
+      "name": "[Instagram] Publish via Blotato"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"facebook\",\n      \"pageId\": \"{{ $('Prepare for Publish').item.json.facebook_page_id }}\"\n    },\n    \"content\": {\n      \"text\": {{ $('Prepare for Publish').item.json.final_text_long.toJsonString() }},\n      \"platform\": \"facebook\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Prepare for Publish').item.json.facebook_id }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2860,
+        520
+      ],
+      "id": "dfdd98bb-8b0b-4c5a-bff8-51bd68aecdf7",
+      "name": "[Facebook] Publish via Blotato",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"linkedin\"\n    },\n    \"content\": {\n      \"text\": {{ $('Prepare for Publish').item.json.final_text_long.toJsonString() }},\n      \"platform\": \"linkedin\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Prepare for Publish').item.json.linkedin_id }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2960,
+        980
+      ],
+      "id": "dbcf32ca-7a8e-4809-8ff8-fafcbfe09fc3",
+      "name": "[Linkedin] Publish via Blotato",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"tiktok\",\n      \"isYourBrand\": false,\n      \"disabledDuet\": false,\n      \"privacyLevel\": \"PUBLIC_TO_EVERYONE\",\n      \"isAiGenerated\": false,\n      \"disabledStitch\": false,\n      \"disabledComments\": false,\n      \"isBrandedContent\": false\n    },\n    \"content\": {\n      \"text\": {{ $('Prepare for Publish').item.json.final_text_long.toJsonString() }},\n      \"platform\": \"tiktok\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Prepare for Publish').item.json.tiktok_id }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2860,
+        1380
+      ],
+      "id": "cdb4c4a7-a192-46e6-8237-54e034a8e740",
+      "name": "[Tiktok] Publish via Blotato"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $('Prepare for Publish').item.json.final_text_long }}",
+        "options": {
+          "returnImageUrls": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2860,
+        1780
+      ],
+      "id": "3f6b80da-c4f7-4f45-b67b-ddaa1919454d",
+      "name": "OpenAI",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/media",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3080,
+        1780
+      ],
+      "id": "300c3aa6-d805-4069-b46f-649c18179af5",
+      "name": "Upload to Blotato - Image",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"pinterest\",\n      \"boardId\": \"{{ $('Prepare for Publish').item.json.pinterest_board_id }}\",\n      \"link\": \"https://www.tiktok.com/@sabrina_ramonov\"\n    },\n    \"content\": {\n      \"text\": {{ $('Prepare for Publish').item.json.final_text_short.toJsonString() }},,\n      \"platform\": \"pinterest\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Prepare for Publish').item.json.pinterest_id }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3300,
+        1780
+      ],
+      "id": "b5b11a13-5966-452d-9c4c-8720fc5237b2",
+      "name": "[Pinterest] Publish via Blotato",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"youtube\",\n      \"title\": \"TEST VIDEO\",\n      \"privacyStatus\": \"public\",\n      \"shouldNotifySubscribers\": true\n    },\n    \"content\": {\n      \"text\": {{ $('Prepare for Publish').item.json.final_text_long.toJsonString() }},\n      \"platform\": \"youtube\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Prepare for Publish').item.json.youtube_id }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3220,
+        180
+      ],
+      "id": "12b6f0af-9e0a-4bfb-9c67-f9cbecfbeb67",
+      "name": "[Youtube] Publish via Blotato"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"threads\"\n    },\n    \"content\": {\n      \"text\": {{ $('Prepare for Publish').item.json.final_text_short.toJsonString() }},\n      \"platform\": \"threads\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Prepare for Publish').item.json.threads_id }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3220,
+        520
+      ],
+      "id": "cf7a0896-2c0f-4fe0-b820-d08f55f6ab0e",
+      "name": "[Threads] Publish via Blotato",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"twitter\"\n    },\n    \"content\": {\n      \"text\": {{ $('Prepare for Publish').item.json.final_text_short.toJsonString() }},\n      \"platform\": \"twitter\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Prepare for Publish').item.json.twitter_id }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3260,
+        980
+      ],
+      "id": "a0968e8c-a612-42a4-b09a-24b714b1e808",
+      "name": "[Twitter] Publish via Blotato"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "={{ $('Prepare for Publish').item.json.blotato_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"bluesky\"\n    },\n    \"content\": {\n      \"text\": {{ $('Prepare for Publish').item.json.final_text_short.toJsonString() }},\n      \"platform\": \"bluesky\",\n      \"mediaUrls\": []\n    },\n    \"accountId\": \"{{ $('Prepare for Publish').item.json.bluesky_id }}\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3220,
+        1380
+      ],
+      "id": "4ca73e5a-78d7-4972-ad1a-d7f416798e6f",
+      "name": "[Bluesky] Publish via Blotato",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        40,
+        960
+      ],
+      "id": "bc0c5e71-9dba-432d-8d1d-07a4dc292520",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# INSTRUCTIONS\n\nPerform the following tasks in order:\n\n1. Fetch the top 10 stories from Hacker News in the past 24 hours related to AI or LLMs.\n\n2. Select the story that is most likely to go viral on social media.\n\n3. Fetch the article and comments from Hacker News.\n\n4. Create a 30-second script for an AI avatar monologue, following these guidelines:\n   - The script should last approximately 30 seconds when spoken aloud.\n   - Include plenty of details and statistics from the article.\n   - Use a 6th-grade reading level.\n   - A balanced viewpoint.\n   - All text must be written in Russian.\n\n5. Update the first 2 sentences of the script with sensational viral hooks that grab the viewer's attention and spark curiosity. The 3rd sentence should start diving into the details of the article.\n\n6. Add an emotional element to make the viewer feel excitement or amazement, especially when discussing how AI can impact their life or work.\n\n7. Replace the last sentence with: \"Hit follow to stay ahead in AI! And don't forget to comment on how this AI will help you!\"\n\n# OUTPUT FORMAT:\nONLY output the exact video script. Do not output anything else. NEVER include intermediate thoughts, notes, or formatting.\n",
+        "options": {
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        240,
+        960
+      ],
+      "id": "f0734133-eba9-4853-a0f3-81c596946611",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "articleId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Article_ID', ``, 'string') }}",
+        "additionalFields": {
+          "includeComments": true
+        }
+      },
+      "type": "n8n-nodes-base.hackerNewsTool",
+      "typeVersion": 1,
+      "position": [
+        420,
+        1280
+      ],
+      "id": "86400cfe-ad5b-41b2-9fac-2c573e694a44",
+      "name": "Fetch HN Article"
+    },
+    {
+      "parameters": {
+        "resource": "all",
+        "additionalFields": {
+          "keyword": "ai",
+          "tags": [
+            "front_page"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.hackerNewsTool",
+      "typeVersion": 1,
+      "position": [
+        300,
+        1280
+      ],
+      "id": "8ae73383-1031-4463-ae71-a3abc3cf8415",
+      "name": "Fetch HN Front Page"
+    },
+    {
+      "parameters": {
+        "amount": 8,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1720,
+        980
+      ],
+      "id": "4a68cb9e-cedc-4b07-8a0c-ce5f218b4d87",
+      "name": "Wait",
+      "webhookId": "81b4ae9c-7a4b-4c1e-b6c6-7ced0b4010ab",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "o3-mini",
+          "mode": "list",
+          "cachedResultName": "o3-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        1220
+      ],
+      "id": "1c2371a9-c6c6-4f7e-bf16-2518941cce4b",
+      "name": "Write Script"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"heygen_api_key\": \"\",\n  \"avatar_id\": \"\",\n  \"voice_id\": \"\",\n  \"background_video_url\": \"https://database.blotato.io/storage/v1/object/public/public_media/4ddd33eb-e811-4ab5-93e1-2cd0b7e8fb3f/videogen2-render-e6b398a2-5859-4a77-88ef-2345bcefdc98.mp4\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        980
+      ],
+      "id": "241c1777-0851-4582-9bbc-e1ad95d43242",
+      "name": "Setup Heygen"
+    },
+    {
+      "parameters": {
+        "url": "https://api.heygen.com/v1/video_status.get",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "video_id",
+              "value": "={{ $('Create Avatar Video').item.json.data.video_id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('Setup Heygen').item.json.heygen_api_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        980
+      ],
+      "id": "fbde1968-c259-4d30-ab0f-5b3965e8899b",
+      "name": "Get Avatar Video"
+    },
+    {
+      "parameters": {
+        "content": "# Исследуйте ежедневные новости и напиши сценарий",
+        "height": 860,
+        "width": 1040,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        680
+      ],
+      "id": "e50f882e-2cec-4cdb-9d6c-689663271f89",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Создаём видео AI аватар\n\n- API Heygen (платный); бесплатный до 10 видео.\n- Если у вас длинный сценарий, вам может потребоваться увеличить время ОЖИДАНИЯ.\n- Вы можете использовать голос Elevenlabs, интегрировав Elevenlabs из приложения Heygen.",
+        "height": 860,
+        "width": 1120,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        680
+      ],
+      "id": "910341e8-5646-40b3-ab8d-27966e814b49",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Публикация в социальных сетях\n\n- Зарегистрируйтесь в Blotato: https://www.blotato.com\n- API Blotato в настоящее время не поддерживает загрузку видео в Bluesky или Pinterest.\n- Эта функция будет выпущена в будущем (пока ноды отключены).",
+        "height": 2100,
+        "width": 1200,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2340,
+        -40
+      ],
+      "id": "7e82743f-4d40-48f2-84a3-f5cc0377f74f",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"blotato_api_key\": \"\",\n  \"instagram_id\": \"\",\n  \"youtube_id\": \"\",\n  \"tiktok_id\": \"\",\n  \"facebook_id\": \"\",\n  \"facebook_page_id\": \"\",\n  \"threads_id\": \"\",\n  \"twitter_id\": \"\",\n  \"linkedin_id\": \"\",\n  \"pinterest_id\": \"\",\n  \"pinterest_board_id\": \"\",\n  \"bluesky_id\": \"\",\n  \"final_text_long\": {{ $('Write Long Caption').item.json.message.content.toJsonString() }},\n  \"final_text_short\": {{ $('Write Short Caption').item.json.message.content.toJsonString() }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2420,
+        980
+      ],
+      "id": "2eb24755-55cd-41b3-af3a-a53f46e68864",
+      "name": "Prepare for Publish"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=# EXAMPLE\n\n<example>\nПривет, на связи Игорь Зуевич. In this video, we will talk about how search engine optimization (SEO) works in the age of artificial intelligence.\n\nMany people have recently asked me how to improve their website visibility in search engines, especially with the emergence of new generative AI tools. This is an important topic because AI is changing the ways we process information and interact with users.\n\nNow, SEO should focus not only on keywords but also on how information is presented in AI systems like ChatGPT. These are the new realities of digital marketing.\n</example>\n\n# CONTEXT\n\nInfer the topic from the sources provided.\n\n# WRITING STYLE\n\nHere’s how you always write:\n\n<writing_style>\n\n- Your writing style is spartan and informative.\n- Use clear, simple language.\n- Employ short, impactful sentences.\n- Use active voice; avoid passive voice.\n- Focus on practical, actionable insights.\n- Incorporate data or statistics to support claims when possible.\n- Use \"you\" and \"your\" to directly address the reader.\n- Avoid metaphors and clichés.\n- Avoid generalizations.\n- Do not include common setup language in any sentence, including: in conclusion, in closing, etc.\n- Do not output warnings or notes—just the output requested.\n- Do not use hashtags in the text.\n- Do not use semicolons.\n- Do not use emojis.\n- Do not use asterisks.\n- Do not use adjectives and adverbs.\n- All texts must be written in Russian.\n- DO NOT use these words:\n\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"can, may, just, that, very, really, literally, actually, certainly, probably, basically, could, maybe, delve, embark, enlightening, esteemed, shed light, craft, crafting, imagine, realm, game-changer, unlock, discover, skyrocket, abyss, you're not alone, in a world where, revolutionize, disruptive, utilize, utilizing, dive deep, tapestry, illuminate, unveil, pivotal, enrich, intricate, elucidate, hence, furthermore, realm, however, harness, exciting, groundbreaking, cutting-edge, remarkable, it. remains to be seen, glimpse into, navigating, landscape, stark, testament, in summary, in conclusion, moreover, boost, bustling, opened up, powerful, inquiries, ever-evolving\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\n</writing_style>\n\n# PLANNING\n\nYour goal is to write a 50-word video caption based on the provided source.\n\n1. Thoroughly analyze the provided sources.\n2. Carefully study the <example> post. You need to replicate:\n    - Overall structure.\n    - Tone and voice.\n    - Formatting (including line breaks and spacing).\n    - Length (aim for a similarly detailed post).\n    - Absence of emojis.\n    - Use of hashtags.\n    - Emotional resonance.\n\n# OUTPUT\nFollow the GUIDELINES below to write the post. Use your analysis from step 1 and step 2. Use the provided sources as the foundation for your post, expanding on it significantly while maintaining the style and structure of the examples provided in step 2. YOU MUST use information from the provided sources. Make sure you adhere to your <writing_style>.\n\n<guidelines>\nThe description should be structured as follows:\n1. Start with the greeting: \"Hello, this is Igor Zuevich.\"\n2. In the first paragraph, briefly summarize the source.\n3. Each subsequent paragraph should be split every 2-3 sentences, depending on the content.\n4. At the end of each paragraph, add corresponding hashtags, automatically generated based on the content of the post. For example:\n   - If the paragraph discusses AI, automatically add hashtags #ai #artificialintelligence.\n   - If the paragraph discusses SEO, add hashtags #seo #digitalmarketing.\n5. Finally, add no more than 7 hashtags that match the content of the post. The hashtags should be generated automatically based on the content, such as #ai #seo #digitalmarketing #ainews, and others relevant to the topic. Do not add more than 7 hashtags.\n</guidelines>\n\nTake a deep breath and take it step-by-step!\n\n# INPUT\nUse the following information from the sources:\n<sources>\n{{ $json.output }}\n</sources>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        600,
+        840
+      ],
+      "id": "3376f599-48eb-4b34-83c3-306fcfe0d2a8",
+      "name": "Write Long Caption"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Write a brief 2-sentence caption summarizing the video content. Use 6th grade language, a balanced neutral perspective, and all text must be written in Russian, without emojis. The text should not include the name \"Igor Zuevich.\"\n\n<content>\n{{ $('Write Long Caption').item.json.message.content }}\n</content>\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        620,
+        1280
+      ],
+      "id": "17b1cd40-ca3e-415a-96b3-9cfdd4221860",
+      "name": "Write Short Caption"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.heygen.com/v2/video/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $json.heygen_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"video_inputs\": [\n    {\n      \"character\": {\n        \"type\": \"avatar\",\n        \"avatar_id\": \"{{ $json.avatar_id }}\",\n        \"avatar_style\": \"normal\",\n        \"scale\": 1.0,\n        \"offset\": {\n          \"x\": 0.0,\n          \"y\": 0.0\n        },\n        \"matting\": false\n      },\n      \"voice\": {\n        \"type\": \"text\",\n        \"input_text\": \"{{ $('AI Agent').item.json.output }}\",\n        \"voice_id\": \"{{ $json.voice_id }}\",\n        \"speed\": 1.1,\n        \"pitch\": 50,\n        \"emotion\": \"Excited\"\n      },\n      \"background\": {\n        \"type\": \"video\",\n        \"url\": \"{{ $json.background_video_url }}\",\n        \"play_style\": \"loop\",\n        \"fit\": \"cover\"\n      }\n    }\n  ],\n  \"dimension\": {\n    \"width\": 720,\n    \"height\": 1280\n  },\n  \"aspect_ratio\": \"9:16\",\n  \"caption\": false,\n  \"title\": \"{{ $('Write Title').item.json.message.content }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        980
+      ],
+      "id": "a00b7755-fb93-4459-97a4-31f90ff94953",
+      "name": "Create Avatar Video"
+    },
+    {
+      "parameters": {
+        "content": "## Обязательно заполните «Настройка Heygen»\n\nhttps://www.heygen.com/\n\nhttps://elevenlabs.io/",
+        "height": 180,
+        "width": 710,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        1240
+      ],
+      "id": "d8c90a04-7145-4a12-a5ba-13b5c8d99a2d",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Обязательно заполните «Подготовку к публикации»",
+        "height": 120,
+        "width": 440,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        1200
+      ],
+      "id": "0799d12f-0554-42ce-ba79-5fbfdce2a391",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## ПРОМПТ AI АГЕНТ:\n\n### ИНСТРУКЦИЯ:\nВыполните следующие задачи в указанном порядке:\n\n1. Получите 10 самых популярных историй с Hacker News за последние 24 часа, связанных с ИИ или LLM.\n\n2. Выберите историю, которая с наибольшей вероятностью станет вирусной в социальных сетях.\n\n3. Извлеките статью и комментарии с Hacker News.\n\n4. Создайте 30-секундный сценарий для монолога ИИ-аватара, следуя этим указаниям:\n   - Сценарий должен длиться примерно 30 секунд при устном произнесении.\n   - Включите много деталей и статистики из статьи.\n   - Используйте уровень чтения 6-го класса.\n   - Сбалансированная точка зрения.\n   - Все тексты должны быть написаны на русском языке.\n\n5. Обновите первые 2 предложения сценария, используя сенсационные вирусные крючки, которые привлекут внимание зрителя и вызовут любопытство. Третье предложение должно начинать углубление в детали статьи.\n\n6. Добавьте эмоциональный элемент, чтобы вызвать у зрителя восторг или удивление, особенно при обсуждении того, как ИИ может повлиять на его жизнь или работу.\n\n7. Замените последнее предложение на: \"Нажмите «Подписаться», чтобы быть впереди в мире ИИ! И не забудьте написать в комментариях, как этот ИИ поможет вам!\"\n\n### ФОРМАТ ВЫХОДНЫХ ДАННЫХ:\nВыводите точный текст сценария для видео в `output`. Также выводите `title` – это заголовок из 2-3 слов для названия файла для видео. Не выводите ничего другого. Никогда не включайте промежуточные мысли, заметки.\n\n```json\n{\n   \"title\": \"<title>\",\n   \"output\": \"<output>\"\n}\n",
+        "height": 840,
+        "width": 1020,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1100,
+        680
+      ],
+      "typeVersion": 1,
+      "id": "db71a0fc-a913-492a-b9ce-5f5e0cca472b",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## ПРОМПТ Write Long Caption:\n\n\n### ПРИМЕР\n\n<example>\nПривет, на связи Игорь Зуевич. В этом видео мы поговорим о том, как оптимизация поисковых систем (SEO) работает в эпоху искусственного интеллекта.\n\nМногие люди недавно спрашивали меня о том, как улучшить видимость сайта в поисковых системах, особенно с учетом появления новых генеративных ИИ инструментов. Это важная тема, поскольку ИИ меняет способы обработки информации и взаимодействия с пользователями.\n\nСейчас SEO должно быть ориентировано не только на ключевые слова, но и на то, как информация представляется в ИИ-системах, таких как ChatGPT. Это новые реалии цифрового маркетинга.\n</example>\n\n### КОНТЕКСТ\n\nВыведите тему на основе предоставленных источников.\n\n### СТИЛЬ ПИСЬМА\n\nВот как вы всегда пишете:\n\n<writing_style>\n\n- Ваш стиль письма сдержанный и информативный.\n- Используйте простой и понятный язык.\n- Используйте короткие и выразительные предложения.\n- Используйте активный залог; избегайте пассивного.\n- Ориентируйтесь на практические, применимые идеи.\n- Включайте данные или статистику для подкрепления утверждений, когда это возможно.\n- Используйте \"вы\" и \"ваш\", чтобы непосредственно обратиться к читателю.\n- Избегайте метафор и штампов.\n- Избегайте обобщений.\n- Не включайте стандартные вводные фразы в любые предложения, включая: в заключение, подводя итоги и т.д.\n- Не выводите предупреждения или примечания — выводите только запрашиваемый контент.\n- Не используйте хэштеги в самом тексте.\n- Не используйте точки с запятой.\n- Не используйте эмодзи.\n- Не используйте звездочки.\n- Не используйте прилагательные и наречия.\n- Все тексты должны быть написаны на русском языке.\n- НЕ используйте следующие слова:\n\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"can, may, just, that, very, really, literally, actually, certainly, probably, basically, could, maybe, delve, embark, enlightening, esteemed, shed light, craft, crafting, imagine, realm, game-changer, unlock, discover, skyrocket, abyss, you're not alone, in a world where, revolutionize, disruptive, utilize, utilizing, dive deep, tapestry, illuminate, unveil, pivotal, enrich, intricate, elucidate, hence, furthermore, realm, however, harness, exciting, groundbreaking, cutting-edge, remarkable, it. remains to be seen, glimpse into, navigating, landscape, stark, testament, in summary, in conclusion, moreover, boost, bustling, opened up, powerful, inquiries, ever-evolving\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\n</writing_style>\n\n### ПЛАНИРОВАНИЕ\n\nВаша цель — написать описание для видео из 50 слов, основанное на предоставленном источнике.\n\n1. Тщательно проанализируйте предоставленные источники.\n2. Внимательно изучите пост <example>. Вам нужно будет воспроизвести:\n    - Общую структуру.\n    - Тон и голос.\n    - Форматирование (включая разрывы строк и пробелы).\n    - Длину (стремитесь к похожей деталям).\n    - Отсутствие эмодзи.\n    - Использование хэштегов.\n    - Эмоциональный отклик.\n\n### ВЫХОД\nСледуйте приведенным ниже ПРАВИЛАМ для написания поста. Используйте свой анализ из шага 1 и шага 2. Используйте предоставленные источники как основу для вашего поста, значительно расширяя его, при этом сохраняя стиль и структуру примеров, приведенных в шаге 2. ОБЯЗАТЕЛЬНО используйте информацию из предоставленных источников. Убедитесь, что придерживаетесь вашего <writing_style>.\n\n<guidelines>\nОписание должно быть структурировано следующим образом:\n1. Начните с приветствия: \"Привет, на связи Игорь Зуевич.\"\n2. В первом абзаце кратко изложите суть источника.\n3. Каждый последующий абзац должен быть разделен через 2-3 предложения, в зависимости от контента.\n4. В конце каждого абзаца добавьте соответствующие хештеги, автоматически генерируемые в зависимости от содержания поста, например:\n   - Если речь идет об ИИ, автоматически добавляются хештеги #ai #artificialintelligence.\n   - Если речь идет о SEO, добавляются хештеги #seo #digitalmarketing.\n5. В завершение, добавьте не более 7 хештегов, соответствующих содержанию поста. Хештеги должны генерироваться автоматически в зависимости от контента, например: #ai #seo #digitalmarketing #ainews и другие, соответствующие теме. Не добавляйте больше 7 хештегов.\n</guidelines>\n\nДелайте глубокий вдох и следуйте шаг за шагом!\n\n### ВХОД\nИспользуйте следующую информацию из источников:\n<sources>\n{{ $json.output }}\n</sources>\n\n",
+        "height": 1960,
+        "width": 1020,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2160,
+        680
+      ],
+      "typeVersion": 1,
+      "id": "cb05ca93-55f6-4fad-b45d-f4f9528dc045",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## ПРОМПТ Write Short Caption:\n\nНапишите краткое описание видео из двух предложений, обобщающее его содержание. Используйте язык 6-го класса, сбалансированную нейтральную точку зрения, все тексты должны быть написаны на русском языке, без эмодзи. В тексте не должно быть упоминания имени \"Игорь Зуевич\".\n\n<content>\n{{ $json.message.content }}\n</content>\n\n\n",
+        "height": 260,
+        "width": 600,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -920,
+        1600
+      ],
+      "typeVersion": 1,
+      "id": "81406a71-8462-41cb-8b68-2dfbea7d7621",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Come up with a file title based on the video text. The title should consist of 2-3 words, reflect the main idea and essence of the video, and be short and clear. All text must be written in Russian.\n\n<content>\n{{ $json.message.content }}\n</content>\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        620,
+        1060
+      ],
+      "id": "66821ad2-efc0-48c4-b974-885abe993d11",
+      "name": "Write Title"
+    },
+    {
+      "parameters": {
+        "content": "## ПРОМПТ Write Title:\n\nПридумайте заголовок для файла на основе текста видео. Заголовок должен состоять из 2-3 слов, отображать основную идею и суть видео, быть коротким и понятным. Все тексты должны быть написаны на русском языке.\n\n<content>\n{{ $json.message.content }}\n</content>\n\n",
+        "height": 260,
+        "width": 600,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -920,
+        1960
+      ],
+      "typeVersion": 1,
+      "id": "ad6192ec-034d-49e8-87e6-ff8325bbc868",
+      "name": "Sticky Note8"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Upload to Blotato": {
+      "main": [
+        [
+          {
+            "node": "[Instagram] Publish via Blotato",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "[Facebook] Publish via Blotato",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "[Linkedin] Publish via Blotato",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "[Tiktok] Publish via Blotato",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "[Youtube] Publish via Blotato",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "[Threads] Publish via Blotato",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "[Twitter] Publish via Blotato",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "[Bluesky] Publish via Blotato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Upload to Blotato - Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Blotato - Image": {
+      "main": [
+        [
+          {
+            "node": "[Pinterest] Publish via Blotato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Write Long Caption",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch HN Article": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch HN Front Page": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Script": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup Heygen": {
+      "main": [
+        [
+          {
+            "node": "Create Avatar Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Avatar Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Avatar Video": {
+      "main": [
+        [
+          {
+            "node": "Prepare for Publish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare for Publish": {
+      "main": [
+        [
+          {
+            "node": "Upload to Blotato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Long Caption": {
+      "main": [
+        [
+          {
+            "node": "Write Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Short Caption": {
+      "main": [
+        [
+          {
+            "node": "Setup Heygen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Avatar Video": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Title": {
+      "main": [
+        [
+          {
+            "node": "Write Short Caption",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a9e4f4e0-5b9b-438f-a785-3ff3518b5e9a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "z0j7GJOFSjGVX6Lf",
+  "tags": [
+    {
+      "createdAt": "2025-03-21T05:05:36.109Z",
+      "updatedAt": "2025-03-21T05:05:36.109Z",
+      "id": "O7fQsEJqI16T5o0y",
+      "name": "Сделано"
+    }
+  ]
+}

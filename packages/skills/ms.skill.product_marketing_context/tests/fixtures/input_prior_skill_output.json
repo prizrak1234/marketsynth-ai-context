@@ -1,0 +1,22 @@
+{
+  "raw_task": "Incorporate prior normalized context from an upstream Skill output reference.",
+  "product_name": {
+    "value": "Prior context product",
+    "source_type": "prior_skill_output",
+    "verification_status": "partially_verified",
+    "confidence": "medium",
+    "notes": "Sourced from ms.skill.product_marketing_context v0.1.0 output hash abc123"
+  },
+  "available_evidence": [
+    {
+      "evidence_id": "ev-prior-001",
+      "evidence_type": "user_statement",
+      "claim": "Prior skill output preserved product identity claims",
+      "source_reference": "ms.skill.product_marketing_context:0.1.0:output:deadbeef",
+      "verification_status": "partially_verified",
+      "confidence": "medium"
+    }
+  ],
+  "user_priorities": ["Extend context with new budget constraints"],
+  "user_risk_tolerance": "medium"
+}

@@ -1,0 +1,9 @@
+{
+  "presentation_objective": "Secure pilot commitment from mid-market SaaS buyers",
+  "presentation_type": "sales_presentation",
+  "audience": "VP Operations at mid-market SaaS companies",
+  "source_content_references": [{"source_id": "offer-v1", "type": "approved_offer"}],
+  "language": "en",
+  "tone": "confident",
+  "provenance": {"request_id": "pa-input-001"}
+}

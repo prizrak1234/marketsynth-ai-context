@@ -1,0 +1,63 @@
+{
+  "raw_task": "Normalize conflicting business model and pricing claims for a fictional fitness app.",
+  "product_name": {
+    "value": "FitPulse",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "business_model": {
+    "value": "One-time lifetime purchase app",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "medium"
+  },
+  "pricing_claims": [
+    {
+      "claim_id": "price-a",
+      "domain": "pricing",
+      "statement": "Lifetime license at $49",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium",
+      "conflict_group_id": "cg-pricing-model"
+    },
+    {
+      "claim_id": "price-b",
+      "domain": "pricing",
+      "statement": "Monthly subscription at $9.99",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium",
+      "conflict_group_id": "cg-pricing-model"
+    }
+  ],
+  "problem_claims": [
+    {
+      "claim_id": "prob-001",
+      "domain": "problem_statement",
+      "statement": "Home workouts lack personalized coaching",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "geography": {
+    "value": "United States",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "target_customer_claims": [
+    {
+      "claim_id": "cust-001",
+      "domain": "customer_segment",
+      "statement": "Busy professionals aged 25-40",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "user_priorities": ["Resolve pricing model before launch"],
+  "user_risk_tolerance": "medium"
+}

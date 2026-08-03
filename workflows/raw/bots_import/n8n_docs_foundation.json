@@ -1,0 +1,46 @@
+{
+  "source": "https://docs.n8n.io/",
+  "core_concepts": {
+    "workflow": "A sequence of nodes connected together to automate a task.",
+    "nodes": {
+      "trigger": "Starts the workflow (Webhook, Schedule, App events).",
+      "action": "Performs a task (HTTP Request, Set, Code, App actions).",
+      "logic": "Controls flow (If, Switch, Merge, Wait)."
+    },
+    "data_structure": "n8n uses JSON arrays. Each item in the array is processed by subsequent nodes.",
+    "expressions": "Use {{ $json.field }} to access data. JavaScript methods are supported (e.g., .toLowerCase(), .split()).",
+    "credentials": "Stored separately from workflows. Referenced by ID or Name."
+  },
+  "technical_specs": {
+    "http_request": {
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH"
+      ],
+      "authentication": [
+        "None",
+        "Basic Auth",
+        "Header Auth",
+        "OAuth2"
+      ]
+    },
+    "error_handling": {
+      "options": [
+        "Ignore errors",
+        "Stop workflow",
+        "On Error Continue",
+        "Error Workflow (Global)"
+      ]
+    },
+    "binary_data": "Handled via 'binary' property. Used for files, images, PDFs."
+  },
+  "best_practices": [
+    "Use 'Set' node to clean and structure data early.",
+    "Rename nodes for clarity (e.g., 'Get Customer' instead of 'HTTP Request').",
+    "Use 'Merge' node to combine data from different branches.",
+    "Keep workflows modular using 'Execute Workflow' node."
+  ]
+}

@@ -1,0 +1,9 @@
+version: 1
+skill_id: ms.skill.offer_builder
+eval_cases:
+  - id: proceed_preferred
+    fixture: tests/fixtures/output_proceed_preferred.json
+    expectation: schema_valid
+  - id: mv_stop
+    fixture: tests/fixtures/output_mv_stop_blocked.json
+    expectation: schema_valid

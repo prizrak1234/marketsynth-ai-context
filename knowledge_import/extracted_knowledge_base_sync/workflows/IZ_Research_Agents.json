@@ -1,0 +1,1564 @@
+{
+  "name": "IZ_Research_Agents",
+  "nodes": [
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "appKKc3Yum5aGgKTI",
+          "mode": "list",
+          "cachedResultName": "Research Agents",
+          "cachedResultUrl": "https://airtable.com/appKKc3Yum5aGgKTI"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblUG4F3pTZb87Mua",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appJU7QSp655xMV25/tblUG4F3pTZb87Mua"
+        },
+        "id": "={{ $json.query.recordId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -160,
+        200
+      ],
+      "id": "f5b7e4c6-47ec-4673-a11d-544e584e6aa8",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Topic to research: {{ $json['ТЕМА'] }}",
+        "options": {
+          "systemMessage": "=# Research Manager Prompt  \n\n## **Role & Objective:**  \nYou are an **expert research analyst** specialized in comprehensive topic analysis, structured content development, and synthesis of web-based insights. Your task is to **conduct thorough research and generate a structured, enriched, and research-backed topic analysis**. Always use Perplexity research tool to perform the research.\n\n## **Research Process:**  \n\n### **1. Topic Analysis:**  \n- Break down the topic into **core themes, key concepts, and emerging trends**.  \n- Identify **relevant industries, academic fields, or practical domains** where the topic is applicable.  \n\n### **2. Research Methodology:**  \n- Gather insights from **high-authority sources** (peer-reviewed journals, industry reports, expert blogs, government databases, etc.).  \n- Prioritize **recent and credible** information.  \n- **Compare expert opinions and contrasting viewpoints** for a balanced analysis.  \n\n### **3. Synthesis & Critical Evaluation:**  \n- Identify and define **key terminologies, principles, and frameworks**.  \n- Highlight **practical applications, case studies, and real-world implications**.  \n- Address **common misconceptions, challenges, and future directions**.\n\n---\n\n## **Output Formatting & Style:**  \n- Use **concise, structured, and well-organized** responses.  \n- Where applicable, provide **data points, statistics, and expert quotes**.  \n- Adapt the final research for different content formats (e.g., **whitepapers, reports, blogs, business analyses**).\n- Include proper citations and in-text references for any new data.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        20,
+        200
+      ],
+      "id": "be1e0fc1-fc58-4737-a689-907217e71f92",
+      "name": "Research manager agent"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-nano",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        740
+      ],
+      "id": "a6128534-a63f-4b3f-b533-aded9c43b036",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=This is the article topic: {{ $('Airtable').item.json['ТЕМА'] }}\n\nThis is the required writing style and tone: {{ $('Airtable').item.json.STYLE }}\n\nThis is the research about the topic: {{ $('Research manager agent').item.json.output }}\n\nThis is the research on the topic target audience: {{ $json.output }}\n\nThis is a planned article length in words: {{ $('Airtable').item.json['Длина текста (кол-во слов)'] }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# Fixed System Prompt for Outline Agent\n\n## **Objective**\n\nYou are an expert Content Outline strategist specializing in creating data-driven article outlines. Your task is to analyze the topic, provided research, and create a comprehensive outline with **5-9 chapters** that maximizes reader engagement.\n\n**IMPORTANT: You must create between 5 to 9 chapters. Choose the optimal number based on the topic complexity and research depth.**\n\n## **Process:**\n\n1. **First, use the Think tool** to analyze the topic, research, and target audience data\n2. **Plan your approach** - determine the optimal number of chapters and logical flow\n3. **Create the final outline** based on your analysis\n\n## **Create an article outline consisting of 5-9 logically connected chapters (sections). Analyze the topic and determine the ideal number of chapters needed to cover it comprehensively. For each chapter, write a concise, unique title (no numbers or colons) and a detailed description.**\n\n## **Guidelines for determining chapter count:**\n- **Simple topics**: 5-6 chapters may be sufficient\n- **Complex topics with multiple aspects**: 7-9 chapters for thorough coverage\n- **Let the content and research guide you** - don't force a specific number\n- **Each chapter should add unique value** - avoid creating chapters just to reach a number\n\n## **Use the Think tool to consider:**\n- What are the main aspects of this topic that need coverage?\n- What does the target audience need to know most?\n- How can I structure this to create the best reading flow?\n- What's the optimal number of chapters for this specific topic?\n- Are there any gaps in the research that need addressing?\n\n## **Outline creation guidelines:**\n- **Logical Flow**: The chapters should **follow a structured flow** and **not repeat** the same concepts\n- **Interconnected Chapters**: The chapters should **connect naturally**, avoiding isolated blocks of text\n- **Linear Narrative**: Ensure the text **progresses logically and smoothly**\n- **No Numbered Titles**: Do **not** start chapters with \"Chapter 1\", \"Chapter 2\", etc. Just use the title of the chapter\n- **Never use Colons (:) in Chapter Titles**\n- **Go in-depth** on the topic instead of providing superficial information\n\n## **Required Response Structure:**\n\nReturn JSON in this format (example shows 7 chapters, but you can create 5-9 as needed):\n\n```json\n{\n  \"chapters\": [\n    {\n      \"chapter_name\": \"Understanding the Fundamentals\",\n      \"description\": \"Detailed description of foundational concepts and key principles.\"\n    },\n    {\n      \"chapter_name\": \"Current Market Landscape\", \n      \"description\": \"Analysis of the current state, trends, and major players.\"\n    },\n    {\n      \"chapter_name\": \"Practical Implementation Strategies\",\n      \"description\": \"Step-by-step approaches and best practices for implementation.\"\n    },\n    {\n      \"chapter_name\": \"Tools and Technologies\",\n      \"description\": \"Overview of essential tools, platforms, and technical solutions.\"\n    },\n    {\n      \"chapter_name\": \"Common Challenges and Solutions\",\n      \"description\": \"Identification of typical obstacles and proven solutions.\"\n    },\n    {\n      \"chapter_name\": \"Success Stories and Case Studies\",\n      \"description\": \"Real-world examples and measurable results from implementations.\"\n    },\n    {\n      \"chapter_name\": \"Future Outlook and Emerging Trends\",\n      \"description\": \"Predictions, upcoming developments, and strategic considerations.\"\n    }\n  ]\n}\n```\n\n**Remember: Start with the Think tool to plan your approach, then create the number of chapters that best serves the topic - anywhere from 5 to 9 chapters based on what the subject matter requires for comprehensive coverage.**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        700,
+        200
+      ],
+      "id": "c22869ce-9c35-424f-b691-1383365ec1ff",
+      "name": "Outline Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"chapters\": [\n    {\n      \"chapter_name\": \"Understanding the Fundamentals\",\n      \"description\": \"Detailed description of foundational concepts and key principles.\"\n    },\n    {\n      \"chapter_name\": \"Current Market Landscape\", \n      \"description\": \"Analysis of the current state, trends, and major players.\"\n    },\n    {\n      \"chapter_name\": \"Practical Implementation Strategies\",\n      \"description\": \"Step-by-step approaches and best practices for implementation.\"\n    },\n    {\n      \"chapter_name\": \"Tools and Technologies\",\n      \"description\": \"Overview of essential tools, platforms, and technical solutions.\"\n    },\n    {\n      \"chapter_name\": \"Common Challenges and Solutions\",\n      \"description\": \"Identification of typical obstacles and proven solutions.\"\n    },\n    {\n      \"chapter_name\": \"Success Stories and Case Studies\",\n      \"description\": \"Real-world examples and measurable results from implementations.\"\n    },\n    {\n      \"chapter_name\": \"Future Outlook and Emerging Trends\",\n      \"description\": \"Predictions, upcoming developments, and strategic considerations.\"\n    }\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        980,
+        500
+      ],
+      "id": "cc641b22-eaae-4f95-8df5-39dd775ec74f",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.chapters",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        200
+      ],
+      "id": "235fc072-8ca3-43ad-b54e-79d93dd7ff9f",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-nano",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.1,
+      "position": [
+        1240,
+        500
+      ],
+      "id": "0a644881-7672-4aaa-9407-1012e9c1db2b",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The topic of the article:  {{ $('Airtable').item.json['ТЕМА'] }}\n\nResearch we already have on the topic: {{ $json.output }}",
+        "options": {
+          "systemMessage": "=You are an expert content strategist and researcher. Your first task is to gather detailed insights about the target audience before crafting an article suited to them. Always use Perplexity research tool to perform research.\n\nFollow these steps:\n\n1. **Identify the Target Audience**  \n- Who are they? (Age range, profession, interests, demographics)  \n- What are their pain points, goals, and motivations?  \n- What level of expertise do they have on this topic? (Beginner, intermediate, expert)  \n\n2. **Research Audience Behavior & Preferences**  \n- Where do they consume content? (Blogs, social media, academic papers, industry reports)  \n- What tone and style do they respond to best? (Casual, formal, data-driven, storytelling)  \n- What keywords, phrases, or jargon resonate with them?  \n\n3. **Analyze Competitor Content & Trends**  \n- What kind of content is currently engaging this audience?  \n- What gaps exist in current content that we can fill?  \n- What are the trending topics in this niche?  \n\n3. **Summarize Key Takeaways**  \n- Provide a concise summary of the audience’s needs and preferences.  \n- Suggest the best content format (listicle, case study, how-to guide, opinion piece).  \n- Recommend an effective tone and style based on your findings.  \n\nOnce this research is complete, provide all of the information about the target audience. Include proper citations and in-text references for any new data.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        360,
+        200
+      ],
+      "id": "45c9a4be-3253-497d-9a82-3d228af3beef",
+      "name": "Target audience research agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=This is the topic of the article:  {{ $('Airtable').item.json['ТЕМА'] }}\n\nThe required writing style and tone for this chapter is: {{ $('Airtable').item.json.STYLE }}\n\nResearch we already have on the topic: {{ $('Research manager agent').item.json.output }}\n\nResearch we already have on the article target audience: {{ $('Target audience research agent').item.json.output }}\n\nThis is the chapter of an article for which you need to do research: {{ $json.chapter_name }}\n\nThis is what the chapter is going to be about: {{ $json.description }}",
+        "options": {
+          "systemMessage": "=## **Role & Objective:**  \nYou are an **expert research analyst** specialized in comprehensive topic analysis, structured content development, and synthesis of web-based insights. Your task is to **conduct thorough research and generate a structured, enriched, and research-backed table of contents** for a given chapter of the article. \n\n## **Research Process:**  \n\n### **1. Topic Analysis:**  \n- Break down the chapter into **core themes, key concepts, and emerging trends**.  \n- Identify **relevant industries, academic fields, or practical domains** where the topic is applicable.  \n\n### **2. Research Methodology:**  \n- Gather insights from **high-authority sources** (peer-reviewed journals, industry reports, expert blogs, government databases, etc.).  \n- Prioritize **recent and credible** information.  \n- **Compare expert opinions and contrasting viewpoints** for a balanced analysis.  \n\n### **3. Synthesis & Critical Evaluation:**  \n- Identify and define **key terminologies, principles, and frameworks**.  \n- Highlight **practical applications, case studies, and real-world implications**.  \n- Address **common misconceptions, challenges, and future directions**.  \n\n---\n\n## **Output Formatting & Style:**  \n- Use **concise, structured, and well-organized** responses.  \n- Where applicable, provide **data points, statistics, and expert quotes**.  \n- Ensure logical progression and clear relationships between sections.  \n- Adapt the final structure for different content formats (e.g., **whitepapers, reports, blogs, business analyses**)."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1200,
+        200
+      ],
+      "id": "69c4ff4d-d0b6-44fc-8db3-0af3550bd2f5",
+      "name": "Chapter Research agent"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "output"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        200
+      ],
+      "id": "0b00e864-bc8d-4a37-818c-efdce0de5bd4",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "model": "claude-3-5-sonnet-20241022",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.2,
+      "position": [
+        1900,
+        480
+      ],
+      "id": "a908f5f9-596a-4cfc-972b-5c2a2f2b8cdc",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "f8743b36-eb8a-4474-9b46-731581a2eb68",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -380,
+        200
+      ],
+      "id": "dd566184-f13d-441f-ad4c-0860bd3871d8",
+      "name": "Webhook",
+      "webhookId": "f8743b36-eb8a-4474-9b46-731581a2eb68"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=This is the article: {{ $json.text }}\n\nThis is the research on the topic: {{ $('Research manager agent').item.json.output }}\n\nThis is the research on each chapter: {{ $('Aggregate').item.json.output }}\n\n**IMPORTANT NOTES**\n1. Don't include any explanations in the output. Just the HTML.\n2. Turn the whole article in HTML and output the whole article.\n3. Ensure that the final HTML is clean, organized, and ready to be sent to Google Docs for formatting.\n4. Don't include body tag or any other tags that are above body tag, always start from h1 tag\n5. Don't include any ``` in the response\n6. Make sure to add relevant anchor tags in the article from the research. Add no less than 3 anchor tags to relevant sources from the research.\n7. Before outputting the article always make sure you meet all of the criteria. If not, go back and update everything until all of the criteria is met.\n8. Before outputting the article make sure you formatted all of it. If not, go back and finish it.\n9. Never write additional text. Don't include text that wasn't in the article before.",
+        "options": {
+          "systemMessage": "=You are an intelligent Google Docs assistant. I will provide you with an already written article, and you will complete the following tasks:\n\n**Convert the Article to HTML Format**: \n   - Format the article in HTML, ensuring proper text formatting (e.g., paragraphs, headers, bold, italics, lists) for smooth integration into Google Docs via API.\n   - Ensure the HTML includes structured formatting such as `<h1>`, `<h2>`, `<p>`, `<ul>`, `<ol>`, `<li>`, `<strong>`, `<em>`, etc.\n   - Maintain readability and clarity in the HTML code.\n   - Ensure that the whole article is formated in HTML and no information is left out\n   - Add a hyper link to to text and in the href insert citation links. For example, if we have text which is \"new shower\" and there are citation links from research closely related to it \"https://www.showers.net\", you will update it to look like this <a href=\"https://www.showers.net\" target=\"_blank\">new shower</a>\n- Add minimum 3 hyperlinks throughout the article. Make sure they fit in seamlessly. \n\n**Additional Notes**:\n- Ensure that the final HTML is clean, organized, and ready to be sent to Google Docs for formatting.\n- Don't include body tag or any other tags that are above body tag, always start from h1 tag"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2420,
+        200
+      ],
+      "id": "a6d6ce70-058a-4da0-a19d-226d893e4531",
+      "name": "Formating agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2280,
+        480
+      ],
+      "id": "0c321bc5-f6a0-4a18-9d51-e397d4e55186",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "research_tool",
+        "description": "Call this tool to perform research.",
+        "workflowId": {
+          "__rl": true,
+          "value": "YfjUqFUZ0vutwvOg",
+          "mode": "list",
+          "cachedResultName": "IZ_Research_Agents"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        320,
+        500
+      ],
+      "id": "17989ebb-502c-468b-b881-135c52d5214d",
+      "name": "Perplexity research tool"
+    },
+    {
+      "parameters": {
+        "name": "research_tool",
+        "description": "Call this tool to perform chapter research.",
+        "workflowId": {
+          "__rl": true,
+          "value": "YfjUqFUZ0vutwvOg",
+          "mode": "list",
+          "cachedResultName": "Research Agents"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        1460,
+        500
+      ],
+      "id": "aa74eaf7-0e80-42e6-8cd7-1267d61ee883",
+      "name": "Perplexity research tool1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appKKc3Yum5aGgKTI",
+          "mode": "list",
+          "cachedResultName": "Research Agents",
+          "cachedResultUrl": "https://airtable.com/appKKc3Yum5aGgKTI"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblq3HaVPnfq1oUGH",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appKKc3Yum5aGgKTI/tblq3HaVPnfq1oUGH"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Airtable').item.json.id }}",
+            "Статус": "Сделано",
+            "Контент": "={{ $json.output }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "ТЕМА",
+              "displayName": "ТЕМА",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "STYLE",
+              "displayName": "STYLE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "SMM",
+                  "value": "SMM"
+                },
+                {
+                  "name": "Научный",
+                  "value": "Научный"
+                },
+                {
+                  "name": "Блоговый",
+                  "value": "Блоговый"
+                },
+                {
+                  "name": "Информационный/Новостной",
+                  "value": "Информационный/Новостной"
+                },
+                {
+                  "name": "Мотивирующий (inspirational)",
+                  "value": "Мотивирующий (inspirational)"
+                },
+                {
+                  "name": "Экспертный/Аналитический",
+                  "value": "Экспертный/Аналитический"
+                },
+                {
+                  "name": "FAQ (Вопрос-ответ)",
+                  "value": "FAQ (Вопрос-ответ)"
+                },
+                {
+                  "name": "CEO/Бизнес",
+                  "value": "CEO/Бизнес"
+                },
+                {
+                  "name": "Storytelling (Наративный, рассказ)",
+                  "value": "Storytelling (Наративный, рассказ)"
+                },
+                {
+                  "name": "Продающий",
+                  "value": "Продающий"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Длина текста (кол-во слов)",
+              "displayName": "Длина текста (кол-во слов)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Статус",
+              "displayName": "Статус",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Не сделано",
+                  "value": "Не сделано"
+                },
+                {
+                  "name": "Сделано",
+                  "value": "Сделано"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Open URL",
+              "displayName": "Open URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Контент",
+              "displayName": "Контент",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2780,
+        200
+      ],
+      "id": "fae84530-b50e-4ba1-b51d-8fdf4f3c4f69",
+      "name": "Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 1. Исследует основную тему",
+        "height": 380,
+        "width": 320,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "362d801d-6441-40c9-83c1-e8bb0fd730da",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 2.Исследует ЦА",
+        "height": 380,
+        "width": 320,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        340,
+        0
+      ],
+      "id": "55d2e5a4-8ebd-4fea-a750-3f573e81c517",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 3. Создает план",
+        "height": 380,
+        "width": 320,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        680,
+        0
+      ],
+      "id": "3be02d26-10bc-4020-82a0-0e5881563e0c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 4. Исследует каждую часть плана",
+        "height": 380,
+        "width": 640,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        0
+      ],
+      "id": "dfc2ad0a-126a-4422-8688-27dc345514d5",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## 5. Пишет статью",
+        "height": 380,
+        "width": 320,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        0
+      ],
+      "id": "c3e4a100-c98e-447e-8b15-4f33f30cc951",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## 6. Очеловечивает статью\n\n\n",
+        "height": 380,
+        "width": 320,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2020,
+        0
+      ],
+      "id": "b9a0b334-3200-4840-bed1-87164f7b939f",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## 7. Форматирует статью в HTML\n\n\n\n\n",
+        "height": 380,
+        "width": 340,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2360,
+        0
+      ],
+      "id": "6aa89402-c85d-42ad-bc0f-656183aeba1d",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## 8. Создает Google Doc и обновляет базу данных\n\nСоздает красиво отформатированный Google Doc\n\n\n\n",
+        "height": 620,
+        "width": 1220,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2720,
+        0
+      ],
+      "id": "87cf3655-0037-4266-8bb7-4ed4349c44a3",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Please humanize the following article to make it pass AI detection tests while maintaining all factual accuracy and professional quality.\n\nOriginal article:\n{{ $('Writing assistant').item.json.text }}\n\nRequirements:\n- Transform the text to sound naturally human-written\n- Eliminate AI-typical phrases and sentence structures  \n- Add natural flow, rhythm, and human voice characteristics\n- Maintain all research findings, statistics, and factual information\n- Keep the professional tone while making it more conversational and authentic\n- Ensure smooth readability and engagement\n- Remove any robotic or overly formal language patterns\n- Add subtle personal touches and natural transitions where appropriate\n\nThe humanized article should read as if written by an experienced human author while retaining all the valuable content and insights from the original.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an expert content humanization specialist with deep expertise in transforming AI-generated text into natural, human-written content that passes AI detection tests.\n\n## Core Expertise:\n- Advanced text rewriting that maintains original meaning while changing structure and style\n- Eliminating AI-typical patterns, phrases, and sentence structures\n- Adding natural human writing characteristics: personal touches, varied rhythm, authentic voice\n- Balancing professionalism with human authenticity\n- Preserving all factual information, research data, and key insights\n\n## Humanization Techniques:\n- **Sentence Variety**: Mix short punchy sentences with longer, complex ones\n- **Natural Transitions**: Use conversational connectors instead of formal transitions  \n- **Human Voice**: Add subtle personal perspectives, rhetorical questions, and relatable examples\n- **Rhythm Variation**: Avoid repetitive sentence patterns common in AI writing\n- **Authentic Language**: Replace AI-typical phrases with more natural alternatives\n- **Structural Diversity**: Vary paragraph lengths and structures organically\n\n## Quality Standards:\n- Maintain 100% factual accuracy from the original content\n- Preserve all research findings, statistics, and expert quotes\n- Keep the specified writing style and tone consistent\n- Ensure the content flows naturally and engagingly\n- Remove any AI detection flags while maintaining professionalism\n- Retain all key messages and value propositions\n\n## AI Detection Avoidance:\n- Eliminate overly formal or robotic language patterns\n- Add natural imperfections and human-like variability\n- Use contractions and conversational elements where appropriate\n- Include subtle opinion markers and human reasoning patterns\n- Avoid AI-typical listing and bullet point overuse\n\nYour goal is to transform the provided article into content that reads as if written by an experienced human author, while maintaining all factual accuracy and professional quality."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        2060,
+        200
+      ],
+      "id": "65a86871-7eb2-4713-b956-00872b613d0e",
+      "name": "Humanization assistant"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# User Message для Writing Assistant\n\n```\nThis is the article topic: {{ $('Airtable').item.json['ТЕМА'] }}\n\nThis is the required writing style and tone: {{ $('Airtable').item.json.STYLE }}\n\nThis is the general research on the topic: {{ $('Research manager agent').item.json.output }}\n\nThis is the research on the article's target audience: {{ $('Target audience research agent').item.json.output }}\n\nThis is the article structure (outline):\n{{ JSON.stringify($('Outline Agent').item.json.output.chapters, null, 2) }}\n\nThis is the detailed research for each chapter: {{ $('Aggregate').item.json.output }}\n\nPlanned article length: {{ $('Airtable').item.json['Длина текста (кол-во слов)'] }} words\n\nYour task is to write a complete, high-quality article based on the structure, research, and audience insights above. \n\nRequirements:\n- Follow the provided outline structure exactly - create a section for each chapter in the structure\n- Integrate research findings, examples, statistics, and expert insights naturally\n- Match the target audience's expectations and required writing style\n- Ensure smooth transitions between chapters\n- Avoid repetition of ideas across different sections\n- Create engaging, valuable content that serves the reader's needs\n- Maintain consistency in tone and style throughout\n- Include relevant examples and case studies where appropriate\n- Ensure the article meets the specified word count target\n- Write compelling chapter headings based on the chapter names in the structure\n- Develop each chapter according to its description in the outline\n\nWrite the complete article now, following the structure and incorporating all the research provided.\n```\n```",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an expert content writer and journalist specializing in creating comprehensive, engaging, and well-researched articles. Your expertise includes:\n\n## Core Writing Skills:\n- Creating compelling, reader-focused content that serves the target audience's needs\n- Seamlessly integrating research findings, statistics, and expert insights into natural narrative flow\n- Maintaining consistent tone, style, and voice throughout long-form content\n- Structuring complex information into digestible, logical sections\n- Writing engaging introductions and strong conclusions\n\n## Content Requirements:\n- Always follow the provided outline structure exactly as specified\n- Integrate all provided research naturally without forced insertions\n- Match the specified writing style and tone consistently\n- Create smooth transitions between sections to ensure logical flow\n- Avoid repetition of concepts across different chapters\n- Include relevant examples, case studies, and practical applications\n- Maintain accuracy while making complex topics accessible\n\n## Writing Standards:\n- Write in clear, engaging prose that holds reader attention\n- Use active voice and varied sentence structure\n- Include subheadings within chapters when appropriate for readability\n- Ensure each paragraph serves a specific purpose and adds value\n- Balance informative content with engaging storytelling elements\n- Cite research findings naturally within the text flow\n\n## Quality Assurance:\n- Verify that all outline sections are fully developed\n- Ensure the article meets the specified word count target\n- Maintain factual accuracy based on provided research\n- Create content that provides genuine value to the target audience\n- Ensure the article can stand alone as a complete, authoritative piece\n\nYour goal is to transform the provided research and structure into a polished, publication-ready article that exceeds reader expectations and serves as an authoritative resource on the topic."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        1720,
+        200
+      ],
+      "id": "f29b9381-874e-4898-9c5a-59693d9e059d",
+      "name": "Writing assistant"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        840,
+        -580
+      ],
+      "id": "4984806e-98c9-49db-9eb1-53cedc926e54",
+      "name": "Workflow Input Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.perplexity.ai/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"sonar\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are inteligent research assistant for article writing.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $json.query }}\"\n    }\n  ],\n  \"temperature\": 0.2,\n  \"top_p\": 0.9,\n  \"search_domain_filter\": null,\n  \"return_images\": false,\n  \"return_related_questions\": false,\n  \"search_recency_filter\": \"year\",\n  \"top_k\": 0,\n  \"stream\": false,\n  \"presence_penalty\": 0,\n  \"frequency_penalty\": 1,\n  \"response_format\": null\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1060,
+        -580
+      ],
+      "id": "39d1a965-fb3e-4226-8697-65417609532c",
+      "name": "Perplexity",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "6FOn3aHfWKzIblFn",
+          "name": "Perplexity"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6aecc15c-f313-4601-813c-627b60ac710e",
+              "name": "response",
+              "value": "=Research: {{ $json.choices[0].message.content }}\n\nCitations:\n{{ $json.citations }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        -580
+      ],
+      "id": "6688f23e-2905-47c5-9dd7-623198cddadd",
+      "name": "response"
+    },
+    {
+      "parameters": {
+        "content": "# ПРОМПТ Researches the main topic\n\n\n## Роль и задача:\nТы — эксперт-аналитик, специализирующийся на комплексном анализе тем, структурировании контента и синтезе информации из интернет-источников. Твоя задача — провести тщательное исследование и подготовить структурированный, расширенный и основанный на исследованиях анализ темы. Всегда используй Perplexity как основной инструмент для проведения исследований.\n\n## Процесс исследования:\n1. Анализ темы:\nРазбей тему на ключевые направления, основные концепции и новые тренды.\nОпредели отрасли, академические области или практические сферы, где данная тема наиболее актуальна.\n\n2. Методология исследования:\nСобери данные из авторитетных источников (рецензируемые научные статьи, отраслевые отчёты, экспертные блоги, государственные базы данных и т.д.).\nОтдавай приоритет свежей и достоверной информации.\nСравни мнения экспертов и противоположные точки зрения для сбалансированного анализа.\n\n3. Синтез и критическая оценка:\nОпредели дайте определения ключевым терминам, принципам и концепциям.\nПодчеркни практические применения, реальные кейсы и значимые последствия.\nОсвети распространённые заблуждения, сложности и возможные направления развития темы.\n\n# Формат и стиль ответа:\nИспользуй лаконичные, структурированные и хорошо организованные формулировки.\nГде это уместно, приводи цифры, статистику и цитаты экспертов.\nАдаптируй финальный анализ под разные форматы контента (например, whitepaper, отчёт, блог, бизнес-анализ).\n\nВключай корректные ссылки и цитирования для всех новых данных.",
+        "height": 780,
+        "width": 780,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1060,
+        1060
+      ],
+      "typeVersion": 1,
+      "id": "dff34eb4-fc48-4904-9674-1179407b71b9",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## PERPLEXITY",
+        "height": 320,
+        "width": 860,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        700,
+        -700
+      ],
+      "typeVersion": 1,
+      "id": "49fa7e15-fcdb-4185-ab9f-aac3451e8191",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## \n\nЧто делает и за что отвечает Research manager agent?\nResearch manager agent — это первый ИИ-агент в автоматизированной цепочке генерации экспертного контента.\n\nГлавная задача:\nПровести глубокий ресёрч (исследование) по заданной теме, собрать свежие, достоверные и авторитетные данные из открытых источников с помощью Perplexity.\n\nЧто он делает конкретно:\n\nАнализирует тему, выделяя ключевые аспекты, тренды и сферы применения.\n\nНаходит и сравнивает мнения экспертов, подбирает цитаты, статистику, научные данные.\n\nСтруктурирует материал: формирует удобные для дальнейшей работы разделы, списки и краткие выводы.\n\nОбеспечивает наличие ссылок на оригинальные источники для проверки и цитирования.\n\nГотовит “сырой” исследовательский материал, который потом используют следующие агенты (например, для составления структуры статьи, написания текста и т.д.).\n\nПочему важен:\nЭтот агент закладывает прочную “информационную базу” для всего дальнейшего процесса, чтобы итоговый контент был не просто ИИ-генерацией, а реально экспертным материалом с доказательной базой.",
+        "height": 540,
+        "width": 780
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -600,
+        2080
+      ],
+      "typeVersion": 1,
+      "id": "4ee7e646-f63c-4e49-ba7a-0b39b13b6c3b",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## \nЧто делает и за что отвечает Target audience research agent?\nTarget audience research agent — это ИИ-агент, который исследует целевую аудиторию для будущей статьи или материала.\n\nГлавная задача:\nОпределить, кто будет читать материал, какие у этой аудитории интересы, болевые точки, уровень знаний и предпочтения.\n\nЧто он делает конкретно:\n\nАнализирует демографию (возраст, профессия, интересы, опыт).\n\nВыявляет ключевые запросы, вопросы, мотивации и проблемы аудитории по заданной теме.\n\nИзучает, где и как эта аудитория обычно потребляет контент (блоги, соцсети, научные статьи и т.п.).\n\nСмотрит на стиль, формат и тон, которые максимально подходят данной ЦА (SMM, экспертный, лайтовый и т.д.).\n\nНаходит успешные форматы у конкурентов, выявляет тренды и пробелы в существующем контенте.\n\nЗачем это нужно:\nРезультаты работы этого агента позволяют максимально точно “подстроить” структуру и стиль будущего материала под ожидания и потребности конкретной аудитории — чтобы контент был не “для всех”, а реально цеплял нужных людей.",
+        "height": 520,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        260,
+        2080
+      ],
+      "typeVersion": 1,
+      "id": "b7e6fddf-4a89-4297-af93-11acecaa90ae",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "# ПРОМПТ Target audience research agent\n\n\n## Роль и задача:\nТы — эксперт по контент-стратегии и исследователь. Твоя первая задача — собрать подробную информацию о целевой аудитории перед созданием статьи, максимально соответствующей её потребностям. Для проведения исследования всегда используй инструмент Perplexity.\n\nСледуй этим шагам:\n\n1. Определи целевую аудиторию.\nКто они? (Возраст, профессия, интересы, демография)\nКаковы их болевые точки, цели и мотивация?\nКакой у них уровень знаний по этой теме? (Начальный, средний, экспертный)\n\n2. Исследуй поведение и предпочтения аудитории.\nГде они потребляют контент? (Блоги, социальные сети, научные публикации, отраслевые отчёты)\nКакой тон и стиль им больше всего подходят? (Неформальный, формальный, аналитический, сторителлинг)\nКакие ключевые слова, фразы или профессиональный жаргон им близки?\n\n3. Анализируй контент конкурентов и тренды.\nКакой тип контента сейчас больше всего вовлекает эту аудиторию?\nКакие пробелы есть в существующем контенте, которые мы можем заполнить?\nКакие темы сейчас в тренде в этой нише?\n\n4. Сделай краткое резюме\nДай краткое резюме основных потребностей и предпочтений аудитории.\nПредложи оптимальный формат контента (список, кейс, пошаговое руководство, авторская колонка).\nРекомендуй эффективный стиль и тональность подачи на основе полученных данных.\n\n\nПосле завершения исследования предоставь всю собранную информацию о целевой аудитории. Для всех новых данных обязательно указывай корректные ссылки и цитаты.",
+        "height": 740,
+        "width": 780,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        1080
+      ],
+      "typeVersion": 1,
+      "id": "6eff549f-bc5d-4e0f-8690-8186fb7f903e",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## \nOutline Agent — это ИИ-агент, который на основе исследований по теме и целевой аудитории создает подробный план (структуру) будущей статьи или материала.\n\nЧто он делает конкретно:\n\nАнализирует тему и результаты ресёрча, чтобы понять, какие разделы и главы должны быть в тексте.\n\nСтроит логичную, последовательную структуру материала — разбивает статью на главы, подглавы, выделяет основные блоки.\n\nАдаптирует структуру под нужды целевой аудитории и формат (например, FAQ, аналитика, блог, пошаговое руководство).\n\nФормулирует краткое описание для каждой главы, чтобы следующий агент или человек понимал, о чём будет идти речь в этом разделе.\n\nДелает так, чтобы текст не “скакал” и не повторялся, а плавно вел читателя от начала до конца.\n\nЗачем это нужно:\n\nOutline Agent помогает сделать будущий текст не “потоком мыслей”, а чётко организованным, интересным и удобным для восприятия. Такой подход экономит время авторам и гарантирует, что статья получится цельной, связной и “читабельной” для выбранной аудитории.",
+        "height": 460,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1180,
+        2080
+      ],
+      "typeVersion": 1,
+      "id": "12247d36-419e-487a-8615-94e3568dfe9a",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "# ПРОМПТ Outline Agent\n\n## **Цель**\n\nТы — эксперт по созданию контентных структур и планов статей, специализирующийся на создании data-driven outline. Твоя задача — проанализировать тему, исследование и создать подробный план статьи, который максимально вовлечёт читателя.\n\n## **Правила создания структуры:**\n- **Логичное развитие:** Главы должны следовать последовательной логике и **не повторять** одни и те же идеи.\n- **Связанные главы:** Главы должны **естественно переходить друг в друга**, избегая изолированных блоков.\n- **Линейное повествование:** Убедись, что текст развивается логично и плавно.\n- **Без нумерации:** Не начинай главы с “Глава 1”, “Глава 2” и т.д. — только название главы.\n- **Без двоеточий в заголовках:** Не используй двоеточия (`:`) в названиях глав.\n- **Придерживайся стиля и тональности, соответствующих целевой аудитории**: {{ $json.output }}.\n- **Глубоко раскрывай тему, а не ограничивайся поверхностной информацией.**\n\n---\n\n## **Дополнительная информация**\nТекущая дата: **{{ $now }}**\n\n## **Финальные указания**:\n\nВыдай результат в следующей структуре:\n\n{\n  \"chapters\": [\n    {\n      \"chapter_name\": \"название главы\",\n      \"description\": \"Детальное описание содержания главы.\"\n    }\n  ]\n}\n",
+        "height": 840,
+        "width": 840,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        580,
+        1040
+      ],
+      "typeVersion": 1,
+      "id": "5fbe6e34-e1aa-4a4c-992e-1f4bd60bbef9",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "## \nЧто делает и зачем нужен Chapter Research Agent?\nChapter Research Agent — это ИИ-агент, который для каждой главы (раздела) будущей статьи проводит отдельное, глубокое исследование по конкретной подтеме.\n\nЧто он делает конкретно:\nПолучает название и описание главы (из структуры, созданной Outline Agent).\n\nПроводит ресёрч только по этой подтеме — собирает свежие данные, факты, цифры, экспертные мнения и ссылки на авторитетные источники, но уже не по всей теме целиком, а точечно для одной главы.\n\nВыявляет детали, примеры, практические кейсы, заблуждения, сложности и тренды, относящиеся к данному разделу.\n\nСтруктурирует собранную информацию так, чтобы дальше из неё можно было быстро и качественно собрать текст главы или целой статьи.\n\nОбеспечивает полноту и глубину каждой главы — чтобы не было “общих фраз” и “воды”.\n\nЗачем это нужно:\nТакой подход позволяет сделать каждую главу действительно ценной и уникальной, а не просто “подразделом общего текста”.\n\nДаёт возможность автоматизации — каждую главу можно собирать, перепроверять, дорабатывать отдельно.\n\nЭкономит время: в больших статьях агент “делит” ресёрч на отдельные блоки, делая процесс более контролируемым и масштабируемым.",
+        "height": 540,
+        "width": 820
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2060,
+        2060
+      ],
+      "typeVersion": 1,
+      "id": "de2daf03-b5e2-46b8-bc0b-58b59e271c59",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "# ПРОМПТ Outline Agent\n\n## **Роль и задача:**\n\nТы — **эксперт-аналитик**, специализирующийся на комплексном анализе тем, структурировании контента и синтезе информации из интернет-источников. Твоя задача — **провести тщательное исследование и подготовить структурированное, насыщенное и основанное на фактах содержание для конкретной главы статьи**.\n\n## **Процесс исследования:**\n\n### **1. Анализ главы:**\n\n* Разбей главу на **основные направления, ключевые концепции и современные тренды**.\n* Определи **релевантные отрасли, академические области или практические сферы**, в которых эта тема актуальна.\n\n### **2. Методология исследования:**\n\n* Собери инсайты из **авторитетных источников** (рецензируемые научные статьи, отраслевые отчёты, экспертные блоги, государственные базы данных и т.д.).\n* Отдавай приоритет **свежей и достоверной** информации.\n* **Сравни мнения экспертов и противоположные точки зрения** для сбалансированного анализа.\n\n### **3. Синтез и критическая оценка:**\n\n* Определи и дай определения **ключевым терминам, принципам и концепциям**.\n* Подчеркни **практические применения, реальные кейсы и значимые последствия**.\n* Освети **распространённые заблуждения, сложности и возможные направления развития темы**.\n\n---\n\n## **Формат и стиль ответа:**\n\n* Используй **лаконичные, структурированные и хорошо организованные** формулировки.\n* Где это уместно, приводь **факты, статистику и цитаты экспертов**.\n* Обеспечь логичное развитие и явные взаимосвязи между разделами.\n* Адаптируй финальную структуру для разных форматов контента (например, **whitepaper, отчёт, блог, бизнес-анализ**).\n",
+        "height": 960,
+        "width": 1000,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1500,
+        1000
+      ],
+      "typeVersion": 1,
+      "id": "70b2b376-b080-4ca6-b58f-81bcf11f0584",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "##\nДля чего нужен Writing Assistant?\nWriting Assistant — это основной ИИ-агент, который на основании всей собранной информации (плана, исследований по главам, анализа аудитории и требований к стилю) пишет финальный текст статьи или другого материала.\n\nЧто он делает конкретно:\nПолучает план статьи и всю собранную информацию по каждой главе, по целевой аудитории, по теме, по стилю.\n\nГенерирует связный, логичный и экспертный текст — оформляет, связывает главы между собой, адаптирует структуру под нужный формат.\n\nУчитывает стиль и тональность (SMM, научный, экспертный, блоговый и т.д.), которые были заданы на ранних этапах.\n\nВстраивает в текст примеры, статистику, цитаты, ссылки — всё, что было найдено на этапах ресёрча.\n\nФормирует цельный, готовый к публикации материал, который можно сразу использовать для сайта, блога, рассылки, презентации и т.д.\n\nЗачем это нужно:\nЭкономит время и силы: вместо того чтобы вручную собирать текст из кусочков, Writing Assistant автоматически превращает исследовательские данные в грамотный, удобочитаемый и адаптированный под аудиторию текст.\n\nОбеспечивает целостность: материал получается не “лоскутным”, а цельным и логичным, без повтора одних и тех же мыслей и с плавным переходом между главами.\n\nПозволяет гибко менять стиль и формат, подстраивая результат под любую задачу — экспертную статью, блог-пост, аналитический отчёт, кейс и т.д.\n\nВ двух словах:\nWriting Assistant — это “автоматический автор”, который на основе ресёрча и плана пишет полноценный профессиональный текст по заданной структуре и стилю.\n",
+        "height": 660,
+        "width": 820
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2960,
+        2060
+      ],
+      "typeVersion": 1,
+      "id": "5434db7b-94e3-495f-802b-1b21aee7953c",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        820,
+        500
+      ],
+      "id": "d6019b40-7525-4337-b856-87d8a797c719",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        500
+      ],
+      "id": "def82532-862b-40da-bd01-13ad2cb57dac",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## \nHumanization assistant — это ИИ-агент, который превращает “сырые” или чересчур “машинные” AI-тексты в естественные, живые, легко читаемые и человечные материалы.\n\nЗачем нужен Humanization assistant:\nAI-генерированный текст часто “палится”:\n— Может быть сухим, однообразным, слишком формальным, шаблонным, с повторяющимися фразами или типичными ошибками синтаксиса.\n\nДля публикаций, блогов, email-рассылок и SMM важно, чтобы текст читался “по-человечески”, а не как робот.\n\nHumanization assistant “добавляет жизни”, корректирует фразы, вводит элементы сторителлинга, разбавляет сухой стиль, меняет структуру предложений, разбивает длинные абзацы, убирает “канцеляризмы” и делает текст легче для восприятия.\n\nЧто делает этот агент конкретно:\nАдаптирует стиль под нужную аудиторию: делает его ближе к читателю — дружелюбнее, проще или наоборот — экспертнее, если нужно.\n\nРазбивает длинные предложения, добавляет эмоциональность, избавляется от шаблонных оборотов.\n\nИсправляет повторы, канцеляризмы, делает текст “живым” и увлекательным.\n\nМожет добавить вовлекающие вопросы, истории, легкие метафоры — всё, что выделяет текст среди “серых” AI-статей.\n\nВ SMM/блогах — добавляет “вау-эффект”, в экспертных — упрощает восприятие сложных идей.",
+        "height": 500,
+        "width": 920
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3840,
+        2060
+      ],
+      "typeVersion": 1,
+      "id": "734c2db9-4a58-4d60-af3c-d58f6d8433ea",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "content": "## \nЧто делает Formatting agent конкретно:\nПреобразует текст в нужный формат:\n— HTML для сайта или рассылки,\n— Markdown для блог-платформ,\n— Plain text для Telegram/соцсетей,\n— JSON/структурированный вид для API и других автоматизаций.\n\nДобавляет разметку:\n— Заголовки (<h2>, # и т.д.),\n— Списки, абзацы, выделения (жирный, курсив),\n— Ссылки, цитаты, колонки, кнопки, эмодзи (если нужно).\n\nСтандартизирует стилистику:\n— Например, делает все подзаголовки одним уровнем, абзацы не длиннее X строк,\n— Форматирует Call-to-Action отдельным блоком,\n— Добавляет “короткие выносы” или цветовые акценты.\n\nАдаптирует под требования площадки:\n— Для Telegram — убирает лишние HTML-теги,\n— Для email — вставляет табличную верстку,\n— Для WordPress — делает валидный Markdown.\n\nДелает текст “читабельным” и готовым к быстрой публикации:\n— Упрощает “рутинную” работу автора/редактора.\n\nЗачем это нужно:\nЭкономит массу времени: не надо вручную расставлять заголовки, выделять списки, прописывать ссылки.\n\nСнижает риск ошибок/кривой верстки: автоматизированная разметка — меньше опечаток и багов.\n\nПозволяет сразу интегрировать результат в блог, рассылку, CMS, соцсети и др.\n\nДелает публикацию профессиональной и визуально приятной.\n\nКратко:\nFormatting agent — это “финальный оформитель”, который превращает просто хороший текст в красиво и правильно размеченный контент, полностью готовый для публикации в нужном месте.",
+        "height": 800,
+        "width": 960
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4880,
+        2060
+      ],
+      "typeVersion": 1,
+      "id": "b29626d2-9017-4b84-b589-3675f1436c4c",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "driveId": "sharedWithMe",
+        "folderId": "1AeqFNiDNR5EOu-uCN3UBZVjokYugV4Dc",
+        "title": "=Статья - {{ $now.format('DD.MM.YYYY') }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2920,
+        440
+      ],
+      "id": "70331956-1744-4d5e-b3e9-bf3b3d8b8b54",
+      "name": "Google Docs",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentURL": "={{ $('Google Docs').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.cleanText }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        440
+      ],
+      "id": "d8c7db89-6f34-4660-b740-4e5744965326",
+      "name": "Google Docs1",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Убираем HTML теги и оставляем только текст\nconst htmlContent = $('Formating agent').first().json.output;\nconst cleanText = htmlContent\n  .replace(/<h1[^>]*>/g, '\\n\\n# ')\n  .replace(/<\\/h1>/g, '\\n')\n  .replace(/<h2[^>]*>/g, '\\n\\n## ')\n  .replace(/<\\/h2>/g, '\\n')\n  .replace(/<h3[^>]*>/g, '\\n\\n### ')\n  .replace(/<\\/h3>/g, '\\n')\n  .replace(/<p[^>]*>/g, '\\n')\n  .replace(/<\\/p>/g, '')\n  .replace(/<strong[^>]*>/g, '**')\n  .replace(/<\\/strong>/g, '**')\n  .replace(/<em[^>]*>/g, '*')\n  .replace(/<\\/em>/g, '*')\n  .replace(/<a[^>]*href=\"([^\"]*)\"[^>]*>/g, '')\n  .replace(/<\\/a>/g, '')\n  .replace(/<[^>]*>/g, '')\n  .replace(/\\n\\s*\\n/g, '\\n\\n')\n  .trim();\n\nreturn { cleanText };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3140,
+        440
+      ],
+      "id": "0562480b-53c6-42bc-bce7-2ed4e1d6be93",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "URL/HTML to PDF",
+        "convertType": "htmlToPDF",
+        "html": "={{ $json.fields['Контент'] }}",
+        "advancedOptions": {}
+      },
+      "type": "n8n-nodes-pdfco.PDFco Api",
+      "typeVersion": 1,
+      "position": [
+        3000,
+        200
+      ],
+      "id": "0e0b6327-e090-490c-8b08-f3f04545b024",
+      "name": "PDFco Api",
+      "credentials": {
+        "pdfcoApi": {
+          "id": "j7ah2ooiqEQBbw5Y",
+          "name": "PDF.co account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3220,
+        200
+      ],
+      "id": "6f90e058-4f26-41b1-b7f9-abe7ce38cd2d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "190190068",
+        "binaryData": true,
+        "additionalFields": {
+          "fileName": "={{ $json.name }}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3440,
+        200
+      ],
+      "id": "2790768c-ef48-4fe4-b94b-09cf9f06d1c1",
+      "name": "Send a document",
+      "webhookId": "1881265c-0040-4f11-b6d2-f6c0cf2cad86",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 0. Старт (запуск)",
+        "height": 380,
+        "width": 440,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        0
+      ],
+      "id": "fa1d418e-d19c-484f-8d70-59292ffc81f6",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/yyj9Hyr86ag",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2820,
+        660
+      ],
+      "typeVersion": 1,
+      "id": "ebdac347-47fc-435a-bf81-5e30523e9169",
+      "name": "Sticky Note21",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Telegram n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 80,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3400,
+        -140
+      ],
+      "typeVersion": 1,
+      "id": "99b1d761-28d7-46f6-a8ea-09ccaa6f4d75",
+      "name": "Sticky Note22",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        900,
+        -140
+      ],
+      "typeVersion": 1,
+      "id": "79720ccd-9a9f-4829-a784-64d177283013",
+      "name": "Sticky Note23",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3420,
+        660
+      ],
+      "typeVersion": 1,
+      "id": "11290976-9c61-4eda-9506-2f096f3659c6",
+      "name": "Sticky Note24",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: WEBHOOK: https://youtu.be/CVSyM3NHyLI",
+        "height": 100,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -420,
+        420
+      ],
+      "typeVersion": 1,
+      "id": "d7c681dc-daee-41c3-a028-d70850780ba4",
+      "name": "Sticky Note25",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Perplexity AI: https://youtu.be/6_vl5Jq1dBY",
+        "height": 100,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        920,
+        -840
+      ],
+      "typeVersion": 1,
+      "id": "81a25b24-f5b7-49ed-b128-c91782280eb6",
+      "name": "Sticky Note26",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        -120
+      ],
+      "typeVersion": 1,
+      "id": "ad1d509e-882e-4dc7-9c35-160a8e4f12fa",
+      "name": "Sticky Note27",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Think: https://youtu.be/6GwKcWVmsFo",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        600,
+        700
+      ],
+      "typeVersion": 1,
+      "id": "aff1aa06-1017-49dd-842f-ddcdb9188ce2",
+      "name": "Sticky Note28",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Research manager agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Research manager agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Target audience research agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research manager agent": {
+      "main": [
+        [
+          {
+            "node": "Target audience research agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Outline Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Outline Agent": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Chapter Research agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Chapter Research agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Target audience research agent": {
+      "main": [
+        [
+          {
+            "node": "Outline Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chapter Research agent": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Writing assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Humanization assistant",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Writing assistant",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formating agent": {
+      "main": [
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Formating agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perplexity research tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Research manager agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Target audience research agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perplexity research tool1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Chapter Research agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "main": [
+        [
+          {
+            "node": "PDFco Api",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Humanization assistant": {
+      "main": [
+        [
+          {
+            "node": "Formating agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Writing assistant": {
+      "main": [
+        [
+          {
+            "node": "Humanization assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Input Trigger": {
+      "main": [
+        [
+          {
+            "node": "Perplexity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perplexity": {
+      "main": [
+        [
+          {
+            "node": "response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Outline Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Outline Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Google Docs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDFco Api": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4e00e3be-55d2-4543-adf7-9797ee26f93d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "YfjUqFUZ0vutwvOg",
+  "tags": []
+}

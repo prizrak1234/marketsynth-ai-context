@@ -1,0 +1,52 @@
+{
+  "generated_at": "2026-07-23T18:37:12.375736+00:00",
+  "total_findings": 905,
+  "finding_counts": {
+    "credential_reference": 223,
+    "publication_node": 98,
+    "untrusted_content_to_llm": 49,
+    "prompt_injection_exposure": 5,
+    "phone_number": 129,
+    "code_node": 187,
+    "email_address": 65,
+    "ssrf_dynamic_url": 67,
+    "community_node": 27,
+    "api_key_marker": 3,
+    "bearer_token": 32,
+    "billing_action": 18,
+    "destructive_sql": 1,
+    "oauth_token_marker": 1
+  },
+  "affected_workflows_by_finding_type": {
+    "prompt_injection_exposure": 5,
+    "untrusted_content_to_llm": 49,
+    "phone_number": 129,
+    "credential_reference": 223,
+    "publication_node": 98,
+    "code_node": 185,
+    "email_address": 65,
+    "ssrf_dynamic_url": 67,
+    "community_node": 26,
+    "api_key_marker": 3,
+    "bearer_token": 32,
+    "billing_action": 18,
+    "destructive_sql": 1,
+    "oauth_token_marker": 1
+  },
+  "code_nodes": {
+    "total_findings": 187,
+    "affected_workflows": 180,
+    "total_detected_nodes": 187
+  },
+  "publication_nodes": {
+    "total_findings": 98,
+    "affected_workflows": 97
+  },
+  "credentials": {
+    "total_findings": 223,
+    "affected_workflows": 179
+  },
+  "shell_node_workflows": 0,
+  "billing_workflows": 18,
+  "destructive_workflows": 1
+}

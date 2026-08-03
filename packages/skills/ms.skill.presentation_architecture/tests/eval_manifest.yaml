@@ -1,0 +1,27 @@
+version: 1
+skill_id: ms.skill.presentation_architecture
+eval_cases:
+  - id: saas_sales_output
+    fixture: tests/fixtures/output_saas_sales.json
+    expectation: schema_valid
+  - id: saas_sales_input
+    fixture: tests/fixtures/input_saas_sales.json
+    expectation: schema_valid
+  - id: technical_output
+    fixture: tests/fixtures/output_technical_architecture.json
+    expectation: schema_valid
+  - id: marp_consumer_stub
+    fixture: tests/fixtures/consumer_marp_stub.json
+    expectation: schema_valid
+  - id: pptx_consumer_stub
+    fixture: tests/fixtures/consumer_pptx_stub.json
+    expectation: schema_valid
+  - id: saas_sales_slides
+    fixture: tests/fixtures/output_saas_sales.json
+    expectation: schema_valid
+  - id: saas_sales_theme
+    fixture: tests/fixtures/output_saas_sales.json
+    expectation: schema_valid
+  - id: saas_sales_charts
+    fixture: tests/fixtures/output_saas_sales.json
+    expectation: schema_valid

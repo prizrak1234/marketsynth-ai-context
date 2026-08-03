@@ -1,0 +1,230 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "value": 30
+            },
+            {
+              "field": "hours",
+              "value": 9
+            }
+          ]
+        }
+      },
+      "name": "Cron Trigger (Daily Report)",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        240,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "path": "telegram-qa",
+        "options": {}
+      },
+      "name": "Webhook Trigger (Q&A/TV Signal)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://iss.moex.com/iss/engines/stock/markets/shares/boards/tqbr/securities.json?iss.only=securities&securities.columns=SECID,PREVADMITTEDQUOTE,VOLTODAY",
+        "options": {
+          "responseFormat": "json",
+          "fullResponse": false
+        }
+      },
+      "name": "Get MOEX Liquid Stocks",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        460,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "const moexData = $json.securities.data;\nconst headers = $json.securities.columns;\n\n// Filter for liquid stocks (VOLTODAY > 100,000,000 RUB - Placeholder logic)\nconst liquidStocks = moexData.filter(item => item[headers.indexOf('VOLTODAY')] > 100000000);\n\n// Map to a simpler structure and limit to 10 for the report\nconst top10Stocks = liquidStocks.slice(0, 10).map(item => ({\n    ticker: item[headers.indexOf('SECID')],\n    current_price: item[headers.indexOf('PREVADMITTEDQUOTE')],\n    volume_today: item[headers.indexOf('VOLTODAY')]\n}));\n\nreturn [{ json: { stocks: top10Stocks } }];",
+        "options": {}
+      },
+      "name": "Filter Top 10 Liquid Stocks",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        680,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "functionCode": "const stock = $input.json;\n\n// Placeholder for fetching historical data for each stock\n// In a real scenario, this would be another HTTP Request to MOEX history API\n// or a custom function to fetch data for 1H, 4H, and Daily timeframes.\n\nconst historicalData = [\n    // Simulate 50 days of data for TA calculation\n    // ... data points ...\n    { \"Date\": \"2026-01-22\", \"Close\": stock.current_price * 0.99, \"Volume\": stock.volume_today * 0.9 },\n    { \"Date\": \"2026-01-23\", \"Close\": stock.current_price, \"Volume\": stock.volume_today }\n];\n\n// --- Start of TA Processing Logic (from n8n_ta_processor.py) ---\n\n// Simplified Python logic ported to JavaScript for n8n Code node\n\nfunction calculate_ta(history) {\n    // This is where the Python script logic would be fully implemented\n    // For this JSON, we will just pass the stock data and let the LLM handle the rest\n    // The user must replace this with the full Python script in a dedicated Python node\n    \n    return {\n        ticker: stock.ticker,\n        latest_price: stock.current_price,\n        volume: stock.volume_today,\n        // Placeholder for TA results\n        RSI: Math.floor(Math.random() * 70) + 30,\n        Trend: Math.random() > 0.5 ? 'Uptrend' : 'Downtrend',\n        fundamental_notes: \"News: Positive earnings report expected next week.\"\n    };\n}\n\nconst processedData = calculate_ta(historicalData);\n\nreturn [{ json: processedData }];",
+        "options": {}
+      },
+      "name": "Technical Analysis (Code Node)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        900,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "systemPrompt": "You are a highly experienced, disciplined, and systematic Positional Trader specializing in Russian equities on the Moscow Exchange (MOEX). Your primary function is to identify high-probability trading setups for medium-term trades (holding period: a few hours up to one month). [Full System Prompt from trader_agent_system_prompt.md should be pasted here]",
+        "prompt": "Analyze the following stock data and generate a trade idea in the required JSON format. If the probability is less than 90%, set the 'confidence_level' to 'средний' or 'низкий' and ask a specific question to the user in the 'justification.key_risks' field.\n\nStock Data: {{ JSON.stringify($input.json) }}",
+        "outputFormat": "json",
+        "options": {}
+      },
+      "name": "LLM Agent (Trade Idea Generation)",
+      "type": "n8n-nodes-base.aiAgent",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": [
+          {
+            "value1": "={{ $json.probability.replace('%', '') }}",
+            "operation": "less",
+            "value2": "90"
+          }
+        ]
+      },
+      "name": "Check Uncertainty (> 0.1)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "message": {
+          "value": "Trade Idea: {{ $json.ticker }}\nProbability: {{ $json.probability }}\nDirection: {{ $json.direction }}\nEntry: {{ $json.entry_point }}\nTarget: {{ $json.target }}\nStop-Loss: {{ $json.stop_loss }}\n\n**Uncertainty Alert!**\nConfidence Level: {{ $json.confidence_level }}\nKey Risk/Question: {{ $json.justification.key_risks }}\n\n**Please provide clarification via the Telegram Q&A Webhook.**",
+          "mode": "string"
+        },
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "options": {}
+      },
+      "name": "Telegram: Ask for Clarification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "message": {
+          "value": "Trade Idea: {{ $json.ticker }}\nProbability: {{ $json.probability }}\nDirection: {{ $json.direction }}\nEntry: {{ $json.entry_point }}\nTarget: {{ $json.target }}\nStop-Loss: {{ $json.stop_loss }}\nRisk/Reward: {{ $json.risk_reward_ratio }}\nHorizon: {{ $json.horizon }}\n\n**Justification:**\n- Technical: {{ $json.justification.technical_setup }}\n- Fundamental: {{ $json.justification.fundamental_trigger }}\n- Risks: {{ $json.justification.key_risks }}",
+          "mode": "string"
+        },
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "options": {}
+      },
+      "name": "Telegram: Send Confident Idea",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "functionCode": "const allIdeas = $input.all();\n\n// Aggregate all ideas into a single report\nlet report = \"**Daily MOEX Trading Report**\\n\\n\";\n\nallIdeas.forEach((item, index) => {\n    const idea = item.json;\n    report += `**${index + 1}. ${idea.ticker}** (${idea.direction})\\n`;\n    report += `   Prob: ${idea.probability} | R/R: ${idea.risk_reward_ratio} | Conf: ${idea.confidence_level}\\n`;\n    report += `   Entry: ${idea.entry_point} | Target: ${idea.target} | SL: ${idea.stop_loss}\\n`;\n    report += `   Justification: ${idea.justification.technical_setup}\\n\\n`;\n});\n\nreturn [{ json: { report: report } }];",
+        "options": {}
+      },
+      "name": "Aggregate Daily Report",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "message": {
+          "value": "={{ $json.report }}",
+          "mode": "string"
+        },
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "options": {}
+      },
+      "name": "Telegram: Send Final Daily Report",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        200
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "Cron Trigger (Daily Report)",
+      "to": "Get MOEX Liquid Stocks"
+    },
+    {
+      "from": "Webhook Trigger (Q&A/TV Signal)",
+      "to": "LLM Agent (Trade Idea Generation)"
+    },
+    {
+      "from": "Get MOEX Liquid Stocks",
+      "to": "Filter Top 10 Liquid Stocks"
+    },
+    {
+      "from": "Filter Top 10 Liquid Stocks",
+      "to": "Technical Analysis (Code Node)"
+    },
+    {
+      "from": "Technical Analysis (Code Node)",
+      "to": "LLM Agent (Trade Idea Generation)"
+    },
+    {
+      "from": "LLM Agent (Trade Idea Generation)",
+      "to": "Check Uncertainty (> 0.1)"
+    },
+    {
+      "from": "Check Uncertainty (> 0.1)",
+      "to": "Telegram: Ask for Clarification",
+      "type": "false"
+    },
+    {
+      "from": "Check Uncertainty (> 0.1)",
+      "to": "Telegram: Send Confident Idea",
+      "type": "true"
+    },
+    {
+      "from": "Telegram: Ask for Clarification",
+      "to": "Aggregate Daily Report"
+    },
+    {
+      "from": "Telegram: Send Confident Idea",
+      "to": "Aggregate Daily Report"
+    },
+    {
+      "from": "Aggregate Daily Report",
+      "to": "Telegram: Send Final Daily Report"
+    }
+  ]
+}

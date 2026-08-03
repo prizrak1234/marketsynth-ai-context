@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_research/input/0.1.0",
+  "title": "MarketResearchSkillInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "product_marketing_context": { "$ref": "#/$defs/context_reference" },
+    "research_objectives": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "market_scope": { "$ref": "#/$defs/scalar_claim" },
+    "geography": { "$ref": "#/$defs/scalar_claim" },
+    "time_horizon": { "$ref": "#/$defs/scalar_claim" },
+    "available_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source_item" },
+      "maxItems": 100
+    },
+    "existing_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_item" },
+      "maxItems": 100
+    },
+    "research_constraints": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "budget_constraints": { "$ref": "#/$defs/scalar_claim" },
+    "language": {
+      "type": "string",
+      "maxLength": 32
+    },
+    "required_depth": {
+      "type": "string",
+      "enum": ["overview", "standard", "deep", "unknown"]
+    }
+  },
+  "required": ["product_marketing_context", "research_objectives"],
+  "$defs": {
+    "context_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "context_id": { "type": "string", "maxLength": 128 },
+        "skill_id": {
+          "type": "string",
+          "const": "ms.skill.product_marketing_context"
+        },
+        "skill_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "output_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "readiness": {
+          "type": "string",
+          "enum": [
+            "ready",
+            "partially_ready",
+            "insufficient_context",
+            "conflicted"
+          ]
+        },
+        "context_payload": {
+          "type": "object",
+          "description": "Embedded PMC output or reference-only stub for skeleton validation."
+        }
+      },
+      "required": ["skill_id", "skill_version", "output_hash"]
+    },
+    "scalar_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "string", "maxLength": 4000 },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "document",
+            "external_source",
+            "prior_skill_output",
+            "system_inference",
+            "unknown"
+          ]
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "partially_verified",
+            "verified",
+            "contradicted",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        }
+      },
+      "required": ["value", "source_type", "verification_status", "confidence"]
+    },
+    "source_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_id": { "type": "string", "maxLength": 128 },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "document",
+            "external_source",
+            "prior_skill_output",
+            "market_source",
+            "unknown"
+          ]
+        },
+        "reference": { "type": "string", "maxLength": 2000 },
+        "notes": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["source_id", "source_type"]
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": { "type": "string", "maxLength": 128 },
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "market_source",
+            "competitor_source",
+            "demand_signal",
+            "pricing_signal",
+            "audience_signal",
+            "assumption",
+            "inference"
+          ]
+        },
+        "claim": { "type": "string", "maxLength": 4000 },
+        "source_reference": { "type": "string", "maxLength": 2000 },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "partially_verified",
+            "verified",
+            "contradicted",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        }
+      },
+      "required": ["evidence_id", "evidence_type", "claim", "verification_status", "confidence"]
+    }
+  }
+}

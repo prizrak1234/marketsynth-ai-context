@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/pattern-audit-report.schema.json",
+  "title": "PatternAuditReport",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string"
+    },
+    "program_phase": {
+      "type": "string"
+    },
+    "pattern_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "template_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "security_finding_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "READY",
+        "CONDITIONALLY_READY",
+        "NOT_READY"
+      ]
+    },
+    "invariants_checked": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "report_id",
+    "program_phase",
+    "verdict",
+    "provenance"
+  ]
+}

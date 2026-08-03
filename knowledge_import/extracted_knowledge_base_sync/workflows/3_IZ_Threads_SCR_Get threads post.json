@@ -1,0 +1,678 @@
+{
+  "name": "3_IZ_Threads_SCR_Get threads post",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "URL"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -64,
+        -64
+      ],
+      "id": "57eb310e-4ccd-4bf9-8926-768856572448",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "pQiK2eugmZVBbBpl",
+          "mode": "list",
+          "cachedResultName": "3_THREADS_GET_Get_threads_post",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/pQiK2eugmZVBbBpl"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ $json.post.user.username }}",
+            "post_id": "={{ $json.post.code }}",
+            "like_count": "={{ $json.post.like_count }}",
+            "text": "={{ $json.post.caption.text }}",
+            "URL": "=https://www.threads.net/@{{ $json.post.user.username }}/post/{{ $json.post.code }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "post_id",
+              "displayName": "post_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "like_count",
+              "displayName": "like_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -64
+      ],
+      "id": "f827d6eb-618f-48e0-86c7-6ed295084be2",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "jsCode": "// === Threads: Ответ для ИИ-агента (пост проанализирован) ===\n\n// 1) Получаем входящие данные\nconst input = $input.all()[0].json;\n\n// 2) Достаём нужные поля\nconst username = input.username || \"неизвестный пользователь\";\nconst url = input.URL || `https://www.threads.net/@${username}/post/${input.post_id}`;\nconst postId = input.post_id || null;\n\n// 3) Формируем итоговое сообщение\nconst result = {\n  status: \"ok\",\n  message: `Пост пользователя ${username} проанализирован ✅`,\n  username: username,\n  post_id: postId,\n  url: url,\n  analyzed_at: new Date().toISOString()\n};\n\n// 4) Возвращаем один объект\nreturn [{ json: result }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        -64
+      ],
+      "id": "2ae9f597-9fa2-45cf-9954-44f4bc450f0e",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        -400
+      ],
+      "id": "5be84f3f-d1cd-4b3e-8f96-e8f2e9c4e36e",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "pQiK2eugmZVBbBpl",
+          "mode": "list",
+          "cachedResultName": "3_THREADS_GET_Get_threads_post",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/pQiK2eugmZVBbBpl"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -400
+      ],
+      "id": "457bfcdb-239e-4923-9dee-2e641ab5b782",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1PFkjKxVbkPiFo-YSsBTe7fQsPqC9sdBMCpEbdZeKkAM",
+          "mode": "list",
+          "cachedResultName": "Threads AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PFkjKxVbkPiFo-YSsBTe7fQsPqC9sdBMCpEbdZeKkAM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 58712272,
+          "mode": "list",
+          "cachedResultName": "3_THREADS_GET_Get_threads_post",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PFkjKxVbkPiFo-YSsBTe7fQsPqC9sdBMCpEbdZeKkAM/edit#gid=58712272"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ $json.username }}",
+            "like_count": "={{ $json.like_count }}",
+            "URL": "={{ $json.URL }}",
+            "\npost_Id": "={{ $json.post_id }}",
+            "text": "={{ $json.text }}",
+            "updatedAt": "={{ $json.updatedAt }}",
+            "createdAt": "={{ $json.createdAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "\npost_Id",
+              "displayName": "\npost_Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "like_count",
+              "displayName": "like_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        -400
+      ],
+      "id": "dee9a4da-5e20-4606-a723-07526814adaa",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Синхронизация данных в таблице в Google",
+        "height": 304,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -512
+      ],
+      "id": "c42b873b-a066-45b3-b625-6712549dc384",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "pQiK2eugmZVBbBpl",
+          "mode": "list",
+          "cachedResultName": "3_THREADS_GET_Get_threads_post",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/pQiK2eugmZVBbBpl"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "username",
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        608,
+        -400
+      ],
+      "id": "005ffb87-cb58-4ff0-a6f4-d82ea4358d92",
+      "name": "Delete row(s)1"
+    },
+    {
+      "parameters": {
+        "content": "## Get a Instagram profile s videos",
+        "height": 288,
+        "width": 1136,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -176,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "4a1b126c-cff6-4c2b-a20c-245a6346bf92",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: DATA TABLE в n8n: https://youtu.be/FD1HyYR3EP0\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 132,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        -576
+      ],
+      "typeVersion": 1,
+      "id": "e1423f04-ae0e-4c07-908e-760b9bce6848",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        656,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "588ce0d9-51c5-494b-96de-07c8ef0eb72c",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "threads",
+        "operation": "getThreadsPost",
+        "url": "={{ $json.URL }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        192,
+        -64
+      ],
+      "id": "686cb9fe-d638-4032-9fb4-6a5d743ac9d6",
+      "name": "Get threads post",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "XNzkdQFgWnEu59Bh",
+          "name": "Scrape Creators account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "URL": "https://www.threads.com/@igorzuevich/post/DPtcLuCgIiq"
+        }
+      }
+    ],
+    "Get threads post": [
+      {
+        "json": {
+          "success": true,
+          "credits_remaining": 22,
+          "post": {
+            "id": "3741770816065407146_63294928181",
+            "pk": "3741770816065407146",
+            "caption": {
+              "text": "Как создать автоматическую систему мониторинга YouTube конкурентов через n8n.\n\nБольше никаких ежедневных заходов на каналы - система сама отслеживает новые видео и присылает красивые отчеты в Telegram.  Полная пошаговая настройка автоматизации, которая экономит минимум час времени каждый день.\n#n8n #youtube #контент #youtubeавтоматизация #n8nтуториал",
+              "pk": "18240828913294561",
+              "has_translation": true
+            },
+            "code": "DPtcLuCgIiq",
+            "like_count": 7,
+            "taken_at": 1760273863,
+            "user": {
+              "pk": "63294928181",
+              "friendship_status": null,
+              "profile_pic_url": "https://instagram.fcue1-1.fna.fbcdn.net/v/t51.2885-19/358000225_6470733739651856_5118210749193152837_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fcue1-1.fna.fbcdn.net&_nc_cat=108&_nc_oc=Q6cZ2QFx8X_jPPfFxgmfTiT8qO0UaAz1nd4x3S4PFpFoKOHggAPeBU-UhvqOz2kiQ-WFcfo&_nc_ohc=OiJzJnwdcV8Q7kNvwEt8x7A&_nc_gid=I3B7CIGelWkpxs393CXP3g&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfdQgkOrAvLewyxqaChleG_VYDliCLu3P0JuIbKLs-mCPg&oe=68FEB7EE&_nc_sid=10d13b",
+              "username": "igorzuevich",
+              "id": "63294928181",
+              "full_name": "Игорь Зуевич ☝️про REELS и AI маркетинг",
+              "transparency_label": null,
+              "transparency_product": null,
+              "transparency_product_enabled": false,
+              "is_verified": false,
+              "text_post_app_is_private": false,
+              "has_onboarded_to_text_post_app": true
+            }
+          },
+          "comments": [
+            {
+              "id": "3742340030245447585_73965209832",
+              "pk": "3742340030245447585",
+              "caption": {
+                "text": "JSON ?",
+                "pk": "18070935742973330",
+                "has_translation": null
+              },
+              "code": "DPvdm4DgSeh",
+              "like_count": 0,
+              "taken_at": 1760341718,
+              "user": {
+                "pk": "73965209832",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fcue2-1.fna.fbcdn.net/v/t51.2885-19/490313365_1345673383204956_8627517619262393202_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zMjAuYzIifQ&_nc_ht=instagram.fcue2-1.fna.fbcdn.net&_nc_cat=100&_nc_oc=Q6cZ2QFx8X_jPPfFxgmfTiT8qO0UaAz1nd4x3S4PFpFoKOHggAPeBU-UhvqOz2kiQ-WFcfo&_nc_ohc=bx03djQNYdkQ7kNvwFcNSTf&_nc_gid=I3B7CIGelWkpxs393CXP3g&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfesBelzJaYVCH-6noWbComlqMsvPk2wGqwqnKxOVtBzeg&oe=68FEBF06&_nc_sid=10d13b",
+                "username": "alicebkk100",
+                "id": "73965209832",
+                "full_name": "Dima Kust",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            }
+          ],
+          "relatedPosts": [
+            {
+              "id": "3748413535371202562_62865247285",
+              "pk": "3748413535371202562",
+              "caption": {
+                "text": "La calca no tiene idea de nada. Su ineptitud claramente la demuestra día a día.",
+                "pk": "18056162999553913",
+                "has_translation": true
+              },
+              "code": "DQFCkAfERAC",
+              "like_count": 401,
+              "taken_at": 1761065783,
+              "user": {
+                "pk": "62865247285",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fcue2-1.fna.fbcdn.net/v/t51.2885-19/359069562_1006967853805143_5428066493665758592_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zNjAuYzIifQ&_nc_ht=instagram.fcue2-1.fna.fbcdn.net&_nc_cat=103&_nc_oc=Q6cZ2QE1Mu-68wETw_ay23gNU54pYw8E1FHlN1WYiEAVykWlzb25O2Cba9PE4AR_acq2ZI4&_nc_ohc=k5OCiSZrVTkQ7kNvwGji6nz&_nc_gid=I3B7CIGelWkpxs393CXP3g&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afc0Rz0fblYzd90Wh8gZDsCmBw1SaUMmEdyJvjNd8iN1Ww&oe=68FEAC50&_nc_sid=10d13b",
+                "username": "helenaniebla6640",
+                "id": "62865247285",
+                "full_name": "Helena Niebla Gonzalez",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748376942199528188_63452688712",
+              "pk": "3748376942199528188",
+              "caption": {
+                "text": "During a blue moon, my photo was interrupted by a JetBlue flight transiting just after the moon rose above the clouds. \n\nThanks to the power of the internet, the flight crew was alerted and I was able to get them prints of the shot!",
+                "pk": "18325489870212188",
+                "has_translation": null
+              },
+              "code": "DQE6PgcEVr8",
+              "like_count": 190,
+              "taken_at": 1761061374,
+              "user": {
+                "pk": "63452688712",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fcue2-1.fna.fbcdn.net/v/t51.2885-19/358412558_1690494414783069_7099453738613899951_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zMjAuYzIifQ&_nc_ht=instagram.fcue2-1.fna.fbcdn.net&_nc_cat=109&_nc_oc=Q6cZ2QE1Mu-68wETw_ay23gNU54pYw8E1FHlN1WYiEAVykWlzb25O2Cba9PE4AR_acq2ZI4&_nc_ohc=hkYXuEX-raEQ7kNvwHOflWm&_nc_gid=I3B7CIGelWkpxs393CXP3g&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfcEGC8v8Swg504FRXHfA-9LEy8VwWkheIfhcHNt2R5I9Q&oe=68FE9505&_nc_sid=10d13b",
+                "username": "cosmic_background",
+                "id": "63452688712",
+                "full_name": "Andrew McCarthy",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": true,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748663059137830296_63069450921",
+              "pk": "3748663059137830296",
+              "caption": {
+                "text": "Earnings are usually a coin flip.\n\nBut if $TSLA delivers, there’s not much standing between it and price discovery mode.",
+                "pk": "18133590082457194",
+                "has_translation": null
+              },
+              "code": "DQF7TDmih2Y",
+              "like_count": 26,
+              "taken_at": 1761095487,
+              "user": {
+                "pk": "63069450921",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fcue2-1.fna.fbcdn.net/v/t51.2885-19/358000025_988841669212235_3183384987691331022_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby40MDAuYzIifQ&_nc_ht=instagram.fcue2-1.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2QE1Mu-68wETw_ay23gNU54pYw8E1FHlN1WYiEAVykWlzb25O2Cba9PE4AR_acq2ZI4&_nc_ohc=ud2n3nfTekUQ7kNvwHu1jhX&_nc_gid=I3B7CIGelWkpxs393CXP3g&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afd6PtqCA0MsL4Un8BuO7bG1hynLt4wRRjXEc1-0id7Q2g&oe=68FEA155&_nc_sid=10d13b",
+                "username": "trendspider",
+                "id": "63069450921",
+                "full_name": "TrendSpider",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": false,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748642409824835802_63079231911",
+              "pk": "3748642409824835802",
+              "caption": {
+                "text": "A massive day-long gathering is happening Tuesday in suburban Bartlett.",
+                "pk": "17918795679194733",
+                "has_translation": null
+              },
+              "code": "DQF2mkbktja",
+              "like_count": 3,
+              "taken_at": 1761093033,
+              "user": {
+                "pk": "63079231911",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fcue2-1.fna.fbcdn.net/v/t51.2885-19/358099105_649239223471305_1806161239014023006_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zMzYuYzIifQ&_nc_ht=instagram.fcue2-1.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2QE1Mu-68wETw_ay23gNU54pYw8E1FHlN1WYiEAVykWlzb25O2Cba9PE4AR_acq2ZI4&_nc_ohc=gcRowEPLR1wQ7kNvwFwQNf6&_nc_gid=I3B7CIGelWkpxs393CXP3g&edm=APs17CUBAAAA&ccb=7-5&oh=00_Afe5fkgw3i3oIcfTAnp4tq6QaP6IyyQx5x_SIUoJjSp4Dg&oe=68FE9BF8&_nc_sid=10d13b",
+                "username": "abc7chicago",
+                "id": "63079231911",
+                "full_name": "ABC 7 Chicago",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": true,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            },
+            {
+              "id": "3748628321493013604_63272439833",
+              "pk": "3748628321493013604",
+              "caption": {
+                "text": "Crazy 😳💰",
+                "pk": "17893591188347113",
+                "has_translation": null
+              },
+              "code": "DQFzZjpj1Rk",
+              "like_count": 310,
+              "taken_at": 1761091340,
+              "user": {
+                "pk": "63272439833",
+                "friendship_status": null,
+                "profile_pic_url": "https://instagram.fcue2-1.fna.fbcdn.net/v/t51.2885-19/324245945_766770964937915_3427096137627481741_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fcue2-1.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2QE1Mu-68wETw_ay23gNU54pYw8E1FHlN1WYiEAVykWlzb25O2Cba9PE4AR_acq2ZI4&_nc_ohc=e_GkZL0qZT8Q7kNvwF5sGqd&_nc_gid=I3B7CIGelWkpxs393CXP3g&edm=APs17CUBAAAA&ccb=7-5&oh=00_AfcyxC4aN5ARQYIPrY2YHGuAVanxHmNKH4RTzDIZt3WkLw&oe=68FEC242&_nc_sid=10d13b",
+                "username": "heismans",
+                "id": "63272439833",
+                "full_name": "Heismans",
+                "transparency_label": null,
+                "transparency_product": null,
+                "transparency_product_enabled": false,
+                "is_verified": true,
+                "text_post_app_is_private": false,
+                "has_onboarded_to_text_post_app": true
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get threads post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get threads post": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6d6e4289-6f2c-4f6d-b40f-227ceb86fe6f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "4xgeA7zxj9iFxYd4",
+  "tags": []
+}

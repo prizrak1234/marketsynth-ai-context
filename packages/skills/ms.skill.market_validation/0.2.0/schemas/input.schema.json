@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_validation/input/0.2.0",
+  "title": "MarketValidationSkillInput020",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "product_marketing_context": { "$ref": "#/$defs/pmc_dependency_reference" },
+    "market_research_output": { "$ref": "#/$defs/research_dependency_reference" },
+    "competitor_analysis_output": { "$ref": "#/$defs/competitor_dependency_reference" },
+    "customer_intelligence_reference": { "$ref": "#/$defs/cim_dependency_reference" },
+    "validation_objectives": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "declared_business_scope": { "type": "string", "maxLength": 4000 },
+    "geography": { "type": "string", "maxLength": 1000 },
+    "business_model": { "type": "string", "maxLength": 2000 },
+    "pricing_assumptions": { "type": "string", "maxLength": 2000 },
+    "budget_context": { "type": "string", "maxLength": 2000 },
+    "launch_timeline": { "type": "string", "maxLength": 1000 },
+    "founder_or_operator_constraints": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "operational_constraints": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "legal_or_regulatory_constraints": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "risk_tolerance": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "unknown"]
+    },
+    "decision_deadline": { "type": "string", "format": "date" },
+    "available_additional_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_item" },
+      "maxItems": 100
+    },
+    "provenance": { "$ref": "#/$defs/input_provenance" }
+  },
+  "required": [
+    "product_marketing_context",
+    "market_research_output",
+    "competitor_analysis_output",
+    "customer_intelligence_reference",
+    "validation_objectives",
+    "provenance"
+  ],
+  "$defs": {
+    "unknown_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["domain", "description"]
+    },
+    "conflict_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": { "type": "string", "maxLength": 128 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "conflicting_claims": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 10
+        }
+      },
+      "required": ["domain", "description"]
+    },
+    "dependency_reference_base": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        },
+        "provenance": { "$ref": "#/$defs/input_provenance" }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ]
+    },
+    "pmc_dependency_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "const": "ms.skill.product_marketing_context" },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "context_id": { "type": "string", "maxLength": 128 },
+        "readiness": { "type": "string", "maxLength": 64 },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        },
+        "provenance": { "$ref": "#/$defs/input_provenance" }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ],
+      "not": {
+        "properties": {
+          "source_skill_version": { "pattern": "^0\\.1\\." }
+        },
+        "required": ["source_skill_version"]
+      }
+    },
+    "research_dependency_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "const": "ms.skill.market_research" },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "research_id": { "type": "string", "maxLength": 128 },
+        "research_status": { "type": "string", "maxLength": 64 },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        },
+        "provenance": { "$ref": "#/$defs/input_provenance" }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ]
+    },
+    "competitor_dependency_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "const": "ms.skill.competitor_analysis" },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "analysis_id": { "type": "string", "maxLength": 128 },
+        "research_status": { "type": "string", "maxLength": 64 },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        },
+        "provenance": { "$ref": "#/$defs/input_provenance" }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash"
+      ]
+    },
+    "cim_dependency_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_skill_id": { "const": "ms.skill.icp_segmentation" },
+        "source_skill_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "source_output_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "cim_schema_uri": {
+          "type": "string",
+          "const": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json"
+        },
+        "cim_version": {
+          "type": "string",
+          "pattern": "^0\\.1\\."
+        },
+        "cim_document_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "cim_id": { "type": "string", "maxLength": 128 },
+        "selected_segment_ids": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 128 },
+          "minItems": 1,
+          "maxItems": 50
+        },
+        "source_status": { "type": "string", "maxLength": 64 },
+        "source_evidence_references": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 100
+        },
+        "source_unknowns": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unknown_item" },
+          "maxItems": 50
+        },
+        "source_conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/conflict_item" },
+          "maxItems": 50
+        },
+        "provenance": { "$ref": "#/$defs/input_provenance" }
+      },
+      "required": [
+        "source_skill_id",
+        "source_skill_version",
+        "source_output_hash",
+        "cim_schema_uri",
+        "cim_version",
+        "cim_document_hash",
+        "selected_segment_ids"
+      ]
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "statement": { "type": "string", "maxLength": 4000 },
+        "trace_type": {
+          "type": "string",
+          "enum": ["evidence", "assumption", "inference"]
+        },
+        "evidence_class": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "market_source",
+            "competitor_source",
+            "demand_signal",
+            "pricing_signal",
+            "audience_signal",
+            "assumption",
+            "inference"
+          ]
+        },
+        "source_reference": { "type": "string", "maxLength": 2000 }
+      },
+      "required": ["statement", "trace_type"]
+    },
+    "input_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "submitted_by": { "type": "string", "maxLength": 256 },
+        "submitted_at": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string", "maxLength": 2000 }
+      }
+    }
+  }
+}

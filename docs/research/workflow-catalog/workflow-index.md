@@ -1,0 +1,64 @@
+# Workflow Index
+
+- `wf-16b82581942c24a9` — Google_Forms,_ИИ,_SEO,_географическая_оптимизация,_одобрение_человеком
+- `wf-26e46381a8f73005` — Festival Social Media Automation with Gemini AI for X/Twitter & Facebook
+- `wf-c7d30b91fd4e5694` — Automated Backup of n8n Workflows to GitLab Organized by Username
+- `wf-cb28929d37f1ac61` — Intelligent data privacy governance with risk detection and approval
+- `wf-1bf6252c450bb6a6` — Automate job applications with Telegram, SerpAPI, and OpenAI
+- `wf-f3b0116f5f592000` — AI agent for cybersecurity threat analysis with CVSS scoring and risk routing
+- `wf-7ef046d685eb8248` — Автоматизируйте_документацию_рабочих_процессов_n8n_с_помощью_Google
+- `wf-53e22527a8c1c9f6` — Daily n8n Workflow Backup (Google Drive)
+- `wf-72e0e533c3144633` — Reddit Assistant
+- `wf-616bdae4a27dae08` — Smart Event Follow-Up & Networking Assistant
+- `wf-61b924eefe8bc9f1` — Автоматизируйте_регистрацию_на_мероприятия_и_проверку_по_QR_кодам
+- `wf-85678e74e6ab0b6a` — WhatsApp AI CRM — Whapi + Ollama
+- `wf-88776ecace2d7c86` — Blog Post Content Creation
+- `wf-56cda8651c9f1c91` — Claude Scrapes TikTok Trends, Seedance 2.0 - udemy - vide
+- `wf-2fe083e68242b276` — Social Media Marketing Agent
+- `wf-ed2d74e067c7f756` — Автоматическое_создание_постов_для_Instagram_на_основе_отзывов_из
+- `wf-de7313a1b60ff880` — AI-Powered NPM Package Intelligence Agent
+- `wf-fb7af43e5c37f894` — Анализ_пробелов_на_страницах_веб_сайта_с_помощью_GPT_4_1_mini,_Perplexity
+- `wf-ce49a4aec726e2d3` — AI-powered fleet telemetry triage with safety compliance and routing
+- `wf-7c3b62d25ba26948` — AI Customer Call Analyzer — Voice to Insights to CRM with GPT-4
+- `wf-002954c8d8eefa0c` — Анализируйте_PDF_файлы_контрактов_и_оценивайте_риски_с_помощью_Claude
+- `wf-ce56a3ad94c90af3` — Real Estate Deal Analyzer
+- `wf-3cb1c03f196b860f` — Анализируйте_скриншоты_служб_поддержки_с_помощью_UploadToURL,_GPT
+- `wf-353be45a7de607a0` — Qualify Lead Lists And Find Professional Emails With OpenAI and Google Sheets
+- `wf-f59108ebb9263c4d` — Бронируйте_и_управляйте_встречами_с_помощью_Google_Календаря_и_Gmail
+- `wf-a756a669ac6938d6` — Возобновите_взаимодействие_со_старыми_клиентами_с_помощью_Claude
+- `wf-c1a8e4ffaffecf5a` — News Based Client Impact Classifier
+- `wf-9c2292f10c679de8` — Roofing Contractor Finder with ScrapeOps & Google Maps
+- `wf-3341cc17639a9fb9` — AI Lead Gen Production Full Workflow_production
+- `wf-3e3d17c99eaa2e86` — Генерируйте_и_квалифицируйте_потенциальных_клиентов_из_числа_местных
+- `wf-12f3859e7ada5868` — Генерируйте_и_обогащайте_лиды_для_местных_компаний_с_помощью_Decodo
+- `wf-c6bf6cd11adb3798` — AI Website Analyzer to Product Ideas with FireCrawl
+- `wf-a9ca4c537bf42077` — Investment_Idea_Generator
+- `wf-084f5ad61f907750` — AI Customer Churn Predictor
+- `wf-7f7c510599f57f0c` — Auto-Instagram-post
+- `wf-fc16a7b643e9bed5` — Multi-agent property CAPEX forecasting with ROI simulation
+- `wf-66243640361fa313` — 5. Schedule Form - Google calendar
+- `wf-21966e054442133e` — Запустите_агента_ИИ_программирования_из_линейных_задач_с_помощью
+- `wf-bec838748b8eaac0` — Sarvam AI OCR_Final Template
+- `wf-bdf26007404af6a3` — Извлекайте_лиды_из_Google_Maps_в_Google_Таблицы_с_помощью_API_Places
+- `wf-4d1fc3a56f41875a` — Извлекайте_лучшие_моменты_прямой_трансляции_с_помощью_API_WayinVideo
+- `wf-b4642385f403fb65` — Извлекайте_метаданные_видео_и_автоматически_загружайте_их_на_YouTube
+- `wf-1d3557ab2c55b4c7` — Extract passport data with OpenAI and create QR codes
+- `wf-a3a73bd2cd83d810` — Извлеките_фрагменты_отзывов_клиентов_с_помощью_WayinVideo_AI_и_Google
+- `wf-938d6b9d3a3acaa3` — n8n Workflow Intelligence (RAG): Auto Indexing & Semantic AI Search
+- `wf-85359695146b2d35` — Smart Irrigation Scheduler with Weather Forecast and Soil Analysis
+- `wf-f90878e095c3131a` — Conversational Trip Memory Search Engine
+- `wf-d6cc0b68448b6269` — Классификатор_электронных_писем_для_нескольких_учетных_записей_с
+- `wf-561d72d7a541261c` — Classify Cold Email Replies and Notify via Telegram with OpenAI and Instantly
+- `wf-f167d9441bea0356` — Real-Time Currency Conversion via Webhook & Google Search Parsing
+- `wf-108aaabc182de7e4` — Контент_фарминг_автоматизация_блогов_на_WordPress_с_использованием
+- `wf-233ac14e328b7874` — Многоплатформенный_ассистент_на_основе_искусственного_интеллекта
+- `wf-f4b12b67575a19b6` — Найдите_контактные_данные_и_адреса_по_именам_с_помощью_ScraperCity
+- `wf-558da1cac8d6f1fd` — Find and share AliExpress affiliate products through Telegram
+- `wf-66351d2ef4388dc7` — Stale Content Detector for Websites
+- `wf-8b1f9158da89a4e4` — AI-Powered Fake Review Detection Workflow Using n8n & Airtable
+- `wf-580f7458a07243a7` — API Mock Auto-Refresh
+- `wf-e5a0701fa212fb63` — Обогащайте_URL_адреса_доменов_с_помощью_Hunter_io_и_экспортируйте
+- `wf-b7c206f39ba38530` — Find and enrich people records from form submissions into Notion
+- `wf-72d2f60fb17d5616` — Обогащайте_строки_Google_Sheets_с_помощью_любого_REST_API_в_пакетном
+
+… total **242** unique records.

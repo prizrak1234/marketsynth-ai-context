@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.market_validation/input/0.1.0",
+  "title": "MarketValidationSkillInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "idea_description": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 8000,
+      "description": "Primary business or product idea statement."
+    },
+    "product_or_service": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "target_market": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "geography": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "intended_customer": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "business_model": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "pricing_assumptions": {
+      "$ref": "#/$defs/value_or_unknown"
+    },
+    "available_budget": {
+      "$ref": "#/$defs/value_or_unknown"
+    },
+    "launch_timeline": {
+      "$ref": "#/$defs/value_or_unknown"
+    },
+    "founder_constraints": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "known_competitors": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 500 },
+      "maxItems": 50
+    },
+    "available_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence_item" }
+    },
+    "user_risk_tolerance": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "unknown"]
+    },
+    "field_states": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/field_state" }
+    }
+  },
+  "required": ["idea_description"],
+  "$defs": {
+    "field_state": {
+      "type": "string",
+      "enum": [
+        "provided",
+        "optional_missing",
+        "unknown",
+        "user_assumption",
+        "externally_verified"
+      ]
+    },
+    "value_or_unknown": {
+      "oneOf": [
+        { "type": "string", "maxLength": 500 },
+        { "type": "object", "additionalProperties": false, "properties": { "state": { "const": "unknown" } }, "required": ["state"] },
+        { "type": "object", "additionalProperties": false, "properties": { "state": { "const": "user_assumption" }, "value": { "type": "string", "maxLength": 500 } }, "required": ["state", "value"] }
+      ]
+    },
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidence_class": {
+          "type": "string",
+          "enum": [
+            "user_statement",
+            "market_source",
+            "competitor_source",
+            "demand_signal",
+            "pricing_signal",
+            "audience_signal",
+            "assumption",
+            "inference"
+          ]
+        },
+        "summary": { "type": "string", "maxLength": 4000 },
+        "source_ref": { "type": "string", "maxLength": 2000 },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "unknown"]
+        },
+        "is_assumption": { "type": "boolean", "default": false }
+      },
+      "required": ["evidence_class", "summary"]
+    }
+  }
+}

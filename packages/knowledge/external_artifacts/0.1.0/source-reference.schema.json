@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/source-reference.schema.json",
+  "title": "SourceReference",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "archive_id": {
+      "type": "string"
+    },
+    "archive_hash": {
+      "type": "string"
+    },
+    "relative_path": {
+      "type": "string"
+    },
+    "content_hash": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "archive_id",
+    "relative_path",
+    "content_hash"
+  ]
+}

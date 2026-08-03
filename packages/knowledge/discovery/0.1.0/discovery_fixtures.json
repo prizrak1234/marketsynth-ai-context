@@ -1,0 +1,97 @@
+{
+  "version": "0.1.0",
+  "fixtures": [
+    {
+      "id": "fixture-market-validation",
+      "task_description": "Проверить бизнес-идею",
+      "mode": "task_routing"
+    },
+    {
+      "id": "fixture-market-research",
+      "task_description": "Исследовать рынок",
+      "mode": "task_routing"
+    },
+    {
+      "id": "fixture-competitors",
+      "task_description": "Проанализировать конкурентов",
+      "mode": "task_routing"
+    },
+    {
+      "id": "fixture-icp",
+      "task_description": "Определить ICP",
+      "mode": "task_routing"
+    },
+    {
+      "id": "fixture-positioning",
+      "task_description": "Сделать позиционирование",
+      "mode": "task_routing"
+    },
+    {
+      "id": "fixture-offer",
+      "task_description": "Создать оффер",
+      "mode": "task_routing"
+    },
+    {
+      "id": "fixture-telegram",
+      "task_description": "Сделать пост в Telegram",
+      "mode": "task_routing"
+    },
+    {
+      "id": "fixture-youtube",
+      "task_description": "Подготовить сценарий YouTube",
+      "mode": "deliverable_lookup"
+    },
+    {
+      "id": "fixture-presentation",
+      "task_description": "Создать презентацию",
+      "mode": "deliverable_lookup"
+    },
+    {
+      "id": "fixture-n8n-arch",
+      "task_description": "Спроектировать n8n workflow",
+      "mode": "engineering_diagnosis_lookup"
+    },
+    {
+      "id": "fixture-n8n-debug",
+      "task_description": "Найти ошибку в n8n workflow",
+      "mode": "engineering_diagnosis_lookup"
+    },
+    {
+      "id": "fixture-n8n-deploy",
+      "task_description": "Проверить workflow перед деплоем",
+      "mode": "engineering_diagnosis_lookup"
+    },
+    {
+      "id": "fixture-linking",
+      "task_description": "Связать документы и найти дубли",
+      "mode": "knowledge_maintenance_lookup"
+    },
+    {
+      "id": "fixture-retry",
+      "task_description": "Найти паттерн retry",
+      "mode": "workflow_pattern_lookup"
+    },
+    {
+      "id": "fixture-approval",
+      "task_description": "Найти approval pattern",
+      "mode": "workflow_pattern_lookup"
+    },
+    {
+      "id": "fixture-ad-spend",
+      "task_description": "Запустить рекламу",
+      "mode": "task_routing",
+      "execution_sensitivity": "billing"
+    },
+    {
+      "id": "fixture-publish",
+      "task_description": "Опубликовать пост",
+      "mode": "task_routing",
+      "execution_sensitivity": "publication"
+    },
+    {
+      "id": "fixture-ambiguous",
+      "task_description": "Сделать что-то полезное для бизнеса",
+      "mode": "task_routing"
+    }
+  ]
+}

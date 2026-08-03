@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/knowledge-artifact.schema.json",
+  "title": "KnowledgeArtifact",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "artifact_type": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "source_reference": {
+      "type": "string"
+    },
+    "source_archive_id": {
+      "type": "string"
+    },
+    "source_path": {
+      "type": "string"
+    },
+    "content_hash": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "language": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "products_or_platforms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "methodology": {
+      "type": "boolean"
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "security_findings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "quality_status": {
+      "type": "string"
+    },
+    "trust_status": {
+      "type": "string",
+      "enum": [
+        "untrusted",
+        "quarantined",
+        "statically_validated",
+        "methodology_approved",
+        "platform_adapted",
+        "rejected"
+      ]
+    },
+    "lifecycle_status": {
+      "type": "string"
+    },
+    "tenant_scope": {
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "verified_at": {
+      "type": "string"
+    },
+    "supersedes": {
+      "type": "string"
+    },
+    "related_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "artifact_id",
+    "artifact_type",
+    "title",
+    "summary",
+    "source_reference",
+    "source_archive_id",
+    "source_path",
+    "content_hash",
+    "trust_status",
+    "lifecycle_status",
+    "tenant_scope",
+    "provenance"
+  ]
+}

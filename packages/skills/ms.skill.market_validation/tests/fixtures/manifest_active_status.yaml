@@ -1,0 +1,34 @@
+id: ms.skill.market_validation
+name: Market Validation
+version: 0.1.0
+description: Invalid fixture — active status not allowed in SKILL-01.0.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: active
+capabilities:
+  - market_evidence_assessment
+activation_conditions:
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+dependencies:
+  declared_future_dependencies: []
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    approval_required: false
+tenant_scope: global
+quality_threshold:
+  minimum_eval_cases: 1
+known_limitations:
+  - Invalid fixture for tests
+test_suite:
+  manifest: tests/eval_manifest.yaml
+provenance:
+  origin: platform_native

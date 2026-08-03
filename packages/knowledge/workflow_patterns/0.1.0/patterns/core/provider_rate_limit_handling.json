@@ -1,0 +1,280 @@
+{
+  "pattern_id": "provider_rate_limit_handling",
+  "pattern_name": "Provider Rate Limit Handling",
+  "pattern_category": "reliability",
+  "objective": "Handle provider rate limits with safe backoff.",
+  "problem_context": "HTTP-heavy automation and creative agent pipelines.",
+  "capability_ids": [
+    "agent_orchestration"
+  ],
+  "related_skill_ids": [
+    "ms.skill.n8n_workflow_architecture"
+  ],
+  "input_contract": {
+    "type": "object",
+    "required": [
+      "tenant_context",
+      "correlation_id"
+    ]
+  },
+  "output_contract": {
+    "type": "object",
+    "required": [
+      "status",
+      "evidence_refs"
+    ]
+  },
+  "steps": [
+    {
+      "step_id": "s1",
+      "step_name": "Invoke transport",
+      "step_type": "transport",
+      "security_class": "read_only"
+    },
+    {
+      "step_id": "s2",
+      "step_name": "Detect rate limit",
+      "step_type": "branch",
+      "security_class": "read_only"
+    },
+    {
+      "step_id": "s3",
+      "step_name": "Backoff retry",
+      "step_type": "retry",
+      "security_class": "read_only"
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "e1",
+      "from_step_id": "s1",
+      "to_step_id": "s2"
+    },
+    {
+      "edge_id": "e2",
+      "from_step_id": "s2",
+      "to_step_id": "s3",
+      "condition": "rate_limited"
+    },
+    {
+      "edge_id": "e3",
+      "from_step_id": "s3",
+      "to_step_id": "s1",
+      "condition": "retry_allowed"
+    }
+  ],
+  "required_connectors": [],
+  "required_tools": [],
+  "approval_requirements": {
+    "human_approval_required": false,
+    "approval_gates": [],
+    "auto_approval_allowed": false,
+    "spend_approval_required": false,
+    "publication_approval_required": false
+  },
+  "evidence_requirements": {
+    "required": true,
+    "evidence_classes": [
+      "execution_log"
+    ]
+  },
+  "idempotency_requirements": {
+    "required": true,
+    "policy": "dedupe_by_event_id",
+    "unknown_outcome_auto_retry": false,
+    "duplicate_event_prevention": true
+  },
+  "retry_policy": "bounded_backoff",
+  "timeout_policy": "core_default_120s",
+  "rate_limit_policy": "exponential_backoff_with_jitter",
+  "error_paths": [
+    "circuit_break",
+    "human_review"
+  ],
+  "rollback_or_recovery": "manual_review",
+  "security_class": "read_only",
+  "tenant_scope": "tenant_scoped",
+  "personal_data_class": "unknown",
+  "publication_sensitive": false,
+  "billing_sensitive": false,
+  "destructive": false,
+  "implementation_variants": [
+    {
+      "provider": "HTTP",
+      "component": "transport",
+      "documented_version": "source_catalog_0.1.0",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Observed in frozen catalog metadata only; not executed in core build.",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "variant-HTTP",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    }
+  ],
+  "source_workflow_ids": [
+    "wf-6114836577421bab",
+    "wf-b537693ad1b8ee7e"
+  ],
+  "source_practice_ids": [
+    "rate_limit_backoff"
+  ],
+  "known_limitations": [
+    "Retry-After headers belong in implementation_variants only."
+  ],
+  "quality_gates": [
+    {
+      "gate_id": "provider_rate_limit_handling-schema_valid",
+      "title": "Pattern validates against workflow-pattern schema",
+      "description": "Pattern validates against workflow-pattern schema",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-source_support_valid",
+      "title": "Source support gate satisfied",
+      "description": "Source support gate satisfied",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-provider_neutral",
+      "title": "Main flow uses functional abstractions only",
+      "description": "Main flow uses functional abstractions only",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-no_credentials",
+      "title": "No credential identifiers in pattern body",
+      "description": "No credential identifiers in pattern body",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-approval_boundary_valid",
+      "title": "Approval boundaries match sensitivity",
+      "description": "Approval boundaries match sensitivity",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-evidence_boundary_valid",
+      "title": "Evidence requirements documented",
+      "description": "Evidence requirements documented",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-tenant_boundary_valid",
+      "title": "Tenant scope preserved",
+      "description": "Tenant scope preserved",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-idempotency_valid",
+      "title": "Idempotency policy matches retry behavior",
+      "description": "Idempotency policy matches retry behavior",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-error_path_present",
+      "title": "Terminal error path documented",
+      "description": "Terminal error path documented",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-limitations_documented",
+      "title": "Known limitations listed",
+      "description": "Known limitations listed",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    },
+    {
+      "gate_id": "provider_rate_limit_handling-manual_review_complete",
+      "title": "Manual core audit complete",
+      "description": "Manual core audit complete",
+      "severity": "blocking",
+      "verification_status": "source_documented",
+      "provenance": {
+        "source_type": "pattern_extraction_core",
+        "archive_id": "arc-bots-knowledge-rar",
+        "source_id": "gates-provider_rate_limit_handling",
+        "program_phase": "KB-WPL-01.3B"
+      }
+    }
+  ],
+  "maturity": "reviewed",
+  "provenance": {
+    "source_type": "pattern_extraction_core",
+    "archive_id": "arc-bots-knowledge-rar",
+    "source_id": "provider_rate_limit_handling",
+    "program_phase": "KB-WPL-01.3B"
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "name": "OpenClawBot_Webhock",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "openclaw/skill1",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -528,
+        -112
+      ],
+      "id": "3bec67d2-6d80-4804-b5f2-80072c2185bf",
+      "name": "Webhook",
+      "webhookId": "bd670ff3-5a81-4d9e-a7a2-e3592c0710b5"
+    },
+    {
+      "parameters": {
+        "guardrails": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.guardrails",
+      "typeVersion": 2,
+      "position": [
+        464,
+        272
+      ],
+      "id": "fe0f31e4-379c-47fa-bdbe-47858ec8f62b",
+      "name": "Guardrails",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        672,
+        256
+      ],
+      "id": "fae858ae-d636-4cdd-bd2c-9f58ece3757b",
+      "name": "OpenClawBOT",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2c41a157-27d7-4c78-83d5-369c4ab58c15",
+              "leftValue": "={{\n  $json.headers?.[\"x-n8n-secret\"]\n  || $json.headers?.[\"X-N8N-SECRET\"]\n  || $headers[\"x-n8n-secret\"]\n  || $headers[\"X-N8N-SECRET\"]\n}}",
+              "rightValue": "=3f9d9c4a1b8e2a77c94c1f8e0d7a5b6a9f3e2d1c4b8a7e9d",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -320,
+        -112
+      ],
+      "id": "7f74a49d-481b-42a2-a8d6-7bad02e01ca9",
+      "name": "If",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": false,\n  \"error\": \"unauthorized\",\n  \"message\": \"Missing or invalid x-n8n-secret\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -64,
+        64
+      ],
+      "id": "d721e494-bc14-41ce-96b2-b754b39237ba",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"message\": \"authorized\",\n  \"received\": {\n    \"skill\": \"{{ $json.skill }}\",\n    \"sessionKey\": \"{{ $json.sessionKey }}\",\n    \"args\": \"{{ $json.args.username }}, {{ $json.args.goal }}, {{ $json.args.niche }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        464,
+        -240
+      ],
+      "id": "fce48d27-cf2b-489f-9ec5-6f01ac59b637",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{\n  {\n    skill: $json.body?.skill,\n    sessionKey: $json.body?.sessionKey,\n    args: $json.body?.args\n  }\n}}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -240
+      ],
+      "id": "418b8aa6-d13d-41cd-a1b2-4f05c2b5a6b0",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardrails": {
+      "main": [
+        [
+          {
+            "node": "OpenClawBOT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "904cc6e0-d2dd-4d41-b4ef-9bdf6ebaa633",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "85e186b4a24eff590cabaa14455586978fe9cd1d79fa7e571886806eedebfb2c"
+  },
+  "id": "VnHbW89sTKPKDEqn9Aysj",
+  "tags": []
+}

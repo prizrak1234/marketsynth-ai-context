@@ -1,0 +1,36 @@
+{
+  "schema_version": "0.1.0",
+  "canonical_uri_base": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/",
+  "schema_status": "frozen",
+  "file_hashes": {
+    "customer-intelligence.schema.json": "523f4e4844e2620f9ce1c09777c26e1e71ce832c53577e00efcb993a24fdd7e5",
+    "customer-segment.schema.json": "cf898791ef2e28283d5a4fbf93da0ff4d42085549fe0af2535e01dcec6fb17d1",
+    "customer-claim.schema.json": "eb1a443b113e3e4f330e3eaea1695e7c832c91bef1d2582b8f2471e31b522d88",
+    "job-to-be-done.schema.json": "3ac4acf623daafffb7e05e64edf5ea4a5c4fe47881e056a74bca67c8e063b27e",
+    "decision-role.schema.json": "0f75e118cf11cb255385bee24c8418ce90af254c08724fb3854c71ba457bed06",
+    "priority-assessment.schema.json": "6eb31b1f149027bfcedc92af2ba5559ffb83a191cd2726f5b45a4d484bd94fab",
+    "segment-conflict.schema.json": "3ee6a4da82f0f4acd8cf96b0bb57280b886d52f6b45c4613a456bf3df1c87d29",
+    "provenance.schema.json": "5e0aa2db8ee043a3e9a2ae6c77590f7b1607b6f974da3e4469d70f53a1960c40"
+  },
+  "bundle_hash": "b13cc76eb8f6405d114a457a8a4bf12a4a5330d9a37bd0adcfd93f48353421ea",
+  "source_package_reference": {
+    "skill_id": "ms.skill.icp_segmentation",
+    "skill_version": "0.1.0",
+    "local_schema_path": "schemas/customer_intelligence.schema.json",
+    "local_cim_version": "0.1.0-draft",
+    "package_hash": "075a4f1989a9050614babec004dda54a420d7f7bd717d9ac7e8a34b41e8ae71a"
+  },
+  "producer_skill": {
+    "primary": "ms.skill.icp_segmentation",
+    "supported_versions": [
+      "0.1.0"
+    ]
+  },
+  "consumer_compatibility": {
+    "supported_cim_versions": [
+      "0.1.0"
+    ],
+    "icp_local_mapping_version": "0.1.0-draft"
+  },
+  "generated_at": "2026-07-23T16:23:52.397747+00:00"
+}

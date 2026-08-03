@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.competitor_analysis/comparison_dimension/0.1.0",
+  "title": "ComparisonDimension",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "dimension_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "category": {
+      "type": "string",
+      "enum": [
+        "product",
+        "audience",
+        "problem",
+        "value_proposition",
+        "pricing",
+        "offer",
+        "channel",
+        "proof",
+        "customer_experience",
+        "business_model",
+        "geography",
+        "operations",
+        "brand",
+        "trust",
+        "distribution"
+      ]
+    },
+    "subject_value": { "type": "string", "maxLength": 2000 },
+    "competitor_values": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "competitor_id": { "type": "string", "maxLength": 128 },
+          "value": { "type": "string", "maxLength": 2000 },
+          "source_reference": { "type": "string", "maxLength": 2000 }
+        },
+        "required": ["competitor_id", "value"]
+      },
+      "maxItems": 50
+    },
+    "comparison_basis": { "type": "string", "maxLength": 2000 },
+    "source_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 30
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "gaps": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 1000 },
+      "maxItems": 30
+    },
+    "inference": { "type": "boolean", "default": false },
+    "limitations": { "type": "string", "maxLength": 2000 }
+  },
+  "required": [
+    "dimension_id",
+    "name",
+    "category",
+    "subject_value",
+    "comparison_basis",
+    "confidence"
+  ]
+}

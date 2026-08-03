@@ -1,0 +1,266 @@
+[
+  {
+    "source_capability_id": "marketing.product_context",
+    "target_capability_id": "marketing.market_research",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.market_research",
+    "target_capability_id": "marketing.competitive_intelligence",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.competitive_intelligence",
+    "target_capability_id": "marketing.customer_intelligence",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.customer_intelligence",
+    "target_capability_id": "marketing.market_validation",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.market_validation",
+    "target_capability_id": "marketing.positioning",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.positioning",
+    "target_capability_id": "marketing.claim_substantiation",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.claim_substantiation",
+    "target_capability_id": "marketing.offer_architecture",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.offer_architecture",
+    "target_capability_id": "marketing.launch_strategy",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.offer_architecture",
+    "target_capability_id": "marketing.content_strategy",
+    "dependency_type": "optional",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.content_strategy",
+    "target_capability_id": "marketing.copywriting",
+    "dependency_type": "optional",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.launch_strategy",
+    "target_capability_id": "marketing.distribution",
+    "dependency_type": "optional",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.distribution",
+    "target_capability_id": "marketing.marketing_analytics",
+    "dependency_type": "optional",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.marketing_analytics",
+    "target_capability_id": "marketing.learning_and_feedback",
+    "dependency_type": "optional",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "marketing.claim_substantiation",
+    "target_capability_id": "marketing.distribution",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "Publication path requires substantiation upstream.",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "engineering.workflow_architecture",
+    "target_capability_id": "engineering.deployment_review",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "engineering.deployment_review",
+    "target_capability_id": "engineering.workflow_debugging",
+    "dependency_type": "optional",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "knowledge.source_ingestion",
+    "target_capability_id": "knowledge.provenance_management",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "knowledge.provenance_management",
+    "target_capability_id": "knowledge.knowledge_linking",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "knowledge.knowledge_linking",
+    "target_capability_id": "knowledge.duplicate_detection",
+    "dependency_type": "optional",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "knowledge.knowledge_linking",
+    "target_capability_id": "knowledge.contradiction_detection",
+    "dependency_type": "optional",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "knowledge.knowledge_linking",
+    "target_capability_id": "knowledge.knowledge_candidate_review",
+    "dependency_type": "required",
+    "relationship": "requires_upstream",
+    "note": "",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "source_capability_id": "knowledge.knowledge_candidate_review",
+    "target_capability_id": "knowledge.knowledge_discovery",
+    "dependency_type": "optional",
+    "relationship": "requires_upstream",
+    "note": "Future persistence deferred.",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  }
+]

@@ -1,0 +1,49 @@
+{
+  "deployment_review_id": "deploy-review-safe-001",
+  "skill_id": "ms.skill.n8n_deployment_review",
+  "skill_version": "0.1.0",
+  "deployment_readiness": "ready_for_manual_deployment",
+  "architecture_conformance": { "conforms": true, "gaps": [] },
+  "review_findings": [{ "severity": "info", "detail": "All gates satisfied for manual review" }],
+  "blockers": [],
+  "warnings": [],
+  "publication_findings": { "publication_configured": true, "approval_missing": false },
+  "billing_findings": { "billing_configured": false },
+  "retry_and_idempotency_findings": { "retry_enabled": true, "idempotency_present": true },
+  "rollback_findings": { "rollback_plan_missing": false },
+  "test_evidence_findings": { "tests_missing": false },
+  "provider_compatibility_findings": { "unknown_version": false },
+  "patterns_consulted": [
+    {
+      "pattern_id": "human_approval_before_publication",
+      "library_version": "0.1.0-frozen",
+      "library_semantic_hash": "1ddd0d033f6028bd5dcf5ee555186c6be0389a96459615b6221348783d9b1883",
+      "selection_reason": "Publication approval gate verified.",
+      "maturity": "reviewed",
+      "runtime_authorized": false
+    }
+  ],
+  "practices_consulted": ["human_approval_before_write_or_publication"],
+  "activation_gate": {
+    "gate_id": "gate-manual-deploy-001",
+    "blockers_cleared": true,
+    "required_tests_passed": true,
+    "approvals_required": ["publication_approval"],
+    "rollback_verified": true,
+    "credentials_bound": true,
+    "provider_versions_reverified": true,
+    "publication_safety_confirmed": true,
+    "billing_safety_confirmed": true,
+    "final_manual_action_required": true
+  },
+  "human_approval_required": true,
+  "provider_reverification_required": false,
+  "limitations": ["Deployment review does not execute or activate workflows."],
+  "evidence_gaps": [],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "provenance": { "program_phase": "KB-WPL-01.4" },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

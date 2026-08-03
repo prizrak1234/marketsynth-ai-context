@@ -1,0 +1,57 @@
+{
+  "practice_id": "rate_limit_backoff",
+  "title": "Rate limit backoff",
+  "domain": "reliability",
+  "context": "HTTP and LLM_provider calls with provider throttling.",
+  "problem": "Immediate retry on 429 amplifies ban risk.",
+  "recommended_practice": "Detect rate_limit response; apply exponential backoff with jitter; respect Retry-After when present in implementation variant only.",
+  "rationale": "Methodology §5 Retry On Fail with bounded attempts.",
+  "prerequisites": [],
+  "implementation_pattern": "call → rate_limited → backoff → retry|circuit_break",
+  "failure_modes": [],
+  "security_notes": [],
+  "provider_version_scope": [
+    {
+      "provider": "n8n",
+      "component": "workflow_platform",
+      "documented_version": "source_archive_methodology",
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented",
+      "requires_reverification": true,
+      "notes": "Archive methodology; not re-executed in pilot hardening.",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "scope-n8n",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "tested_environment": "archive_metadata_only",
+  "verification_status": "source_documented",
+  "source_references": [
+    {
+      "archive_id": "arc-skills-dlya-peredachi",
+      "archive_hash": "362eb1101baf6c9270990ac274925d2b5d896fbf9122ab0671323a02ba32c7f9",
+      "relative_path": "n8n-knowledge-base/references/methodology.md",
+      "content_hash": "727666fe4bb10519fe05561f2a938336b11df28718e472bc39c4e7fc52acd8e3",
+      "source_category": "engineering_methodology",
+      "provenance": {
+        "source_type": "practice_lineage_pilot",
+        "archive_id": "arc-skills-dlya-peredachi",
+        "source_id": "ref-methodology-core",
+        "program_phase": "KB-WPL-01.3A.1"
+      }
+    }
+  ],
+  "related_pattern_ids": [
+    "provider_rate_limit_handling"
+  ],
+  "tenant_scope": "tenant_scoped",
+  "provenance": {
+    "source_type": "practice_lineage_pilot",
+    "archive_id": "arc-skills-dlya-peredachi",
+    "source_id": "rate_limit_backoff",
+    "program_phase": "KB-WPL-01.3B"
+  }
+}

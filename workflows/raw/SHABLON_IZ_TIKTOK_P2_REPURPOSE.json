@@ -1,0 +1,707 @@
+{
+  "name": "SHABLON_IZ_TIKTOK_P2_REPURPOSE",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Script: {{ $json.text }}\nCaption: {{ $('Get Record ID').item.json.Caption }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=### Role:\n\nYou are a master at repurposing scripts for videos, making video scripts which are even more engaging, driving shares from viewers.\n\n### Task:\n\nYou will repurpose scripts provided for you, improving on it in areas where you deem it weak, but keeping the same tone and structure.\n\n### Instructions:\n\n1. Repurpose the provided script with ALL time stamps, keeping similar word counts, flow and structure\n2. Repurpose the provided caption, using the same hashtags if applicable, keeping similar word counts, flow and structure\n3. Output the Airtable Record ID on completion as well.\n4. Translate the script into Russian\n\n### Example:\n\n- Hook: 0-3 seconds\n.. etc.\n\n### Constraints:\n\n- Don't overuse exclamation marks in scripts"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        180
+      ],
+      "id": "310f3e04-a137-4081-a3a9-b94fa087e967",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Call this tool to create caption and script",
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbltOe8idoo8BRy8j",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_REPURPOSE",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tbltOe8idoo8BRy8j"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name of content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name_of_content', ``, 'string') }}",
+            "Caption": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Caption', ``, 'string') }}",
+            "Script": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Script', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name of content",
+              "displayName": "Name of content",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Caption",
+              "displayName": "Caption",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Script",
+              "displayName": "Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Original video",
+              "displayName": "Original video",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        480,
+        560
+      ],
+      "id": "787836db-7d7c-4e59-b39f-4103b97f7cc0",
+      "name": "Create Script",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.play }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -260,
+        180
+      ],
+      "id": "5801c933-5026-4936-95b6-bfd4b3180a54",
+      "name": "Get Video"
+    },
+    {
+      "parameters": {
+        "content": "## Отправка Airtable",
+        "height": 220,
+        "width": 280,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        360,
+        500
+      ],
+      "typeVersion": 1,
+      "id": "7cf0aee3-b01f-4b7b-8335-ce172b5f0a50",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "binaryPropertyName": "audio",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        180,
+        180
+      ],
+      "id": "b034482e-3ab1-45f8-a246-ed70272fa243",
+      "name": "Whisper",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxCudSu6J6huIOn",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_POSTS",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tblxCudSu6J6huIOn"
+        },
+        "id": "={{ $json.record_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -700,
+        180
+      ],
+      "id": "f229d0b8-008b-44de-8105-d9c8609c3eaf",
+      "name": "Get Record ID",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"script_record_ID\": \"Airtable record ID of the script\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        700,
+        560
+      ],
+      "id": "9ab9a0b0-4c7d-42a1-99d5-b0185b7cbd66",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbltOe8idoo8BRy8j",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_REPURPOSE",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tbltOe8idoo8BRy8j"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Record ID": "={{ $json.id }}",
+            "Original video": "={{ $('Get Record ID').item.json['Link to Post'] }}",
+            "Name of content": "={{ $json['Name of content'] }}"
+          },
+          "matchingColumns": [
+            "Name of content"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Name of content",
+              "displayName": "Name of content",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Caption",
+              "displayName": "Caption",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Script",
+              "displayName": "Script",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Original video",
+              "displayName": "Original video",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Record ID",
+              "displayName": "Record ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1060,
+        200
+      ],
+      "id": "797527d1-8d5c-4c6c-8f8f-40c270c64216",
+      "name": "Update Record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  // Get the binary data\n  const binaryData = item.binary.data;\n  \n  // Create a new binary object with modified properties\n  const modifiedBinary = {\n    ...binaryData,\n    mimeType: 'audio/mpeg',  // Try this MIME type instead\n    fileExtension: 'mp3',\n    fileName: `${item.json.Username || 'audio'}.mp3`,\n    contentType: 'audio/mpeg'  // Add content type explicitly\n  };\n\n  return {\n    json: {\n      ...item.json,\n    },\n    binary: {\n      audio: modifiedBinary  // Change the key to 'audio' instead of 'data'\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        180
+      ],
+      "id": "f9c54f2a-8fd1-4818-a713-05f5fbaf9448",
+      "name": "Change to mpeg"
+    },
+    {
+      "parameters": {
+        "url": "https://tiktok-api23.p.rapidapi.com/api/download/video",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json['Link to Post'] }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-key",
+              "value": "ВАШ API КЛЮЧ"
+            },
+            {
+              "name": "x-rapidapi-host",
+              "value": "tiktok-api23.p.rapidapi.com"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -480,
+        180
+      ],
+      "id": "ef207fda-8562-43b5-9ba5-4d165dc20eb6",
+      "name": "Find Video"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "record_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -940,
+        180
+      ],
+      "id": "cb4cd0c3-3a1a-4e8a-b038-7014490a677f",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "# Копирует Сценарии Tik Toks",
+        "height": 80,
+        "width": 580,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "a6b6abc1-29d1-450c-a259-e9a3f0f444a8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      query: \"Task has completed successfully.\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1360,
+        200
+      ],
+      "id": "e4a1b3be-a75b-4e58-b02f-6420423b6864",
+      "name": "Success"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        120,
+        540
+      ],
+      "id": "5a4e7ff4-fa94-4944-a830-ce150c847429",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appmwS2cCJ2FqVjcE",
+          "mode": "list",
+          "cachedResultName": "TikTok_agent_n8n",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbltOe8idoo8BRy8j",
+          "mode": "list",
+          "cachedResultName": "TIKTOK_REPURPOSE",
+          "cachedResultUrl": "https://airtable.com/appmwS2cCJ2FqVjcE/tbltOe8idoo8BRy8j"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        840,
+        160
+      ],
+      "id": "2273e221-d9cc-405e-930f-d6988e00d848",
+      "name": "Update Record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "I2xyDRh4mGB6rGH2",
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Создайте свой API ключ в TikTok тут: \n\n## Ссылка: https://rapidapi.com/Lundehund/api/tiktok-api23",
+        "width": 880
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1000,
+        580
+      ],
+      "typeVersion": 1,
+      "id": "268c34aa-519c-4147-908f-040b0ff52d18",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Подключите Airtable таблицы\n",
+        "height": 80,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        840,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "baf7b93e-60e0-46b4-8640-a20c5c25fafc",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## @igorzuevich \n**Автор** на [YouTube](https://www.youtube.com/@igorzuevich)",
+        "height": 240,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1620,
+        3140
+      ],
+      "typeVersion": 1,
+      "id": "0e4e003e-f48d-48fb-941a-225c5b448a0a",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "record_id": "recBDhwgcjtJnDWe9"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Update Record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Script": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video": {
+      "main": [
+        [
+          {
+            "node": "Change to mpeg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Whisper": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Record ID": {
+      "main": [
+        [
+          {
+            "node": "Find Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Record": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Change to mpeg": {
+      "main": [
+        [
+          {
+            "node": "Whisper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Video": {
+      "main": [
+        [
+          {
+            "node": "Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Record ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Record1": {
+      "main": [
+        [
+          {
+            "node": "Update Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bedf62e5-6a4f-461d-ac13-25ad19ece7dd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "lELd2pdvfIWiBigY",
+  "tags": [
+    {
+      "createdAt": "2025-03-21T05:05:36.109Z",
+      "updatedAt": "2025-03-21T05:05:36.109Z",
+      "id": "O7fQsEJqI16T5o0y",
+      "name": "Сделано"
+    }
+  ]
+}

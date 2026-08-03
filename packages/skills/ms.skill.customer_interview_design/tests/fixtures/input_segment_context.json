@@ -1,0 +1,29 @@
+{
+  "customer_intelligence_reference": {
+    "source_skill_id": "ms.skill.icp_segmentation",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "cim_schema_uri": "https://schemas.marketsynth.ai/customer-intelligence/0.1.0/customer-intelligence.schema.json",
+    "cim_version": "0.1.0",
+    "cim_document_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "selected_segment_ids": [
+      "seg-remote-eng"
+    ],
+    "source_evidence_references": [
+      "ev-seg-seg-remote-eng"
+    ],
+    "source_unknowns": [],
+    "source_conflicts": []
+  },
+  "selected_segment_ids": [
+    "seg-remote-eng"
+  ],
+  "research_objectives": [
+    "Understand async collaboration pain points"
+  ],
+  "cim_claim_catalog": {
+    "segment_ids": [
+      "seg-remote-eng"
+    ]
+  }
+}

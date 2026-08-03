@@ -1,0 +1,228 @@
+Подключение Antigravity к n8n и Make
+Отличный вопрос! Я работаю локально на твоём компьютере, поэтому "прямого подключения" к облачным сервисам у меня нет. Однако есть несколько способов, как мы можем эффективно взаимодействовать с n8n и Make.
+🔗 Вариант 1: Работа через API (Рекомендуется)
+Подключение к n8n
+Что нужно:
+API-ключ n8n — для управления workflows через REST API
+URL твоего инстанса n8n (например, 
+https://your-instance.n8n.cloud
+ или локальный 
+http://localhost:5678
+)
+Пошаговая инструкция:
+[!TIP] После этого я смогу через терминал делать запросы к n8n API: получать список workflows, создавать новые, активировать/деактивировать их.
+Подключение к Make (Integromat)
+Что нужно:
+API Token Make — для управления сценариями
+Team ID и Organization ID (опционально)
+Пошаговая инструкция:
+[!IMPORTANT] Токены Make показываются только один раз! Сохрани его сразу.
+🔗 Вариант 2: Работа через Webhooks
+Если тебе нужно, чтобы n8n/Make отправляли данные мне, мы можем:
+Я запускаю локальный сервер на твоём компьютере
+Ты настраиваешь Webhook-ноду в n8n/Make на этот адрес
+Данные приходят ко мне, и я их обрабатываю
+[!CAUTION] Для этого нужен публичный IP или туннель (ngrok, Cloudflare Tunnel).
+🔗 Вариант 3: Я работаю с экспортированными файлами
+Самый простой способ:
+Экспортируй workflow из n8n (JSON-файл) или сценарий из Make
+Положи файл в папку на компьютере
+Я анализирую, редактирую и возвращаю исправленный файл
+Ты импортируешь его обратно
+❓ Что выбрать?
+API ключ Make
+67715537-8822-4dc2-829c-cee3075510b8
+API ключ n8n
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YWRhMTc2ZC01MDIyLTQxMzMtOTZjMy1hNTgyNDQwMTRkZmIiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzcwMDk0MTc5fQ.2vokf4ylyA6Ip5dPzjDa_EhuoBoleHjxnb0kKRoMF_c
+API ключ Клод
+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
+API ключ gemini
+AIzaSy_REDACTED
+API ключ Open AI
+sk-proj-REDACTED
+API ключ supabase
+sb_publishable_EkqqlsCvf69lb7r0GXYb5w_np2-2xdM
+sb_publishable_RM00CgiimOKbuHFRHMv17g_dobtyNdF
+sb_secret_REDACTED
+sb_secret_5xv8z··························
+https://undefined 
+postgresql://postgres:[YOUR-PASSWORD]@db.lykuoagjihowpohcrsjs.supabase.co:5432/postgres 
+API ключ  openrouter.ai
+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
+google/gemini-3-pro-image-preview   модель
+API ключ  app.pinecone.io
+RLaCX_BfWpCLYXQSgCBSQZQzq7nJBVE9LfCrWL5g6mRWqFoE4dxTswD3UHTHrwBNyxyy3
+API ключ  app.scrapecreators
+KcalKs9gbJSaTF9Wdzzt0NhyYfx1
+API ключ   aistudio.google
+AIzaSy_REDACTED
+AIzaSy_REDACTED
+API ключ   firecrawl.dev/app
+fc-d124789ab6ff432184ae00840608347c
+API ключ   Яндекс. Директ
+j902Y7TmszLCKfI2
+
+API-ключ для работы в AI Studio Яндекс
+AQVN3WuM2cOCVsljXFMNEBxQIaXQp4UmZCdyJZX3
+Идентификатор API-ключа   ajetde6djgs2ar4m6n2j
+Гугл календарь, диск, таблицы, почта
+Client ID    68741938371-bgnj8gq52sfc69sb42t2kkvbt9aq32el.apps.googleusercontent.com 
+Client secret     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
+ГУГЛ для BotFazera
+Идентификатор клиента  68741938371-ikbrmn6vclbo95grh07ppih01507cs6f.apps.googleusercontent.com
+Секрет клиента   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
+API ключ   pollo
+pollo_Xe00fS0uy0ncTT38wSDrfGeEw1pH9oEHuRkaucevgL4C
+API ключ   KIE.ai
+5f6f70e7239b5e45d87c8b5ebc5281da
+ webhook URL 0c44354c7a669c5619704e713dcfa6cb022b00cbca981cc771091ea0f1b4bb37
+API ключ   KIMI
+sk-kimi-XNF6ogDn2X5BlLXMqESX6K9kWQZLZhy0nzxqxk4jYWEuS9EJEsjKAoPH606uzCt5
+Beget для входа
+Подключение:   root@45.146.167.115    пароль  !f9#C8ZySUgc
+Внешний IP:  45.146.167.115
+Логин  sarbast    пароль aGOfC3dgMm1R
+2l%xTES*wFgG     Пароль для API
+API ключ   app.heygen
+sk_V2_hgu_kOBL40JuT2O_0tZY1nkQzBUodBXj4PGWWYk4FDS97X4e
+Вебхук
+Укажите URL вебхука для обратных вызовов API.   https://botfazer.sarbastn8n.ru/api/fazer/agents/webhook
+Подключение xmlriver.com
+http://xmlriver.com/wordstat/new/json?user=19836&key=3e3d6d57646ff73977242c627e164c89ea308c12
+http://xmlriver.com/search_yandex/xml?user=19836&key=3e3d6d57646ff73977242c627e164c89ea308c12
+http://xmlriver.com/search/xml?user=19836&key=3e3d6d57646ff73977242c627e164c89ea308c12
+Мы даём возможность получать выдачу нового Яндекс Wordstat в виде сырых данных.
+Начало работы
+Для начала использования XMLRiver, выполните следующие действия:
+Зарегистрируйтесь.
+В аккаунте в разделе Настройки сбора настройте параметры сбора. Без указания этих параметров Вам будет недоступна ссылка для сбора данных.
+Убедитесь, что запросы успешно отправляются:
+Сформируйте и отправьте запрос методом GET с компьютера. Используйте URL для запросов, указанный в разделе Настройки сбора и добавьте к нему параметр query. Запрос будет выглядеть следующим образом:
+http://xmlriver.com/wordstat/new/json?user=[user_id]&key=[key]&query=test
+Мы принимаем GET и POST запросы с параметрами, которые соответствуют параметрам Yandex Search API v1, кроме параметра apikey, который будет проигнорирован.
+Все запросы должны отправляться на URL http://xmlriver.com/yandex/xml?user=[ваш_id]&key=[ваш_ключ].
+Наш сервис адаптирован к формату Yandex Search API. Формат ответа соответствует формату ответа Yandex Search API однако значительно расширен. Так же есть отличия в принимаемых параметрах, о чем будет указано ниже.
+Начало работы
+Для начала использования XMLRiver, выполните следующие действия:
+Зарегистрируйтесь.
+В аккаунте в разделе Настройки сбора настройте параметры сбора и там же, при необходимости, включите дополнительные параметры выдачи. Без указания этих параметров Вам будет недоступна ссылка для сбора данных.
+Убедитесь, что запросы успешно отправляются:
+Сформируйте и отправьте запрос методом GET с компьютера. Используйте URL для запросов, указанный в разделе Настройки сбора и добавьте к нему параметр query. Запрос будет выглядеть следующим образом:
+Google:
+http://xmlriver.com/search/xml?user=[user_id]&key=[key]&query=test
+Яндекс:
+http://xmlriver.com/search_yandex/xml?user=[user_id]&key=[key]&query=test
+ВАЖНО! Строка, которая передается в параметр query не должна содержать амперсанд (&). Его нужно заменять на код %26
+Проверьте полученный XML-документ.
+Ответ должен соответствовать заданному формату и не должен содержать ошибок.
+Примечание. Если по поисковому запросу отсутствуют результаты, допустима ошибка с кодом «15».
+https://lykuoagjihowpohcrsjs.supabase.co
+sb_publishable_EkqqlsCvf69lb7r0GXYb5w_np2-2xdM
+postgresql://postgres:[YOUR-PASSWORD]@db.lykuoagjihowpohcrsjs.supabase.co:5432/postgres
+sb_publishable_RM00CgiimOKbuHFRHMv17g_dobtyNdF
+ Видеоурок (https://youtu.be/dAPaRLPEP10?si=SX4lwd3_KvTvgSNG) по настройке контент-завода
+https://www.youtube.com/watch?v=dAPaRLPEP10 
+
+Видеоурок (https://youtu.be/8uCdgBF3zjs?si=qj1n-MXvZc_Oc4Fx) как развернуть n8n
+https://www.youtube.com/watch?v=8uCdgBF3zjs 
+Точный REST-контракт под вашу установку (зафиксируйте)
+Использовать ТОЛЬКО так:
+Base URL
+https://sarbastn8n.ru/api/v1  
+Auth header
+X-N8N-API-KEY: <ВАШ_API_KEY>  
+Ключевые эндпоинты
+GET /workflows — инвентаризация
+POST /workflows — создание
+PUT /workflows/{id} — обновление
+POST /workflows/{id}/activate — активация
+POST /workflows/{id}/deactivate — деактивация
+Скопируйте этот текст и используйте его, когда захотите создать нового бота.
+ПРОМПТ:
+"Ты — n8n Meta-Architect. Твоя задача: создать нового бота в n8n на https://sarbastn8n.ru/api/v1.
+Твои инструменты:
+REST API (через HTTP запросы с заголовком X-N8N-API-KEY).
+MCP (инструменты n8n-mcp).
+Задача: [ОПИШИТЕ ЗДЕСЬ, ЧТО ДОЛЖЕН ДЕЛАТЬ БОТ, например: 'Создай бота для приема заявок из Telegram и сохранения их в Google Sheets'].
+«Всегда используй правила из файлов n8n_foundation.json  и  n8n_course_level_one.json для проектирования и деплоя воркфлоу».
+Инструкция по сборке:
+Используй структуру из Dashboard Control Plane v2.json как эталон.
+Сгенерируй полный JSON воркфлоу.
+Отправь его через POST /workflows.
+После создания активируй его.
+ОБЯЗАТЕЛЬНО: Проведи тест. Вызови созданный воркфлоу через MCP и убедись, что он возвращает статус 200. Если есть ошибка — исправь JSON и обнови воркфлоу через PUT.
+Действуй логично, без сбоев. Отчитайся о создании и предоставь URL вебхука нового бота."
+ПРОМПТ ДЛЯ BOTFATHER
+Твоя роль: n8n Meta-Architect. Цель: создать в n8n (self-hosted на https://sarbastn8n.ru) нового бота “nano_banana image generator”, который принимает текстовый промпт и возвращает изображение, используя модель nano_banana через RouteLLM API.
+ЖЕСТКИЕ ТРЕБОВАНИЯ (обязательны):
+Следуй правилам из файлов n8n_foundation.json и n8n_course_level_one.json (они лежат в рабочей папке проекта).
+Деплой workflow делай через REST API n8n: 
+Base URL: https://sarbastn8n.ru/api/v1
+Auth: заголовок X-N8N-API-KEY (ключ уже создан у пользователя; НЕ проси показывать ключ в чате).
+После создания workflow: активируй его, затем проверь работоспособность тестом (через MCP, если доступно) и опиши пользователю как тестировать вручную.
+Никаких “примеров/псевдокода”: создай реальный workflow JSON (полный) и задеплой его через REST.
+ФУНКЦИОНАЛ БОТА (MVP, строго):
+Вход: Webhook (POST) по пути /nano-banana
+Принимает JSON:
+{
+"prompt": "текст",
+"aspect_ratio": "1:1|16:9|9:16|3:2|2:3" (опционально, по умолчанию 1:1),
+"num_images": 1 (опционально, только 1 поддерживаем в MVP),
+"output": "base64|url" (опционально, по умолчанию base64)
+}
+Валидирует: prompt обязателен, 1..2000 символов. Если ошибка — вернуть 400 и JSON с полем error.
+Генерация: вызови RouteLLM Images API с моделью "nano_banana".
+Выход: 
+если output=base64: вернуть JSON { "mime":"image/png", "image_base64":"..." }
+если output=url: сохранить изображение в n8n бинарные данные и отдать временную ссылку/или вернуть base64 (если URL невозможно без внешнего хранилища — честно сообщить и вернуть base64).
+Логирование: записать в execution data поля prompt, aspect_ratio, время генерации, статус.
+ИНТЕГРАЦИЯ С RouteLLM (обязательная специфика):
+Используй HTTP Request node для вызова API.
+API Base URL RouteLLM: https://routellm.abacus.ai/v1
+Endpoint: POST /images/generations
+В заголовках: Authorization: Bearer {{ $env.ROUTELLM_API_KEY }}
+Не храни ключи в workflow JSON. Используй env или n8n credentials.
+Тело запроса должно включать модель "nano_banana", prompt пользователя и размер/формат согласно возможностям API.
+Обработай ошибки: 401/429/5xx -> вернуть 502 с понятной ошибкой и рекомендацией повторить.
+РЕАЛИЗАЦИЯ WORKFLOW (структура узлов):
+Webhook Trigger (POST, путь nano-banana, respond via “Respond to Webhook” node)
+Code node “Validate Input” (проверка prompt, aspect_ratio, output)
+HTTP Request “RouteLLM Generate Image” (вызов RouteLLM)
+Code node “Normalize Output” (достать base64/bytes из ответа)
+Respond to Webhook (200 или 400/502)
+КРИТИЧЕСКИЕ УСЛОВИЯ УСПЕХА:
+Workflow должен создаться через REST и появиться в списке.
+Должен быть активирован.
+Должен корректно отвечать на тестовый POST.
+Если RouteLLM ключ не настроен, workflow должен отвечать 502 с сообщением “ROUTELLM_API_KEY not set”.
+ПОСЛЕ ДЕПЛОЯ:
+Выведи пользователю: URL тестового webhook (webhook-test) и production webhook.
+Дай пример curl для теста.
+Если MCP доступен: выполни тестовый запуск и покажи краткий результат.
+Начинай: сначала инвентаризируй существующие workflow на предмет конфликтов пути /nano-banana, затем создай новый workflow.
+Шаг | Действие
+1 | Открой n8n → Settings (⚙️ в левом нижнем углу)
+2 | Перейди в раздел API → API Keys
+3 | Нажми Create API Key
+4 | Дай ключу понятное имя (например, 
+antigravity-integration
+)
+5 | Скопируй сгенерированный ключ и сохрани его в безопасном месте
+6 | Передай мне ключ и URL когда будем работать
+Шаг | Действие
+1 | Открой Make → нажми на свой профиль (правый верхний угол)
+2 | Выбери Profile → API Access
+3 | Нажми Add token
+4 | Дай токену имя и выбери нужные Scopes (права доступа)
+5 | Рекомендуемые scopes: 
+scenarios:read
+, 
+scenarios:write
+, 
+connections:read
+6 | Нажми Save и скопируй токен
+7 | Также скопируй Team ID со страницы настроек команды
+Задача | Лучший вариант
+Я должен создавать/редактировать workflows автоматически | API (Вариант 1)
+n8n/Make должны отправлять мне данные | Webhooks (Вариант 2)
+Разовый анализ или помощь с конкретным workflow | Экспорт/Импорт (Вариант 3)

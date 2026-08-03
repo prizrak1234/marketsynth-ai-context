@@ -1,0 +1,144 @@
+id: ms.skill.icp_segmentation
+name: ICP & Segmentation
+version: 0.1.0
+description: >
+  Consume Product Marketing Context 0.2.x, Market Research 0.1.x, and Competitor
+  Analysis 0.1.x outputs to produce an evidence-aware Customer Intelligence
+  Document with ranked segments and ICP candidates — without positioning, offers,
+  commercial verdicts, or external connector execution.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - customer_segment_identification
+  - segment_boundary_normalization
+  - icp_candidate_generation
+  - jobs_to_be_done_structuring
+  - pain_point_structuring
+  - desired_outcome_structuring
+  - buying_trigger_analysis
+  - buying_barrier_analysis
+  - objection_analysis
+  - decision_role_analysis
+  - trust_driver_analysis
+  - channel_preference_analysis
+  - awareness_stage_assessment
+  - market_sophistication_assessment
+  - urgency_assessment
+  - budget_sensitivity_assessment
+  - segment_evidence_assessment
+  - segment_overlap_detection
+  - segment_conflict_detection
+  - segment_unknown_detection
+  - segment_priority_assessment
+  - customer_intelligence_readiness_assessment
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - market_source
+    - competitor_source
+    - audience_signal
+    - demand_signal
+    - assumption
+    - inference
+  rules:
+    - id: no_inference_as_verified
+      description: Inferences must not be marked verified without evidence.
+    - id: verified_requires_evidence
+      description: Verified customer claims require evidence_references.
+    - id: no_commercial_verdict
+      description: Output must not issue proceed/stop/viable/unviable verdicts.
+    - id: no_positioning_or_offer
+      description: Output must not create positioning or final offers.
+    - id: no_autonomous_research
+      description: Skeleton package does not fetch external sources autonomously.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.product_marketing_context
+      relationship: required_dependency
+      note: Required >=0.2.0,<1.0.0 — PMC 0.1.0 not compatible.
+    - id: ms.skill.market_research
+      relationship: required_dependency
+      note: Required >=0.1.0,<1.0.0 — research output with preserved lineage.
+    - id: ms.skill.competitor_analysis
+      relationship: required_dependency
+      note: Required >=0.1.0,<1.0.0 — competitive landscape with preserved lineage.
+    - id: ms.skill.market_validation
+      relationship: declared_future_dependency
+      note: Downstream consumer of segment priority and evidence — not verdict issuer here.
+    - id: ms.skill.positioning
+      relationship: declared_future_dependency
+      note: CIM consumer — must not recompute JTBD, pains, triggers, or objections.
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  verdict_presentation:
+    external_side_effects: false
+    approval_required: false
+  launch_or_execution_transition:
+    approval_required: true
+    note: Human approval required before launch, spend, or publication.
+  paid_or_write_actions:
+    approval_required: true
+  publication:
+    governed_by: native_publication_flow
+    skill_bypass_allowed: false
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 1
+  current_state: skeleton_only
+known_limitations:
+  - Non-executable candidate package — no runtime loader in SKILL-02.4.
+  - Does not autonomously search the web or invoke connectors.
+  - Does not issue commercial viability verdicts — research_status only.
+  - Does not produce final positioning or offers — Customer Intelligence only.
+  - CIM schema is package-local (0.1.0-draft) until SKILL-02.5 shared freeze.
+  - No connector or tool permissions granted.
+test_suite:
+  manifest: tests/eval_manifest.yaml
+  backend_tests: tests/test_skill_02_4_icp_segmentation.py
+provenance:
+  origin: platform_native
+  methodology:
+    - Internal Marketsynth customer intelligence and segmentation methodology
+    - Informed by SKILL-R0.1 audit MS-SKILL-004 (ICP & Segmentation)
+  external_methodology_references:
+    - audit_card: docs/research/skills/candidates/04-icp-segmentation.md
+      reuse: methodology_only
+      license: MIT
+      note: No direct external Skill installation or executable content reuse.
+  external_code_dependency: false
+  direct_external_skill_install: false
+  audit_research_id: MS-SKILL-004
+runtime_compatibility:
+  - operator_dry_run
+  - assistant_explicit_run
+knowledge_scopes:
+  - icp_segmentation
+  - customer_intelligence
+  - market_research
+network_policy:
+  default: deny
+  allowed_hosts: []
+  allowed_connectors_only: true
+script_policy:
+  enabled: false
+  reason: SKILL-02.4 skeleton — scripts forbidden.
+resource_limits:
+  max_package_size_mib: 10
+  max_skill_md_kib: 256

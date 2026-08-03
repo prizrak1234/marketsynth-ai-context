@@ -1,0 +1,85 @@
+id: ms.skill.presentation_architecture
+name: Presentation Architecture
+version: 0.1.0
+description: >
+  Transform approved source content into evidence-aware, provider-neutral
+  presentation specifications — no rendering or export.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - presentation_objective_normalization
+  - audience_context_assessment
+  - source_content_structuring
+  - narrative_arc_design
+  - slide_sequence_design
+  - slide_purpose_definition
+  - content_density_control
+  - evidence_reference_mapping
+  - claim_safety_review
+  - chart_requirement_design
+  - visual_brief_generation
+  - image_requirement_design
+  - layout_recommendation
+  - theme_recommendation
+  - typography_recommendation
+  - accessibility_review
+  - speaker_note_requirement_design
+  - CTA_placement_strategy
+  - presentation_risk_detection
+  - presentation_readiness_assessment
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - assumption
+    - inference
+  rules:
+    - id: no_runtime_execution
+      description: Non-executable candidate — specification only, no rendering.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.knowledge_linking
+      relationship: optional_dependency
+      note: Source content lineage may be validated via linking reports
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  deployment_or_publication:
+    approval_required: true
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 8
+  current_state: candidate_evaluated
+known_limitations:
+  - Non-executable candidate — no runtime loader.
+  - No Marp, PPTX, PDF, Canva or Google Slides rendering.
+  - Specification only — renderer selection belongs to Connector layer.
+  - production_eligible=false
+network_policy:
+  default: deny
+  allowed_hosts: []
+script_policy:
+  enabled: false
+provenance:
+  origin: platform_native
+  methodology:
+    - KB-WPL-01.6 Presentation Architecture Skill
+    - KB-WPL-01.3C frozen Workflow Pattern Library
+    - Adapted marp-slide presentation hierarchy methodology
+test_suite:
+  manifest: tests/eval_manifest.yaml

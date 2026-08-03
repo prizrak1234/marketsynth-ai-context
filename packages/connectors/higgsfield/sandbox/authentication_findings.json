@@ -1,0 +1,9 @@
+{
+  "captured_at": null,
+  "mechanism": "unknown",
+  "notes": [
+    "Authentication flow must be verified via owner sandbox handshake."
+  ],
+  "requires_bearer_token": false,
+  "status": "sandbox_verification_required"
+}

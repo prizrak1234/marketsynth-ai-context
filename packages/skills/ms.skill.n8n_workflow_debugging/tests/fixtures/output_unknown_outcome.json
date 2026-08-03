@@ -1,0 +1,24 @@
+{
+  "diagnostic_report_id": "diag-unknown-outcome-001",
+  "skill_id": "ms.skill.n8n_workflow_debugging",
+  "skill_version": "0.1.0",
+  "failure_summary": "Write outcome unknown after provider timeout.",
+  "failure_classification": "unknown_outcome",
+  "patterns_consulted": [],
+  "sandbox_plan": { "publication_enabled": false, "billing_enabled": false },
+  "remediation_candidates": [
+    { "action": "manual_reconciliation", "description": "Verify write state before retry" }
+  ],
+  "diagnostic_confidence": "low",
+  "diagnostic_readiness": "blocked_by_missing_evidence",
+  "limitations": [],
+  "provider_reverification_required": false,
+  "evidence_gaps": ["provider_response_missing"],
+  "coverage": "minimal",
+  "evidence_quality": "insufficient",
+  "research_status": "insufficient_sources",
+  "human_review_required": true,
+  "provenance": { "program_phase": "KB-WPL-01.4" },
+  "input_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+}

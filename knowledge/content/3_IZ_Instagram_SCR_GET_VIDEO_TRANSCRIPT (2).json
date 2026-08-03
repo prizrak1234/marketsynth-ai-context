@@ -1,0 +1,781 @@
+{
+  "name": "3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        32,
+        -976
+      ],
+      "id": "1147238c-bf8f-4a13-bf62-2b0ed024a121",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "DZ98KjGtgiciV1Sm",
+          "mode": "list",
+          "cachedResultName": "3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/DZ98KjGtgiciV1Sm"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        224,
+        -976
+      ],
+      "id": "80ce6c7d-0bb0-4c45-9856-dffd301e20a3",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "19Dzbfk_xMMh_HlY23HtlSRz4HkonhFdef48Q7bSpjcM",
+          "mode": "list",
+          "cachedResultName": "Instagram AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19Dzbfk_xMMh_HlY23HtlSRz4HkonhFdef48Q7bSpjcM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 835011717,
+          "mode": "list",
+          "cachedResultName": "3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19Dzbfk_xMMh_HlY23HtlSRz4HkonhFdef48Q7bSpjcM/edit#gid=835011717"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "URL": "={{ $json.URL }}",
+            "transcript": "={{ $json.transcript }}",
+            "createdAt": "={{ $json.createdAt }}",
+            "updatedAt": "={{ $json.updatedAt }}",
+            "Статус": "не готово"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Статус",
+              "displayName": "Статус",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Хук",
+              "displayName": "Хук",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ценность",
+              "displayName": "Ценность",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Структура",
+              "displayName": "Структура",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Причина, почему видео «стрельнуло»",
+              "displayName": "Причина, почему видео «стрельнуло»",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Рекомендации по улучшению",
+              "displayName": "Рекомендации по улучшению",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        -976
+      ],
+      "id": "d6fdbc09-a5d6-431d-a148-6a90084d7795",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Синхронизация данных в таблице в Google",
+        "height": 912,
+        "width": 992,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        -1072
+      ],
+      "id": "0d4991cd-d665-45ce-be2c-d727f4305991",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "DZ98KjGtgiciV1Sm",
+          "mode": "list",
+          "cachedResultName": "3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/DZ98KjGtgiciV1Sm"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "URL",
+              "condition": "isNotEmpty"
+            }
+          ]
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -976
+      ],
+      "id": "02a4e8ff-58fe-4ced-9a51-670ef4fb0a26",
+      "name": "Delete row(s)1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a marketing expert specializing in short-form video content analysis for Instagram Reels.\n\nYour task:\n1) Identify the hook and explain why it can capture attention.\n2) Describe the core idea/value of the video.\n3) Explain the structure (intro, main, ending/CTA).\n4) Explain why this video might have performed well.\n5) Provide 2–3 actionable recommendations to improve engagement.\n\nReturn the result as JSON with fields:\n{\n  \"hook\": \"\",\n  \"core_value\": \"\",\n  \"structure\": \"\",\n  \"why_it_performed\": \"\",\n  \"recommendations\": \"\"\n}\n\nContext:\nURL: {{ $json.URL }}\nTranscript:\n{{ $json.transcript }}\n\nYou also have a tool named \"Update row in sheet in Google Sheets\".\nAfter you produce the analysis, CALL THIS TOOL to update the row where Column to match is URL.\nPass exactly these arguments (keys must match):\n{\n  \"url\": \"{{ $json.URL }}\",\n  \"hook\": \"<hook>\",\n  \"core_value\": \"<core_value>\",\n  \"structure\": \"<structure>\",\n  \"why_it_performed\": \"<why_it_performed>\",\n  \"recommendations\": \"<recommendations>\"\n}\n\nDo not alter the URL. After calling the tool, also return the same JSON in your message.\n",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "batching": {
+            "batchSize": 1
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        -704
+      ],
+      "id": "4eb204e3-0b29-4a4c-ae70-8eb22b178238",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        -432
+      ],
+      "id": "c63b0d0c-019e-4441-86b3-6f430911d160",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-5-20250929",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4.5"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        -432
+      ],
+      "id": "abf894bf-cb65-4bcc-a98d-6fc1506abfe9",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"hook\": \"...\",\n  \"idea\": \"...\",\n  \"structure\": \"...\",\n  \"why_it_worked\": \"...\",\n  \"recommendations\": [\"...\", \"...\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        656,
+        -400
+      ],
+      "id": "cb449874-4d70-45cd-ba44-a85d0ef51461",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "19Dzbfk_xMMh_HlY23HtlSRz4HkonhFdef48Q7bSpjcM",
+          "mode": "list",
+          "cachedResultName": "Instagram AI Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19Dzbfk_xMMh_HlY23HtlSRz4HkonhFdef48Q7bSpjcM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 835011717,
+          "mode": "list",
+          "cachedResultName": "3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19Dzbfk_xMMh_HlY23HtlSRz4HkonhFdef48Q7bSpjcM/edit#gid=835011717"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "URL": "={{ $fromAI('url') }}",
+            "Статус": "готово",
+            "Хук": "={{ $fromAI('hook') }}",
+            "Ценность": "={{ $fromAI('core_value') }}",
+            "Структура": "={{ $fromAI('structure') }}",
+            "Причина, почему видео «стрельнуло»": "={{ $fromAI('why_it_performed') }}",
+            "Рекомендации по улучшению": "={{ $fromAI('recommendations') }}"
+          },
+          "matchingColumns": [
+            "URL"
+          ],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Статус",
+              "displayName": "Статус",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Хук",
+              "displayName": "Хук",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ценность",
+              "displayName": "Ценность",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Структура",
+              "displayName": "Структура",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Причина, почему видео «стрельнуло»",
+              "displayName": "Причина, почему видео «стрельнуло»",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Рекомендации по улучшению",
+              "displayName": "Рекомендации по улучшению",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        432,
+        -416
+      ],
+      "id": "722be8ab-44e3-4985-9e9e-ac0eec470e87",
+      "name": "Update row in sheet in Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "URL"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        -16
+      ],
+      "id": "2e5711c6-c95d-4b15-bc24-1a3847c2992b",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "DZ98KjGtgiciV1Sm",
+          "mode": "list",
+          "cachedResultName": "3_IZ_Instagram_SCR_GET_VIDEO_TRANSCRIPT",
+          "cachedResultUrl": "/projects/Ok1ItbAUsz9TDAT7/datatables/DZ98KjGtgiciV1Sm"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "URL": "={{ $('When Executed by Another Workflow').item.json.URL }}",
+            "transcript": "={{ $json.transcript }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -16
+      ],
+      "id": "bdfa8bf9-09cf-486c-acec-566b815e3666",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Получаем входные данные\nconst input = $input.first().json;\n\n// Извлекаем URL\nconst url = input.URL || input.url || null;\n\n// Извлекаем ID ролика из ссылки (например, DDE8cQntcjZ)\nfunction extractReelCode(u) {\n  if (!u) return null;\n  const m = String(u).match(/instagram\\.com\\/reel\\/([^/?#]+)/i);\n  return m ? m[1] : null;\n}\n\n// Формируем результат\nconst result = {\n  message: \"Транскрибация видео выполнена успешно\",\n  status: \"success\",\n  video_id: extractReelCode(url),\n  video_url: url,\n  transcript: input.transcript || \"\"\n};\n\nreturn [{ json: result }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        -16
+      ],
+      "id": "97ef6252-4859-4b90-8270-d28700860fb4",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "content": "## Get a tik tok video transcript",
+        "height": 288,
+        "width": 1120,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -192,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "7cb53cec-53c9-4c84-a8d8-7e3192c99d97",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: DATA TABLE в n8n: https://youtu.be/FD1HyYR3EP0\n## https://youtu.be/FD1HyYR3EP0",
+        "height": 132,
+        "width": 456
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -368,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "fb1b7516-e862-44d8-8f89-8b9132bbb2dd",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Уроки по работе с нодами CODE в n8n: https://youtu.be/9VnMZjdvqKU\n## https://youtu.be/dFxmFtTZmog",
+        "height": 132,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        112
+      ],
+      "typeVersion": 1,
+      "id": "0f87c5df-f2fa-4077-94a7-04077bbf0e54",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "getInstagramPostTranscript",
+        "url": "={{ $json.URL }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-scrape-creators.scrapeCreators",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -16
+      ],
+      "id": "b88ef0af-8e58-4756-a1f6-d2a4b2f725ff",
+      "name": "Get an instagram post transcript",
+      "credentials": {
+        "scrapeCreatorsApi": {
+          "id": "XNzkdQFgWnEu59Bh",
+          "name": "Scrape Creators account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "URL": "https://www.instagram.com/reel/DDE9cQttcjZ/"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete row(s)1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Update row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get an instagram post transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an instagram post transcript": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "048cffdd-0822-4b64-a4b4-7a8a3cf33274",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "kQoM8KThbymEa9SD",
+  "tags": []
+}

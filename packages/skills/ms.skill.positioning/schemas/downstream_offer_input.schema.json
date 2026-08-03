@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ms.skill.positioning/downstream_offer_input/0.1.0",
+  "title": "DownstreamOfferInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "selected_positioning_hypothesis_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "selected_segment_ids": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "minItems": 1,
+      "maxItems": 10
+    },
+    "customer_problem": { "type": "string", "maxLength": 2000 },
+    "desired_outcome": { "type": "string", "maxLength": 2000 },
+    "value_frame": { "type": "string", "maxLength": 4000 },
+    "differentiation_basis": { "type": "string", "maxLength": 4000 },
+    "reason_to_believe": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "proof_requirements": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 30
+    },
+    "objections_to_address": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 20
+    },
+    "buying_triggers": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 20
+    },
+    "buying_barriers": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 20
+    },
+    "trust_drivers": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 },
+      "maxItems": 20
+    },
+    "budget_sensitivity": { "type": "string", "maxLength": 500 },
+    "conditions": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "evidence_references": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 256 },
+      "maxItems": 50
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 2000 },
+      "maxItems": 20
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skill_id": { "type": "string", "const": "ms.skill.positioning" },
+        "skill_version": { "type": "string", "pattern": "^0\\.1\\.\\d+$" }
+      },
+      "required": ["skill_id", "skill_version"]
+    }
+  },
+  "required": [
+    "selected_positioning_hypothesis_id",
+    "selected_segment_ids",
+    "customer_problem",
+    "desired_outcome",
+    "value_frame",
+    "differentiation_basis",
+    "reason_to_believe",
+    "proof_requirements",
+    "objections_to_address",
+    "buying_triggers",
+    "buying_barriers",
+    "trust_drivers",
+    "budget_sensitivity",
+    "conditions",
+    "blockers",
+    "evidence_references",
+    "unknowns",
+    "provenance"
+  ]
+}

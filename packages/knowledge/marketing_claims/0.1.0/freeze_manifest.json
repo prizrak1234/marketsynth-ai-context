@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "canonical_uri_base": "https://schemas.marketsynth.ai/marketing-claims/0.1.0/",
+  "schema_status": "frozen",
+  "file_hashes": {
+    "claim-compliance-finding.schema.json": "33f11c2470c578e5f9f9b5045733fbca881dd9680a6ded0e378c1fc26bd733ff",
+    "claim-evidence-link.schema.json": "8fbe69652216130db38aa11585c056098fcab603fd478378cc6a596c3a4f89b8",
+    "guarantee-proposal.schema.json": "4aaa146ce9491ca20352f63e2083529d1619cb575070d9b3e03ad2c9e02e0e33",
+    "marketing-claim.schema.json": "28c3a1d61d37dedc71196bdca302509fa55be782617d24ed5389857f9cd0d8bd",
+    "price-justification.schema.json": "2b3a7a0f89ec82a15ad704a0b5de6ba4f4a3601ddf9d45c75483f2ae01bf0be1",
+    "promise-candidate.schema.json": "f836bbdcd11ec82f98543602e18f579bcc7d6c84b65d8002fc657d0a21f25172",
+    "proof-requirement.schema.json": "30185c7664b71f6f55799d7b7877ff7f1ff68646e5bf741d6222c3ce73e86025",
+    "provenance.schema.json": "4e433e8ad68ce3f9251dec7f89b889c71d60a86a8e9124010e05b57ec057b990",
+    "risk-reversal.schema.json": "7b56a007672415350ce859f18184a04f91fffd7b35c9d23e704d32f717bfe28d"
+  },
+  "bundle_hash": "c29ca2c08ccbb8861206fcc855e966c93d50b68264d8d9bdd096e13cd5c32f8d",
+  "generated_at": "2026-07-23T00:00:00Z"
+}

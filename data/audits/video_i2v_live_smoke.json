@@ -1,0 +1,13 @@
+{
+  "status": "AWAITING_OWNER_EXPLICIT_CONFIRMATION",
+  "image_to_video_live_verified": false,
+  "paid_smoke_performed": false,
+  "verified_at": null,
+  "provider_code": null,
+  "model": null,
+  "operation": "image_to_video",
+  "cost_units": null,
+  "result_asset_hint": null,
+  "checksum_sha256": null,
+  "note": "Set by POST /media-generation/video-smoke/execute with explicit_confirmation=true after successful paid smoke only."
+}

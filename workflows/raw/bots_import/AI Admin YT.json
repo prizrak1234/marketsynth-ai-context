@@ -1,0 +1,813 @@
+{
+  "name": "AI Admin YT",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -840,
+        -320
+      ],
+      "id": "61b0944d-0801-4033-a37b-3377b4271aa3",
+      "name": "Telegram Trigger",
+      "webhookId": "caace249-8273-4426-8611-c9323d876191",
+      "credentials": {
+        "telegramApi": {
+          "id": "kh3MULgeeFcTqlZN",
+          "name": "all the tests"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7d6c5f92-212c-43d3-a5be-b683b0b45cdb",
+              "name": "from_id",
+              "value": "={{ $json.message.from.id }}",
+              "type": "number"
+            },
+            {
+              "id": "033308c6-4046-47fc-8afb-8c4e00b3d5c1",
+              "name": "message_id",
+              "value": "={{ $json.message.message_id }}",
+              "type": "string"
+            },
+            {
+              "id": "399fd60a-acb7-40da-8f80-358b73b24337",
+              "name": "message",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "e16c7994-86ea-4ef1-bcf3-568602dcea52",
+              "name": "channel_id",
+              "value": "-10025",
+              "type": "string"
+            },
+            {
+              "id": "9f4ccd18-ffee-4c04-9f42-bc9d4511f2f8",
+              "name": "chat_id",
+              "value": "-10026",
+              "type": "string"
+            },
+            {
+              "id": "df0c596a-8bb7-4b11-8fd4-c411ed239ae8",
+              "name": "bot_token",
+              "value": "8115542217",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -640,
+        -320
+      ],
+      "id": "f5868f39-63e3-4cdd-81e9-ab8a1a8ccba0",
+      "name": "All the data"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.chat_id }}",
+        "text": "=Правила были нарушены, и это конец...\nКое-кто удалён из чата и канала. Не будьте как он/она, будте дружелюбны.\nВот правила, которых следует придерживаться.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        -480
+      ],
+      "id": "c516fdff-4172-42f9-aec7-5b06b702e79b",
+      "name": "Chat Message",
+      "webhookId": "7b12d6f3-9532-416f-8e62-7008f495e594",
+      "credentials": {
+        "telegramApi": {
+          "id": "kh3MULgeeFcTqlZN",
+          "name": "all the tests"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -300,
+        -120
+      ],
+      "id": "dc1de20a-ef95-4c3c-9b23-53573d3d1a36",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"isFault\": true\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -60,
+        -120
+      ],
+      "id": "e659c1ed-a006-4100-ae00-b4135f855052",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.output.isFault }}",
+              "operation": "contains",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "1f0b782c-fcea-46b0-96b7-cc77f5dc3e9a",
+      "name": "Is fault?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $('All the data').item.json.bot_token }}/banChatMember",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"chat_id\": \"{{ $('All the data').item.json.channel_id }}\",\n    \"user_id\": \"{{ $('All the data').item.json.from_id }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        -480
+      ],
+      "id": "065c888f-095d-4308-9676-e4cdc3190b52",
+      "name": "Кик из канала"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $('All the data').item.json.bot_token }}/banChatMember",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"chat_id\": \"{{ $('All the data').item.json.chat_id }}\",\n    \"user_id\": \"{{ $('All the data').item.json.from_id }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        -480
+      ],
+      "id": "6e5f2b09-2acb-4d79-bd82-54eecd455a8b",
+      "name": "Кик из чата"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data').item.json.from_id }}",
+        "text": "=Вы удалены из канала из-за нарушения правил.\nБай-бай.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1120,
+        -480
+      ],
+      "id": "5b489c76-a8e5-404c-9713-934fbf24462f",
+      "name": "User Message",
+      "webhookId": "f9ff5455-1fef-4de1-ae96-fc840ecef427",
+      "credentials": {
+        "telegramApi": {
+          "id": "kh3MULgeeFcTqlZN",
+          "name": "all the tests"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Определяем тип сообщения",
+        "height": 740,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -920,
+        -540
+      ],
+      "typeVersion": 1,
+      "id": "2ffa2fba-a60f-4d9c-999f-08ee48d14d36",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Определяем статус пользователя \n\n(этот модуль уже реализован в Pro группе тут https://t.me/iishenka_pro_bot)",
+        "height": 140,
+        "width": 760,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -420,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "8886c650-60c2-4441-893e-50e7e88bb96e",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Высылаем инвайты\n\n(этот модуль уже реализован в Pro группе тут https://t.me/iishenka_pro_bot)",
+        "height": 140,
+        "width": 1460,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        360,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "c7c64e0f-56c0-47d8-9ed6-2e0676455067",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## ИИ валидатор",
+        "height": 580,
+        "width": 760,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -420,
+        -540
+      ],
+      "typeVersion": 1,
+      "id": "0dd35ecc-32ec-4d2b-baf1-8ac11c16ae95",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Кик из канала и группы",
+        "height": 280,
+        "width": 1460,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        360,
+        -540
+      ],
+      "typeVersion": 1,
+      "id": "5b498e59-3441-467c-9ff3-5922edde3590",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Запись в БД",
+        "height": 280,
+        "width": 280,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        360,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "cfee2cb0-741f-47e3-bb87-3443d109b299",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $('All the data').item.json.bot_token }}/deleteMessage",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"chat_id\": \"{{ $('All the data').item.json.chat_id }}\",\n    \"message_id\": \"{{ $('All the data').item.json.message_id }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        -480
+      ],
+      "id": "2f3052d0-c4ab-46a6-b501-487cd1bbb264",
+      "name": "Удалить сообщение"
+    },
+    {
+      "parameters": {
+        "tableId": "ii_chat_history",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ $('All the data').item.json.message }}"
+            },
+            {
+              "fieldId": "message_id",
+              "fieldValue": "={{ $('All the data').item.json.message_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        420,
+        -160
+      ],
+      "id": "4d8eaac2-b66a-4601-b72b-064e3b7d8bdb",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eltjkIm4u9ZxtQbe",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Саммаризация",
+        "height": 280,
+        "width": 1160,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        660,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "095db826-3a63-47f0-87f8-b04d89ba41c4",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "ii_chat_history",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gt",
+              "keyValue": "={{ new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate(), 0, 0, 0)).toISOString() }}"
+            },
+            {
+              "keyName": "created_at",
+              "condition": "lt",
+              "keyValue": "={{ new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate(), 23, 59, 59, 999)).toISOString() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        980,
+        -200
+      ],
+      "id": "7d5e5f75-15a5-4f7d-946a-8498693fa5cf",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eltjkIm4u9ZxtQbe",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 23,
+              "triggerAtMinute": 59
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        700,
+        -200
+      ],
+      "id": "516030ce-781b-4a3d-90e4-29d7423a2338",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "message"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        -200
+      ],
+      "id": "7fa82a6a-a81a-4352-9c22-211696a3b9ab",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('All the data').item.json.message }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Ты ассистент, который проверяет сообщения пользователей на нарушение правил сообщества.\nУ тебя есть правила и тебе требуется вернуть строго true или false.\n\nЕсли правила нарушены, то верни true.\nЕсли правила не нарушены, то верни false.\n\nОтвет верни в формате json, смотри пример.\n\nПравила:\n- Нельзя говорить слово «курица».\n- Нельзя говорить слово «яйцо»."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        -260,
+        -320
+      ],
+      "id": "9748d83d-9db1-4a2f-9df5-05f30a958ebb",
+      "name": "Is there fault?",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1220,
+        -80
+      ],
+      "id": "3aca0178-c3b9-41cf-902f-f19d767262d9",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Ты ассистент, который саммаризирует сообщения за день.\nПользователь тебе отдал все сообщения, которые были в канале за день.\n\nТвоя задача выделить все интересные темы, которые поднимались, и вернуть numbered list этих тем, больше ничего.\n\nПри ответе придерживайся такого формата:\n\nПривет! Вот саммари всех интересных тем за день:\n— Тема 1.\n— Тема 2.\n"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1300,
+        -200
+      ],
+      "id": "b96bd554-fdf7-42d0-b198-093a09ffabc3",
+      "name": "Summary",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('All the data chat').item.json.chat_id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        -200
+      ],
+      "id": "6de6c936-90c4-4203-9ca0-12a87b7d7046",
+      "name": "Summary Day",
+      "webhookId": "e0d2f77c-9d16-4ada-b9da-f42fdf8b2412",
+      "credentials": {
+        "telegramApi": {
+          "id": "kh3MULgeeFcTqlZN",
+          "name": "all the tests"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e16c7994-86ea-4ef1-bcf3-568602dcea52",
+              "name": "channel_id",
+              "value": "-1002",
+              "type": "string"
+            },
+            {
+              "id": "9f4ccd18-ffee-4c04-9f42-bc9d4511f2f8",
+              "name": "chat_id",
+              "value": "-100262",
+              "type": "string"
+            },
+            {
+              "id": "df0c596a-8bb7-4b11-8fd4-c411ed239ae8",
+              "name": "bot_token",
+              "value": "811554",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        840,
+        -200
+      ],
+      "id": "9ead8f31-600d-4d67-ba59-eaded02c6054",
+      "name": "All the data chat"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "All the data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All the data": {
+      "main": [
+        [
+          {
+            "node": "Is there fault?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Is there fault?",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Is there fault?",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is fault?": {
+      "main": [
+        [
+          {
+            "node": "Удалить сообщение",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Кик из канала": {
+      "main": [
+        [
+          {
+            "node": "Кик из чата",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Кик из чата": {
+      "main": [
+        [
+          {
+            "node": "Chat Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Message": {
+      "main": [
+        [
+          {
+            "node": "User Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Удалить сообщение": {
+      "main": [
+        [
+          {
+            "node": "Кик из канала",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "All the data chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is there fault?": {
+      "main": [
+        [
+          {
+            "node": "Is fault?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summary",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summary": {
+      "main": [
+        [
+          {
+            "node": "Summary Day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All the data chat": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ad74e697-197d-4b4c-8826-58ea21c28e88",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "FSNGlHQwjr2Wo2RS",
+  "tags": []
+}

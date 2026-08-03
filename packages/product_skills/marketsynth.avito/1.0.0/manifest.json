@@ -1,0 +1,37 @@
+{
+  "skill_id": "marketsynth.avito",
+  "name": "Avito",
+  "version": "1.0.0",
+  "description": "Аналитика Avito API (read-only после конфигурации credentials).",
+  "type": "integration",
+  "triggers": [
+    "avito",
+    "avito_analytics",
+    "marketplace_avito"
+  ],
+  "accepted_input_types": [
+    "avito_query"
+  ],
+  "output_types": [
+    "avito_read_result"
+  ],
+  "instruction_entrypoint": "SKILL.md",
+  "allowed_tools": [
+    "avito.analytics.read",
+    "avito.account.read"
+  ],
+  "allowed_network_hosts": [
+    "api.avito.ru"
+  ],
+  "required_secret_aliases": [
+    "AVITO_CLIENT_ID",
+    "AVITO_CLIENT_SECRET"
+  ],
+  "external_action": "read",
+  "human_approval_required": false,
+  "timeout_seconds": 60,
+  "retry_max": 1,
+  "enabled": true,
+  "provenance": "owner_archive:Скилл для Аvito.zip",
+  "checksum_sha256": null
+}

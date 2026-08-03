@@ -1,0 +1,15 @@
+{
+  "consumer_skill_id": "ms.skill.offer_builder",
+  "selected_hypothesis_id": "pos-h1",
+  "selected_segment_ids": [
+    "seg-remote-eng"
+  ],
+  "message_hierarchy_ref": "message_hierarchy",
+  "proof_requirements": [
+    "Case study: reduced meeting hours by 30%"
+  ],
+  "conditions_inherited": [],
+  "blockers_inherited": [],
+  "execution_authorized": false,
+  "verdict_override_attempted": false
+}

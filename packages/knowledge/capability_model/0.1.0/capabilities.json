@@ -1,0 +1,2336 @@
+[
+  {
+    "capability_id": "marketing.product_context",
+    "capability_name": "Product Context",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver product context outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured product context output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.product_marketing_context"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.market_research",
+    "capability_name": "Market Research",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver market research outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured market research output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.market_research"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.competitive_intelligence",
+    "capability_name": "Competitive Intelligence",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver competitive intelligence outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured competitive intelligence output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.competitor_analysis"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.customer_intelligence",
+    "capability_name": "Customer Intelligence",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver customer intelligence outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured customer intelligence output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.icp_segmentation"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    },
+    "shared_contract_references": [
+      "packages/knowledge/customer_intelligence/0.1.0"
+    ]
+  },
+  {
+    "capability_id": "marketing.customer_interview_design",
+    "capability_name": "Customer Interview Design",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver customer interview design outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured customer interview design output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.customer_interview_design"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.customer_meaning_extraction",
+    "capability_name": "Customer Meaning Extraction",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver customer meaning extraction outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured customer meaning extraction output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.customer_meaning_extraction"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.market_validation",
+    "capability_name": "Market Validation",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver market validation outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured market validation output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.market_validation"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.positioning",
+    "capability_name": "Positioning",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver positioning outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured positioning output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.positioning"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Consumes CIM from customer_intelligence — does not replace JTBD/pain recompute."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.claim_substantiation",
+    "capability_name": "Claim Substantiation",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver claim substantiation outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured claim substantiation output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.claim_substantiation"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.offer_architecture",
+    "capability_name": "Offer Architecture",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver offer architecture outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured offer architecture output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.offer_builder"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.presentation_architecture",
+    "capability_name": "Presentation Architecture",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver presentation architecture outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured presentation architecture output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.presentation_architecture"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.content_strategy",
+    "capability_name": "Content Strategy",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver content strategy outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured content strategy output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "deferred",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Future capability — explicit gap recorded."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.copywriting",
+    "capability_name": "Copywriting",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver copywriting outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured copywriting output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "deferred",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Future capability — explicit gap recorded."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.launch_strategy",
+    "capability_name": "Launch Strategy",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver launch strategy outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured launch strategy output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "deferred",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Future capability — explicit gap recorded."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.distribution",
+    "capability_name": "Distribution",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver distribution outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured distribution output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "human_approval_before_publication",
+      "publication_confirmation"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [
+      "publication_connector"
+    ],
+    "required_tool_classes": [
+      "publish"
+    ],
+    "dependency_capability_ids": [],
+    "approval_requirements": [
+      "human_approval"
+    ],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "available_as_knowledge",
+      "connector_not_available",
+      "approval_boundary_missing",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Future capability — explicit gap recorded."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.marketing_analytics",
+    "capability_name": "Marketing Analytics",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver marketing analytics outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured marketing analytics output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "deferred",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Future capability — explicit gap recorded."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "marketing.learning_and_feedback",
+    "capability_name": "Learning And Feedback",
+    "profession_ids": [
+      "profession.ai_marketing_director"
+    ],
+    "objective": "Deliver learning and feedback outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured learning and feedback output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "customer_feedback_to_learning_candidate"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "available_as_knowledge",
+      "runtime_not_available",
+      "deferred"
+    ],
+    "limitations": [
+      "Future capability — explicit gap recorded."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.workflow_architecture",
+    "capability_name": "Workflow Architecture",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver workflow architecture outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured workflow architecture output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.n8n_workflow_architecture"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.workflow_debugging",
+    "capability_name": "Workflow Debugging",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver workflow debugging outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured workflow debugging output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.n8n_workflow_debugging"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.deployment_review",
+    "capability_name": "Deployment Review",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver deployment review outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured deployment review output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.n8n_deployment_review"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.pattern_selection",
+    "capability_name": "Pattern Selection",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver pattern selection outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured pattern selection output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "human_approval_before_publication",
+      "structured_LLM_to_API_request",
+      "retry_with_idempotency",
+      "evidence_grounded_generation",
+      "lead_capture_to_qualification",
+      "draft_to_human_approval",
+      "workflow_backup",
+      "error_workflow_or_recovery",
+      "pagination_and_batching",
+      "checkpoint_and_resume",
+      "dead_letter_queue",
+      "provider_rate_limit_handling",
+      "quality_gate_after_generation",
+      "specialist_subworkflow",
+      "supervisor_pattern",
+      "tool_workflow_separation",
+      "human_edit_then_resume",
+      "publication_confirmation",
+      "source_lineage_preservation",
+      "customer_feedback_to_learning_candidate"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.workflow_backup",
+    "capability_name": "Workflow Backup",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver workflow backup outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured workflow backup output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "workflow_backup"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.error_recovery",
+    "capability_name": "Error Recovery",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver error recovery outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured error recovery output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "error_workflow_or_recovery",
+      "retry_with_idempotency",
+      "checkpoint_and_resume"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.observability",
+    "capability_name": "Observability",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver observability outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured observability output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "dead_letter_queue"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.connector_integration_design",
+    "capability_name": "Connector Integration Design",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver connector integration design outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured connector integration design output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "structured_LLM_to_API_request",
+      "tool_workflow_separation"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [
+      "development_connector"
+    ],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.runtime_safety",
+    "capability_name": "Runtime Safety",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver runtime safety outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured runtime safety output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "supervisor_pattern",
+      "retry_with_idempotency",
+      "human_approval_before_publication"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.test_and_replay_design",
+    "capability_name": "Test And Replay Design",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver test and replay design outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured test and replay design output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "checkpoint_and_resume"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.workflow_documentation",
+    "capability_name": "Workflow Documentation",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver workflow documentation outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured workflow documentation output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "deferred",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "engineering.provider_version_review",
+    "capability_name": "Provider Version Review",
+    "profession_ids": [
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver provider version review outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured provider version review output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "deferred",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.knowledge_linking",
+    "capability_name": "Knowledge Linking",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver knowledge linking outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured knowledge linking output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.knowledge_linking"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.lineage_integrity",
+    "capability_name": "Lineage Integrity",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver lineage integrity outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured lineage integrity output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "source_lineage_preservation"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.duplicate_detection",
+    "capability_name": "Duplicate Detection",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver duplicate detection outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured duplicate detection output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.knowledge_linking"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.contradiction_detection",
+    "capability_name": "Contradiction Detection",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver contradiction detection outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured contradiction detection output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.knowledge_linking"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.supersession_review",
+    "capability_name": "Supersession Review",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver supersession review outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured supersession review output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.knowledge_linking"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.index_management",
+    "capability_name": "Index Management",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver index management outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured index management output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.knowledge_linking"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.knowledge_quality",
+    "capability_name": "Knowledge Quality",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver knowledge quality outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured knowledge quality output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "quality_gate_after_generation",
+      "evidence_grounded_generation"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.knowledge_candidate_review",
+    "capability_name": "Knowledge Candidate Review",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver knowledge candidate review outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured knowledge candidate review output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "customer_feedback_to_learning_candidate"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [
+      "human_approval"
+    ],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.provenance_management",
+    "capability_name": "Provenance Management",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver provenance management outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured provenance management output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "source_lineage_preservation"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.source_ingestion",
+    "capability_name": "Source Ingestion",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver source ingestion outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured source ingestion output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "deferred",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "knowledge.knowledge_discovery",
+    "capability_name": "Knowledge Discovery",
+    "profession_ids": [
+      "profession.knowledge_architect"
+    ],
+    "objective": "Deliver knowledge discovery outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured knowledge discovery output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "deferred",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Deferred to KB-WPL-01.8."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.presentation_architecture",
+    "capability_name": "Presentation Architecture",
+    "profession_ids": [
+      "profession.content_deliverables_architect"
+    ],
+    "objective": "Deliver presentation architecture outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured presentation architecture output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.presentation_architecture"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "source_lineage_preservation"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.content_architecture",
+    "capability_name": "Content Architecture",
+    "profession_ids": [
+      "profession.content_deliverables_architect"
+    ],
+    "objective": "Deliver content architecture outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured content architecture output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.presentation_architecture"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "quality_gate_after_generation",
+      "draft_to_human_approval"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.visual_briefing",
+    "capability_name": "Visual Briefing",
+    "profession_ids": [
+      "profession.content_deliverables_architect"
+    ],
+    "objective": "Deliver visual briefing outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured visual briefing output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.presentation_architecture"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "source_lineage_preservation"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.chart_specification",
+    "capability_name": "Chart Specification",
+    "profession_ids": [
+      "profession.content_deliverables_architect"
+    ],
+    "objective": "Deliver chart specification outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured chart specification output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.presentation_architecture"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.accessibility_review",
+    "capability_name": "Accessibility Review",
+    "profession_ids": [
+      "profession.content_deliverables_architect"
+    ],
+    "objective": "Deliver accessibility review outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured accessibility review output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [
+      "ms.skill.presentation_architecture"
+    ],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "implemented_non_executable",
+    "readiness": [
+      "available_as_knowledge",
+      "package_contract_ready",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.document_structure",
+    "capability_name": "Document Structure",
+    "profession_ids": [
+      "profession.content_deliverables_architect"
+    ],
+    "objective": "Deliver document structure outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured document structure output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "deferred",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.renderer_handoff",
+    "capability_name": "Renderer Handoff",
+    "profession_ids": [
+      "profession.content_deliverables_architect"
+    ],
+    "objective": "Deliver renderer handoff outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured renderer handoff output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [
+      "rendering_connector"
+    ],
+    "required_tool_classes": [
+      "render"
+    ],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "connector_not_available",
+      "runtime_not_available",
+      "deferred"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "deliverables.publication_handoff",
+    "capability_name": "Publication Handoff",
+    "profession_ids": [
+      "profession.content_deliverables_architect"
+    ],
+    "objective": "Deliver publication handoff outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured publication handoff output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "human_approval_before_publication",
+      "human_edit_then_resume"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [
+      "publication_connector"
+    ],
+    "required_tool_classes": [
+      "publish"
+    ],
+    "dependency_capability_ids": [],
+    "approval_requirements": [
+      "human_approval"
+    ],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "deferred",
+    "readiness": [
+      "connector_not_available",
+      "approval_boundary_missing",
+      "runtime_not_available",
+      "deferred"
+    ],
+    "limitations": [
+      "Non-executable in KB-WPL-01.7 phase."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "capability_id": "platform.professional_task_routing",
+    "capability_name": "Professional Task Routing",
+    "profession_ids": [
+      "profession.ai_marketing_director",
+      "profession.automation_architect"
+    ],
+    "objective": "Deliver professional task routing outcomes with explicit evidence boundaries.",
+    "business_outcomes": [
+      "Structured professional task routing output for human review."
+    ],
+    "input_requirements": [
+      "Governed upstream context where applicable."
+    ],
+    "output_contract_summary": "Research or specification contract — non-executable.",
+    "required_skill_ids": [],
+    "optional_skill_ids": [],
+    "required_pattern_ids": [
+      "supervisor_pattern",
+      "specialist_subworkflow"
+    ],
+    "optional_pattern_ids": [],
+    "required_connector_classes": [],
+    "required_tool_classes": [],
+    "dependency_capability_ids": [],
+    "approval_requirements": [],
+    "evidence_requirements": [
+      "provenance",
+      "source_reference"
+    ],
+    "tenant_requirements": [
+      "tenant_scoped"
+    ],
+    "implementation_status": "specified",
+    "readiness": [
+      "available_as_knowledge",
+      "runtime_not_available"
+    ],
+    "limitations": [
+      "Conceptual routing contract only — not Discovery runtime."
+    ],
+    "runtime_authorized": false,
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": true,
+  "$id": "https://schemas.marketsynth.ai/capability-model/0.1.0/capability-gap.schema.json",
+  "required": [
+    "gap_id",
+    "capability_id",
+    "gap_type",
+    "impact",
+    "provenance"
+  ]
+}

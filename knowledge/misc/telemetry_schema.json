@@ -1,0 +1,19 @@
+{
+  "events": [
+    {
+      "name": "dialog_started",
+      "props": [
+        "user_id",
+        "channel"
+      ]
+    },
+    {
+      "name": "meal_logged",
+      "props": [
+        "user_id",
+        "kcal",
+        "items_count"
+      ]
+    }
+  ]
+}

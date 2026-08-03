@@ -1,0 +1,14 @@
+{
+  "schema": {
+    "photo_id": "string",
+    "user_id": "string",
+    "taken_at": "ISO8601",
+    "image_url": "string",
+    "annotations": [
+      {
+        "label": "string",
+        "prob": "number"
+      }
+    ]
+  }
+}

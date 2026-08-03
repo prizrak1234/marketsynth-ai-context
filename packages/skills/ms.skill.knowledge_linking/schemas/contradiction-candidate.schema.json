@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contradiction-candidate.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contradiction_id": { "type": "string" },
+    "artifact_ids": { "type": "array", "items": { "type": "string" }, "minItems": 2 },
+    "contradiction_type": {
+      "type": "string",
+      "enum": [
+        "contract_conflict", "version_conflict", "lifecycle_conflict",
+        "security_policy_conflict", "provider_behavior_conflict", "terminology_conflict",
+        "capability_conflict", "hash_conflict", "provenance_conflict", "unknown"
+      ]
+    },
+    "statements_or_rules": { "type": "array", "items": { "type": "object" } },
+    "evidence": { "type": "array", "items": { "type": "object" } },
+    "severity": { "type": "string" },
+    "blocking": { "type": "boolean" },
+    "resolution_owner": { "type": "string" },
+    "recommended_resolution_process": { "type": "string" },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "contradiction_id", "artifact_ids", "contradiction_type", "statements_or_rules",
+    "evidence", "severity", "blocking", "resolution_owner",
+    "recommended_resolution_process", "provenance"
+  ]
+}

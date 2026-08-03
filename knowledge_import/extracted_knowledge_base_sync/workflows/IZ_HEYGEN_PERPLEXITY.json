@@ -1,0 +1,2047 @@
+{
+  "name": "IZ_HEYGEN_PERPLEXITY",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "sonar",
+        "messages": {
+          "message": [
+            {
+              "content": "=You are an AI news analyst. Find and analyze the most important artificial intelligence news from the last 2 days.\n\nSELECTION CRITERIA:\n✅ New AI tools and platforms\n✅ Machine learning breakthroughs\n✅ Major releases from OpenAI, Google, Meta, Microsoft\n✅ Interesting AI use cases\n✅ AI startups and investments\n✅ News that will spark discussions\n\n❌ EXCLUDE:\n❌ Pure academic research papers\n❌ Repetitive news\n❌ Overly technical articles\n❌ AI art and memes\n❌ General discussions without specifics\n\nFOR EACH NEWS ITEM RETURN:\n{\n  \"title\": \"Headline (up to 80 characters)\",\n  \"description\": \"Video description (40-70 words)\",\n  \"source\": \"Source\",\n  \"date\": \"Date\",\n  \"video_potential\": \"Why suitable for video (1-2 sentences)\",\n  \"tags\": [\"tag1\", \"tag2\", \"tag3\"],\n  \"engagement_score\": 1-10,\n  \"target_audience\": \"who would be interested\"\n}\n\nFind 3-5 best news items. Return strictly in JSON format."
+            }
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexity",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        816
+      ],
+      "id": "5b2a52fc-8f66-418e-bed6-974ada193100",
+      "name": "Message a model",
+      "credentials": {
+        "perplexityApi": {
+          "id": "yn1xYvtT4ZmZZ2SZ",
+          "name": "Perplexity API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1056,
+        816
+      ],
+      "id": "40f1ce5d-fd6e-49c2-9c1d-f52554cec7fa",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code node: \"Parse Perplexity AI Response\"\nconst input = $input.first().json;\n\n// Извлекаем контент из структуры Perplexity API\nlet newsContent = '';\n\nif (input.choices && input.choices[0] && input.choices[0].message) {\n  newsContent = input.choices[0].message.content;\n} else if (input.content) {\n  newsContent = input.content;\n} else if (typeof input === 'string') {\n  newsContent = input;\n}\n\ntry {\n  // Парсим JSON из контента\n  const newsArray = JSON.parse(newsContent);\n  \n  // Проверяем, что это массив\n  if (Array.isArray(newsArray)) {\n    // Преобразуем каждую новость в отдельный item для n8n\n    const processedNews = newsArray.map((news, index) => ({\n      json: {\n        // Основные поля для видео генерации\n        id: index + 1,\n        title: news.title || 'AI News Update',\n        description: news.description || news.video_description || '',\n        source: news.source || 'AI News',\n        date: news.date || new Date().toISOString().split('T')[0],\n        \n        // Дополнительные поля\n        video_potential: news.video_potential || news.why_viral || '',\n        tags: news.tags || ['ai', 'technology'],\n        engagement_score: news.engagement_score || 5,\n        target_audience: news.target_audience || 'general tech audience',\n        \n        // Для совместимости с существующим workflow\n        content: news.description || news.video_description || '',\n        link: `https://example.com/news/${index + 1}`, // Placeholder link\n        guid: `ai-news-${Date.now()}-${index}`,\n        pubDate: news.date || new Date().toISOString(),\n        isoDate: news.date || new Date().toISOString(),\n        \n        // Метаданные Perplexity\n        perplexity_citations: input.citations || [],\n        perplexity_cost: input.usage?.total_cost || 0,\n        ai_generated: true\n      }\n    }));\n    \n    console.log(`Успешно обработано ${processedNews.length} новостей из Perplexity AI`);\n    return processedNews;\n    \n  } else {\n    throw new Error('Ответ не является массивом новостей');\n  }\n  \n} catch (error) {\n  console.log('Ошибка парсинга JSON:', error.message);\n  console.log('Сырой контент:', newsContent);\n  \n  // Fallback: создаем одну новость из всего текста\n  return [{\n    json: {\n      id: 1,\n      title: 'AI News Summary',\n      description: newsContent.substring(0, 200) + '...',\n      source: 'Perplexity AI',\n      date: new Date().toISOString().split('T')[0],\n      content: newsContent,\n      link: 'https://perplexity.ai',\n      guid: `ai-news-${Date.now()}`,\n      pubDate: new Date().toISOString(),\n      isoDate: new Date().toISOString(),\n      tags: ['ai', 'news'],\n      engagement_score: 5,\n      ai_generated: true,\n      error: 'JSON parsing failed, using raw content'\n    }\n  }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -512,
+        816
+      ],
+      "id": "1110cc26-f2c0-4729-92d2-1ddef26ac8c6",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here is the AI news selected for viral video content:\n\nSelected News: {{ JSON.stringify($json, null, 2) }}\n\nTask: Transform this news into maximum viral content for a 60-second video.\n\nYour mission:\n- Write in conversational human style like telling a friend\n- Create a catchy headline under 60 characters  \n- Keep script to 40-70 words for 25-35 second narration\n- Make it sound exciting and shareable\n- Use Russian language with energy and emotion\n- Return in JSON format as specified\n\nFocus on making this specific news story as engaging and viral as possible!",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=# AI Agent: Creating Viral Content from AI News\n\n## Role: \nYou are a top content creator and news analyst specializing in viral AI content. You work for a million-strong audience that wants to stay updated on AI trends but hates complex technical jargon. Think Gary Vaynerchuk meets tech journalism.\n\n## Context: \nNeed to select ONE most viral news from several AI stories and create a catchy headline + natural human-style script for video voiceover. Goal is to make people stop scrolling, watch till the end, and share with friends.\n\n## Task: \nPick the most engaging news from the provided list and create maximum viral content in conversational style, like you're telling a friend amazing news over coffee.\n\n## Input Data:\n- List of AI news with descriptions\n- Engagement scores for each news item\n- Target audience and tags data\n\n## Response Format: JSON\n\n```json\n{\n  \"selected_news_id\": 1,\n  \"viral_headline\": \"Top blogger style headline (under 60 characters)\",\n  \"video_script\": \"Natural conversational script for voiceover (80-120 words)\",\n  \"hook_opening\": \"First attention-grabbing phrase (10-15 words)\",\n  \"why_selected\": \"Why this specific news was chosen\",\n  \"emotion_trigger\": \"What emotion it triggers (surprise/excitement/shock)\",\n  \"script_structure\": {\n    \"hook\": \"Opening hook (10-15 words)\",\n    \"setup\": \"Context setup (15-25 words)\", \n    \"main_story\": \"Core news details (35-50 words)\",\n    \"impact\": \"Why it matters (15-25 words)\",\n    \"cta\": \"Call to action (10-15 words)\"\n  }\n}\n```\n\n## Style: \nMaximum human, lively and understandable. Like a top blogger telling a friend. No technical jargon! Only simple words anyone can understand. Energetic, emotional, but not over the top.\n\n## Requirements:\n- Language: Russian\n- Must select ONE best news from the list\n- Headline should hook like Gary Vaynerchuk's style\n- Script reads naturally and easily in 30-40 seconds  \n- Keep script to 80-120 words\n- Structure with clear beginning, middle, and end\n- Use conversational phrases: \"dude\", \"holy crap\", \"check this out\"\n- Avoid: \"artificial intelligence\", just say \"AI\" or \"this thing\"\n\n## Examples of Bad vs Good Response:\n\n**Bad:** \n\"OpenAI announced the release of GPT-5 with enhanced machine learning algorithms for enterprise segment utilization.\"\n\n**Good:** \n\"Dude, OpenAI just dropped GPT-5! This thing is absolutely insane - it can literally do everything from coding to building entire apps. We're living in the future right now!\"\n\n## Final Checklist:\n- Selected one best news from the input list?\n- Headline hooks and makes you want to click?\n- Script sounds like natural friend's speech?\n- Text length is 40-70 words?\n- Has emotional hook at the beginning?\n\n## Forbidden:\n- Using complex technical terminology\n- Writing in dry academic language\n- Making up facts not in the news\n- Creating clickbait without substance\n- Using words: \"revolutionary\", \"paradigm-shifting\", \"cutting-edge\"\n\n## News Selection Criteria:\n1. **Viral potential** - how much \"WOW!\" factor\n2. **Relatability** - can explain to anyone\n3. **Timeliness** - why it matters right now\n4. **Emotion** - triggers surprise, excitement or shock\n5. **Impact** - how it affects people's lives\n\n## Additional Resources:\n- Study Gary Vaynerchuk's style - energetic, direct, no fluff\n- Focus on TikTok/YouTube Shorts format\n- Remember: mobile viewing, 3-5 second attention span\n\n## Common Mistakes and Solutions:\n- **Too complex** → Explain like talking to a 5-year-old\n- **No emotion** → Add \"dude\", \"holy crap\", \"check this out\"\n- **Too long** → Cut fluff, keep essence\n- **Boring** → Start with question or exclamation\n\n## Conversational Phrases to Use:\n- \"Holy crap, this is insane!\"\n- \"Dude, you won't believe this...\"\n- \"Check this out...\"\n- \"This is absolutely nuts!\"\n- \"No way this is real!\"\n- \"Mind = blown\"\n- \"This changes everything!\"\n\n## Headline Formulas:\n- \"[Company] Just Broke the Internet\"\n- \"This AI Thing is Absolutely Insane\"\n- \"Holy Crap, [Feature] is Here!\"\n- \"You Won't Believe What [Company] Just Did\"\n- \"This Changes Everything!\"\n\n## Script Structure:\n1. **Hook** (10-15 words) - grab attention immediately\n2. **Setup** (15-25 words) - context and background\n3. **Core story** (35-50 words) - the main news details\n4. **Impact** (15-25 words) - why it matters and consequences\n5. **Call to action** (10-15 words) - engage audience and subscribe"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -720,
+        1120
+      ],
+      "id": "f84fe9ae-f7d3-47dd-be13-ce75156ca19a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"selected_news_id\": 1,\n  \"viral_headline\": \"Top blogger style headline (under 60 characters)\",\n  \"video_script\": \"Natural conversational script for voiceover (80-120 words)\",\n  \"hook_opening\": \"First attention-grabbing phrase (10-15 words)\",\n  \"why_selected\": \"Why this specific news was chosen\",\n  \"emotion_trigger\": \"What emotion it triggers (surprise/excitement/shock)\",\n  \"script_structure\": {\n    \"hook\": \"Opening hook (10-15 words)\",\n    \"setup\": \"Context setup (15-25 words)\", \n    \"main_story\": \"Core news details (35-50 words)\",\n    \"impact\": \"Why it matters (15-25 words)\",\n    \"cta\": \"Call to action (10-15 words)\"\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -688,
+        1376
+      ],
+      "id": "e41b8fae-97ba-48cd-9ce6-50a9265843a1",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-3-7-sonnet-20250219",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 3.7"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -1088,
+        1408
+      ],
+      "id": "84f1f376-87b6-4df8-a4bb-7da4ce716b71",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -944,
+        1424
+      ],
+      "id": "5c983438-3643-4cdc-b245-1c8f131c32ec",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Kxo3m3KlA4fzbdLVsJM2ihj_bhL0XIcCZuSiFzfB0Vg",
+          "mode": "list",
+          "cachedResultName": "HeyGen News",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Kxo3m3KlA4fzbdLVsJM2ihj_bhL0XIcCZuSiFzfB0Vg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "IDEA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Kxo3m3KlA4fzbdLVsJM2ihj_bhL0XIcCZuSiFzfB0Vg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.id }}",
+            "title": "={{ $json.title }}",
+            "description": "={{ $json.description }}",
+            "date": "={{ $json.date }}",
+            "video_potential": "={{ $json.video_potential }}",
+            "tags": "={{ $json.tags }}",
+            "engagement_score": "={{ $json.engagement_score }}",
+            "content": "={{ $json.content }}",
+            "ДАТА СОЗДАНИЯ": "={{ $('Schedule Trigger1').item.json['Readable date'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "video_potential",
+              "displayName": "video_potential",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tags",
+              "displayName": "tags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "engagement_score",
+              "displayName": "engagement_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ДАТА СОЗДАНИЯ",
+              "displayName": "ДАТА СОЗДАНИЯ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -208,
+        816
+      ],
+      "id": "d7054c35-0681-449a-8450-88f27ab6aa4c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "EtcO5NMSbKpL7Ydu",
+          "name": "DEMO_TEST"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        -800,
+        1504
+      ],
+      "id": "663a6c40-29bd-456d-8610-6a922a7762b9",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c0f02595-d0f0-4c9a-817c-25b6fdb6f297",
+              "name": "heygen_api_key",
+              "value": "VASH_API",
+              "type": "string"
+            },
+            {
+              "id": "d3a42347-1cc3-4682-a045-905d42386947",
+              "name": "avatar_id",
+              "value": "VASH_ID",
+              "type": "string"
+            },
+            {
+              "id": "7912c7e7-063c-4b03-94a0-561ada09dbf3",
+              "name": "voice_id",
+              "value": "VASH_VOISE",
+              "type": "string"
+            },
+            {
+              "id": "20975d0e-9115-489d-b938-9cd5b18ac1a2",
+              "name": "input_text",
+              "value": "={{ $json.video_script }}",
+              "type": "string"
+            },
+            {
+              "id": "de4034f2-3b44-4b86-a510-b541ac7eed4a",
+              "name": "viral_headline",
+              "value": "={{ $json.viral_headline }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        1120
+      ],
+      "id": "4a460c71-69be-4667-83bf-beeb53a17e4b",
+      "name": "HeyGen Parametrs"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.heygen.com/v2/video/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $json.heygen_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"video_inputs\": [\n    {\n      \"character\": {\n        \"type\": \"avatar\",\n        \"avatar_id\": \"{{ $json.avatar_id }}\",\n        \"avatar_style\": \"normal\"\n      },\n      \"voice\": {\n        \"type\": \"text\",\n        \"input_text\": \"{{ $json.input_text }}\",\n        \"voice_id\": \"{{ $json.voice_id }}\",\n        \"speed\": 1.1\n      }\n    }\n  ],\n  \"dimension\": {\n    \"width\": 720,\n    \"height\": 1280\n  },\n  \"caption\": true,\n  \"caption_style\": {\n    \"font_family\": \"Inter\",\n    \"font_size\": 28,\n    \"font_color\": \"#FFFFFF\",\n    \"background_color\": \"#000000\",\n    \"background_alpha\": 0.8,\n    \"position\": \"bottom\",\n    \"alignment\": \"center\"\n  },\n  \"text_overlays\": [\n    {\n      \"text\": \"{{ $json.viral_headline }}\",\n      \"position\": {\n        \"x\": 360,\n        \"y\": 100\n      },\n      \"style\": {\n        \"font_family\": \"Inter Bold\",\n        \"font_size\": 36,\n        \"font_color\": \"#FFD700\",\n        \"stroke_color\": \"#000000\",\n        \"stroke_width\": 2,\n        \"background_color\": \"#000000\",\n        \"background_alpha\": 0.7,\n        \"padding\": 20,\n        \"border_radius\": 10,\n        \"alignment\": \"center\",\n        \"max_width\": 600\n      },\n      \"animation\": {\n        \"entrance\": \"fade_in\",\n        \"duration\": 0.5,\n        \"delay\": 0.2\n      },\n      \"timing\": {\n        \"start_time\": 0,\n        \"end_time\": 5\n      }\n    }\n  ],\n  \"watermark\": {\n    \"enabled\": false\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1024,
+        1760
+      ],
+      "id": "08572199-1307-4406-a97c-033bbf98cbda",
+      "name": "Create Avatar Video (HeyGen)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code node: \"Extract Video Script\" (Updated for longer videos)\nconst items = $input.all();\n\n// Извлекаем данные из результата AI Agent\nconst processedData = items.map((item) => {\n  const output = item.json.output;\n  \n  return {\n    // Основные поля для совместимости с оригинальным workflow\n    title: output.viral_headline || 'AI News Update',\n    content: output.video_script || '',\n    \n    // Дополнительные поля от AI Agent\n    video_script: output.video_script,\n    viral_headline: output.viral_headline,\n    hook_opening: output.hook_opening,\n    selected_news_id: output.selected_news_id,\n    why_selected: output.why_selected,\n    emotion_trigger: output.emotion_trigger,\n    \n    // ✅ НОВЫЕ ПОЛЯ для структурированного скрипта\n    script_structure: output.script_structure || {\n      hook: output.hook_opening || '',\n      setup: '',\n      main_story: output.video_script || '',\n      impact: '',\n      cta: ''\n    },\n    \n    // Поля для совместимости с HeyGen workflow\n    news_title: output.viral_headline,\n    caption: output.video_script,\n    \n    // Метаданные\n    source: 'AI Agent Generated',\n    date: new Date().toISOString().split('T')[0],\n    guid: `ai-viral-${Date.now()}`,\n    pubDate: new Date().toISOString(),\n    isoDate: new Date().toISOString(),\n    link: 'https://ai-news-generated.com',\n    \n    // ✅ УЛУЧШЕННАЯ АНАЛИТИКА для длинных скриптов\n    script_analytics: {\n      total_length: output.video_script ? output.video_script.length : 0,\n      word_count: output.video_script ? output.video_script.split(' ').length : 0,\n      estimated_duration_sec: output.video_script ? Math.round(output.video_script.split(' ').length / 3) : 0,\n      has_structure: output.script_structure ? true : false,\n      structure_parts: output.script_structure ? Object.keys(output.script_structure).length : 0\n    },\n    \n    // Обратная совместимость\n    script_length: output.video_script ? output.video_script.length : 0,\n    word_count: output.video_script ? output.video_script.split(' ').length : 0,\n    ai_generated: true,\n    \n    // ✅ МЕТКИ ДЛЯ ДЛИННЫХ ВИДЕО\n    video_type: 'long_form', // 30-40 seconds\n    content_quality: 'structured',\n    processing_timestamp: new Date().toISOString()\n  };\n});\n\n// ✅ РАСШИРЕННОЕ ЛОГИРОВАНИЕ\nconsole.log(`📊 === ОБРАБОТКА ВИДЕО СКРИПТА ===`);\nconsole.log(`📝 Обработано скриптов: ${processedData.length}`);\n\nif (processedData.length > 0) {\n  const data = processedData[0];\n  console.log(`📰 Заголовок: \"${data.viral_headline}\"`);\n  console.log(`📊 Длина скрипта: ${data.script_analytics.total_length} символов`);\n  console.log(`🔢 Количество слов: ${data.script_analytics.word_count}`);\n  console.log(`⏱️ Примерная длительность: ${data.script_analytics.estimated_duration_sec} секунд`);\n  console.log(`🏗️ Структурированный: ${data.script_analytics.has_structure ? 'Да' : 'Нет'}`);\n  \n  if (data.script_structure) {\n    console.log(`📋 Структура скрипта:`);\n    console.log(`   🎯 Hook: \"${data.script_structure.hook?.substring(0, 50)}...\"`);\n    console.log(`   📖 Setup: \"${data.script_structure.setup?.substring(0, 50)}...\"`);\n    console.log(`   📰 Main: \"${data.script_structure.main_story?.substring(0, 50)}...\"`);\n    console.log(`   💥 Impact: \"${data.script_structure.impact?.substring(0, 50)}...\"`);\n    console.log(`   🎬 CTA: \"${data.script_structure.cta?.substring(0, 50)}...\"`);\n  }\n  \n  // ✅ ПРОВЕРКА КАЧЕСТВА СКРИПТА\n  const quality_checks = {\n    adequate_length: data.script_analytics.word_count >= 80 && data.script_analytics.word_count <= 120,\n    good_duration: data.script_analytics.estimated_duration_sec >= 25 && data.script_analytics.estimated_duration_sec <= 45,\n    has_hook: data.hook_opening && data.hook_opening.length > 10,\n    has_structure: data.script_analytics.has_structure\n  };\n  \n  const quality_score = Object.values(quality_checks).filter(Boolean).length;\n  console.log(`✅ Оценка качества: ${quality_score}/4`);\n  \n  if (quality_score < 3) {\n    console.log(`⚠️ ВНИМАНИЕ: Низкое качество скрипта. Возможные проблемы:`);\n    if (!quality_checks.adequate_length) console.log(`   - Неподходящая длина: ${data.script_analytics.word_count} слов (нужно 80-120)`);\n    if (!quality_checks.good_duration) console.log(`   - Неподходящая длительность: ${data.script_analytics.estimated_duration_sec} сек (нужно 25-45)`);\n    if (!quality_checks.has_hook) console.log(`   - Слабый hook: ${data.hook_opening?.length || 0} символов`);\n    if (!quality_checks.has_structure) console.log(`   - Отсутствует структура скрипта`);\n  } else {\n    console.log(`🎉 Скрипт готов к генерации видео!`);\n  }\n}\n\n// Возвращаем в формате, совместимом с оригинальным workflow\nreturn processedData.map(item => ({ json: item }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -208,
+        1120
+      ],
+      "id": "0cb17a28-e1a8-4591-9450-52fd7c32ca52",
+      "name": "Extract Video Script"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -752,
+        1760
+      ],
+      "id": "cf69a28e-e1c3-4a5f-bbc6-14356a9e0d3f",
+      "name": "Wait",
+      "webhookId": "62de2c00-c75e-4d12-a7e5-bec71c3dbe60"
+    },
+    {
+      "parameters": {
+        "url": "https://api.heygen.com/v1/video_status.get",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "video_id",
+              "value": "={{ $json.data.video_id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $('HeyGen Parametrs').item.json.heygen_api_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -544,
+        1760
+      ],
+      "id": "945546f7-8455-480a-b456-341362930ba7",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "64f5d0a4-9346-47f2-a85e-55813eec6ac6",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "completed",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        1760
+      ],
+      "id": "3a241979-c793-4197-96c6-2492df6e4fc6",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.video_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -352,
+        1520
+      ],
+      "id": "e45f97d7-2efa-433a-ad0f-8ce0a1ced7ca",
+      "name": "Download Video"
+    },
+    {
+      "parameters": {
+        "content": "## СУБТИТРЫ\n{\n  \"video_inputs\": [\n    {\n      \"character\": {\n        \"type\": \"avatar\",\n        \"avatar_id\": \"{{ $json.avatar_id }}\",\n        \"avatar_style\": \"normal\"\n      },\n      \"voice\": {\n        \"type\": \"text\",\n        \"input_text\": \"{{ $json.input_text }}\",\n        \"voice_id\": \"{{ $json.voice_id }}\",\n        \"speed\": 1.1\n      }\n    }\n  ],\n  \"dimension\": {\n    \"width\": 720,\n    \"height\": 1280\n  },\n  \"caption\": true,\n  \"caption_style\": {\n    \"font_family\": \"Inter Bold\",\n    \"font_size\": 48,                    // ✅ Увеличили с 28 до 48\n    \"font_color\": \"#FFFFFF\",\n    \"background_color\": \"#000000\", \n    \"background_alpha\": 0.9,            // ✅ Более непрозрачный фон\n    \"position\": \"center\",               // ✅ Поднимаем в центр\n    \"alignment\": \"center\",\n    \"padding\": 20,                      // ✅ Добавляем отступы\n    \"border_radius\": 8,                 // ✅ Скругленные углы\n    \"stroke_color\": \"#000000\",          // ✅ Обводка для читаемости\n    \"stroke_width\": 2,\n    \"line_height\": 1.2,                 // ✅ Межстрочный интервал\n    \"max_width\": 600                    // ✅ Ограничиваем ширину\n  },\n  \"watermark\": {\n    \"enabled\": false\n  }\n}",
+        "height": 800,
+        "width": 544,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        720,
+        1328
+      ],
+      "typeVersion": 1,
+      "id": "6dd4eb80-8d10-47f4-a339-8f88d89d971b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "name": "={{ $('Create Avatar Video (HeyGen)').item.json.data.video_id }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1fDuOy99acTUqx_r1YeLwCxQwoNrnHt9_",
+          "mode": "list",
+          "cachedResultName": "Heygen AI",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1fDuOy99acTUqx_r1YeLwCxQwoNrnHt9_"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -96,
+        1520
+      ],
+      "id": "36876145-1236-4f34-823a-b154f35fe32e",
+      "name": "Upload file",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# HEYGEN AVATAR",
+        "height": 1568,
+        "width": 1840,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1328,
+        544
+      ],
+      "typeVersion": 1,
+      "id": "0e8c3e00-2e2f-453c-b408-5b6a1e8da8cf",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## ИНСТРУКЦИЯ\n📋 ОБЩЕЕ ОПИСАНИЕ\nНазначение: Автоматизированное создание вирусных видео с AI-аватаром на основе актуальных новостей об искусственном интеллекте.\nЧто делает шаблон:\n\n🔍 Поиск новостей - Perplexity AI находит топ-5 актуальных AI новостей\n🎯 Умный отбор - AI Agent выбирает самую вирусную новость и создает цепляющий контент\n🎬 Генерация видео - HeyGen создает видео с аватаром, субтитрами и заголовком\n📊 Логирование - Все данные сохраняются в Google Sheets\n💾 Архивация - Готовое видео загружается в Google Drive\n\nРезультат: Готовое вирусное видео 15-20 секунд в вертикальном формате для TikTok/Instagram/YouTube Shorts.\n\n⚙️ ТРЕБОВАНИЯ ДЛЯ НАСТРОЙКИ\nAPI ключи и аккаунты:\n\n✅ Perplexity API - для поиска новостей\n✅ OpenAI API или Anthropic API - для AI Agent\n✅ HeyGen API - для генерации видео\n✅ Google Sheets - для логирования\n✅ Google Drive - для хранения видео\n\nHeyGen настройки:\n\n✅ Avatar ID - выберите подходящий аватар\n✅ Voice ID - голос для озвучки (желательно русский)\n✅ API Plan - тариф с поддержкой субтитров",
+        "height": 688,
+        "width": 736,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2336,
+        784
+      ],
+      "typeVersion": 1,
+      "id": "60da446f-507c-40bf-b0c1-f9f0845c0608",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### 2️⃣ Message a model (Perplexity AI)\nНазначение: Поиск актуальных AI новостей через Perplexity AI\nЧто настроить:\n\n✅ Perplexity API Credential - добавьте свой API ключ\n✅ Model: оставить \"sonar\" - лучший для поиска актуальной информации\n\nПромпт (уже настроен):\nНе изменяйте: Промпт уже оптимизирован для получения качественных новостей.",
+        "height": 304,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -944,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "7311d49e-9e15-4a79-82a6-e5966daadf44",
+      "name": "Sticky Note4",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "### 3️⃣ Code (Parse Perplexity Response)\nНазначение: Обработка JSON ответа от Perplexity AI и преобразование в формат n8n\nЧто делает:\n\n🔍 Извлекает JSON из ответа Perplexity\n📊 Создает отдельные items для каждой новости\n🏷️ Добавляет метаданные (ID, ссылки, даты)\n⚠️ Обработка ошибок с fallback\n\nНе требует настройки - код универсальный.",
+        "height": 320,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -560,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "78f6c7ec-97aa-4392-825e-da8679b06ebb",
+      "name": "Sticky Note5",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "### 6️⃣ AI Agent\nНазначение: Выбор лучшей новости и создание вирального контента\nЧто настроить:\n\n✅ Language Model: Выберите OpenAI Chat Model ИЛИ Anthropic Chat Model\n✅ API Credentials для выбранной модели\n\nСистема уже настроена:\n\n🎯 Промпт на русском языке в стиле топ-блогеров\n📝 Structured Output Parser для JSON формата\n🧠 Think tool для размышлений\n\nРезультат: JSON с viral_headline, video_script, hook_opening и др.",
+        "height": 416,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1472,
+        1104
+      ],
+      "typeVersion": 1,
+      "id": "6559f3c7-dd6a-4a83-97de-7aa1c6b8918f",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "### 7️⃣ Extract Video Script\nНазначение: Извлечение данных от AI Agent и подготовка для HeyGen\nЧто делает:\n\n📤 Извлекает video_script и viral_headline\n🔄 Преобразует в формат совместимый с HeyGen\n📊 Добавляет метрики (длина скрипта, количество слов)\n\nНе требует настройки - автоматическая обработка.",
+        "height": 288,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        352,
+        1088
+      ],
+      "typeVersion": 1,
+      "id": "e57ee321-c3c4-4a67-9d4b-53fa03aecbfc",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "### 9️⃣ Create Avatar Video (HeyGen)\nНазначение: Запрос на генерацию видео с аватаром\nНастройки JSON (уже оптимизированы):\n\n📱 Формат: 720x1280 (вертикальное видео)\n📝 Субтитры: включены с настройками стиля\n🎬 Text overlay: заголовок поверх видео\n⚡ Скорость: 1.1x для динамичности\n\nЧто может потребовать изменения:\n\nfont_size субтитров (сейчас 28)\nposition заголовка\navatar_style если нужны другие стили\n",
+        "height": 368,
+        "width": 336,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1360,
+        1952
+      ],
+      "typeVersion": 1,
+      "id": "5509a387-6bed-4150-b9a4-7a15ad589b69",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code node: \"Smart Random News Selector\"\nconst items = $input.all();\n\nif (!items || items.length === 0) {\n  throw new Error('❌ Нет новостей для выбора');\n}\n\nconsole.log(`📰 Получено ${items.length} новостей для случайного выбора`);\n\n// 🎯 СТРАТЕГИИ ВЫБОРА\n\n// Стратегия 1: Полностью случайный выбор\nfunction randomSelection(newsArray) {\n  const randomIndex = Math.floor(Math.random() * newsArray.length);\n  console.log(`🎲 Случайный выбор: индекс ${randomIndex + 1} из ${newsArray.length}`);\n  return newsArray[randomIndex];\n}\n\n// Стратегия 2: Взвешенный случайный выбор по engagement_score\nfunction weightedRandomSelection(newsArray) {\n  // Создаем веса на основе engagement_score\n  const weights = newsArray.map(item => {\n    const score = parseInt(item.json.engagement_score) || 5;\n    return Math.max(score, 1); // Минимальный вес = 1\n  });\n  \n  const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);\n  const random = Math.random() * totalWeight;\n  \n  let currentWeight = 0;\n  for (let i = 0; i < newsArray.length; i++) {\n    currentWeight += weights[i];\n    if (random <= currentWeight) {\n      console.log(`⚖️ Взвешенный выбор: ID ${newsArray[i].json.id} (score: ${newsArray[i].json.engagement_score})`);\n      return newsArray[i];\n    }\n  }\n  \n  return newsArray[0]; // Fallback\n}\n\n// Стратегия 3: Умный выбор с фильтрацией по качеству\nfunction smartRandomSelection(newsArray) {\n  // Фильтруем по качественным критериям\n  const qualityNews = newsArray.filter(item => {\n    const score = parseInt(item.json.engagement_score) || 0;\n    const hasGoodTitle = item.json.title && item.json.title.length > 20;\n    const hasContent = item.json.description && item.json.description.length > 50;\n    const hasVideoContent = item.json.video_potential && item.json.video_potential.length > 30;\n    \n    return score >= 7 && hasGoodTitle && hasContent && hasVideoContent;\n  });\n  \n  // Если есть качественные новости - выбираем из них, иначе из всех\n  const sourceArray = qualityNews.length > 0 ? qualityNews : newsArray;\n  \n  console.log(`🎯 Умный выбор: ${qualityNews.length} качественных из ${newsArray.length} общих`);\n  \n  // Взвешенный выбор из отфильтрованных\n  return weightedRandomSelection(sourceArray);\n}\n\n// 🎲 ВЫБОР СТРАТЕГИИ (можете изменить здесь)\nconst strategy = 'smart'; // 'random', 'weighted', 'smart'\n\nlet selectedNews;\nswitch(strategy) {\n  case 'weighted':\n    selectedNews = weightedRandomSelection(items);\n    break;\n  case 'smart':\n    selectedNews = smartRandomSelection(items);\n    break;\n  default:\n    selectedNews = randomSelection(items);\n}\n\n// 📊 Детальное логирование выбора\nconst selectedIndex = items.findIndex(item => item.json.id === selectedNews.json.id);\nconsole.log(`\\n🎯 === РЕЗУЛЬТАТ ВЫБОРА ===`);\nconsole.log(`📋 Выбрана новость ID: ${selectedNews.json.id}`);\nconsole.log(`📰 Заголовок: \"${selectedNews.json.title}\"`);\nconsole.log(`📈 Engagement score: ${selectedNews.json.engagement_score}/10`);\nconsole.log(`🎲 Стратегия: ${strategy}`);\nconsole.log(`📍 Позиция: ${selectedIndex + 1}/${items.length}`);\nconsole.log(`📅 Дата: ${selectedNews.json.date}`);\nconsole.log(`🎬 Video potential: ${selectedNews.json.video_potential ? 'есть' : 'нет'}`);\n\n// 🏷️ Добавляем метаданные о выборе\nconst enrichedNews = {\n  ...selectedNews.json,\n  \n  // Метаданные процесса выбора\n  selection_metadata: {\n    strategy: strategy,\n    selected_from_total: items.length,\n    selection_timestamp: new Date().toISOString(),\n    random_seed: Math.random().toString(36).substring(7),\n    original_position: selectedIndex + 1,\n    selection_reason: strategy === 'smart' ? 'quality_filtered' : \n                     strategy === 'weighted' ? 'engagement_weighted' : 'pure_random'\n  },\n  \n  // Статистика по всем новостям для аналитики\n  batch_statistics: {\n    all_scores: items.map(item => parseInt(item.json.engagement_score) || 0),\n    average_score: items.reduce((sum, item) => sum + (parseInt(item.json.engagement_score) || 0), 0) / items.length,\n    max_score: Math.max(...items.map(item => parseInt(item.json.engagement_score) || 0)),\n    total_news_count: items.length,\n    sources: items.map(item => item.json.source).filter((v, i, a) => a.indexOf(v) === i)\n  },\n  \n  // Флаги для следующих нод\n  ready_for_video: true,\n  processing_stage: 'selected_for_video_generation',\n  workflow_timestamp: new Date().toISOString()\n};\n\n// 🎉 Финальный вывод\nconsole.log(`\\n✅ Новость успешно выбрана и готова для создания видео!`);\nconsole.log(`🔄 Средний engagement score батча: ${enrichedNews.batch_statistics.average_score.toFixed(1)}`);\n\n// Возвращаем ТОЛЬКО выбранную новость\nreturn [{ json: enrichedNews }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        816
+      ],
+      "id": "40450293-33be-42d2-809f-32b22e63954e",
+      "name": "Smart Random News Selector"
+    },
+    {
+      "parameters": {
+        "content": "### 🎯 Три стратегии выбора в коде:\n1. Random (Чисто случайный):\njavascriptconst strategy = 'random';\n\nКаждая новость имеет равные шансы 20%\nПолная непредсказуемость\n\n2. Weighted (Взвешенный по рейтингу):\njavascriptconst strategy = 'weighted';\n\nНовости с engagement_score 9 выбираются чаще чем с score 7\nБаланс качества и случайности\n\n3. Smart (Умный выбор) - РЕКОМЕНДУЕМЫЙ:\njavascriptconst strategy = 'smart';\n\n✅ Фильтрует новости с score ≥ 7\n✅ Проверяет качество заголовка и контента\n✅ Взвешенный выбор среди качественных\n✅ Fallback на все новости если нет качественных",
+        "height": 464,
+        "width": 416,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        272,
+        528
+      ],
+      "typeVersion": 1,
+      "id": "afcdea5c-5b68-47ac-90ba-a267b7a4562b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Kxo3m3KlA4fzbdLVsJM2ihj_bhL0XIcCZuSiFzfB0Vg",
+          "mode": "list",
+          "cachedResultName": "HeyGen News",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Kxo3m3KlA4fzbdLVsJM2ihj_bhL0XIcCZuSiFzfB0Vg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 107710132,
+          "mode": "list",
+          "cachedResultName": "VIDEO_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Kxo3m3KlA4fzbdLVsJM2ihj_bhL0XIcCZuSiFzfB0Vg/edit#gid=107710132"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.ID }}",
+            "ДАТА СОЗДАНИЯ": "={{ $json['ДАТА СОЗДАНИЯ'] }}",
+            "content": "={{ $json.content }}",
+            "engagement_score": "={{ $json.engagement_score }}",
+            "tags": "={{ $json.tags }}",
+            "video_potential": "={{ $json.video_potential }}",
+            "date": "={{ $json.date }}",
+            "description": "={{ $json.description }}",
+            "title": "={{ $json.title }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "video_potential",
+              "displayName": "video_potential",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tags",
+              "displayName": "tags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "engagement_score",
+              "displayName": "engagement_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ДАТА СОЗДАНИЯ",
+              "displayName": "ДАТА СОЗДАНИЯ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ссылка на скачивание",
+              "displayName": "Ссылка на скачивание",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "СКРИПТ",
+              "displayName": "СКРИПТ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ПОЧЕМУ ВЫБРАЛИ",
+              "displayName": "ПОЧЕМУ ВЫБРАЛИ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ЗАГОЛОВОК",
+              "displayName": "ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ЭМОЦИЯ",
+              "displayName": "ЭМОЦИЯ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ОПИСАНИЕ ДЛЯ СОЦ.СЕТИ",
+              "displayName": "ОПИСАНИЕ ДЛЯ СОЦ.СЕТИ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1040,
+        1120
+      ],
+      "id": "02c0f918-3041-45d0-983d-52625e7dc581",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "EtcO5NMSbKpL7Ydu",
+          "name": "DEMO_TEST"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Kxo3m3KlA4fzbdLVsJM2ihj_bhL0XIcCZuSiFzfB0Vg",
+          "mode": "list",
+          "cachedResultName": "HeyGen News",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Kxo3m3KlA4fzbdLVsJM2ihj_bhL0XIcCZuSiFzfB0Vg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 107710132,
+          "mode": "list",
+          "cachedResultName": "VIDEO_READY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Kxo3m3KlA4fzbdLVsJM2ihj_bhL0XIcCZuSiFzfB0Vg/edit#gid=107710132"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ссылка на скачивание": "={{ $json.webContentLink }}",
+            "ЗАГОЛОВОК": "={{ $('Extract Video Script').item.json.title }}",
+            "ПОЧЕМУ ВЫБРАЛИ": "={{ $('Extract Video Script').item.json.why_selected }}",
+            "СКРИПТ": "={{ $('Extract Video Script').item.json.video_script }}",
+            "ЭМОЦИЯ": "={{ $('Extract Video Script').item.json.emotion_trigger }}",
+            "ОПИСАНИЕ ДЛЯ СОЦ.СЕТИ": "={{ $('Extract Video Script').item.json.caption }}",
+            "ДАТА СОЗДАНИЯ": "={{ $('Append row in sheet1').item.json['ДАТА СОЗДАНИЯ'] }}"
+          },
+          "matchingColumns": [
+            "ДАТА СОЗДАНИЯ"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "video_potential",
+              "displayName": "video_potential",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "tags",
+              "displayName": "tags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "engagement_score",
+              "displayName": "engagement_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ДАТА СОЗДАНИЯ",
+              "displayName": "ДАТА СОЗДАНИЯ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ссылка на скачивание",
+              "displayName": "Ссылка на скачивание",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "СКРИПТ",
+              "displayName": "СКРИПТ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ПОЧЕМУ ВЫБРАЛИ",
+              "displayName": "ПОЧЕМУ ВЫБРАЛИ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ЗАГОЛОВОК",
+              "displayName": "ЗАГОЛОВОК",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ЭМОЦИЯ",
+              "displayName": "ЭМОЦИЯ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ОПИСАНИЕ ДЛЯ СОЦ.СЕТИ",
+              "displayName": "ОПИСАНИЕ ДЛЯ СОЦ.СЕТИ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        160,
+        1520
+      ],
+      "id": "2ae91a45-b5d7-4e6f-8937-e724f9184932",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "EtcO5NMSbKpL7Ydu",
+          "name": "DEMO_TEST"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -336,
+        1328
+      ],
+      "typeVersion": 1,
+      "id": "095ea03c-94d2-4c0c-b8d6-bd8dd081cb51",
+      "name": "Sticky Note10",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 534
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1616,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "0a859c0f-2b94-4416-b613-c0e62aab4e3a",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок Яндекс Диск в n8n: https://youtu.be/ky3YWN-xg1Y",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        1776
+      ],
+      "typeVersion": 1,
+      "id": "4564f781-c7e3-4779-bdbb-504e46ddf3ae",
+      "name": "Sticky Note12",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram нод: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        144,
+        2032
+      ],
+      "typeVersion": 1,
+      "id": "b050fe2a-3532-4f08-867f-cd9e9a8535a3",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по НАстройке Ноды CODE в n8n: https://youtu.be/9VnMZjdvqKU",
+        "height": 100,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -624,
+        992
+      ],
+      "typeVersion": 1,
+      "id": "30e98791-4dc0-4883-aa7a-e2474a65ce44",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по HeyGen + Автопостинг: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -816,
+        2176
+      ],
+      "typeVersion": 1,
+      "id": "89342fd1-8e96-4fdd-84c6-d7ba37297605",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Привязке Google: https://youtu.be/qKh7BTjQoM0",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1536,
+        944
+      ],
+      "typeVersion": 1,
+      "id": "3a765055-6fff-46b4-b2b2-a82667393ac7",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Fallback Model: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1360,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "30f2e507-963e-4c6d-b8aa-499237a7f35b",
+      "name": "Sticky Note17",
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "Message a model": [
+      {
+        "json": {
+          "id": "d57a0916-4491-400e-bafb-b82c8097e648",
+          "model": "sonar",
+          "created": 1754247240,
+          "usage": {
+            "prompt_tokens": 241,
+            "completion_tokens": 925,
+            "total_tokens": 1166,
+            "search_context_size": "low",
+            "cost": {
+              "input_tokens_cost": 0.000241,
+              "output_tokens_cost": 0.000925,
+              "request_cost": 0.005,
+              "total_cost": 0.006166
+            }
+          },
+          "citations": [
+            "https://www.aiplanetx.com/p/openai-plans-gpt-5-for-august",
+            "https://www.axios.com/2025/08/01/ai-earnings-google-microsoft-meta-stocks",
+            "https://www.instagram.com/p/DMnSmibNBqF/",
+            "https://www.marketingprofs.com/opinions/2025/53515/ai-update-august-1-2025-ai-news-and-views-from-the-past-week",
+            "https://techcrunch.com/2025/08/03/inside-openais-quest-to-make-ai-do-anything-for-you/"
+          ],
+          "search_results": [
+            {
+              "title": "OpenAI Plans GPT-5 for August - AI PlanetX",
+              "url": "https://www.aiplanetx.com/p/openai-plans-gpt-5-for-august",
+              "date": "2025-07-25",
+              "last_updated": "2025-07-28"
+            },
+            {
+              "title": "Microsoft, Google see AI investments begin to pay off - Axios",
+              "url": "https://www.axios.com/2025/08/01/ai-earnings-google-microsoft-meta-stocks",
+              "date": "2025-08-01",
+              "last_updated": "2025-08-01"
+            },
+            {
+              "title": "OpenAI is preparing to release GPT-5 in early August 2025 ...",
+              "url": "https://www.instagram.com/p/DMnSmibNBqF/",
+              "date": "2025-07-27",
+              "last_updated": null
+            },
+            {
+              "title": "AI Update, August 1, 2025: AI News and Views From the Past Week",
+              "url": "https://www.marketingprofs.com/opinions/2025/53515/ai-update-august-1-2025-ai-news-and-views-from-the-past-week",
+              "date": "2025-08-01",
+              "last_updated": "2025-08-01"
+            },
+            {
+              "title": "Inside OpenAI's quest to make AI do anything for you - TechCrunch",
+              "url": "https://techcrunch.com/2025/08/03/inside-openais-quest-to-make-ai-do-anything-for-you/",
+              "date": "2025-08-03",
+              "last_updated": "2025-08-03"
+            }
+          ],
+          "object": "chat.completion",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "[\n  {\n    \"title\": \"OpenAI to Launch GPT-5 in Early August with New Mini and Nano Versions\",\n    \"description\": \"OpenAI plans to release GPT-5 in early August 2025, featuring a unified reasoning model available in full, mini, and nano versions. This release aims to advance OpenAI's pursuit of AGI, with potential impacts on Microsoft's partnership and significant safety and security considerations underway.\",\n    \"source\": \"AI PlanetX, MarketingProfs\",\n    \"date\": \"2025-07-25 to 2025-08-01\",\n    \"video_potential\": \"The announcement of GPT-5 includes dramatic elements such as advanced AI reasoning, safety concerns, and industry impacts, making it compelling for an explainer or analysis video.\",\n    \"tags\": [\"OpenAI\", \"GPT-5\", \"Artificial General Intelligence\", \"AI Safety\", \"Microsoft\"],\n    \"engagement_score\": 9,\n    \"target_audience\": \"AI professionals, tech enthusiasts, investors, and enterprise users\"\n  },\n  {\n    \"title\": \"Microsoft Launches Edge Copilot Mode, Transforming Browser with AI\",\n    \"description\": \"Microsoft introduced Copilot Mode in its Edge browser, integrating AI-powered features like contextual assistance, recipe adaptation, appointment booking, and research support, with built-in privacy controls for data protection.\",\n    \"source\": \"MarketingProfs\",\n    \"date\": \"2025-08-01\",\n    \"video_potential\": \"Demonstrations of AI-enhanced browsing and new user experiences make this a highly visual and practical video topic.\",\n    \"tags\": [\"Microsoft\", \"Edge\", \"AI Browser\", \"Copilot\", \"User Experience\"],\n    \"engagement_score\": 7,\n    \"target_audience\": \"Web users, digital marketers, software developers, and tech consumers\"\n  },\n  {\n    \"title\": \"Meta and Google See AI Investments Paying Off as Revenues Climb\",\n    \"description\": \"Tech giants Microsoft, Google, Meta, and OpenAI have significantly ramped AI investments, with OpenAI's ChatGPT generating around $1 billion monthly revenue. Meta reported a record quarter attributed to AI-driven growth, signaling clear ROI on AI spending.\",\n    \"source\": \"Axios\",\n    \"date\": \"2025-08-01\",\n    \"video_potential\": \"Highlighting financial impacts of AI investments from major companies can attract business and tech audience interest.\",\n    \"tags\": [\"AI Investment\", \"Meta\", \"Google\", \"OpenAI\", \"Tech Revenue\"],\n    \"engagement_score\": 8,\n    \"target_audience\": \"Investors, business analysts, tech industry watchers\"\n  },\n  {\n    \"title\": \"China’s Zhipu Releases Open-Source GLM-4.5 Model for AI Agents\",\n    \"description\": \"Chinese startup Zhipu released GLM-4.5, an open-source large language model designed to power intelligent AI agents, adding to over 1,500 LLMs developed in China and intensifying global AI competition.\",\n    \"source\": \"MarketingProfs\",\n    \"date\": \"2025-08-01\",\n    \"video_potential\": \"Exploring the rise of open-source AI models in China offers a geopolitical and technological narrative appealing for detailed video analysis.\",\n    \"tags\": [\"China AI\", \"Open Source\", \"GLM-4.5\", \"AI Competition\", \"Large Language Models\"],\n    \"engagement_score\": 7,\n    \"target_audience\": \"AI researchers, policy makers, international business strategists\"\n  },\n  {\n    \"title\": \"Inside OpenAI’s Vision to Build AI Agents That Can Do Anything Online\",\n    \"description\": \"OpenAI is developing advanced AI agents that autonomously understand user intent and perform diverse internet tasks without specific instructions, moving beyond current ChatGPT capabilities in anticipation of GPT-5.\",\n    \"source\": \"TechCrunch\",\n    \"date\": \"2025-08-03\",\n    \"video_potential\": \"The futuristic concept of AI that acts independently online invites engaging story-driven videos showcasing potential applications and challenges.\",\n    \"tags\": [\"OpenAI\", \"AI Agents\", \"GPT-5\", \"Artificial Intelligence\", \"User Experience\"],\n    \"engagement_score\": 9,\n    \"target_audience\": \"AI developers, tech futurists, enterprise users, AI ethicists\"\n  }\n]"
+              },
+              "delta": {
+                "role": "assistant",
+                "content": ""
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "Code": [
+      {
+        "json": {
+          "id": 1,
+          "title": "OpenAI to Launch GPT-5 in Early August with New Mini and Nano Versions",
+          "description": "OpenAI plans to release GPT-5 in early August 2025, featuring a unified reasoning model available in full, mini, and nano versions. This release aims to advance OpenAI's pursuit of AGI, with potential impacts on Microsoft's partnership and significant safety and security considerations underway.",
+          "source": "AI PlanetX, MarketingProfs",
+          "date": "2025-07-25 to 2025-08-01",
+          "video_potential": "The announcement of GPT-5 includes dramatic elements such as advanced AI reasoning, safety concerns, and industry impacts, making it compelling for an explainer or analysis video.",
+          "tags": [
+            "OpenAI",
+            "GPT-5",
+            "Artificial General Intelligence",
+            "AI Safety",
+            "Microsoft"
+          ],
+          "engagement_score": 9,
+          "target_audience": "AI professionals, tech enthusiasts, investors, and enterprise users",
+          "content": "OpenAI plans to release GPT-5 in early August 2025, featuring a unified reasoning model available in full, mini, and nano versions. This release aims to advance OpenAI's pursuit of AGI, with potential impacts on Microsoft's partnership and significant safety and security considerations underway.",
+          "link": "https://example.com/news/1",
+          "guid": "ai-news-1754247248243-0",
+          "pubDate": "2025-07-25 to 2025-08-01",
+          "isoDate": "2025-07-25 to 2025-08-01",
+          "perplexity_citations": [
+            "https://www.aiplanetx.com/p/openai-plans-gpt-5-for-august",
+            "https://www.axios.com/2025/08/01/ai-earnings-google-microsoft-meta-stocks",
+            "https://www.instagram.com/p/DMnSmibNBqF/",
+            "https://www.marketingprofs.com/opinions/2025/53515/ai-update-august-1-2025-ai-news-and-views-from-the-past-week",
+            "https://techcrunch.com/2025/08/03/inside-openais-quest-to-make-ai-do-anything-for-you/"
+          ],
+          "perplexity_cost": 0,
+          "ai_generated": true
+        }
+      },
+      {
+        "json": {
+          "id": 2,
+          "title": "Microsoft Launches Edge Copilot Mode, Transforming Browser with AI",
+          "description": "Microsoft introduced Copilot Mode in its Edge browser, integrating AI-powered features like contextual assistance, recipe adaptation, appointment booking, and research support, with built-in privacy controls for data protection.",
+          "source": "MarketingProfs",
+          "date": "2025-08-01",
+          "video_potential": "Demonstrations of AI-enhanced browsing and new user experiences make this a highly visual and practical video topic.",
+          "tags": [
+            "Microsoft",
+            "Edge",
+            "AI Browser",
+            "Copilot",
+            "User Experience"
+          ],
+          "engagement_score": 7,
+          "target_audience": "Web users, digital marketers, software developers, and tech consumers",
+          "content": "Microsoft introduced Copilot Mode in its Edge browser, integrating AI-powered features like contextual assistance, recipe adaptation, appointment booking, and research support, with built-in privacy controls for data protection.",
+          "link": "https://example.com/news/2",
+          "guid": "ai-news-1754247248243-1",
+          "pubDate": "2025-08-01",
+          "isoDate": "2025-08-01",
+          "perplexity_citations": [
+            "https://www.aiplanetx.com/p/openai-plans-gpt-5-for-august",
+            "https://www.axios.com/2025/08/01/ai-earnings-google-microsoft-meta-stocks",
+            "https://www.instagram.com/p/DMnSmibNBqF/",
+            "https://www.marketingprofs.com/opinions/2025/53515/ai-update-august-1-2025-ai-news-and-views-from-the-past-week",
+            "https://techcrunch.com/2025/08/03/inside-openais-quest-to-make-ai-do-anything-for-you/"
+          ],
+          "perplexity_cost": 0,
+          "ai_generated": true
+        }
+      },
+      {
+        "json": {
+          "id": 3,
+          "title": "Meta and Google See AI Investments Paying Off as Revenues Climb",
+          "description": "Tech giants Microsoft, Google, Meta, and OpenAI have significantly ramped AI investments, with OpenAI's ChatGPT generating around $1 billion monthly revenue. Meta reported a record quarter attributed to AI-driven growth, signaling clear ROI on AI spending.",
+          "source": "Axios",
+          "date": "2025-08-01",
+          "video_potential": "Highlighting financial impacts of AI investments from major companies can attract business and tech audience interest.",
+          "tags": [
+            "AI Investment",
+            "Meta",
+            "Google",
+            "OpenAI",
+            "Tech Revenue"
+          ],
+          "engagement_score": 8,
+          "target_audience": "Investors, business analysts, tech industry watchers",
+          "content": "Tech giants Microsoft, Google, Meta, and OpenAI have significantly ramped AI investments, with OpenAI's ChatGPT generating around $1 billion monthly revenue. Meta reported a record quarter attributed to AI-driven growth, signaling clear ROI on AI spending.",
+          "link": "https://example.com/news/3",
+          "guid": "ai-news-1754247248243-2",
+          "pubDate": "2025-08-01",
+          "isoDate": "2025-08-01",
+          "perplexity_citations": [
+            "https://www.aiplanetx.com/p/openai-plans-gpt-5-for-august",
+            "https://www.axios.com/2025/08/01/ai-earnings-google-microsoft-meta-stocks",
+            "https://www.instagram.com/p/DMnSmibNBqF/",
+            "https://www.marketingprofs.com/opinions/2025/53515/ai-update-august-1-2025-ai-news-and-views-from-the-past-week",
+            "https://techcrunch.com/2025/08/03/inside-openais-quest-to-make-ai-do-anything-for-you/"
+          ],
+          "perplexity_cost": 0,
+          "ai_generated": true
+        }
+      },
+      {
+        "json": {
+          "id": 4,
+          "title": "China’s Zhipu Releases Open-Source GLM-4.5 Model for AI Agents",
+          "description": "Chinese startup Zhipu released GLM-4.5, an open-source large language model designed to power intelligent AI agents, adding to over 1,500 LLMs developed in China and intensifying global AI competition.",
+          "source": "MarketingProfs",
+          "date": "2025-08-01",
+          "video_potential": "Exploring the rise of open-source AI models in China offers a geopolitical and technological narrative appealing for detailed video analysis.",
+          "tags": [
+            "China AI",
+            "Open Source",
+            "GLM-4.5",
+            "AI Competition",
+            "Large Language Models"
+          ],
+          "engagement_score": 7,
+          "target_audience": "AI researchers, policy makers, international business strategists",
+          "content": "Chinese startup Zhipu released GLM-4.5, an open-source large language model designed to power intelligent AI agents, adding to over 1,500 LLMs developed in China and intensifying global AI competition.",
+          "link": "https://example.com/news/4",
+          "guid": "ai-news-1754247248243-3",
+          "pubDate": "2025-08-01",
+          "isoDate": "2025-08-01",
+          "perplexity_citations": [
+            "https://www.aiplanetx.com/p/openai-plans-gpt-5-for-august",
+            "https://www.axios.com/2025/08/01/ai-earnings-google-microsoft-meta-stocks",
+            "https://www.instagram.com/p/DMnSmibNBqF/",
+            "https://www.marketingprofs.com/opinions/2025/53515/ai-update-august-1-2025-ai-news-and-views-from-the-past-week",
+            "https://techcrunch.com/2025/08/03/inside-openais-quest-to-make-ai-do-anything-for-you/"
+          ],
+          "perplexity_cost": 0,
+          "ai_generated": true
+        }
+      },
+      {
+        "json": {
+          "id": 5,
+          "title": "Inside OpenAI’s Vision to Build AI Agents That Can Do Anything Online",
+          "description": "OpenAI is developing advanced AI agents that autonomously understand user intent and perform diverse internet tasks without specific instructions, moving beyond current ChatGPT capabilities in anticipation of GPT-5.",
+          "source": "TechCrunch",
+          "date": "2025-08-03",
+          "video_potential": "The futuristic concept of AI that acts independently online invites engaging story-driven videos showcasing potential applications and challenges.",
+          "tags": [
+            "OpenAI",
+            "AI Agents",
+            "GPT-5",
+            "Artificial Intelligence",
+            "User Experience"
+          ],
+          "engagement_score": 9,
+          "target_audience": "AI developers, tech futurists, enterprise users, AI ethicists",
+          "content": "OpenAI is developing advanced AI agents that autonomously understand user intent and perform diverse internet tasks without specific instructions, moving beyond current ChatGPT capabilities in anticipation of GPT-5.",
+          "link": "https://example.com/news/5",
+          "guid": "ai-news-1754247248243-4",
+          "pubDate": "2025-08-03",
+          "isoDate": "2025-08-03",
+          "perplexity_citations": [
+            "https://www.aiplanetx.com/p/openai-plans-gpt-5-for-august",
+            "https://www.axios.com/2025/08/01/ai-earnings-google-microsoft-meta-stocks",
+            "https://www.instagram.com/p/DMnSmibNBqF/",
+            "https://www.marketingprofs.com/opinions/2025/53515/ai-update-august-1-2025-ai-news-and-views-from-the-past-week",
+            "https://techcrunch.com/2025/08/03/inside-openais-quest-to-make-ai-do-anything-for-you/"
+          ],
+          "perplexity_cost": 0,
+          "ai_generated": true
+        }
+      }
+    ],
+    "Append row in sheet": [
+      {
+        "json": {
+          "ID": 1,
+          "title": "OpenAI to Launch GPT-5 in Early August with New Mini and Nano Versions",
+          "description": "OpenAI plans to release GPT-5 in early August 2025, featuring a unified reasoning model available in full, mini, and nano versions. This release aims to advance OpenAI's pursuit of AGI, with potential impacts on Microsoft's partnership and significant safety and security considerations underway.",
+          "date": "2025-07-25 to 2025-08-01",
+          "video_potential": "The announcement of GPT-5 includes dramatic elements such as advanced AI reasoning, safety concerns, and industry impacts, making it compelling for an explainer or analysis video.",
+          "tags": [
+            "OpenAI",
+            "GPT-5",
+            "Artificial General Intelligence",
+            "AI Safety",
+            "Microsoft"
+          ],
+          "engagement_score": 9,
+          "content": "OpenAI plans to release GPT-5 in early August 2025, featuring a unified reasoning model available in full, mini, and nano versions. This release aims to advance OpenAI's pursuit of AGI, with potential impacts on Microsoft's partnership and significant safety and security considerations underway.",
+          "ДАТА СОЗДАНИЯ": "August 3rd 2025, 9:53:27 pm"
+        }
+      },
+      {
+        "json": {
+          "ID": 2,
+          "title": "Microsoft Launches Edge Copilot Mode, Transforming Browser with AI",
+          "description": "Microsoft introduced Copilot Mode in its Edge browser, integrating AI-powered features like contextual assistance, recipe adaptation, appointment booking, and research support, with built-in privacy controls for data protection.",
+          "date": "2025-08-01",
+          "video_potential": "Demonstrations of AI-enhanced browsing and new user experiences make this a highly visual and practical video topic.",
+          "tags": [
+            "Microsoft",
+            "Edge",
+            "AI Browser",
+            "Copilot",
+            "User Experience"
+          ],
+          "engagement_score": 7,
+          "content": "Microsoft introduced Copilot Mode in its Edge browser, integrating AI-powered features like contextual assistance, recipe adaptation, appointment booking, and research support, with built-in privacy controls for data protection.",
+          "ДАТА СОЗДАНИЯ": "August 3rd 2025, 9:53:27 pm"
+        }
+      },
+      {
+        "json": {
+          "ID": 3,
+          "title": "Meta and Google See AI Investments Paying Off as Revenues Climb",
+          "description": "Tech giants Microsoft, Google, Meta, and OpenAI have significantly ramped AI investments, with OpenAI's ChatGPT generating around $1 billion monthly revenue. Meta reported a record quarter attributed to AI-driven growth, signaling clear ROI on AI spending.",
+          "date": "2025-08-01",
+          "video_potential": "Highlighting financial impacts of AI investments from major companies can attract business and tech audience interest.",
+          "tags": [
+            "AI Investment",
+            "Meta",
+            "Google",
+            "OpenAI",
+            "Tech Revenue"
+          ],
+          "engagement_score": 8,
+          "content": "Tech giants Microsoft, Google, Meta, and OpenAI have significantly ramped AI investments, with OpenAI's ChatGPT generating around $1 billion monthly revenue. Meta reported a record quarter attributed to AI-driven growth, signaling clear ROI on AI spending.",
+          "ДАТА СОЗДАНИЯ": "August 3rd 2025, 9:53:27 pm"
+        }
+      },
+      {
+        "json": {
+          "ID": 4,
+          "title": "China’s Zhipu Releases Open-Source GLM-4.5 Model for AI Agents",
+          "description": "Chinese startup Zhipu released GLM-4.5, an open-source large language model designed to power intelligent AI agents, adding to over 1,500 LLMs developed in China and intensifying global AI competition.",
+          "date": "2025-08-01",
+          "video_potential": "Exploring the rise of open-source AI models in China offers a geopolitical and technological narrative appealing for detailed video analysis.",
+          "tags": [
+            "China AI",
+            "Open Source",
+            "GLM-4.5",
+            "AI Competition",
+            "Large Language Models"
+          ],
+          "engagement_score": 7,
+          "content": "Chinese startup Zhipu released GLM-4.5, an open-source large language model designed to power intelligent AI agents, adding to over 1,500 LLMs developed in China and intensifying global AI competition.",
+          "ДАТА СОЗДАНИЯ": "August 3rd 2025, 9:53:27 pm"
+        }
+      },
+      {
+        "json": {
+          "ID": 5,
+          "title": "Inside OpenAI’s Vision to Build AI Agents That Can Do Anything Online",
+          "description": "OpenAI is developing advanced AI agents that autonomously understand user intent and perform diverse internet tasks without specific instructions, moving beyond current ChatGPT capabilities in anticipation of GPT-5.",
+          "date": "2025-08-03",
+          "video_potential": "The futuristic concept of AI that acts independently online invites engaging story-driven videos showcasing potential applications and challenges.",
+          "tags": [
+            "OpenAI",
+            "AI Agents",
+            "GPT-5",
+            "Artificial Intelligence",
+            "User Experience"
+          ],
+          "engagement_score": 9,
+          "content": "OpenAI is developing advanced AI agents that autonomously understand user intent and perform diverse internet tasks without specific instructions, moving beyond current ChatGPT capabilities in anticipation of GPT-5.",
+          "ДАТА СОЗДАНИЯ": "August 3rd 2025, 9:53:27 pm"
+        }
+      }
+    ],
+    "Smart Random News Selector": [
+      {
+        "json": {
+          "ID": 3,
+          "title": "Meta and Google See AI Investments Paying Off as Revenues Climb",
+          "description": "Tech giants Microsoft, Google, Meta, and OpenAI have significantly ramped AI investments, with OpenAI's ChatGPT generating around $1 billion monthly revenue. Meta reported a record quarter attributed to AI-driven growth, signaling clear ROI on AI spending.",
+          "date": "2025-08-01",
+          "video_potential": "Highlighting financial impacts of AI investments from major companies can attract business and tech audience interest.",
+          "tags": [
+            "AI Investment",
+            "Meta",
+            "Google",
+            "OpenAI",
+            "Tech Revenue"
+          ],
+          "engagement_score": 8,
+          "content": "Tech giants Microsoft, Google, Meta, and OpenAI have significantly ramped AI investments, with OpenAI's ChatGPT generating around $1 billion monthly revenue. Meta reported a record quarter attributed to AI-driven growth, signaling clear ROI on AI spending.",
+          "ДАТА СОЗДАНИЯ": "August 3rd 2025, 9:53:27 pm",
+          "selection_metadata": {
+            "strategy": "smart",
+            "selected_from_total": 5,
+            "selection_timestamp": "2025-08-03T18:59:15.080Z",
+            "random_seed": "zkl2",
+            "original_position": 1,
+            "selection_reason": "quality_filtered"
+          },
+          "batch_statistics": {
+            "all_scores": [
+              9,
+              7,
+              8,
+              7,
+              9
+            ],
+            "average_score": 8,
+            "max_score": 9,
+            "total_news_count": 5,
+            "sources": [
+              null
+            ]
+          },
+          "ready_for_video": true,
+          "processing_stage": "selected_for_video_generation",
+          "workflow_timestamp": "2025-08-03T18:59:15.080Z"
+        }
+      }
+    ],
+    "HeyGen Parametrs": [
+      {
+        "json": {
+          "heygen_api_key": "ODg4OTExMzY1NTE3NGQ1N2I1OTYwMTBmZGY2NjVjMGUtMTc0NTE4MDI0OQ==",
+          "avatar_id": "5f47d49e56d647b7977f42da1628ffed",
+          "voice_id": "2ecb41ad861c4fa686613798e7a6d708",
+          "input_text": "Офигеть! ChatGPT приносит миллиард баксов каждый месяц! Технологические гиганты наконец-то начали зарабатывать на искусственном интеллекте. Meta, Google, Microsoft — все они вложили безумные деньги в AI и теперь это окупается по-крупному! Meta даже отчиталась о рекордном квартале благодаря AI. Эти парни буквально печатают деньги из кода. Скоро эти технологии изменят абсолютно всё. Готов к новому миру?",
+          "viral_headline": "ChatGPT приносит $1 МЛРД в месяц! Техногиганты в шоке"
+        }
+      }
+    ],
+    "Create Avatar Video (HeyGen)": [
+      {
+        "json": {
+          "error": null,
+          "data": {
+            "video_id": "b395a6018fb242929152d37022e51bd4"
+          }
+        }
+      }
+    ],
+    "Wait": [
+      {
+        "json": {
+          "error": null,
+          "data": {
+            "video_id": "b395a6018fb242929152d37022e51bd4"
+          }
+        }
+      }
+    ],
+    "HTTP Request": [
+      {
+        "json": {
+          "code": 100,
+          "data": {
+            "callback_id": null,
+            "caption_url": "https://resource2.heygen.ai/movio/video/b395a6018fb242929152d37022e51bd4/caption.ass",
+            "created_at": 1754249459,
+            "duration": 23.667,
+            "error": null,
+            "gif_url": "https://resource2.heygen.ai/video/b395a6018fb242929152d37022e51bd4/gif.gif",
+            "id": "b395a6018fb242929152d37022e51bd4",
+            "status": "completed",
+            "thumbnail_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/8889113655174d57b596010fdf665c0e/b395a6018fb242929152d37022e51bd4.jpeg?Expires=1754854373&Signature=QtvulhiXetW77tplV6VymWpUjU0u2YNynBOV2zQ3kXFY5C2pHKicDb8tI9boZrJZuYOJUk50xCWL5QHNkmYuAyYiIy3~Du8f~bqH~5ItdbnfT7xtRI-tex42abaKfIKQh-E6FX22atoh1aXzMl8iTrMO1L1Q3lbMkhhYhc1Dq7NaEaw0hiwczgXMKyKB076TByk2y4n0-tbmQk9O-Xq3kW2vWHZLI~Sk6uxvLeEa3ai8Rqf7VR~PfgM27KDnw0CvgDPBud3bIvwnkr4U~9nWD2xWD6iYV85T7gLBSOuUR6Yq4VrTj~KzX-KplctQoqLCSF434GuSmmcUsDiienkC7A__&Key-Pair-Id=K38HBHX5LX3X2H",
+            "video_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/8889113655174d57b596010fdf665c0e/b395a6018fb242929152d37022e51bd4.mp4?Expires=1754854373&Signature=ZapDi5oI~GDGAy4iH8p6peB9BXLJkJ5zvcKIxaW2CO4CgBOKc9HtlphBb1bxzgpXgRmtmRxageYUG7Jj5pTPlT5nSv3Kj8toI0YW4e0orMUBEX1K83oKWCyrJUSNeDCb6LiL7b9EoTCiz9DKeSbPO6Q4JuzzvW9KMS1RWJNJQzIoFWJtJpknDyOhkCqA6jnru~BwLqp3BZmup3CHl-yybAqLvj6~Bsgdq7dviUNqC8S2Mr8fekp3GcFOKQy9P8sTT7kL-ZztmjgeGv~Q54tfk5ENcsw5-T6FyT1nys6DXNZQsT2MX4ZrC2N3mDar5PBHPfmRV626G29ta0vjVg3MGQ__&Key-Pair-Id=K38HBHX5LX3X2H",
+            "video_url_caption": "https://files2.heygen.ai/movio/video/b395a6018fb242929152d37022e51bd4/2212c6f6cdec44e5be2fec459af58827/caption.mp4?Expires=1754854373&Signature=auQ2oipPW-syZOVl1ISYY7ECaSvvKGWWz7dL8l~QZ-qrGpTRvlpLo-orFtA~NynbPUQO9BpI-NaF-FPPLDWmeyzFBfr6AwiwRi12KFSs7k4fTZ8tO-jrIJHHvTcj33hiaYeFBhFl5L-cdi--xorIYytWmU0Z4yReOPaSCHOLWEuZW2IXvpaYuURZJ5wSxfMuOLBni4dMgPDUxQrLKtuymBfRG0hOZjDrhD4EtN-bLQ2duTqG5k9i4HhXufsu-ImFrFr92bdnO2SOk0hX8X6iRYea5mXq62GEeKGLuZjDNyucRF7MSgxI-T~kBabbuCzNxngpo48Ii8caruPQGiRBWg__&Key-Pair-Id=K38HBHX5LX3X2H"
+          },
+          "message": "Success"
+        }
+      }
+    ],
+    "Upload file": [
+      {
+        "json": {
+          "kind": "drive#file",
+          "id": "1ov-FxiiqcRq7EAZp_ONXVMn4EgWMC8WC",
+          "name": "b395a6018fb242929152d37022e51bd4",
+          "mimeType": "video/mp4",
+          "starred": false,
+          "trashed": false,
+          "explicitlyTrashed": false,
+          "parents": [
+            "1fDuOy99acTUqx_r1YeLwCxQwoNrnHt9_"
+          ],
+          "spaces": [
+            "drive"
+          ],
+          "version": "4",
+          "webContentLink": "https://drive.google.com/uc?id=1ov-FxiiqcRq7EAZp_ONXVMn4EgWMC8WC&export=download",
+          "webViewLink": "https://drive.google.com/file/d/1ov-FxiiqcRq7EAZp_ONXVMn4EgWMC8WC/view?usp=drivesdk",
+          "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/video/mp4",
+          "hasThumbnail": false,
+          "thumbnailVersion": "0",
+          "viewedByMe": false,
+          "createdTime": "2025-08-03T19:34:42.058Z",
+          "modifiedTime": "2025-08-03T19:34:43.034Z",
+          "modifiedByMeTime": "2025-08-03T19:34:43.034Z",
+          "modifiedByMe": true,
+          "owners": [
+            {
+              "kind": "drive#user",
+              "displayName": "n8n-599@spherical-proxy-452909-v0.iam.gserviceaccount.com",
+              "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJ1SJs_R6xBk2G4FzFtVhzD5xE0tdkmM28HyA7nmN16MIZWF_k=s64",
+              "me": true,
+              "permissionId": "01376948052688595219",
+              "emailAddress": "n8n-599@spherical-proxy-452909-v0.iam.gserviceaccount.com"
+            }
+          ],
+          "lastModifyingUser": {
+            "kind": "drive#user",
+            "displayName": "n8n-599@spherical-proxy-452909-v0.iam.gserviceaccount.com",
+            "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocJ1SJs_R6xBk2G4FzFtVhzD5xE0tdkmM28HyA7nmN16MIZWF_k=s64",
+            "me": true,
+            "permissionId": "01376948052688595219",
+            "emailAddress": "n8n-599@spherical-proxy-452909-v0.iam.gserviceaccount.com"
+          },
+          "shared": true,
+          "ownedByMe": true,
+          "downloadRestrictions": {
+            "itemDownloadRestriction": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            },
+            "effectiveDownloadRestrictionWithContext": {
+              "restrictedForReaders": false,
+              "restrictedForWriters": false
+            }
+          },
+          "capabilities": {
+            "canAcceptOwnership": false,
+            "canAddChildren": false,
+            "canAddMyDriveParent": false,
+            "canChangeCopyRequiresWriterPermission": true,
+            "canChangeItemDownloadRestriction": true,
+            "canChangeSecurityUpdateEnabled": false,
+            "canChangeViewersCanCopyContent": true,
+            "canComment": true,
+            "canCopy": true,
+            "canDelete": true,
+            "canDisableInheritedPermissions": false,
+            "canDownload": true,
+            "canEdit": true,
+            "canEnableInheritedPermissions": true,
+            "canListChildren": false,
+            "canModifyContent": true,
+            "canModifyContentRestriction": true,
+            "canModifyEditorContentRestriction": true,
+            "canModifyOwnerContentRestriction": true,
+            "canModifyLabels": false,
+            "canMoveChildrenWithinDrive": false,
+            "canMoveItemIntoTeamDrive": true,
+            "canMoveItemOutOfDrive": true,
+            "canMoveItemWithinDrive": true,
+            "canReadLabels": false,
+            "canReadRevisions": true,
+            "canRemoveChildren": false,
+            "canRemoveContentRestriction": false,
+            "canRemoveMyDriveParent": true,
+            "canRename": true,
+            "canShare": true,
+            "canTrash": true,
+            "canUntrash": true
+          },
+          "viewersCanCopyContent": true,
+          "copyRequiresWriterPermission": false,
+          "writersCanShare": true,
+          "permissions": [
+            {
+              "kind": "drive#permission",
+              "id": "anyoneWithLink",
+              "type": "anyone",
+              "role": "reader",
+              "allowFileDiscovery": false
+            },
+            {
+              "kind": "drive#permission",
+              "id": "02593057915437572742",
+              "type": "user",
+              "emailAddress": "igor.zuevich@gmail.com",
+              "role": "writer",
+              "displayName": "igor.zuevich",
+              "deleted": false,
+              "pendingOwner": false
+            },
+            {
+              "kind": "drive#permission",
+              "id": "13767160450931003317",
+              "type": "user",
+              "emailAddress": "n8nenglish368@spherical-proxy-452909-v0.iam.gserviceaccount.com",
+              "role": "writer",
+              "displayName": "n8nenglish368",
+              "deleted": false,
+              "pendingOwner": false
+            },
+            {
+              "kind": "drive#permission",
+              "id": "01376948052688595219",
+              "type": "user",
+              "emailAddress": "n8n-599@spherical-proxy-452909-v0.iam.gserviceaccount.com",
+              "role": "owner",
+              "displayName": "n8n-599",
+              "deleted": false,
+              "pendingOwner": false
+            }
+          ],
+          "permissionIds": [
+            "anyoneWithLink",
+            "02593057915437572742",
+            "13767160450931003317",
+            "01376948052688595219"
+          ],
+          "originalFilename": "Untitled",
+          "fullFileExtension": "",
+          "fileExtension": "",
+          "md5Checksum": "d236478fa0fe037c1d0988d743874226",
+          "sha1Checksum": "bdb1607ee1b0ff78eadef44344ddbbb13e85830f",
+          "sha256Checksum": "bce66c6dd3f346171646720c6646a11a023d1fbac7afd9ae3c5e61162d22d7c6",
+          "size": "7399620",
+          "quotaBytesUsed": "7399620",
+          "headRevisionId": "0B_sju476CGyddW84bzRzR0VjVlpqZlYrSGRwb0czUVNjcUhNPQ",
+          "isAppAuthorized": true,
+          "linkShareMetadata": {
+            "securityUpdateEligible": false,
+            "securityUpdateEnabled": true
+          },
+          "inheritedPermissionsDisabled": false
+        }
+      }
+    ],
+    "Download Video": [
+      {
+        "json": {
+          "code": 100,
+          "data": {
+            "callback_id": null,
+            "caption_url": "https://resource2.heygen.ai/movio/video/b395a6018fb242929152d37022e51bd4/caption.ass",
+            "created_at": 1754249459,
+            "duration": 23.667,
+            "error": null,
+            "gif_url": "https://resource2.heygen.ai/video/b395a6018fb242929152d37022e51bd4/gif.gif",
+            "id": "b395a6018fb242929152d37022e51bd4",
+            "status": "completed",
+            "thumbnail_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/8889113655174d57b596010fdf665c0e/b395a6018fb242929152d37022e51bd4.jpeg?Expires=1754854373&Signature=QtvulhiXetW77tplV6VymWpUjU0u2YNynBOV2zQ3kXFY5C2pHKicDb8tI9boZrJZuYOJUk50xCWL5QHNkmYuAyYiIy3~Du8f~bqH~5ItdbnfT7xtRI-tex42abaKfIKQh-E6FX22atoh1aXzMl8iTrMO1L1Q3lbMkhhYhc1Dq7NaEaw0hiwczgXMKyKB076TByk2y4n0-tbmQk9O-Xq3kW2vWHZLI~Sk6uxvLeEa3ai8Rqf7VR~PfgM27KDnw0CvgDPBud3bIvwnkr4U~9nWD2xWD6iYV85T7gLBSOuUR6Yq4VrTj~KzX-KplctQoqLCSF434GuSmmcUsDiienkC7A__&Key-Pair-Id=K38HBHX5LX3X2H",
+            "video_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/8889113655174d57b596010fdf665c0e/b395a6018fb242929152d37022e51bd4.mp4?Expires=1754854373&Signature=ZapDi5oI~GDGAy4iH8p6peB9BXLJkJ5zvcKIxaW2CO4CgBOKc9HtlphBb1bxzgpXgRmtmRxageYUG7Jj5pTPlT5nSv3Kj8toI0YW4e0orMUBEX1K83oKWCyrJUSNeDCb6LiL7b9EoTCiz9DKeSbPO6Q4JuzzvW9KMS1RWJNJQzIoFWJtJpknDyOhkCqA6jnru~BwLqp3BZmup3CHl-yybAqLvj6~Bsgdq7dviUNqC8S2Mr8fekp3GcFOKQy9P8sTT7kL-ZztmjgeGv~Q54tfk5ENcsw5-T6FyT1nys6DXNZQsT2MX4ZrC2N3mDar5PBHPfmRV626G29ta0vjVg3MGQ__&Key-Pair-Id=K38HBHX5LX3X2H",
+            "video_url_caption": "https://files2.heygen.ai/movio/video/b395a6018fb242929152d37022e51bd4/2212c6f6cdec44e5be2fec459af58827/caption.mp4?Expires=1754854373&Signature=auQ2oipPW-syZOVl1ISYY7ECaSvvKGWWz7dL8l~QZ-qrGpTRvlpLo-orFtA~NynbPUQO9BpI-NaF-FPPLDWmeyzFBfr6AwiwRi12KFSs7k4fTZ8tO-jrIJHHvTcj33hiaYeFBhFl5L-cdi--xorIYytWmU0Z4yReOPaSCHOLWEuZW2IXvpaYuURZJ5wSxfMuOLBni4dMgPDUxQrLKtuymBfRG0hOZjDrhD4EtN-bLQ2duTqG5k9i4HhXufsu-ImFrFr92bdnO2SOk0hX8X6iRYea5mXq62GEeKGLuZjDNyucRF7MSgxI-T~kBabbuCzNxngpo48Ii8caruPQGiRBWg__&Key-Pair-Id=K38HBHX5LX3X2H"
+          },
+          "message": "Success"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Smart Random News Selector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Extract Video Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HeyGen Parametrs": {
+      "main": [
+        [
+          {
+            "node": "Create Avatar Video (HeyGen)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Video Script": {
+      "main": [
+        [
+          {
+            "node": "HeyGen Parametrs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Avatar Video (HeyGen)": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Download Video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Smart Random News Selector": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9efb2317-358f-4078-808d-4debdc8a3771",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "x0klntnMUGFhNhG1",
+  "tags": []
+}

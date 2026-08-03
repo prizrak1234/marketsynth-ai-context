@@ -1,0 +1,144 @@
+{
+  "raw_task": "Normalize product marketing context for a B2B SaaS project management tool targeting remote software teams.",
+  "product_name": {
+    "value": "FlowDesk Pro",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "product_description": {
+    "value": "Async-first project management with sprint boards, standup summaries, and Git integration.",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "product_type": {
+    "value": "B2B SaaS",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "business_stage": {
+    "value": "pre-launch MVP",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "medium"
+  },
+  "business_model": {
+    "value": "Subscription per seat with freemium tier",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "high"
+  },
+  "geography": {
+    "value": "Global — English-speaking markets first",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "medium"
+  },
+  "target_customer_claims": [
+    {
+      "claim_id": "cust-001",
+      "domain": "customer_segment",
+      "statement": "Remote software teams of 5–50 engineers",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "problem_claims": [
+    {
+      "claim_id": "prob-001",
+      "domain": "problem_statement",
+      "statement": "Existing tools create meeting overhead and async coordination gaps",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "value_proposition_claims": [
+    {
+      "claim_id": "vp-001",
+      "domain": "value_proposition",
+      "statement": "Reduce standup time by 50% with automated summaries",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "low",
+      "assumption": true
+    }
+  ],
+  "pricing_claims": [
+    {
+      "claim_id": "price-001",
+      "domain": "pricing",
+      "statement": "$12 per seat/month on paid tier",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "competitor_claims": [
+    {
+      "claim_id": "comp-001",
+      "domain": "competitor",
+      "statement": "Competes with Linear and Jira for async teams",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "channels": [
+    {
+      "claim_id": "chan-001",
+      "domain": "channel",
+      "statement": "Product-led growth and developer communities",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "brand_constraints": [
+    {
+      "claim_id": "brand-001",
+      "domain": "brand_constraint",
+      "statement": "Developer-friendly tone; no enterprise jargon",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "high"
+    }
+  ],
+  "operational_constraints": [
+    {
+      "claim_id": "ops-001",
+      "domain": "business_constraint",
+      "statement": "No paid ads until context readiness confirmed",
+      "source_type": "user_statement",
+      "verification_status": "unverified",
+      "confidence": "high"
+    }
+  ],
+  "budget_context": {
+    "value": "$150k seed runway for 12 months",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "medium"
+  },
+  "timeline": {
+    "value": "Public beta in Q3 2026",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "medium"
+  },
+  "available_evidence": [
+    {
+      "evidence_id": "ev-001",
+      "evidence_type": "user_statement",
+      "claim": "Founder interviewed 8 engineering leads about async standups",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    }
+  ],
+  "existing_assets": ["Landing page draft", "MVP demo video"],
+  "user_priorities": ["Validate positioning before paid acquisition"],
+  "user_risk_tolerance": "medium"
+}

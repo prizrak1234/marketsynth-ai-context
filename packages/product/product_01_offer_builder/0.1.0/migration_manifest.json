@@ -1,0 +1,14 @@
+{
+  "revision": "20260724_0059",
+  "down_revision": "20260723_0058",
+  "file": "alembic/versions/20260724_0059_offer_builder_product_01.py",
+  "postgresql_verified": false,
+  "verification_script": "scripts/verify_product_01_postgres_migration.py",
+  "tables": [
+    "commercial_upstream_snapshots",
+    "offer_artifacts",
+    "offer_artifact_versions",
+    "offer_review_events"
+  ],
+  "note": "SQLite cannot prove full Alembic chain — PostgreSQL required"
+}

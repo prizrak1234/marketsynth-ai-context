@@ -1,0 +1,19 @@
+{
+  "consumer_skill_id": "ms.skill.positioning",
+  "consumer_skill_version": "0.2.0",
+  "mv_schema_uri": "ms.skill.market_validation/output/0.2.0",
+  "mv_version": "0.2.0",
+  "mv_output_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+  "verdict_consumed": "proceed_with_conditions",
+  "selected_segment_ids": [
+    "seg-remote-eng"
+  ],
+  "conditions_acknowledged": [
+    "cond-budget-validation"
+  ],
+  "blockers_ignored": [],
+  "forbidden_actions": [
+    "reinterpret_stop_as_proceed",
+    "recompute_jtbd"
+  ]
+}

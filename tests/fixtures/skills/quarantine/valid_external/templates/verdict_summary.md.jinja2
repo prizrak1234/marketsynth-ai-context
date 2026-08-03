@@ -1,0 +1,17 @@
+# Verdict summary template (non-executable)
+
+Skill: {{ skill_id }} v{{ skill_version }}
+Verdict: {{ verdict }}
+Confidence: {{ verdict_confidence }}
+
+{{ executive_summary }}
+
+## Evidence gaps
+
+{% for gap in evidence_gaps %}
+- {{ gap }}
+{% endfor %}
+
+## Recommended action
+
+{{ recommended_action }}

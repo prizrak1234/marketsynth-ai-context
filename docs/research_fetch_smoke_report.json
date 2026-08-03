@@ -1,0 +1,336 @@
+{
+  "generated_at": "2026-07-30T16:28:58.229059+00:00",
+  "run_id": "4620f2ad-8b04-4007-85ab-4c3a324144cd",
+  "provider_order": "firecrawl,jina,tavily,trafilatura,playwright",
+  "results": [
+    {
+      "label": "ru_static",
+      "source_url": "https://ru.wikipedia.org/wiki/Маркетинг",
+      "normalized_url": "https://ru.wikipedia.org/wiki/Маркетинг",
+      "success": true,
+      "provider": "jina",
+      "fallback_used": true,
+      "latency_ms": null,
+      "title": null,
+      "char_count": 8000,
+      "content_hash": "8c75181f400f6d1033112dc119cb64e040f5b44271161d275770fd3bda8f1184",
+      "outcome": "success",
+      "attempt_lineage": [
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3649
+        }
+      ],
+      "quality_verdict": "pass_no_title",
+      "duplicate_second_fetch": null,
+      "error": null
+    },
+    {
+      "label": "en_static",
+      "source_url": "https://en.wikipedia.org/wiki/Market_research",
+      "normalized_url": "https://en.wikipedia.org/wiki/Market_research",
+      "success": true,
+      "provider": "jina",
+      "fallback_used": true,
+      "latency_ms": null,
+      "title": null,
+      "char_count": 8000,
+      "content_hash": "833d5521f4f459b3e47fc6d01f80078a4c064a92cf6c2bdb2db3343e4b60173a",
+      "outcome": "success",
+      "attempt_lineage": [
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3649
+        },
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3786
+        }
+      ],
+      "quality_verdict": "pass_no_title",
+      "duplicate_second_fetch": null,
+      "error": null
+    },
+    {
+      "label": "js_heavy",
+      "source_url": "https://example.com/",
+      "normalized_url": "https://example.com",
+      "success": true,
+      "provider": "jina",
+      "fallback_used": true,
+      "latency_ms": null,
+      "title": null,
+      "char_count": 308,
+      "content_hash": "8d7344e87d341467ffaf6255f1b2150c56d6399b3fb4880a46313625b19188ea",
+      "outcome": "success",
+      "attempt_lineage": [
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3649
+        },
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3786
+        },
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 1097
+        }
+      ],
+      "quality_verdict": "fail_too_short",
+      "duplicate_second_fetch": null,
+      "error": null
+    },
+    {
+      "label": "redirect",
+      "source_url": "https://www.wikipedia.org/",
+      "normalized_url": "https://www.wikipedia.org",
+      "success": true,
+      "provider": "jina",
+      "fallback_used": true,
+      "latency_ms": null,
+      "title": "Wikipedia **The Free Encyclopedia**",
+      "char_count": 8000,
+      "content_hash": "40eac57502f88a258ad4197701ee0035a2f8ad7277ee266634580a43990d0d24",
+      "outcome": "success",
+      "attempt_lineage": [
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3649
+        },
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3786
+        },
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 1097
+        },
+        {
+          "provider": "firecrawl",
+          "status": "rate_limited",
+          "safe_error_code": "ExtractReject",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3357
+        }
+      ],
+      "quality_verdict": "pass",
+      "duplicate_second_fetch": null,
+      "error": null
+    },
+    {
+      "label": "unavailable",
+      "source_url": "https://example.com/this-page-does-not-exist-404",
+      "normalized_url": "https://example.com/this-page-does-not-exist-404",
+      "success": true,
+      "provider": "jina",
+      "fallback_used": true,
+      "latency_ms": null,
+      "title": null,
+      "char_count": 218,
+      "content_hash": "c12fe70b624b55073e0726bb931577d82f84a2908b8c7957f98baac7f6ed616b",
+      "outcome": "success",
+      "attempt_lineage": [
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3649
+        },
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3786
+        },
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 1097
+        },
+        {
+          "provider": "firecrawl",
+          "status": "rate_limited",
+          "safe_error_code": "ExtractReject",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3357
+        },
+        {
+          "provider": "firecrawl",
+          "status": "rate_limited",
+          "safe_error_code": "ExtractReject",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 2407
+        }
+      ],
+      "quality_verdict": "fail_too_short",
+      "duplicate_second_fetch": null,
+      "error": null
+    },
+    {
+      "label": "duplicate",
+      "source_url": "https://en.wikipedia.org/wiki/Market_research",
+      "normalized_url": "https://en.wikipedia.org/wiki/Market_research",
+      "success": true,
+      "provider": "jina",
+      "fallback_used": true,
+      "latency_ms": null,
+      "title": null,
+      "char_count": 8000,
+      "content_hash": "833d5521f4f459b3e47fc6d01f80078a4c064a92cf6c2bdb2db3343e4b60173a",
+      "outcome": "success",
+      "attempt_lineage": [
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3649
+        },
+        {
+          "provider": "firecrawl",
+          "status": "credits_exhausted",
+          "safe_error_code": "credits_exhausted",
+          "latency_ms": null
+        },
+        {
+          "provider": "jina",
+          "status": "succeeded",
+          "safe_error_code": null,
+          "latency_ms": 3786
+        }
+      ],
+      "quality_verdict": "pass_no_title",
+      "duplicate_second_fetch": false,
+      "error": null
+    }
+  ],
+  "budget": {
+    "fetch_attempts": 14,
+    "fetch_success_count": 5,
+    "fetch_failure_count": 5,
+    "fallback_success_count": 5,
+    "duplicate_url_skipped_total": 4,
+    "cache_hit_total": 4,
+    "fetch_attempts_by_provider": {
+      "firecrawl": 5,
+      "jina": 5,
+      "cache": 2
+    },
+    "fetch_success_by_provider": {
+      "jina": 5
+    },
+    "all_providers_failed_total": 0
+  }
+}

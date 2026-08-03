@@ -1,0 +1,422 @@
+{
+  "name": "37 - Google Search",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        0
+      ],
+      "id": "b80e5135-165b-419f-8da6-d3b49a18c49d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://customsearch.googleapis.com/customsearch/v1",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "cx",
+              "value": "178949adc13114b10"
+            },
+            {
+              "name": "q",
+              "value": "site:linkedin.com/in/ \"CEO\" \"FinTech\" \"Berlin\""
+            },
+            {
+              "name": "key",
+              "value": "AIzaSy_REDACTED"
+            },
+            {
+              "name": "start",
+              "value": "={{ $json.array }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        736,
+        0
+      ],
+      "id": "3258c1da-2c15-4332-a2d8-adcb8d6561ae",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "array",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        272,
+        0
+      ],
+      "id": "305530bc-782a-4698-8815-8b20d0da927f",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        512,
+        0
+      ],
+      "id": "cca91ada-8c3d-4caa-8f29-ec13f2d5b33f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1392,
+        0
+      ],
+      "id": "c2833df2-337b-4e1f-bbd1-9cbbca953df9",
+      "name": "Wait",
+      "webhookId": "50bf2454-1d20-44c3-b6e2-e34bd63e3114"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1HpzZTaTzYANKpWxfxvxaERxSqEzEj8-x2Vak25rkAQ4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HpzZTaTzYANKpWxfxvxaERxSqEzEj8-x2Vak25rkAQ4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $json.name }}",
+            "role": "={{ $json.role }}",
+            "link": "={{ $json.link }}",
+            "snippet": "={{ $json.snippet }}",
+            "image": "={{ $json.image }}",
+            "location": "={{ $json.location }}",
+            "diplayLink": "={{ $json.displayLink }}",
+            "rawTitle": "={{ $json.rawTitle }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "role",
+              "displayName": "role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "snippet",
+              "displayName": "snippet",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "diplayLink",
+              "displayName": "diplayLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rawTitle",
+              "displayName": "rawTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1184,
+        0
+      ],
+      "id": "6d2a2882-5e13-4673-b1da-e10007c22a7b",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "enqvyHpWXgCm2XpE",
+          "name": "aiiszdes sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      array: [1, 11, 21],\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        0
+      ],
+      "id": "a9a864b5-2aae-4a25-9376-c176ed4ee002",
+      "name": "Array"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Вход: данные из предыдущего шага\nconst data = items[0].json;\n\n// items может быть внутри массива (как у Google Custom Search)\nconst results = data.items || [];\n\nfunction extractName(title) {\n  if (!title) return null;\n  // Берём всё до первого \"–\" или \"-\"\n  return title.split(\"–\")[0].split(\"-\")[0].trim();\n}\n\nfunction extractRole(title) {\n  if (!title) return null;\n  // Берём всё после \"–\" или \"-\"\n  const parts = title.split(\"–\");\n  if (parts.length > 1) return parts[1].trim();\n  const dashParts = title.split(\"-\");\n  if (dashParts.length > 1) return dashParts[1].trim();\n  return null;\n}\n\nfunction extractLocation(snippet) {\n  if (!snippet) return null;\n  const match = snippet.match(/Berlin|Germany|Deutschland|New York|London|Paris/i);\n  return match ? match[0] : null;\n}\n\nfunction extractImage(pagemap) {\n  if (!pagemap) return null;\n  if (pagemap.cse_image && pagemap.cse_image[0]?.src) {\n    return pagemap.cse_image[0].src;\n  }\n  if (pagemap.metatags && pagemap.metatags[0]?.[\"og:image\"]) {\n    return pagemap.metatags[0][\"og:image\"];\n  }\n  return null;\n}\n\nconst output = results.map(r => ({\n  name: extractName(r.title),\n  role: extractRole(r.title),\n  link: r.link,\n  snippet: r.snippet,\n  image: extractImage(r.pagemap),\n  location: extractLocation(r.snippet),\n  displayLink: r.displayLink,\n  rawTitle: r.title,\n}));\n\nreturn output.map(o => ({ json: o }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        976,
+        0
+      ],
+      "id": "1cd1213e-b0e3-458a-9ff0-674916e8f8c0",
+      "name": "Parsing"
+    },
+    {
+      "parameters": {
+        "content": "## Start",
+        "height": 368,
+        "width": 624,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "8cfbb696-54c4-46a3-9559-86be3550c7b4",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Search",
+        "height": 368,
+        "width": 448,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        432,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "f547fe26-eeb4-42e3-97d9-763f675e7b55",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Parsing",
+        "height": 368,
+        "width": 672,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        896,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "cb731ca8-1a92-4a81-91c2-27041a5014e7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Хочешь разобраться в автоматизациях и искусственном интеллекте? Пройди наш N8N Мастер-Класс!\n\n### Ищи в Pro-группе тут: https://t.me/iishenka_pro_bot\n",
+        "height": 224,
+        "width": 1772,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        256
+      ],
+      "id": "bd885519-41a7-4fa1-bac3-da88e8080c06",
+      "name": "Sticky Note8"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Array",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Parsing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Array": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0093514e-d773-468d-a645-2cd7f8da36f4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "P4CUBWodFV1m8UrD",
+  "tags": []
+}

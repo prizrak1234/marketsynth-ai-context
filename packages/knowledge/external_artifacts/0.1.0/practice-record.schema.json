@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/external-artifacts/0.1.0/practice-record.schema.json",
+  "title": "PracticeRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "practice_id": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "context": {
+      "type": "string"
+    },
+    "problem": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": [
+        "claimed",
+        "source_documented",
+        "reproduced",
+        "regression_tested",
+        "obsolete",
+        "contradicted",
+        "unknown"
+      ]
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "practice_id",
+    "domain",
+    "problem",
+    "decision",
+    "verification_status",
+    "provenance"
+  ]
+}

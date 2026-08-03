@@ -1,0 +1,6 @@
+{
+  "messages": [
+    "Вы сейчас кормите грудью?"
+  ],
+  "rules_ref": "breastfeeding_rules.json"
+}

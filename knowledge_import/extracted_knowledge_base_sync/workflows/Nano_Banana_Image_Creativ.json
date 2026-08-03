@@ -1,0 +1,834 @@
+{
+  "name": "Nano_Banana_Image_Creativ",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        0
+      ],
+      "id": "68990f61-8d20-4543-aa9b-80be15dd4e34",
+      "name": "Telegram Trigger1",
+      "webhookId": "0e4bd5e0-e859-40ff-8842-65447f42f6ea",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message?.document?.file_id ?? $json.message?.photo?.[$json.message.photo.length - 1]?.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        16,
+        0
+      ],
+      "id": "8624bd36-8dff-4b06-ac44-d45bfb7d22e0",
+      "name": "Get a file",
+      "webhookId": "31c4aec7-be20-48ce-9b02-ce1990c4af41",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "inputType": "binary",
+        "binaryPropertyName": "=data"
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        720,
+        0
+      ],
+      "id": "868c05df-e603-40ec-8919-b68254d61537",
+      "name": "Upload a file",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bS3VhMXmlWezaHfW",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash-lite",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash-lite"
+        },
+        "text": "=Analyze this product image in extreme detail for advertising purposes. Provide comprehensive description focusing on:\n\nDETAILED PRODUCT DESCRIPTION:\n- Exact product type, category, and subcategory\n- Brand name, model, and any visible text/logos\n- Precise colors, materials, textures, and finishes\n- Detailed shape, size proportions, and design elements\n- All visible features, buttons, parts, and components\n- Quality indicators and craftsmanship details\n\nMULTIPLE USE CASES & SCENARIOS:\n- List 5-7 different ways this product can be used\n- Various environments where it would be appropriate (home, office, outdoors, workshop, etc.)\n- Different user scenarios and contexts\n- Seasonal or situational applications\n- Professional vs personal use cases\n- Creative or unconventional uses\n\nLIFESTYLE INTEGRATION:\n- How this product fits into daily routines\n- Social situations where it would be used\n- Activities and hobbies it complements\n- Age groups and demographics who would benefit\n- Lifestyle values it represents (convenience, safety, style, etc.)\n\nTARGET CONTEXTS:\n- Specific locations for product placement in ads\n- Complementary objects or tools that go with it\n- Background settings that would enhance its appeal\n- Lighting conditions that show it best\n\nFormat: Very detailed analysis with specific examples. Focus on versatility and multiple applications to maximize advertising potential.",
+        "imageUrls": "={{ $json.fileUri }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        944,
+        0
+      ],
+      "id": "c7608a66-16e5-4496-a8e6-9d920bf03c06",
+      "name": "Analyze image1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bS3VhMXmlWezaHfW",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -352,
+        288
+      ],
+      "id": "8e66e3a7-0dc6-4903-b56b-a60371525809",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -144,
+        368
+      ],
+      "id": "25c2e5d6-9486-4308-9666-ecd53e838ca1",
+      "name": "Download file",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "fileFolder",
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1wiyrsQy178tQo467KUmhYvRGf4EH67xq",
+            "mode": "list",
+            "cachedResultName": "Image Nano Banana",
+            "cachedResultUrl": "https://drive.google.com/drive/folders/1wiyrsQy178tQo467KUmhYvRGf4EH67xq"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1232,
+        0
+      ],
+      "id": "4866eac4-7159-4dee-8619-58e382494193",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        16,
+        368
+      ],
+      "id": "487da26f-ea51-4158-b003-179cdb12f29c",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        288,
+        0
+      ],
+      "id": "390a3a95-6172-4d5c-a06d-3ad164eeb86a",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        512,
+        0
+      ],
+      "id": "2114a908-dff6-4dbc-a414-1c42aea8ca19",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "imageBase64",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        368
+      ],
+      "id": "391f325f-94b9-4b2b-bd6a-797e0f5bd5a4",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        368
+      ],
+      "id": "62a41bd6-bee6-4e95-9642-1b681f8c3a60",
+      "name": "Convert to File2"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "=Analyze this person/character image for advertising integration. Provide a detailed description focusing on:\n\nPERSON CHARACTERISTICS:\n- Age range and gender\n- Physical appearance and style\n- Clothing and accessories\n- Pose and body language\n- Facial expression and mood\n\nENVIRONMENT & CONTEXT:\n- Location/setting description\n- Lighting and atmosphere\n- Background elements\n- Overall scene mood and vibe\n- Time of day/season indicators\n\nADVERTISING SUITABILITY:\n- Target demographic they represent\n- Lifestyle and personality they convey\n- Emotions and feelings they evoke\n- Brand values they could represent\n- Social media appeal factors\n\nTECHNICAL ASPECTS:\n- Image quality and composition\n- Angle and framing\n- Color palette and tones\n\nFormat: Structured analysis in 2-3 sentences per section. Focus on elements that will help match this person with products for authentic advertising content.",
+        "imageUrls": "={{ $json.fileUri }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        512,
+        368
+      ],
+      "id": "64c24b00-67e3-4ae6-9d64-03d2d90b985f",
+      "name": "Analyze image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bS3VhMXmlWezaHfW",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a creative prompt generator for Instagram-worthy image combinations. Based on two image analyses, create ONE short promotional prompt (max 400 characters) that describes how to merge these images into an engaging social media visual.\n\nYour task:\n1. Analyze the product/object from image 1 and person/scene from image 2\n2. Create a natural interaction between them\n3. Choose an appropriate location that fits both elements\n4. Define emotions and mood for Instagram appeal\n5. Keep it under 400 characters\n6. Focus on lifestyle and authentic moments\n7. Do not add hashtags, emojis, multiple options, or explanations.\n\nFormat: Output must be ONLY one single sentence or short paragraph describing the scene. No extra text.\n\nInput format:\nImage 1 Analysis: {{ $('Analyze image1').item.json.content.parts[0].text }}\nImage 2 Analysis: {{ $json.content.parts[0].text }}\n\nOutput: One short generation prompt for combining the images."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        672,
+        368
+      ],
+      "id": "0ebd5024-3c10-4b51-a50f-22999c32cea4",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bS3VhMXmlWezaHfW",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "name": "={{ $now.format('hh-mm-ss-dd-MM-yyyy') }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1ZkrVfsXsZvP7FNKAYogsoLUlw2u8jXUX",
+          "mode": "list",
+          "cachedResultName": "IMAGE_n8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1ZkrVfsXsZvP7FNKAYogsoLUlw2u8jXUX"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1680,
+        464
+      ],
+      "id": "acabaec0-3908-4fd9-89da-78d957144a91",
+      "name": "Upload file",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"{{ $json.content.parts[0].text }}\"\n        },\n        {\n          \"file_data\": {\n            \"file_uri\": \"{{ $('Upload a file').item.json.fileUri }}\",\n            \"mime_type\": \"{{ $('Upload a file').item.json.mimeType }}\"\n          }\n        },\n        {\n          \"file_data\": {\n            \"file_uri\": \"{{ $('Upload a file1').item.json.fileUri }}\",\n            \"mime_type\": \"{{ $('Upload a file1').item.json.mimeType }}\"\n          }\n        }\n      ]\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        368
+      ],
+      "id": "49097fb3-6035-40d7-b320-419088336990",
+      "name": "Nano Banana",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "qIwLft2f59qMFDe2",
+          "name": "Google Studio"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1664,
+        224
+      ],
+      "id": "2f1ad4d9-80fa-4bce-afbc-7c84888133c9",
+      "name": "Send a photo message",
+      "webhookId": "8ea7a529-5dda-4268-bd22-75032463b6d9",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 1. ВЫГРУЗКА ФАЙЛА",
+        "height": 240,
+        "width": 592,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "435f71e7-c04d-47a3-8e06-9e7a7167f792",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 2 АНАЛИЗ ИЗОБРАЖЕНИЯ",
+        "height": 240,
+        "width": 848,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        240,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "3fd7c049-ab39-48f2-ae62-89e90c5484ed",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 4 ГЕНЕРАЦИЯ И ВЫГРУЗКА ИЗОБРАЖЕНИЯ",
+        "height": 480,
+        "width": 2032,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -384,
+        192
+      ],
+      "typeVersion": 1,
+      "id": "307da660-c7e2-43df-9b70-da26b14ce192",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 3 ВЫГРУЗКА ПЕРСОНАЖЕЙ",
+        "height": 240,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "43c90e66-a589-48c9-8205-b6822446d1c2",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Тонкая Настройка ИИ Агентов : https://youtu.be/cGl4xzRDq8A",
+        "height": 100,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        544
+      ],
+      "typeVersion": 1,
+      "id": "622d4105-95f3-414b-bf21-3e7136280e36",
+      "name": "Sticky Note8",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Google Привязка: https://youtu.be/qKh7BTjQoM0",
+        "height": 120,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1440,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "a140995c-3248-4b01-9b6c-4cd7e3abc8fb",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке нод Http Request: https://youtu.be/jXvxwvHPJwg",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        928,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "9bef4774-86bf-4fdf-9deb-c9ccb41af93c",
+      "name": "Sticky Note13",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram в n8n: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "8047f835-0140-4a7d-b6fa-ed29b3f2909b",
+      "name": "Sticky Note14",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок: Нодам и Привязке GEMINI AI: https://youtu.be/XKhqGqe3FBk",
+        "height": 120,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        624,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "ae67349c-4c93-48dc-b2f0-225d5928fa05",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Урок: n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -560,
+        576
+      ],
+      "typeVersion": 1,
+      "id": "2835e288-aba0-40a0-b8ed-5c7f3555400e",
+      "name": "Sticky Note9",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "inputType": "binary",
+        "binaryPropertyName": "=data"
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        336,
+        368
+      ],
+      "id": "a95b7931-cc29-46e7-b46d-3d7cb6630145",
+      "name": "Upload a file1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bS3VhMXmlWezaHfW",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "febd1426-e076-411e-a053-e159f25ff28e",
+              "name": "imageBase64",
+              "value": "={{   (     $json.candidates?.[0]?.content?.parts || []   ).find(p => (p.inlineData && p.inlineData.data))?.inlineData?.data || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        368
+      ],
+      "id": "719a69de-9d01-446d-ab49-8000209dc47b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "amount": 25
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1280,
+        368
+      ],
+      "id": "999d5806-9eb4-4e0c-a358-4a77001e08b7",
+      "name": "Wait",
+      "webhookId": "c18265dc-141c-4fda-882c-a20abecc132b"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a file": {
+      "main": [
+        [
+          {
+            "node": "Analyze image1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image1": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Upload a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Convert to File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File2": {
+      "main": [
+        [
+          {
+            "node": "Upload a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Nano Banana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a photo message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nano Banana": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a file1": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e8c7b0af-32f1-43e3-9259-21e214e48665",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "lfaVlFey1AE08h5J",
+  "tags": []
+}

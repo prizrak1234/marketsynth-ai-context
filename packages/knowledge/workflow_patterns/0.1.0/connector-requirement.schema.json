@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/connector-requirement.schema.json",
+  "title": "ConnectorRequirement",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "connector_id": {
+      "type": "string"
+    },
+    "connector_type": {
+      "type": "string"
+    },
+    "required": {
+      "type": "boolean"
+    },
+    "approval_required": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "connector_id",
+    "connector_type",
+    "required"
+  ]
+}

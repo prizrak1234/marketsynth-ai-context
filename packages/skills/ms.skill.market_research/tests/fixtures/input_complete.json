@@ -1,0 +1,69 @@
+{
+  "product_marketing_context": {
+    "context_id": "ctx-flowdesk-001",
+    "skill_id": "ms.skill.product_marketing_context",
+    "skill_version": "0.1.0",
+    "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "readiness": "ready"
+  },
+  "research_objectives": [
+    "Validate demand signals for async project management among remote software teams",
+    "Identify primary competitor categories and pricing bands"
+  ],
+  "market_scope": {
+    "value": "B2B SaaS project management for remote teams",
+    "source_type": "prior_skill_output",
+    "verification_status": "partially_verified",
+    "confidence": "medium"
+  },
+  "geography": {
+    "value": "Global English-speaking markets",
+    "source_type": "prior_skill_output",
+    "verification_status": "partially_verified",
+    "confidence": "medium"
+  },
+  "time_horizon": {
+    "value": "12 months",
+    "source_type": "user_statement",
+    "verification_status": "unverified",
+    "confidence": "medium"
+  },
+  "available_sources": [
+    {
+      "source_id": "src-001",
+      "source_type": "document",
+      "reference": "Founder interview notes (8 engineering leads)",
+      "notes": "User-provided qualitative research"
+    },
+    {
+      "source_id": "src-002",
+      "source_type": "market_source",
+      "reference": "https://example.invalid/reports/async-tools-2026",
+      "notes": "Fictional industry report excerpt"
+    }
+  ],
+  "existing_evidence": [
+    {
+      "evidence_id": "ev-001",
+      "evidence_type": "user_statement",
+      "claim": "8 of 8 interviewed leads report standup fatigue",
+      "source_reference": "src-001",
+      "verification_status": "unverified",
+      "confidence": "medium"
+    },
+    {
+      "evidence_id": "ev-002",
+      "evidence_type": "market_source",
+      "claim": "Async collaboration tool adoption growing in distributed teams",
+      "source_reference": "src-002",
+      "verification_status": "partially_verified",
+      "confidence": "medium"
+    }
+  ],
+  "research_constraints": [
+    "No paid external research budget",
+    "No autonomous web scraping"
+  ],
+  "language": "en",
+  "required_depth": "standard"
+}

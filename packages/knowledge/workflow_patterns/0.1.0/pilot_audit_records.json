@@ -1,0 +1,239 @@
+[
+  {
+    "audit_id": "audit-human_approval_before_publication",
+    "workflow_template_ids": [
+      "wf-febea81827b8ad6b",
+      "wf-16b82581942c24a9"
+    ],
+    "pattern_ids": [
+      "human_approval_before_publication"
+    ],
+    "decision": "approved_for_pilot",
+    "rationale": "Lineage hardening crosswalk: catalog metadata + PracticeRecords + pattern-specific support signals for human_approval_before_publication.",
+    "limitations": [
+      "Pilot abstraction only; channel-specific payload mapping deferred to variants.",
+      "Requires Connector Gateway for publication_target binding."
+    ],
+    "program_phase": "KB-WPL-01.3A.1",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-febea81827b8ad6b",
+      "wf-16b82581942c24a9"
+    ],
+    "reviewed_practice_ids": [
+      "human_approval_before_write_or_publication"
+    ],
+    "review_timestamp": "2026-07-23T18:58:45.705648+00:00",
+    "owner_review_required": true,
+    "audit_hash": "9af48baad93fa2a4e02881f436b02ecca7ad75646bd2d36592746f1388363c4b"
+  },
+  {
+    "audit_id": "audit-structured_LLM_to_API_request",
+    "workflow_template_ids": [
+      "wf-353be45a7de607a0",
+      "wf-b6c98c93d44e4384"
+    ],
+    "pattern_ids": [
+      "structured_LLM_to_API_request"
+    ],
+    "decision": "approved_for_pilot",
+    "rationale": "Lineage hardening crosswalk: catalog metadata + PracticeRecords + pattern-specific support signals for structured_LLM_to_API_request.",
+    "limitations": [
+      "Schema validation rules are pilot-level; provider response shapes vary.",
+      "LLM_provider hallucination risk requires human review for high-stakes writes."
+    ],
+    "program_phase": "KB-WPL-01.3A.1",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-353be45a7de607a0",
+      "wf-b6c98c93d44e4384"
+    ],
+    "reviewed_practice_ids": [
+      "structured_output_before_API_call"
+    ],
+    "review_timestamp": "2026-07-23T18:58:45.705648+00:00",
+    "owner_review_required": true,
+    "audit_hash": "7e57edcb91dcc70f95f8bcc90ae502f9284cfd8112a42bf0f329add29c9d18f8"
+  },
+  {
+    "audit_id": "audit-retry_with_idempotency",
+    "workflow_template_ids": [
+      "wf-b6e1676935a48901",
+      "wf-60870942fc4ef5b9"
+    ],
+    "pattern_ids": [
+      "retry_with_idempotency"
+    ],
+    "decision": "approved_for_pilot",
+    "rationale": "Lineage hardening crosswalk: catalog metadata + PracticeRecords + pattern-specific support signals for retry_with_idempotency.",
+    "limitations": [
+      "Unknown transport outcomes must not auto-retry on write paths.",
+      "Provider retry headers belong in implementation variants only."
+    ],
+    "program_phase": "KB-WPL-01.3A.1",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-b6e1676935a48901",
+      "wf-60870942fc4ef5b9"
+    ],
+    "reviewed_practice_ids": [
+      "idempotency_before_retry",
+      "unknown_outcome_write_no_auto_retry"
+    ],
+    "review_timestamp": "2026-07-23T18:58:45.705648+00:00",
+    "owner_review_required": true,
+    "audit_hash": "a30def0ecb587a7ed0ac5e9c781dcc7d7e7765874c3d893c35a3205397cf01cb"
+  },
+  {
+    "audit_id": "audit-evidence_grounded_generation",
+    "workflow_template_ids": [
+      "wf-b144bd6927caa092",
+      "wf-9c87e7783b3cb118"
+    ],
+    "pattern_ids": [
+      "evidence_grounded_generation"
+    ],
+    "decision": "approved_for_pilot",
+    "rationale": "Lineage hardening crosswalk: catalog metadata + PracticeRecords + pattern-specific support signals for evidence_grounded_generation.",
+    "limitations": [
+      "No source → no grounded claim policy enforced at pattern level.",
+      "Prompt-injection boundary requires elevated review before LLM_provider call.",
+      "Vector store specifics deferred to implementation variants."
+    ],
+    "program_phase": "KB-WPL-01.3A.1",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-b144bd6927caa092",
+      "wf-9c87e7783b3cb118"
+    ],
+    "reviewed_practice_ids": [
+      "evidence_grounded_generation",
+      "prompt_injection_boundary"
+    ],
+    "review_timestamp": "2026-07-23T18:58:45.705648+00:00",
+    "owner_review_required": true,
+    "audit_hash": "52a9b24d30a0c7e457e9b8642a62a2a91c0ef9094a75d3ee43b6f9e25f5d9a49"
+  },
+  {
+    "audit_id": "audit-lead_capture_to_qualification",
+    "workflow_template_ids": [
+      "wf-353be45a7de607a0",
+      "wf-bdf26007404af6a3"
+    ],
+    "pattern_ids": [
+      "lead_capture_to_qualification"
+    ],
+    "decision": "approved_for_pilot",
+    "rationale": "Lineage hardening crosswalk: catalog metadata + PracticeRecords + pattern-specific support signals for lead_capture_to_qualification.",
+    "limitations": [
+      "Personal-data handling requires tenant policy review before production.",
+      "CRM_provider field mapping not included in pilot abstraction."
+    ],
+    "program_phase": "KB-WPL-01.3A.1",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-353be45a7de607a0",
+      "wf-bdf26007404af6a3"
+    ],
+    "reviewed_practice_ids": [
+      "lead_qualification_boundary"
+    ],
+    "review_timestamp": "2026-07-23T18:58:45.705648+00:00",
+    "owner_review_required": true,
+    "audit_hash": "f62ea038db7add2dec261b9ecfaad6cab611b16ff3ca741c25ce29f6cf32b0ae"
+  },
+  {
+    "audit_id": "audit-draft_to_human_approval",
+    "workflow_template_ids": [
+      "wf-febea81827b8ad6b",
+      "wf-de3f478cf93ab7e0"
+    ],
+    "pattern_ids": [
+      "draft_to_human_approval"
+    ],
+    "decision": "approved_for_pilot",
+    "rationale": "Lineage hardening crosswalk: catalog metadata + PracticeRecords + pattern-specific support signals for draft_to_human_approval.",
+    "limitations": [
+      "Decision lineage format not standardized across approval_interface variants.",
+      "Pilot does not include auto-resume after timeout."
+    ],
+    "program_phase": "KB-WPL-01.3A.1",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-febea81827b8ad6b",
+      "wf-de3f478cf93ab7e0"
+    ],
+    "reviewed_practice_ids": [
+      "draft_review_resume",
+      "human_approval_before_write_or_publication"
+    ],
+    "review_timestamp": "2026-07-23T18:58:45.705648+00:00",
+    "owner_review_required": true,
+    "audit_hash": "53252333e0e65d89996f5175fc3c9a2eee9fd295c74dd06ed2d0a3fe58e1bded"
+  },
+  {
+    "audit_id": "audit-workflow_backup",
+    "workflow_template_ids": [
+      "wf-c7d30b91fd4e5694",
+      "wf-21966e054442133e"
+    ],
+    "pattern_ids": [
+      "workflow_backup"
+    ],
+    "decision": "approved_for_pilot",
+    "rationale": "Lineage hardening crosswalk: catalog metadata + PracticeRecords + pattern-specific support signals for workflow_backup.",
+    "limitations": [
+      "Backup scope limited to metadata-evidenced export patterns.",
+      "Restore operations out of pilot scope."
+    ],
+    "program_phase": "KB-WPL-01.3A.1",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-c7d30b91fd4e5694",
+      "wf-21966e054442133e"
+    ],
+    "reviewed_practice_ids": [
+      "workflow_backup_and_source_control"
+    ],
+    "review_timestamp": "2026-07-23T18:58:45.705648+00:00",
+    "owner_review_required": true,
+    "audit_hash": "06b3d7824ffaab36b798a359eb6ef53036152bf655d17dde4d40c15d7b6c15a5"
+  },
+  {
+    "audit_id": "audit-error_workflow_or_recovery",
+    "workflow_template_ids": [
+      "wf-b6e1676935a48901",
+      "wf-580f7458a07243a7"
+    ],
+    "pattern_ids": [
+      "error_workflow_or_recovery"
+    ],
+    "decision": "approved_for_pilot",
+    "rationale": "Lineage hardening crosswalk: catalog metadata + PracticeRecords + pattern-specific support signals for error_workflow_or_recovery.",
+    "limitations": [
+      "Recovery semantics vary by transport provider.",
+      "Error workflow linkage not executed or validated in pilot."
+    ],
+    "program_phase": "KB-WPL-01.3A.1",
+    "reviewer_role": "architecture_reviewer_agent",
+    "review_method": "catalog_metadata_crosswalk_with_practice_lineage",
+    "reviewed_source_ids": [
+      "wf-b6e1676935a48901",
+      "wf-580f7458a07243a7"
+    ],
+    "reviewed_practice_ids": [
+      "explicit_error_workflow",
+      "recovery_and_terminal_failure_path"
+    ],
+    "review_timestamp": "2026-07-23T18:58:45.705648+00:00",
+    "owner_review_required": true,
+    "audit_hash": "13557385d9fa25d7e4e98072b16cc1855808daed6ca4498a8c4c9f4fa5a202df"
+  }
+]

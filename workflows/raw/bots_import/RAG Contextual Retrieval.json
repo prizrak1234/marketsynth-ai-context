@@ -1,0 +1,685 @@
+{
+  "name": "15-RAG Contextual Retrieval",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ $json._embedded.items[0].file }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        432,
+        1616
+      ],
+      "id": "1f2f184b-4775-4dc2-858c-5b5ddb5f7405",
+      "name": "Download"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2144,
+        1904
+      ],
+      "id": "e4b6c455-f49b-4866-a1b5-9e9a43aa43e2",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Yandex.Disk\n",
+        "height": 816,
+        "width": 1004
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1504
+      ],
+      "id": "d3529fe1-4305-4921-89ef-88ab0ccabfad",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=yt_test",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "OAuth ваш_токен"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        1616
+      ],
+      "id": "c894794b-e08a-48f8-9a9b-c6fa50641e1a",
+      "name": "Get document list from Yandex Disk"
+    },
+    {
+      "parameters": {
+        "chunkSize": 5000,
+        "chunkOverlap": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        2048
+      ],
+      "id": "355f900e-b532-4fbe-9c49-b58a1483338a",
+      "name": "Recursive Character Text Splitter1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1472,
+        2016
+      ],
+      "id": "ed318945-934b-4e1b-9d26-b2b524314403",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Every time you answer a question please go the the vectorStore tool to get the data for the answer. Please be friendly, you can add some jokes and emotions when answering."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        320,
+        2480
+      ],
+      "id": "aaa1558e-c1a6-42a3-8755-ca5a5eba4de6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "vectorStore",
+        "toolDescription": "This is the tool where you can get all the store data.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents_yt",
+          "mode": "list",
+          "cachedResultName": "documents_yt"
+        },
+        "options": {
+          "queryName": "match_documents_yt"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        2720
+      ],
+      "id": "e1147e76-5346-4d5b-adb5-58b8275329c0",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eltjkIm4u9ZxtQbe",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        2704
+      ],
+      "id": "3ecc40b4-bb7b-4808-97de-012fff97c92e",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "qL9ee8PD54cIAtbp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        2720
+      ],
+      "id": "c02bb61e-f704-4ad9-b0d2-af86cd89e6bf",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        608,
+        2896
+      ],
+      "id": "23188b0e-1c78-460a-b89d-82c5a0b4217d",
+      "name": "Embeddings OpenAI3",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4BCcOhDCiDRFx35",
+          "name": "AIAPI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Assistant",
+        "height": 712,
+        "width": 1000,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        2336
+      ],
+      "id": "0fbf691e-7331-4dae-9414-bfa99062709d",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "id": "5e5ad173-d4f0-4298-a4f4-075e555da9ad",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        608,
+        1616
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4eb7c56b-3ef4-46a8-8438-e4b292010bca",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        1712
+      ],
+      "id": "bb6ee363-ce24-4d26-9abe-e0f4677d59e4",
+      "name": "Raw Text"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        2480
+      ],
+      "id": "959efb52-3b8b-4447-8c44-e1dc36c62e46",
+      "name": "When chat message received",
+      "webhookId": "53ce964e-d004-442d-b078-163a61486e66"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ JSON.stringify($json.text) }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "file_title",
+                "value": "={{ $('Download').item.json._embedded.items[0].name }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "adb1a989-2b30-4ca5-8aee-92699c489cb6",
+      "name": "Default Data Loader1",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        1904
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "chunks",
+        "options": {
+          "destinationFieldName": "chunk"
+        }
+      },
+      "id": "d85fb9a4-8ef9-4954-bda3-283c6977cd01",
+      "name": "Chunks",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        1712
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<document> \n{{ $('Raw Text').item.json.text }}\n</document>\nHere is the chunk we want to situate within the whole document \n<chunk> \n{{ $json.chunk }}\n</chunk> \nPlease give a short succinct context to situate this chunk within the overall document for the purposes of improving search retrieval of the chunk. Answer only with the succinct context and nothing else. "
+      },
+      "id": "2e3044ce-3b8e-40ea-838e-fea3f9bd85cf",
+      "name": "Contextualized chunk",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        1472,
+        1840
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4eb7c56b-3ef4-46a8-8438-e4b292010bca",
+              "name": "text",
+              "value": "=Context:\n{{ $json.text }}\nChunk:\n{{ $('Chunks').item.json.chunk }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1936,
+        1712
+      ],
+      "id": "9897fc91-889b-47ba-8312-ef3fbffe7aaf",
+      "name": "Final Text"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        64,
+        1616
+      ],
+      "id": "1a9a5b34-b2ba-4174-84a9-6420229c2489",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const chunks = [];\nconst chunkSize = 400;\nconst chunkOverlap = 0;\nconst text = $json.text;\n\nfor (let i = 0; i < text.length; i += (chunkSize - chunkOverlap)) {\n  const chunk = text.substr(i, chunkSize);\n  if (chunk) {\n    chunks.push(chunk);\n  }\n}\n\nreturn { chunks };\n"
+      },
+      "id": "8ceb78fd-38ff-4bd4-854b-412033225bc2",
+      "name": "Create Chunks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        1712
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents_yt",
+          "mode": "list",
+          "cachedResultName": "documents_yt"
+        },
+        "options": {
+          "queryName": "match_documents_yt"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        2144,
+        1712
+      ],
+      "id": "543d5af3-06b7-4655-9b9c-acbb31bdb8f5",
+      "name": "Supabase Vector",
+      "credentials": {
+        "supabaseApi": {
+          "id": "eltjkIm4u9ZxtQbe",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Векторизуем\n",
+        "height": 816,
+        "width": 780
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        1504
+      ],
+      "id": "9244829b-f4ed-44d2-a6b1-4d1927c96229",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Образуем чанки с контекстом\n",
+        "height": 816,
+        "width": 780
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        1504
+      ],
+      "id": "a3e8d393-889b-4772-ab1e-3de097b2f106",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Нужна Pro версия? \n\n### Которая работает с множественными файлами на Яндекс Диске, работает с огромными файлами и читает как PDF, так и текстовые документы.\n\n### Забирай в Pro-группе тут: https://t.me/iishenka_pro_bot\n",
+        "height": 704,
+        "width": 780,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        2336
+      ],
+      "id": "386a2dc3-498a-4c02-834b-e8073171ba4f",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Download": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get document list from Yandex Disk": {
+      "main": [
+        [
+          {
+            "node": "Download",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Contextualized chunk",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI3": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "Raw Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Raw Text": {
+      "main": [
+        [
+          {
+            "node": "Create Chunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chunks": {
+      "main": [
+        [
+          {
+            "node": "Contextualized chunk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contextualized chunk": {
+      "main": [
+        [
+          {
+            "node": "Final Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Text": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get document list from Yandex Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Chunks": {
+      "main": [
+        [
+          {
+            "node": "Chunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "66885548-92a9-434c-a0d1-9279581439a8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a57cb06e1912e605090a191874e37adc77118b99d1119a7dd626ec4652e6c4a"
+  },
+  "id": "AAvpyybgZ7mkRljB",
+  "tags": []
+}

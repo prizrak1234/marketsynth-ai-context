@@ -1,0 +1,150 @@
+{
+  "make_integration": {
+    "modules": [
+      {
+        "name": "Webhook Receiver",
+        "purpose": "Прием входящих сообщений от клиентов",
+        "triggers": [
+          "new_message",
+          "new_booking_request",
+          "payment_notification"
+        ]
+      },
+      {
+        "name": "OpenAI/Claude API",
+        "purpose": "Обработка запросов через AI-агента",
+        "parameters": {
+          "model": "gpt-4-turbo / claude-3-sonnet",
+          "temperature": 0.7,
+          "max_tokens": 1000
+        }
+      },
+      {
+        "name": "Google Sheets / Airtable",
+        "purpose": "Хранение записей и клиентской базы",
+        "operations": [
+          "search",
+          "create",
+          "update",
+          "delete"
+        ]
+      },
+      {
+        "name": "Calendar Integration",
+        "purpose": "Управление расписанием",
+        "supported": [
+          "Google Calendar",
+          "Outlook",
+          "CalDAV"
+        ]
+      },
+      {
+        "name": "Notification Service",
+        "purpose": "Отправка уведомлений",
+        "channels": [
+          "SMS",
+          "Email",
+          "WhatsApp",
+          "Telegram"
+        ]
+      },
+      {
+        "name": "Payment Gateway",
+        "purpose": "Обработка платежей",
+        "providers": [
+          "Stripe",
+          "PayPal",
+          "ЮKassa"
+        ]
+      }
+    ],
+    "workflows": [
+      {
+        "name": "Новая запись клиента",
+        "steps": [
+          "Получить сообщение от клиента",
+          "Отправить в AI-агента для анализа намерения",
+          "Извлечь параметры (услуга, дата, время)",
+          "Проверить доступность в календаре",
+          "Создать запись в базе данных",
+          "Отправить подтверждение клиенту",
+          "Запланировать напоминание за 24ч"
+        ]
+      },
+      {
+        "name": "Напоминание о визите",
+        "steps": [
+          "Проверить записи на завтра",
+          "Для каждой записи отправить напоминание",
+          "Запросить подтверждение",
+          "Обработать ответ (подтверждение/отмена)"
+        ]
+      },
+      {
+        "name": "Сбор обратной связи",
+        "steps": [
+          "После завершения услуги (через 2 часа)",
+          "Отправить запрос на отзыв",
+          "Собрать оценку и комментарий",
+          "Сохранить в базу",
+          "При негативном отзыве - уведомить менеджера"
+        ]
+      }
+    ]
+  },
+  "ai_agent_capabilities": {
+    "intent_recognition": [
+      "booking",
+      "information",
+      "modification",
+      "cancellation",
+      "payment",
+      "complaint",
+      "general_inquiry"
+    ],
+    "entity_extraction": [
+      "service_name",
+      "date",
+      "time",
+      "specialist_name",
+      "client_name",
+      "phone_number",
+      "email"
+    ],
+    "context_management": {
+      "session_duration": "30 minutes",
+      "memory": "last_5_messages",
+      "user_profile": "persistent"
+    },
+    "multilingual": [
+      "ru",
+      "en"
+    ],
+    "tone": "professional_friendly"
+  },
+  "business_rules": {
+    "booking_constraints": {
+      "min_advance_hours": 2,
+      "max_advance_days": 90,
+      "cancellation_policy_hours": 24,
+      "working_hours": {
+        "start": "09:00",
+        "end": "21:00"
+      }
+    },
+    "escalation_rules": {
+      "to_human": [
+        "complex_medical_question",
+        "complaint",
+        "payment_dispute",
+        "special_request",
+        "ai_confidence < 0.7"
+      ]
+    },
+    "data_retention": {
+      "client_data": "3 years",
+      "conversation_logs": "1 year",
+      "payment_records": "5 years"
+    }
+  }
+}

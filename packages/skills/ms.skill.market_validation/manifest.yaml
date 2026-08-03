@@ -1,0 +1,121 @@
+id: ms.skill.market_validation
+name: Market Validation
+version: 0.1.0
+description: >
+  Evaluate whether a business or product idea has sufficient evidence and
+  commercial rationale to proceed, revise, defer, or stop — without side effects.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+capabilities:
+  - product_context_normalization
+  - market_evidence_assessment
+  - demand_signal_assessment
+  - competitive_pressure_assessment
+  - audience_fit_assessment
+  - risk_identification
+  - viability_verdict_preparation
+  - evidence_gap_detection
+  - recommendation_preparation
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - market_source
+    - competitor_source
+    - demand_signal
+    - pricing_signal
+    - audience_signal
+    - assumption
+    - inference
+  rules:
+    - id: no_inference_as_fact
+      description: Inferences must not be presented as verified facts.
+    - id: high_confidence_requires_sources
+      description: >
+        High-confidence verdicts require at least one market_source or
+        competitor_source unless verdict is insufficient_evidence.
+      threshold_ref: open_implementation_question
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.product_marketing_context
+      relationship: optional_dependency
+      note: Product context normalization — not required for skeleton validation.
+    - id: ms.skill.market_research
+      relationship: declared_future_dependency
+      note: Research enrichment — unresolved for SKILL-01.0.
+    - id: ms.skill.competitor_analysis
+      relationship: declared_future_dependency
+      note: Competitor pressure assessment — unresolved for SKILL-01.0.
+    - id: ms.skill.icp_segmentation
+      relationship: declared_future_dependency
+      note: Audience fit — unresolved for SKILL-01.0.
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  verdict_presentation:
+    external_side_effects: false
+    approval_required: false
+  launch_or_execution_transition:
+    approval_required: true
+    note: Human approval required before launch, spend, or publication.
+  paid_or_write_actions:
+    approval_required: true
+  publication:
+    governed_by: native_publication_flow
+    skill_bypass_allowed: false
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 1
+  current_state: skeleton_only
+known_limitations:
+  - Non-executable package skeleton — no runtime loader in SKILL-01.0.
+  - Does not replace existing CWF.1 Business Idea Validation workflow.
+  - Does not guarantee profitability or fabricate demand evidence.
+  - No connector or tool permissions granted.
+  - Numeric evidence thresholds for high-confidence verdicts remain open.
+test_suite:
+  manifest: tests/eval_manifest.yaml
+  backend_tests: tests/test_skill_01_0_market_validation_package.py
+provenance:
+  origin: platform_native
+  methodology:
+    - Internal Marketsynth Business Idea Validation (CWF.1)
+    - Informed by SKILL-R0.1 audit MS-SKILL-005 (Market Validation)
+  external_methodology_references:
+    - audit_card: docs/research/skills/candidates/05-market-validation.md
+      reuse: methodology_only
+      license: MIT
+      note: No direct external Skill installation or code reuse.
+  external_code_dependency: false
+  direct_external_skill_install: false
+  audit_research_id: MS-SKILL-005
+runtime_compatibility:
+  - operator_dry_run
+  - assistant_explicit_run
+knowledge_scopes:
+  - business_verdict
+  - research_source_collection
+network_policy:
+  default: deny
+  allowed_hosts: []
+  allowed_connectors_only: true
+script_policy:
+  enabled: false
+  reason: SKILL-01.0 skeleton — scripts forbidden.
+resource_limits:
+  max_package_size_mib: 10
+  max_skill_md_kib: 256

@@ -1,0 +1,452 @@
+[
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.claim_substantiation",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.competitive_intelligence",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.content_strategy",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.copywriting",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.customer_intelligence",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.customer_interview_design",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.customer_meaning_extraction",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.distribution",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.launch_strategy",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.learning_and_feedback",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.market_research",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.market_validation",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.marketing_analytics",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.offer_architecture",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.positioning",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.presentation_architecture",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "marketing.product_context",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.ai_marketing_director",
+    "capability_id": "platform.professional_task_routing",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.connector_integration_design",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.deployment_review",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.error_recovery",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.observability",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.pattern_selection",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.provider_version_review",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.runtime_safety",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.test_and_replay_design",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.workflow_architecture",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.workflow_backup",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.workflow_debugging",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "engineering.workflow_documentation",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.automation_architect",
+    "capability_id": "platform.professional_task_routing",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.contradiction_detection",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.duplicate_detection",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.index_management",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.knowledge_candidate_review",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.knowledge_discovery",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.knowledge_linking",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.knowledge_quality",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.lineage_integrity",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.provenance_management",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.source_ingestion",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.knowledge_architect",
+    "capability_id": "knowledge.supersession_review",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.accessibility_review",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.chart_specification",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.content_architecture",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.document_structure",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.presentation_architecture",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.publication_handoff",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.renderer_handoff",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  },
+  {
+    "profession_id": "profession.content_deliverables_architect",
+    "capability_id": "deliverables.visual_briefing",
+    "provenance": {
+      "origin": "platform_native",
+      "phase": "KB-WPL-01.7",
+      "generated_by": "scripts/generate_capability_model_bundle.py"
+    }
+  }
+]

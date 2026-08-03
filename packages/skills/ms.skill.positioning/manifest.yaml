@@ -1,0 +1,141 @@
+id: ms.skill.positioning
+name: Positioning
+version: 0.1.0
+description: >
+  Consume Customer Intelligence Model 0.1.x, Competitor Analysis 0.1.x and
+  Market Validation 0.2.x to produce evidence-backed positioning hypotheses,
+  territories, differentiation framing, value framing and message hierarchy
+  recommendations — without offers, campaigns, launch execution or viability
+  verdict override.
+owner: Marketsynth Platform
+source: platform_native
+license: Proprietary
+status: candidate
+output_contract_type: research
+capabilities:
+  - positioning_context_aggregation
+  - target_segment_selection_reference
+  - customer_problem_priority_mapping
+  - desired_outcome_mapping
+  - competitor_positioning_cluster_analysis
+  - differentiation_territory_identification
+  - positioning_hypothesis_generation
+  - value_frame_generation
+  - category_frame_assessment
+  - proof_requirement_mapping
+  - reason_to_believe_mapping
+  - messaging_hierarchy_preparation
+  - positioning_risk_assessment
+  - hypothesis_evidence_assessment
+  - hypothesis_conflict_detection
+  - hypothesis_ranking
+  - positioning_readiness_assessment
+  - downstream_offer_input_preparation
+activation_conditions:
+  runtime_compatibility:
+    - operator_dry_run
+    - assistant_explicit_run
+  requires_governed_context: true
+  executable: false
+required_inputs:
+  schema_ref: schemas/input.schema.json
+output_schema:
+  schema_ref: schemas/output.schema.json
+required_evidence:
+  classes:
+    - user_statement
+    - market_source
+    - competitor_source
+    - demand_signal
+    - audience_signal
+    - assumption
+    - inference
+  rules:
+    - id: no_cim_redefinition
+      description: >
+        Positioning must not redefine JTBD, pains, objections or segment
+        boundaries from CIM.
+    - id: no_mv_verdict_override
+      description: Market Validation verdict remains authoritative.
+    - id: no_offer_generation
+      description: Output must not contain offer, price, campaign or launch fields.
+    - id: differentiation_requires_competitor_evidence
+      description: Differentiation basis must reference competitor evidence.
+    - id: no_execution_authorization
+      description: ready_for_offer_design is not launch or spend approval.
+dependencies:
+  declared_future_dependencies:
+    - id: ms.skill.icp_segmentation
+      relationship: required_dependency
+      note: Required CIM schema >=0.1.0,<1.0.0 via ICP producer output.
+    - id: ms.skill.competitor_analysis
+      relationship: required_dependency
+      note: Required >=0.1.0,<1.0.0 — preserved lineage refs.
+    - id: ms.skill.market_validation
+      relationship: required_dependency
+      note: Required >=0.2.0,<1.0.0 — verdict boundary preserved.
+    - id: ms.skill.product_marketing_context
+      relationship: optional_dependency
+      note: Optional >=0.2.0,<1.0.0 — context only, not required input.
+    - id: ms.skill.offer_builder
+      relationship: declared_future_dependency
+      note: Downstream consumer of positioning hypotheses — not created in 02.7.
+allowed_tools: []
+approval_policy:
+  analysis_preparation:
+    external_side_effects: false
+    approval_required: false
+  hypothesis_selection:
+    external_side_effects: false
+    approval_required: false
+  offer_or_launch_transition:
+    approval_required: true
+    note: Human approval required before Offer Builder, launch, spend or publication.
+  paid_or_write_actions:
+    approval_required: true
+  publication:
+    governed_by: native_publication_flow
+    skill_bypass_allowed: false
+tenant_scope: global
+quality_threshold:
+  eval_required_before_active: true
+  minimum_eval_cases: 1
+  current_state: skeleton_only
+known_limitations:
+  - Non-executable candidate package — no runtime loader in SKILL-02.7.
+  - Does not create final Offer, pricing, or campaign assets.
+  - Does not override Market Validation verdict or silently remove blockers.
+  - Does not autonomously search the web or invoke connectors.
+  - Numeric ranking weights remain open until benchmark.
+test_suite:
+  manifest: tests/eval_manifest.yaml
+  backend_tests: tests/test_skill_02_7_positioning.py
+provenance:
+  origin: platform_native
+  methodology:
+    - SKILL-02.7 Positioning native package specification
+    - Internal Marketsynth positioning hypothesis methodology
+  external_methodology_references:
+    - audit_card: docs/research/skills/candidates/06-positioning.md
+      reuse: methodology_only
+      license: MIT
+      note: No direct external Skill installation or executable content reuse.
+  external_code_dependency: false
+  direct_external_skill_install: false
+  audit_research_id: MS-SKILL-006
+runtime_compatibility:
+  - operator_dry_run
+  - assistant_explicit_run
+knowledge_scopes:
+  - positioning
+  - customer_intelligence
+network_policy:
+  default: deny
+  allowed_hosts: []
+  allowed_connectors_only: true
+script_policy:
+  enabled: false
+  reason: SKILL-02.7 skeleton — scripts forbidden.
+resource_limits:
+  max_package_size_mib: 10
+  max_skill_md_kib: 256

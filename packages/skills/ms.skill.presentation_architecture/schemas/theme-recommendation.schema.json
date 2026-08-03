@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "theme-recommendation.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "theme_family": {
+      "type": "string",
+      "enum": [
+        "minimal", "business", "dark", "gradient", "technical", "colorful", "editorial", "custom_brand"
+      ]
+    },
+    "selection_reason": { "type": "string" },
+    "audience_fit": { "type": "string" },
+    "content_fit": { "type": "string" },
+    "readability": { "type": "string" },
+    "accessibility": { "type": "object" },
+    "brand_fit": { "type": "string" },
+    "background_strategy": { "type": "string" },
+    "accent_strategy": { "type": "string" },
+    "typography_direction": { "type": "string" },
+    "image_style_direction": { "type": "string" },
+    "chart_style_direction": { "type": "string" },
+    "limitations": { "type": "array", "items": { "type": "string" } },
+    "provider_neutral": { "type": "boolean", "const": true },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "theme_family", "selection_reason", "audience_fit", "readability", "accessibility",
+    "typography_direction", "provider_neutral", "provenance"
+  ]
+}

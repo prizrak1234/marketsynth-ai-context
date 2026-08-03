@@ -1,0 +1,17 @@
+{
+  "consumer": "ms.skill.market_validation",
+  "version": "0.2.0",
+  "cim_fields_consumed": [
+    "segment priority_assessment",
+    "demand_signal",
+    "evidence_quality",
+    "budget_sensitivity",
+    "reachability",
+    "switching_difficulty",
+    "blockers",
+    "unknowns",
+    "conflicts"
+  ],
+  "verdict_issued_by_consumer": true,
+  "verdict_issued_by_icp": false
+}

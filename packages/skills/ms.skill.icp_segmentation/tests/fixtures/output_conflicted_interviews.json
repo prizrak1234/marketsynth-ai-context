@@ -1,0 +1,595 @@
+{
+  "analysis_id": "icp-conflict-001",
+  "skill_id": "ms.skill.icp_segmentation",
+  "skill_version": "0.1.0",
+  "source_context_reference": {
+    "source_skill_id": "ms.skill.product_marketing_context",
+    "source_skill_version": "0.2.0",
+    "source_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_evidence_references": [
+      "ev-pmc-001"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "pricing",
+        "description": "PMC pricing unverified"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "source_research_reference": {
+    "source_skill_id": "ms.skill.market_research",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_evidence_references": [
+      "finding-cs-001"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "segment",
+        "description": "Segment size unverified"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "source_competitor_reference": {
+    "source_skill_id": "ms.skill.competitor_analysis",
+    "source_skill_version": "0.1.0",
+    "source_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "source_evidence_references": [
+      "comp-linear"
+    ],
+    "source_unknowns": [
+      {
+        "domain": "competitor",
+        "description": "Indirect set incomplete"
+      }
+    ],
+    "source_conflicts": []
+  },
+  "customer_intelligence": {
+    "cim_id": "cim-001",
+    "cim_version": "0.1.0-draft",
+    "skill_id": "ms.skill.icp_segmentation",
+    "skill_version": "0.1.0",
+    "source_context_reference": {
+      "source_skill_id": "ms.skill.product_marketing_context",
+      "source_skill_version": "0.2.0",
+      "source_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "source_evidence_references": [
+        "ev-pmc-001"
+      ],
+      "source_unknowns": [
+        {
+          "domain": "pricing",
+          "description": "PMC pricing unverified"
+        }
+      ],
+      "source_conflicts": []
+    },
+    "source_research_reference": {
+      "source_skill_id": "ms.skill.market_research",
+      "source_skill_version": "0.1.0",
+      "source_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "source_evidence_references": [
+        "finding-cs-001"
+      ],
+      "source_unknowns": [
+        {
+          "domain": "segment",
+          "description": "Segment size unverified"
+        }
+      ],
+      "source_conflicts": []
+    },
+    "source_competitor_reference": {
+      "source_skill_id": "ms.skill.competitor_analysis",
+      "source_skill_version": "0.1.0",
+      "source_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "source_evidence_references": [
+        "comp-linear"
+      ],
+      "source_unknowns": [
+        {
+          "domain": "competitor",
+          "description": "Indirect set incomplete"
+        }
+      ],
+      "source_conflicts": []
+    },
+    "market_scope": "B2B async collaboration SaaS",
+    "segments": [
+      {
+        "segment_id": "seg-remote-eng",
+        "segment_name": "Remote Engineering Teams",
+        "segment_description": "Segment Remote Engineering Teams for async SaaS buyers",
+        "segment_type": "firmographic",
+        "inclusion_criteria": [
+          "Matches Remote Engineering Teams profile"
+        ],
+        "exclusion_criteria": [
+          "Enterprise-only procurement"
+        ],
+        "geography": [
+          "US",
+          "EU"
+        ],
+        "company_or_customer_profile": "10-200 person remote-first software teams",
+        "jobs_to_be_done": [
+          {
+            "jtbd_id": "jtbd-seg-remote-eng",
+            "job_type": "functional",
+            "situation": "When managing Remote Engineering Teams workflows",
+            "motivation": "Reduce coordination overhead",
+            "desired_progress": "Async team alignment without daily meetings",
+            "functional_job": "Coordinate work across time zones",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-jtbd-seg-remote-eng"
+            ]
+          }
+        ],
+        "pain_points": [
+          {
+            "id": "pain-seg-remote-eng",
+            "claim_kind": "pain_point",
+            "statement": "Too many status meetings",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-pain-seg-remote-eng"
+            ]
+          }
+        ],
+        "desired_outcomes": [
+          {
+            "id": "out-seg-remote-eng",
+            "claim_kind": "desired_outcome",
+            "statement": "Clear async visibility",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-out-seg-remote-eng"
+            ]
+          }
+        ],
+        "buying_triggers": [
+          {
+            "id": "trg-seg-remote-eng",
+            "claim_kind": "buying_trigger",
+            "statement": "Team growth past 25 people",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-trg-seg-remote-eng"
+            ]
+          }
+        ],
+        "buying_barriers": [
+          {
+            "id": "bar-seg-remote-eng",
+            "claim_kind": "buying_barrier",
+            "statement": "Migration from existing tool",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-bar-seg-remote-eng"
+            ]
+          }
+        ],
+        "objections": [
+          {
+            "id": "obj-seg-remote-eng",
+            "claim_kind": "objection",
+            "statement": "Another tool fatigue",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-obj-seg-remote-eng"
+            ]
+          }
+        ],
+        "decision_roles": [
+          {
+            "role_id": "role-dm-seg-remote-eng",
+            "role_type": "decision_maker",
+            "description": "Engineering manager approves tooling",
+            "influence_level": "high",
+            "decision_authority": "final",
+            "confidence": "medium"
+          }
+        ],
+        "urgency": "medium",
+        "budget_sensitivity": "medium",
+        "awareness_stage": "solution_aware",
+        "market_sophistication": "high",
+        "trust_drivers": [
+          {
+            "id": "trust-seg-remote-eng",
+            "claim_kind": "trust_driver",
+            "statement": "Peer references from similar teams",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-trust-seg-remote-eng"
+            ]
+          }
+        ],
+        "proof_requirements": [
+          "Case study from similar team size"
+        ],
+        "channel_preferences": [
+          "Product-led trial",
+          "LinkedIn"
+        ],
+        "content_preferences": [
+          "Short demo videos"
+        ],
+        "buying_process": "Trial then team rollout",
+        "switching_costs": "Moderate — existing Linear/Jira workflows",
+        "competitor_overlap": [
+          "comp-linear"
+        ],
+        "alternative_solutions": [
+          "Spreadsheets",
+          "Daily standups"
+        ],
+        "segment_size_signal": "Growing remote SaaS segment",
+        "demand_signal": "Strong async tooling demand",
+        "profitability_assumptions": [
+          "Mid-market ACV viable"
+        ],
+        "strategic_fit": "strong",
+        "evidence_references": [
+          "ev-seg-seg-remote-eng"
+        ],
+        "confidence": "medium",
+        "coverage": "partial",
+        "priority_assessment": {
+          "strategic_fit": "strong",
+          "problem_intensity": "high",
+          "demand_signal_strength": "moderate",
+          "evidence_quality": "partial",
+          "budget_fit": "moderate",
+          "urgency": "medium",
+          "reachability": "medium",
+          "competitive_pressure": "medium",
+          "switching_difficulty": "medium",
+          "sales_cycle_complexity": "medium",
+          "implementation_complexity": "low",
+          "retention_potential": "high",
+          "confidence": "medium",
+          "blockers": [],
+          "priority_tier": "primary",
+          "tier_rationale": "Highest strategic fit"
+        }
+      },
+      {
+        "segment_id": "seg-product-ops",
+        "segment_name": "Product Operations Leads",
+        "segment_description": "Segment Product Operations Leads for async SaaS buyers",
+        "segment_type": "needs_based",
+        "inclusion_criteria": [
+          "Matches Product Operations Leads profile"
+        ],
+        "exclusion_criteria": [
+          "Enterprise-only procurement"
+        ],
+        "geography": [
+          "US",
+          "EU"
+        ],
+        "company_or_customer_profile": "10-200 person remote-first software teams",
+        "jobs_to_be_done": [
+          {
+            "jtbd_id": "jtbd-seg-product-ops",
+            "job_type": "functional",
+            "situation": "When managing Product Operations Leads workflows",
+            "motivation": "Reduce coordination overhead",
+            "desired_progress": "Async team alignment without daily meetings",
+            "functional_job": "Coordinate work across time zones",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-jtbd-seg-product-ops"
+            ]
+          }
+        ],
+        "pain_points": [
+          {
+            "id": "pain-seg-product-ops",
+            "claim_kind": "pain_point",
+            "statement": "Too many status meetings",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-pain-seg-product-ops"
+            ]
+          }
+        ],
+        "desired_outcomes": [
+          {
+            "id": "out-seg-product-ops",
+            "claim_kind": "desired_outcome",
+            "statement": "Clear async visibility",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-out-seg-product-ops"
+            ]
+          }
+        ],
+        "buying_triggers": [
+          {
+            "id": "trg-seg-product-ops",
+            "claim_kind": "buying_trigger",
+            "statement": "Team growth past 25 people",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-trg-seg-product-ops"
+            ]
+          }
+        ],
+        "buying_barriers": [
+          {
+            "id": "bar-seg-product-ops",
+            "claim_kind": "buying_barrier",
+            "statement": "Migration from existing tool",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-bar-seg-product-ops"
+            ]
+          }
+        ],
+        "objections": [
+          {
+            "id": "obj-seg-product-ops",
+            "claim_kind": "objection",
+            "statement": "Another tool fatigue",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-obj-seg-product-ops"
+            ]
+          }
+        ],
+        "decision_roles": [
+          {
+            "role_id": "role-dm-seg-product-ops",
+            "role_type": "decision_maker",
+            "description": "Engineering manager approves tooling",
+            "influence_level": "high",
+            "decision_authority": "final",
+            "confidence": "medium"
+          }
+        ],
+        "urgency": "medium",
+        "budget_sensitivity": "medium",
+        "awareness_stage": "solution_aware",
+        "market_sophistication": "high",
+        "trust_drivers": [
+          {
+            "id": "trust-seg-product-ops",
+            "claim_kind": "trust_driver",
+            "statement": "Peer references from similar teams",
+            "category": "workflow",
+            "severity_or_importance": "high",
+            "frequency_or_relevance": "frequent",
+            "verification_status": "verified",
+            "confidence": "medium",
+            "evidence_references": [
+              "ev-trust-seg-product-ops"
+            ]
+          }
+        ],
+        "proof_requirements": [
+          "Case study from similar team size"
+        ],
+        "channel_preferences": [
+          "Product-led trial",
+          "LinkedIn"
+        ],
+        "content_preferences": [
+          "Short demo videos"
+        ],
+        "buying_process": "Trial then team rollout",
+        "switching_costs": "Moderate — existing Linear/Jira workflows",
+        "competitor_overlap": [
+          "comp-linear"
+        ],
+        "alternative_solutions": [
+          "Spreadsheets",
+          "Daily standups"
+        ],
+        "segment_size_signal": "Growing remote SaaS segment",
+        "demand_signal": "Strong async tooling demand",
+        "profitability_assumptions": [
+          "Mid-market ACV viable"
+        ],
+        "strategic_fit": "strong",
+        "evidence_references": [
+          "ev-seg-seg-product-ops"
+        ],
+        "confidence": "medium",
+        "coverage": "partial",
+        "priority_assessment": {
+          "strategic_fit": "strong",
+          "problem_intensity": "high",
+          "demand_signal_strength": "moderate",
+          "evidence_quality": "partial",
+          "budget_fit": "moderate",
+          "urgency": "medium",
+          "reachability": "medium",
+          "competitive_pressure": "medium",
+          "switching_difficulty": "medium",
+          "sales_cycle_complexity": "medium",
+          "implementation_complexity": "low",
+          "retention_potential": "high",
+          "confidence": "medium",
+          "blockers": [],
+          "priority_tier": "secondary",
+          "tier_rationale": "Strong pain, narrower reach"
+        }
+      }
+    ],
+    "primary_icp_candidates": [
+      {
+        "segment_id": "seg-remote-eng",
+        "rank": 1,
+        "rationale": "Strongest evidence-backed problem intensity and strategic fit",
+        "evidence_references": [
+          "ev-seg-seg-remote-eng"
+        ]
+      }
+    ],
+    "excluded_or_low_priority_segments": [],
+    "cross_segment_patterns": [
+      "All segments cite meeting overload as core pain"
+    ],
+    "segment_conflicts": [
+      {
+        "conflict_id": "conf-interview-001",
+        "conflict_type": "contradictory_jtbd",
+        "involved_segment_ids": [
+          "seg-remote-eng",
+          "seg-product-ops"
+        ],
+        "description": "Interview set A cites cost focus; set B cites speed focus",
+        "severity": "major",
+        "blocking": true,
+        "recommended_resolution": "Run reconciling interviews with shared guide"
+      }
+    ],
+    "customer_unknowns": [
+      {
+        "domain": "budget",
+        "description": "Exact budget bands unverified",
+        "blocking": false
+      }
+    ],
+    "evidence_inventory": [
+      {
+        "evidence_id": "ev-001",
+        "reference": "User interviews n=8",
+        "evidence_type": "interview"
+      }
+    ],
+    "assumptions": [
+      "Remote-first default continues post-2026"
+    ],
+    "inferences": [
+      "Secondary segment may expand with PLG motion"
+    ],
+    "coverage": "partial",
+    "evidence_quality": "partial",
+    "research_status": "conflicted",
+    "readiness": "conflicted",
+    "readiness_blockers": [
+      "Interview sample small"
+    ],
+    "recommended_next_research": [
+      "Validate budget sensitivity with sales calls"
+    ],
+    "downstream_consumer_notes": [
+      "Positioning is a CIM consumer, not a second segmentation engine."
+    ],
+    "provenance": {
+      "skill_id": "ms.skill.icp_segmentation",
+      "skill_version": "0.1.0",
+      "methodology_ref": "Marketsynth CIM v0.1.0-draft",
+      "generated_at": "2026-07-23T12:00:00Z"
+    },
+    "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "segment_ranking_summary": {
+    "summary": "1 primary, 1 secondary segments identified",
+    "primary_count": 1,
+    "secondary_count": 1,
+    "exploratory_count": 0,
+    "excluded_count": 0,
+    "ranking_methodology": "Explainable multi-dimension priority assessment"
+  },
+  "primary_icp_candidates": [
+    {
+      "segment_id": "seg-remote-eng",
+      "rank": 1,
+      "rationale": "Strongest evidence-backed problem intensity and strategic fit",
+      "evidence_references": [
+        "ev-seg-seg-remote-eng"
+      ],
+      "priority_tier": "primary"
+    }
+  ],
+  "secondary_segments": [
+    "seg-product-ops"
+  ],
+  "exploratory_segments": [],
+  "excluded_segments": [],
+  "cross_segment_patterns": [
+    "All segments cite meeting overload as core pain"
+  ],
+  "evidence_gaps": [
+    "Budget bands need validation"
+  ],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "conflicted",
+  "recommended_next_research": [
+    "Validate budget sensitivity with sales calls"
+  ],
+  "downstream_consumer_notes": [
+    "Positioning is a CIM consumer, not a second segmentation engine."
+  ],
+  "provenance": {
+    "skill_id": "ms.skill.icp_segmentation",
+    "skill_version": "0.1.0",
+    "generated_at": "2026-07-23T12:00:00Z",
+    "methodology_ref": "Marketsynth CIM v0.1.0-draft",
+    "source_context_skill_id": "ms.skill.product_marketing_context",
+    "source_context_skill_version": "0.2.0",
+    "source_context_output_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "source_research_skill_id": "ms.skill.market_research",
+    "source_research_skill_version": "0.1.0",
+    "source_research_output_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "source_competitor_skill_id": "ms.skill.competitor_analysis",
+    "source_competitor_skill_version": "0.1.0",
+    "source_competitor_output_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

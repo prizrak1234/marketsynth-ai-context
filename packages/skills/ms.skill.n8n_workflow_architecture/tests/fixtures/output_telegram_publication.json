@@ -1,0 +1,68 @@
+{
+  "architecture_id": "arch-telegram-publication-001",
+  "skill_id": "ms.skill.n8n_workflow_architecture",
+  "skill_version": "0.1.0",
+  "objective_summary": "Design Telegram publication workflow with human approval gate.",
+  "workflow_boundaries": {
+    "scope": "draft_to_publication",
+    "tenant_scoped": true
+  },
+  "trigger_plan": {
+    "trigger_type": "manual_trigger",
+    "description": "Operator initiates draft publication"
+  },
+  "node_role_plan": [
+    { "role": "draft_prepare", "functional_class": "transform" },
+    { "role": "approval_gate", "functional_class": "approval_interface" },
+    { "role": "publication_target", "functional_class": "publication_target" }
+  ],
+  "data_contracts": {
+    "input": { "draft_id": "string" },
+    "output": { "publication_evidence_ref": "string" }
+  },
+  "pattern_references": [
+    {
+      "pattern_id": "human_approval_before_publication",
+      "library_version": "0.1.0-frozen",
+      "library_semantic_hash": "1ddd0d033f6028bd5dcf5ee555186c6be0389a96459615b6221348783d9b1883",
+      "selection_reason": "Publication requires human approval before external send.",
+      "maturity": "reviewed",
+      "runtime_authorized": false
+    },
+    {
+      "pattern_id": "publication_confirmation",
+      "library_version": "0.1.0-frozen",
+      "library_semantic_hash": "1ddd0d033f6028bd5dcf5ee555186c6be0389a96459615b6221348783d9b1883",
+      "selection_reason": "Post-publish evidence capture required.",
+      "maturity": "reviewed",
+      "runtime_authorized": false
+    }
+  ],
+  "practice_references": ["human_approval_before_write_or_publication"],
+  "patterns_consulted": ["human_approval_before_publication", "publication_confirmation"],
+  "practices_consulted": ["human_approval_before_write_or_publication"],
+  "catalog_records_consulted": ["wf-febea81827b8ad6b"],
+  "approval_gates": [{ "gate": "before_publication", "required": true }],
+  "error_paths": ["human_review", "terminal_failure"],
+  "architecture_readiness": "ready_for_implementation_review",
+  "limitations": ["Pattern maturity=reviewed; runtime not verified."],
+  "provider_reverification_required": true,
+  "provider_constraints": [
+    {
+      "provider": "telegram",
+      "n8n_node_type": "n8n-nodes-base.telegram",
+      "requires_reverification": true,
+      "documented_at": "2026-07-23",
+      "verification_status": "source_documented"
+    }
+  ],
+  "publication_context": { "enabled": true, "publication_required": true },
+  "evidence_gaps": [],
+  "coverage": "partial",
+  "evidence_quality": "partial",
+  "research_status": "partially_complete",
+  "human_review_required": true,
+  "provenance": { "program_phase": "KB-WPL-01.4", "library_version": "0.1.0-frozen" },
+  "input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "output_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}

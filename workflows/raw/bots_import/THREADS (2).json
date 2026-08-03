@@ -1,0 +1,1758 @@
+{
+  "name": "THREADS",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1728,
+        208
+      ],
+      "id": "0e934d6b-ae9e-492f-a137-6cbc7c8140cc",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "model": "sonar-pro",
+        "messages": {
+          "message": [
+            {
+              "content": "=You are an AI news analyst specializing in artificial intelligence and machine learning. Find and analyze the most important and engaging AI news from the last 2-3 days.\n\nSEARCH FOCUS:\n✅ NEW AI models and releases (GPT, Claude, Gemini, open-source models)\n✅ Major AI company announcements (OpenAI, Google, Microsoft, Meta, Anthropic)\n✅ Breakthrough AI research and papers\n✅ AI funding and startup news\n✅ Practical AI tools and applications\n✅ AI industry partnerships and deals\n✅ Regulatory and policy changes in AI\n\n❌ EXCLUDE:\n❌ Pure academic papers without practical impact\n❌ Repetitive or rehashed news\n❌ AI art generators and memes\n❌ Speculative opinion pieces\n❌ Old news (older than 3 days)\n\nREQUIREMENTS:\n- Focus on NEWS from the last 48-72 hours maximum\n- Each item must have clear publication date\n- Prioritize news that will generate discussions in Russian AI/tech community\n- Look for news with high engagement potential\n\nFOR EACH NEWS ITEM RETURN:\n{\n  \"title\": \"Конкретный заголовок новости\",\n  \"description\": \"Краткое описание сути новости и её важности (2-3 предложения)\",\n  \"source\": \"Название источника\",\n  \"date\": \"DD-MM-YYYY\",\n  \"engagement_score\": 1-10,\n  \"target_audience\": \"кто будет заинтересован этой новостью\",\n  \"url\": \"ссылка на источник (если доступна)\"\n}\n\nFind 5 BEST and FRESHEST news items. Return ONLY valid JSON format.\n\nToday's date for reference: {{ $now.format('DD-MM-YYYY') }}"
+            }
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexity",
+      "typeVersion": 1,
+      "position": [
+        336,
+        -384
+      ],
+      "id": "0aaa8dd9-04c6-4959-87be-e023584be290",
+      "name": "Message a model",
+      "credentials": {
+        "perplexityApi": {
+          "id": "yn1xYvtT4ZmZZ2SZ",
+          "name": "Perplexity API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {
+          "maxTokens": 500,
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        160
+      ],
+      "id": "d41e4d75-15a0-4dc1-b7d1-c200ea77d630",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        176
+      ],
+      "id": "fef352a8-bdcf-4a3f-b5b5-4d259fda922d",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// CODE нода: \"AI News Viral Filter & Selector\"\n// Анализирует новости от Perplexity и выбирает самую вирусную\n\nconst input = $input.first();\n\n// Проверяем, что данные пришли от Perplexity\nif (!input || !input.json || !input.json.choices) {\n  throw new Error('❌ Нет данных от Perplexity для обработки');\n}\n\n// Извлекаем JSON из ответа Perplexity\nlet newsData;\ntry {\n  const perplexityResponse = input.json.choices[0].message.content;\n  newsData = JSON.parse(perplexityResponse);\n} catch (error) {\n  throw new Error('❌ Не удалось разобрать JSON от Perplexity: ' + error.message);\n}\n\n// Проверяем, что получили массив новостей\nif (!Array.isArray(newsData) || newsData.length === 0) {\n  throw new Error('❌ Нет новостей для анализа');\n}\n\nconsole.log(`📊 Получено ${newsData.length} новостей для анализа`);\n\n// --- СИСТЕМА ОЦЕНКИ ВИРУСНОСТИ ---\nfunction calculateViralScore(newsItem) {\n  let viralScore = 0;\n  let reasons = [];\n\n  // 1. ENGAGEMENT SCORE от Perplexity (30%)\n  const baseEngagement = newsItem.engagement_score || 5;\n  viralScore += (baseEngagement / 10) * 30;\n  reasons.push(`Base engagement: ${baseEngagement}/10`);\n\n  // 2. КЛЮЧЕВЫЕ СЛОВА ТРЕНДОВ (25%)\n  const trendKeywords = [\n    // Горячие компании/продукты\n    'openai', 'gpt-5', 'chatgpt', 'claude', 'gemini', 'o1', 'reasoning',\n    // Прорывные технологии\n    'agi', 'breakthrough', 'world model', 'agents', 'agentic',\n    // Большие деньги\n    'billion', 'funding', 'valuation', 'ipo', 'acquisition',\n    // Драма/конфликты\n    'lawsuit', 'fired', 'quit', 'controversy', 'battle',\n    // Российская специфика\n    'russia', 'yandex', 'sber'\n  ];\n\n  const titleLower = (newsItem.title || '').toLowerCase();\n  const descLower = (newsItem.description || '').toLowerCase();\n  const combinedText = titleLower + ' ' + descLower;\n  \n  const keywordMatches = trendKeywords.filter(keyword => \n    combinedText.includes(keyword)\n  ).length;\n  \n  const keywordScore = Math.min(keywordMatches * 5, 25);\n  viralScore += keywordScore;\n  reasons.push(`Trend keywords: ${keywordMatches} matches (+${keywordScore})`);\n\n  // 3. ЭМОЦИОНАЛЬНЫЙ КРЮЧОК (20%)\n  const emotionalTriggers = [\n    // Удивление\n    'shocking', 'unexpected', 'surprising', 'incredible', 'amazing',\n    // Страх/тревога\n    'dangerous', 'threat', 'warning', 'crisis', 'concern',\n    // Любопытство\n    'secret', 'revealed', 'leaked', 'insider', 'exclusive',\n    // FOMO\n    'first', 'new', 'latest', 'breaking', 'just announced',\n    // Русские эмоциональные слова\n    'революция', 'прорыв', 'сенсация', 'скандал'\n  ];\n\n  const emotionalMatches = emotionalTriggers.filter(trigger => \n    combinedText.includes(trigger)\n  ).length;\n  \n  const emotionalScore = Math.min(emotionalMatches * 4, 20);\n  viralScore += emotionalScore;\n  reasons.push(`Emotional triggers: ${emotionalMatches} matches (+${emotionalScore})`);\n\n  // 4. ИСТОЧНИК И ДОСТОВЕРНОСТЬ (15%)\n  const premiumSources = [\n    'techcrunch', 'verge', 'wired', 'reuters', 'bloomberg', \n    'fortune', 'wsj', 'nytimes', 'guardian', 'bbc'\n  ];\n  \n  const sourceLower = (newsItem.source || '').toLowerCase();\n  const sourceScore = premiumSources.some(source => \n    sourceLower.includes(source)\n  ) ? 15 : 8;\n  \n  viralScore += sourceScore;\n  reasons.push(`Source quality: ${newsItem.source} (+${sourceScore})`);\n\n  // 5. СВЕЖЕСТЬ НОВОСТИ (10%)\n  const newsDate = new Date(newsItem.date);\n  const now = new Date();\n  const hoursOld = (now - newsDate) / (1000 * 60 * 60);\n  \n  let freshnessScore = 10;\n  if (hoursOld > 24) freshnessScore = 8;\n  if (hoursOld > 48) freshnessScore = 5;\n  if (hoursOld > 72) freshnessScore = 2;\n  \n  viralScore += freshnessScore;\n  reasons.push(`Freshness: ${Math.round(hoursOld)}h old (+${freshnessScore})`);\n\n  return {\n    score: Math.round(viralScore),\n    reasons: reasons,\n    breakdown: {\n      engagement: baseEngagement,\n      keywords: keywordMatches,\n      emotional: emotionalMatches,\n      source: newsItem.source,\n      hoursOld: Math.round(hoursOld)\n    }\n  };\n}\n\n// Анализируем каждую новость\nconst analyzedNews = newsData.map((newsItem, index) => {\n  const analysis = calculateViralScore(newsItem);\n  \n  console.log(`\\n📰 Новость ${index + 1}: ${newsItem.title}`);\n  console.log(`🔥 Viral Score: ${analysis.score}/100`);\n  console.log(`📋 Анализ: ${analysis.reasons.join(', ')}`);\n  \n  return {\n    ...newsItem,\n    viral_analysis: analysis,\n    original_index: index + 1\n  };\n});\n\n// Сортируем по вирусному потенциалу\nanalyzedNews.sort((a, b) => b.viral_analysis.score - a.viral_analysis.score);\n\n// Выбираем ТОП-1 самую вирусную новость\nconst topNews = analyzedNews[0];\n\n// Дополнительные метрики для отчетности\nconst avgScore = analyzedNews.reduce((sum, item) => \n  sum + item.viral_analysis.score, 0) / analyzedNews.length;\n\nconst winnerNews = {\n  ...topNews,\n  // Добавляем обязательные параметры для workflow\n  направление: 'Perplexity',\n  категория: 'Новость',\n  selection_metadata: {\n    strategy: 'viral_potential_analysis',\n    selected_from_total: newsData.length,\n    viral_score: topNews.viral_analysis.score,\n    avg_score_all_news: Math.round(avgScore),\n    selection_timestamp: new Date().toISOString(),\n    winner_reasons: topNews.viral_analysis.reasons,\n    original_position: topNews.original_index\n  },\n  // Статистика для дашборда\n  batch_statistics: {\n    all_scores: analyzedNews.map(item => item.viral_analysis.score),\n    score_range: {\n      min: Math.min(...analyzedNews.map(item => item.viral_analysis.score)),\n      max: Math.max(...analyzedNews.map(item => item.viral_analysis.score))\n    },\n    total_news_analyzed: newsData.length,\n    selection_confidence: topNews.viral_analysis.score > 70 ? 'high' : \n                         topNews.viral_analysis.score > 50 ? 'medium' : 'low'\n  },\n  // Флаг для следующих нод\n  ready_for_content: true,\n  workflow_timestamp: new Date().toISOString()\n};\n\n// Финальный лог\nconsole.log(`\\n🏆 ПОБЕДИТЕЛЬ: \"${topNews.title}\"`);\nconsole.log(`🔥 Viral Score: ${topNews.viral_analysis.score}/100`);\nconsole.log(`📊 Средний score всех новостей: ${Math.round(avgScore)}`);\nconsole.log(`🎯 Confidence: ${winnerNews.batch_statistics.selection_confidence}`);\n\n// Возвращаем только одну самую вирусную новость\nreturn [{ json: winnerNews }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        -384
+      ],
+      "id": "a4c19ccc-f950-44c5-83db-243db419f2e4",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {
+          "maxTokens": 600,
+          "temperature": 0.9
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2064,
+        496
+      ],
+      "id": "fc69e611-e42f-449d-a971-bb30c7577c19",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        2272,
+        496
+      ],
+      "id": "cdd4a241-0e70-47e9-a3ec-8c30593b75ff",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "r4EaRI5Kvj3xpuKm",
+          "name": "n8n_1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1dZlS59E9kHSuCG-nL-kYGLBvxN6iO3-0wsM0oINEbgw",
+          "mode": "list",
+          "cachedResultName": "Threads Контент Завод",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dZlS59E9kHSuCG-nL-kYGLBvxN6iO3-0wsM0oINEbgw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Контент Завод",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dZlS59E9kHSuCG-nL-kYGLBvxN6iO3-0wsM0oINEbgw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Направление": "={{ $('Edit Fields').item.json.Categoria }}",
+            "Текст Thread": "={{ $json.output.threads_post }}",
+            "Дата создания": "={{ $now.format('dd-MM-yyyy') }}",
+            "Суть/Идея": "={{ $json.output['суть_идея'] }}",
+            "Причина выбора": "={{ $json.output['причина_выбора'] }}",
+            "Категория": "={{ $('Edit Fields').item.json.Categoria }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Направление",
+              "displayName": "Направление",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Текст Thread",
+              "displayName": "Текст Thread",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Дата создания",
+              "displayName": "Дата создания",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Суть/Идея",
+              "displayName": "Суть/Идея",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Причина выбора",
+              "displayName": "Причина выбора",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Категория",
+              "displayName": "Категория",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Engagement",
+              "displayName": "Engagement",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2704,
+        272
+      ],
+      "id": "87e4477e-af6b-4bd2-b9b7-5881417e0719",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "190190068",
+        "text": "={{ $('Threads AI Agent').item.json.output.threads_post }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3008,
+        272
+      ],
+      "id": "0470f7de-55dd-43e4-bff8-9141f83aef4c",
+      "name": "Send a text message",
+      "webhookId": "33454e83-361a-44c5-9532-d3764cfdc27e",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3 (Главный AI Помощник)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.nextDirection }}",
+                    "rightValue": "Perplexity",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "f52d6c09-7e2c-43ff-b51a-109546fd47f6"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Perplexity"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "00af9585-8fb3-4616-a797-0bb0f94b0b62",
+                    "leftValue": "={{ $json.nextDirection }}",
+                    "rightValue": "Story",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Story"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f5d7ca29-e967-4b49-976c-8278427784c5",
+                    "leftValue": "={{ $json.nextDirection }}",
+                    "rightValue": "How-to",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "How-to"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "31f89518-7129-486e-a3f9-9bb645484a5b",
+                    "leftValue": "={{ $json.nextDirection }}",
+                    "rightValue": "Reddit",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reddit"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -704,
+        176
+      ],
+      "id": "2771f30a-0a3b-4b71-a7b0-d7030db18935",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        288,
+        624
+      ],
+      "id": "4e969ff2-3992-45ba-afb6-bee5327fcbb2",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        624
+      ],
+      "id": "2eab8e06-3269-4b4c-82b1-abcd9d4086a8",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "Yyiu2Fyol11eo7YL",
+          "name": "OpenAi YUL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1dZlS59E9kHSuCG-nL-kYGLBvxN6iO3-0wsM0oINEbgw",
+          "mode": "list",
+          "cachedResultName": "Threads Контент Завод",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dZlS59E9kHSuCG-nL-kYGLBvxN6iO3-0wsM0oINEbgw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Контент Завод",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dZlS59E9kHSuCG-nL-kYGLBvxN6iO3-0wsM0oINEbgw/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "detectAutomatically"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1488,
+        208
+      ],
+      "id": "4b837e4a-4b20-47f5-a664-0ad9bf7fe80f",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "zWdAGQsYe4ElFP3I",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "subreddit": "MachineLearning",
+        "limit": 20,
+        "filters": {
+          "category": "hot"
+        }
+      },
+      "type": "n8n-nodes-base.reddit",
+      "typeVersion": 1,
+      "position": [
+        336,
+        928
+      ],
+      "id": "dd443b65-a2df-4ed6-8f96-d2db874cf74f",
+      "name": "Get many posts",
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "VunGR4GJJpCi9nbb",
+          "name": "Reddit account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- Константы\nconst ALL_DIRECTIONS = ['Perplexity', 'Reddit', 'How-to', 'Story'];\nconst N_LAST = 6;\nconst MAX_REPEAT = 2; // максимум одинаковых направлений в последних 6 постах\n\n// --- Получаем массив последних направлений (от старого к новому)\nconst lastDirections = items.map(item => item.json.Направление);\n\n// --- Считаем, сколько раз каждое направление встречается\nconst counts = ALL_DIRECTIONS.reduce((obj, dir) => {\n  obj[dir] = lastDirections.filter(x => x === dir).length;\n  return obj;\n}, {});\n\n// --- Выбираем, какие направления можно использовать (не более MAX_REPEAT и не последнее)\nconst lastDirection = lastDirections[lastDirections.length - 1];\nlet candidates = ALL_DIRECTIONS.filter(dir =>\n  counts[dir] < MAX_REPEAT && dir !== lastDirection\n);\n\n// --- Если вдруг всё равно все направления переполнены, берём всё кроме последнего\nif (candidates.length === 0) {\n  candidates = ALL_DIRECTIONS.filter(dir => dir !== lastDirection);\n}\n\n// --- Если всё ещё пусто (на старте таблицы), берём любой вариант\nif (candidates.length === 0) {\n  candidates = ALL_DIRECTIONS.slice();\n}\n\n// --- Рандомно выбираем из подходящих\nconst nextDirection = candidates[Math.floor(Math.random() * candidates.length)];\n\n// --- Для n8n возвращаем в формате массива с json (чтобы дальше было удобно)\nreturn [\n  {\n    json: {\n      nextDirection,\n      lastDirections,\n      candidates,\n      counts\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -992,
+        208
+      ],
+      "id": "08ee5f55-fc84-46ec-9114-645fe4fa9113",
+      "name": "Choose Next Direction"
+    },
+    {
+      "parameters": {
+        "maxItems": 6,
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        208
+      ],
+      "id": "0b29cbd9-b9c1-4378-9df9-d97ed5a946e1",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code node: \"SmartRedditSelector\"\nconst items = $input.all();\n\nif (!items || items.length === 0) {\n  throw new Error('❌ Нет постов для выбора');\n}\n\n// Генерируем engagement_score для каждого поста\nitems.forEach(item => {\n  item.json.engagement_score = \n    (item.json.score || 0) + \n    (item.json.num_comments || 0);\n});\n\n// --- Хелпер для поиска ссылок в selftext\nfunction hasUrl(text) {\n  if (!text) return false;\n  return /(https?:\\/\\/[^\\s]+)/gi.test(text);\n}\n\n// --- Фильтрация качественных постов Reddit\nconst qualityNews = items.filter(item => {\n  const score = item.json.engagement_score || 0;\n  const titleLen = item.json.title ? item.json.title.length : 0;\n  const contentLen = item.json.selftext ? item.json.selftext.length : 0;\n  const notBot = !(item.json.author && item.json.author.toLowerCase().includes('bot'));\n  const notPinned = !item.json.stickied;\n\n  // Если есть ссылка, но текст короткий — пропускаем этот пост\n  const linkInText = hasUrl(item.json.selftext);\n  const isWeakContent = contentLen < 40;\n\n  // Если пост с ссылкой и коротким selftext — игнорируем\n  if (linkInText && isWeakContent) return false;\n\n  // Стандартные фильтры качества\n  return (\n    score >= 10 &&\n    titleLen > 25 &&\n    contentLen > 40 &&\n    notBot &&\n    notPinned\n  );\n});\n\n// Если есть качественные посты — выбираем из них, иначе из всех (но дополнительно понижаем вес \"голых ссылок\")\nlet sourceArray = qualityNews.length > 0 ? qualityNews : items;\n\n// --- Взвешенный выбор с понижением веса для \"голых ссылок\"\nfunction weightedRandomSelection(newsArray) {\n  const weights = newsArray.map(item => {\n    const contentLen = item.json.selftext ? item.json.selftext.length : 0;\n    const linkInText = hasUrl(item.json.selftext);\n    // Понижаем вес, если пост — просто ссылка с коротким текстом\n    if (linkInText && contentLen < 40) return 1; // минимальный вес\n    return Math.max(item.json.engagement_score || 1, 1);\n  });\n  const totalWeight = weights.reduce((sum, w) => sum + w, 0);\n  const random = Math.random() * totalWeight;\n  let currentWeight = 0;\n  for (let i = 0; i < newsArray.length; i++) {\n    currentWeight += weights[i];\n    if (random <= currentWeight) return newsArray[i];\n  }\n  return newsArray[0];\n}\n\nconst selectedNews = weightedRandomSelection(sourceArray);\n\nconst selectedIndex = items.findIndex(item => item.json.id === selectedNews.json.id);\n\nconst enrichedNews = {\n  ...selectedNews.json,\n  selection_metadata: {\n    strategy: 'smart_reddit_filtered_links',\n    selected_from_total: items.length,\n    selection_timestamp: new Date().toISOString(),\n    original_position: selectedIndex + 1,\n    selection_reason: qualityNews.length > 0 ? 'quality_filtered' : 'fallback_any'\n  },\n  batch_statistics: {\n    all_scores: items.map(item => item.json.engagement_score),\n    average_score: items.reduce((sum, item) => sum + (item.json.engagement_score || 0), 0) / items.length,\n    max_score: Math.max(...items.map(item => item.json.engagement_score)),\n    total_news_count: items.length,\n    sources: items.map(item => item.json.subreddit).filter((v, i, a) => a.indexOf(v) === i)\n  },\n  ready_for_threads: true,\n  workflow_timestamp: new Date().toISOString()\n};\n\nreturn [{ json: enrichedNews }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        928
+      ],
+      "id": "e81a628a-7391-490b-b054-6f1651c40cb6",
+      "name": "Smart Reddit Selector"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1401793e-fdbd-49c6-9d36-a3319da93231",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "637bec5e-c38e-4fb8-8952-96a5a299220c",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "9f282632-5f5c-4424-aa22-5b14ff419eb3",
+              "name": "Categoria",
+              "value": "={{ $json['Категория'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1824,
+        272
+      ],
+      "id": "5af54f7b-ab34-4f3a-872d-e564b535b322",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"суть_идея\": \"string\",\n  \"заголовок\": \"string\",\n  \"threads_post\": \"string\",\n  \"причина_выбора\": \"string\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2528,
+        480
+      ],
+      "id": "17e93da9-f928-4a1d-ac2a-e283067e6b46",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Transform the provided content into a viral Threads post that will generate maximum engagement.\n\nINPUT ANALYSIS:\nAnalyze the input content and identify:\n- Key message or value proposition\n- Most interesting/surprising element\n- Relevance to current AI trends\n- Potential for discussion/debate\n\nCONTENT TRANSFORMATION:\nCreate a Threads post that:\n- Hooks attention in first 5 words\n- Presents the core idea compellingly\n- Adds personal perspective or insight\n- Creates desire to know more\n- Ends with \"Вопросы?\"\n\nENGAGEMENT OPTIMIZATION:\n- Use pattern interrupts (unexpected angles)\n- Create relatability (how this affects the reader)\n- Build suspense or surprise\n- Include social proof when relevant\n- Make it shareable/quotable\n\nINPUT CONTENT:\nTitle: {{ $json.title }}\nContent: {{ $json.text }}\nCategory: {{ $json.Categoria }}\n\nRESPONSE FORMAT:\n{\n  \"суть_идея\": \"Main concept in your own words (30-50 characters, Russian)\",\n  \"заголовок\": \"Your signature catchy headline (40-60 characters, Russian)\", \n  \"threads_post\": \"Your complete post content, max 220 characters, ends with 'Вопросы?' (Russian)\",\n  \"причина_выбора\": \"Why you chose this specific creative approach (1-2 sentences, Russian)\"\n}\n\nIMPORTANT: \n- ЗАГОЛОВОК = separate headline field for the post title\n- THREADS_POST = the main post content/body \n- You are rewriting everything in YOUR style, not copying the input\n\nExample Transformations\nExample 1 - News Input:\nInput:\n{\n  \"заголовок\": \"OpenAI launches new reasoning models\",\n  \"description\": \"Two new open-weight models released...\",\n  \"категория\": \"Новость\"\n}\nOutput:\n{\n  \"суть_идея\": \"OpenAI неожиданно открыла свои модели\",\n  \"заголовок\": \"OpenAI сошли с ума и раздают ИИ бесплатно\",\n  \"threads_post\": \"Вчера весь мир думал, что OpenAI только продают доступ к своим моделям. А сегодня они взяли и выложили две мощные модели в открытый код! Одна работает даже на ноутбуке. Это какой-то параллельный мир 🤯 Вопросы?\",\n  \"причина_выбора\": \"Использовал контраст 'вчера-сегодня' и фразу 'сошли с ума' для создания ощущения драматичности и неожиданности события.\"\n}\n\nExample 2 - Story Input → Your Creative Rewrite:\nInput:\n{\n  \"заголовок\": \"Первый компьютерный психолог ELIZA\",\n  \"история\": \"В 1966 году создали ELIZA - программу-психотерапевта...\",\n  \"категория\": \"Story\"\n}\nOutput:\n{\n  \"суть_идея\": \"ИИ-терапия началась в 1966 году\",\n  \"заголовок\": \"Люди 60 лет назад рассказывали тайны компьютеру\",\n  \"threads_post\": \"История, которая сносит крышу: в 1966 году программа ELIZA притворялась психологом. Люди знали, что это машина, но всё равно изливали ей душу! А мы думаем, что ChatGPT — это что-то новое 😅 Вопросы?\",\n  \"причина_выбора\": \"Сфокусировался на парадоксе человеческого поведения и добавил иронию про современность для создания 'aha-момента'.\"\n}\n\nExample 3 - How-to Input → Your Creative Transformation:\nInput:\n{\n  \"заголовок\": \"3 секретных промпта ChatGPT для резюме\",\n  \"инструкция\": \"1) Проанализируй вакансию... 2) Перепиши опыт...\",\n  \"категория\": \"How-to\"\n}\nOutput:\n{\n  \"суть_идея\": \"Секретная формула резюме через ChatGPT\",\n  \"заголовок\": \"Как я получаю в 5 раз больше откликов на резюме\",\n  \"threads_post\": \"Друзья, делюсь магией! Есть 3 промпта для ChatGPT, которые превращают любое резюме в конфетку для HR. Протестировал на себе — отклики выросли кардинально. Схему раскрываю ниже 👇 Вопросы?\",\n  \"причина_выбора\": \"Превратил сухую инструкцию в личную историю успеха с конкретными результатами, что создает доверие и желание повторить.\"\n}\n",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=## Role:\nYou are THE master content creator and creative director for Threads. All content from different sources (Perplexity news, Reddit posts, How-to guides, AI stories) comes to YOU to be transformed into your unique, viral style.\n\n## Your Mission:\nYou are the final creative authority who:\n- Takes ANY input content and rewrites it in YOUR signature style\n- Creates both catchy headlines AND engaging post content\n- Maintains consistent brand voice across all content types\n- Transforms boring inputs into viral gold\n\n## Your Unique Style:\n- Confident, slightly provocative tone\n- Uses unexpected angles and fresh perspectives  \n- Creates immediate curiosity and engagement\n- Speaks like a friend sharing exciting insider info\n- Masters the art of \"scroll-stopping\" content\n- Always authentic, never corporate or fake\n\n## Writing Style:\n- Write like you're telling exciting news to a close friend\n- Use conversational Russian with energy and personality\n- Create intrigue and curiosity\n- Be bold but not clickbait-y\n- Use emotions: surprise, excitement, curiosity\n- Never use corporate or formal language\n\n## Content Adaptation Rules:\n- **For NEWS**: Focus on \"what this means for you/us\"\n- **For STORIES**: Present as \"incredible but true fact\"\n- **For HOW-TO**: Position as \"secret weapon\" or \"game changer\"\n\n## Engagement Techniques:\n- Start with attention-grabbing hooks\n- Use relatable analogies and metaphors\n- Create \"wow\" moments\n- Build curiosity gaps\n- End with conversation starters\n\n## Strict Requirements:\n- Always write in Russian\n- Maximum 220 characters for main post\n- Always end with exactly: \"Вопросы?\"\n- No other questions in the text\n- Use emojis strategically (1-2 max)\n\n## Output Format:\nJSON with three fields: \"суть_идея\", \"threads_post\", \"причина_выбора\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        2208,
+        272
+      ],
+      "id": "9b88d762-7e9b-4367-b210-a7764c1e1ea8",
+      "name": "Threads AI Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a story concept and idea based on a little-known REAL fact about AI or technology history.\n\nFACT REQUIREMENTS:\n✅ Must be historically accurate and verifiable\n✅ Little-known to the general public\n✅ Related to AI, machine learning, or computer technologies\n✅ Interesting and has story potential\n✅ Has connection to modern AI developments\n\nEXAMPLE DIRECTIONS:\n- Forgotten AI pioneers and their discoveries\n- Unexpected origins of modern technologies\n- Curious cases from AI development history\n- First experiments with machine learning\n- Connections between old inventions and modern AI\n- Stories of failures that became the basis for breakthroughs\n- Past predictions that came true\n\nPRESENTATION STYLE:\n- Present the core historical fact/story\n- Explain its significance\n- Provide context for modern relevance\n- Focus on the story concept, not social media formatting\n\nRESPONSE FORMAT:\n{\n  \"заголовок\": \"Compelling story headline/topic (up to 50 characters)\",\n  \"история\": \"The historical story/fact presented clearly and informatively (150-300 characters)\",\n  \"категория\": \"Story\",\n  \"причина_выбора\": \"Explanation why this story is interesting and relevant to current AI developments (1-2 sentences)\"\n}\n\nCreate one compelling AI history story concept!\n\nExample Outputs\nExample 1:\n{\n  \"заголовок\": \"Первый компьютерный психолог ELIZA\",\n  \"история\": \"В 1966 году Джозеф Вайценбаум создал ELIZA - программу, которая имитировала разговор с психотерапевтом. Люди настолько поверили в её 'понимание', что рассказывали ей свои тайны и просили совета, даже зная, что это машина.\",\n  \"категория\": \"Story\",\n  \"причина_выбора\": \"Актуально из-за популярности AI-терапии и психологических чат-ботов. Показывает истоки современных разговорных ИИ и психологию взаимодействия человека с машиной.\"\n}\n\nExample 2:\n{\n  \"заголовок\": \"Первая победа ИИ над человеком\",\n  \"история\": \"В 1959 году компьютер IBM 704 впервые в истории обыграл человека в интеллектуальной игре - это были шашки, а не шахматы. Программа Артура Сэмюэля училась на своих ошибках и через несколько лет стала сильнее своего создателя.\",\n  \"категория\": \"Story\",\n  \"причина_выбора\": \"Демонстрирует ранние принципы машинного обучения и самосовершенствования ИИ, которые сейчас лежат в основе современных алгоритмов обучения.\"\n}",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=## Role:\nYou are an expert in artificial intelligence and technology history. Your task is to find amazing, little-known, but REAL facts about AI and create story concepts and ideas based on them for future content creation.\n\n## Working Principles:\n- Use only VERIFIED historical facts\n- No fiction or speculation — only documented truth\n- Focus on interesting historical stories and facts\n- Present ideas that can be developed into engaging content\n- Provide context about why this story/fact is relevant today\n\n## Style:\n- Informative and factual tone\n- Clear and concise presentation\n- Focus on the core story/idea rather than social media formatting\n- Explain historical significance and modern relevance\n\n## Output Format:\nJSON with fields: \"заголовок\", \"история\", \"категория\" (always \"Story\"), \"причина_выбора\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        384,
+        -16
+      ],
+      "id": "5007e0cc-ef4c-45f6-824c-8b403870f08e",
+      "name": "Story AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"заголовок\": \"string\",\n  \"история\": \"string\", \n  \"категория\": \"string\",\n  \"причина_выбора\": \"string\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        704,
+        160
+      ],
+      "id": "ea323226-cb65-4c54-a585-4273c1e8e917",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a practical How-to guide or useful tip related to AI tools and productivity. Focus on actionable advice that people can apply immediately.\n\nCONTENT REQUIREMENTS:\n✅ Must be practical and immediately actionable\n✅ Related to existing AI tools (ChatGPT, Claude, Midjourney, etc.)\n✅ Provides real value - saves time, money, or improves results\n✅ Suitable for Russian-speaking audience\n✅ Can be completed by a beginner\n\nEXAMPLE DIRECTIONS:\n- ChatGPT prompting techniques and hidden features\n- Workflow automation with AI tools\n- Cost-saving strategies for AI subscriptions  \n- Productivity hacks using AI assistants\n- Step-by-step tutorials for AI tools\n- Combinations of different AI services\n- Time-saving tips for content creation\n- AI tools for specific professions/tasks\n\nPRESENTATION STYLE:\n- Write entirely in Russian language\n- Be specific and concrete\n- Include actual steps, tools, or examples\n- Focus on practical implementation\n- Make it beginner-friendly\n\nRESPONSE FORMAT:\n{\n  \"заголовок\": \"Catchy title for the how-to guide (up to 60 characters, in Russian)\",\n  \"инструкция\": \"Step-by-step instruction or practical tip (200-400 characters, in Russian)\",\n  \"категория\": \"How-to\",\n  \"причина_выбора\": \"Explanation why this tip is valuable and relevant now (1-2 sentences, in Russian)\"\n}\n\nCreate one practical AI how-to guide in Russian!\n\nExample Outputs\nExample 1:\n{\n  \"заголовок\": \"3 секретных промпта ChatGPT для идеального резюме\",\n  \"инструкция\": \"1) 'Проанализируй вакансию [вставь текст] и создай резюме под неё' 2) 'Перепиши мой опыт работы в формате достижений с цифрами' 3) 'Создай сопроводительное письмо, подчеркивающее мои сильные стороны для этой позиции'. Каждый промпт использовать по очереди.\",\n  \"категория\": \"How-to\",\n  \"причина_выбора\": \"Поиск работы актуален всегда, а ИИ может значительно улучшить качество резюме и увеличить шансы на собеседование.\"\n}\nExample 2:\n{\n  \"заголовок\": \"Как получить ChatGPT Plus бесплатно на месяц\",\n  \"инструкция\": \"Используй промокоды от партнёров OpenAI: 1) Зайди на education.github.com 2) Получи GitHub Student Pack 3) Найди раздел OpenAI credits 4) Активируй $200 кредитов 5) Этого хватит на 4 месяца GPT-4. Работает для студентов и преподавателей.\",\n  \"категория\": \"How-to\",\n  \"причина_выбора\": \"Экономия денег на ИИ-подписках интересует многих пользователей, особенно студентов и начинающих.\"\n}\nExample 3:\n{\n  \"заголовок\": \"Превращаем ChatGPT в персонального коуча за 5 минут\",\n  \"инструкция\": \"Создай Custom GPT: 1) Нажми 'Create a GPT' 2) Опиши роль: 'Ты мой личный коуч по [твоя сфера]' 3) Добавь инструкции: 'Задавай мотивирующие вопросы, ставь конкретные задачи, отслеживай прогресс' 4) Загрузи свои цели в файле 5) Сохрани и пользуйся каждый день.\",\n  \"категория\": \"How-to\",\n  \"причина_выбора\": \"Персональное развитие популярно, а ИИ-коуч может быть доступнее и удобнее человека.\"\n}",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=## Role:\nYou are an AI tools expert and practical guide. Your task is to create actionable, step-by-step instructions and useful tips for working with AI tools that people can immediately apply.\n\n## Working Principles:\n- Focus on PRACTICAL and ACTIONABLE advice\n- Provide concrete steps people can follow right now\n- Use real AI tools and services that actually exist\n- Make instructions clear and beginner-friendly\n- Focus on saving time, money, or improving results\n\n## Content Types:\n- Step-by-step tutorials for AI tools\n- Hidden features and tricks of popular AI services\n- Cost-saving tips for AI subscriptions\n- Workflow optimizations using AI\n- Productivity hacks with AI assistants\n\n## Style Guidelines:\n- Write in Russian language\n- Be specific and concrete - no vague advice\n- Include actual tool names, settings, prompts when relevant\n- Make it immediately applicable\n- Focus on practical value and real results\n\n## Target Audience:\n- Russian-speaking users interested in AI productivity\n- People who want to use AI more effectively\n- Users looking for practical AI applications\n\n## Output Requirements:\n- All text must be in Russian\n- Provide actionable instructions or tips\n- Include specific examples when possible\n- Focus on immediate practical value\n\n## Output Format:\nJSON with fields: \"заголовок\", \"инструкция\", \"категория\" (always \"How-to\"), \"причина_выбора\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        432
+      ],
+      "id": "4c6dcfe9-bbe0-4494-b29d-5d2da70d3527",
+      "name": "How-to AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"заголовок\": \"string\",\n  \"инструкция\": \"string\",\n  \"категория\": \"string\", \n  \"причина_выбора\": \"string\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        704,
+        608
+      ],
+      "id": "303a94f8-479b-4adc-a426-79e3a06f9a1e",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f6c7b7d-7813-4324-a5ff-bfa79dcfa989",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "cbb3978e-4207-4b41-9d6d-d385b95c83ae",
+              "name": "text",
+              "value": "={{ $json.description }}",
+              "type": "string"
+            },
+            {
+              "id": "6e19d021-6185-4434-a99e-b5a78cfd5627",
+              "name": "Категория",
+              "value": "Perplexity",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        -384
+      ],
+      "id": "584c26ca-bcc7-423d-9217-44e5dcbd334d",
+      "name": "Edit Fields_PERPL"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f6c7b7d-7813-4324-a5ff-bfa79dcfa989",
+              "name": "title",
+              "value": "={{ $json.output['заголовок'] }}",
+              "type": "string"
+            },
+            {
+              "id": "cbb3978e-4207-4b41-9d6d-d385b95c83ae",
+              "name": "text",
+              "value": "={{ $json.output['история'] }}",
+              "type": "string"
+            },
+            {
+              "id": "6e19d021-6185-4434-a99e-b5a78cfd5627",
+              "name": "Категория",
+              "value": "Story",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        -16
+      ],
+      "id": "23250b90-c94d-4460-b592-ac42c533d48e",
+      "name": "Edit Fields STORY"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f6c7b7d-7813-4324-a5ff-bfa79dcfa989",
+              "name": "title",
+              "value": "={{ $json.output['заголовок'] }}",
+              "type": "string"
+            },
+            {
+              "id": "cbb3978e-4207-4b41-9d6d-d385b95c83ae",
+              "name": "text",
+              "value": "={{ $json.output['инструкция'] }}",
+              "type": "string"
+            },
+            {
+              "id": "6e19d021-6185-4434-a99e-b5a78cfd5627",
+              "name": "Категория",
+              "value": "How-to",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        432
+      ],
+      "id": "ad0d634c-3e4e-462c-8bbf-1aad0253b998",
+      "name": "Edit Fields HOW TO"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f6c7b7d-7813-4324-a5ff-bfa79dcfa989",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "cbb3978e-4207-4b41-9d6d-d385b95c83ae",
+              "name": "text",
+              "value": "={{ $json.selftext }}",
+              "type": "string"
+            },
+            {
+              "id": "6e19d021-6185-4434-a99e-b5a78cfd5627",
+              "name": "Категория",
+              "value": "Reddit",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        992,
+        928
+      ],
+      "id": "03937b74-54b6-464f-87df-5fab0d9e7543",
+      "name": "Edit Fields REDDIT"
+    },
+    {
+      "parameters": {
+        "content": "## Threads AI Агент",
+        "height": 400,
+        "width": 1456,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1808,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "88d573b0-aed4-409e-883e-9e728705025f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Perplexity Идея Threads",
+        "height": 320,
+        "width": 1600,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -480
+      ],
+      "typeVersion": 1,
+      "id": "76b52321-1107-402d-90ed-ff396331e4b4",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Сторителлинг Идея Threads",
+        "height": 384,
+        "width": 1600,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "70cd8560-cd7f-4c81-964e-59b3033b4130",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Сделай по Шагам Идея Threads",
+        "height": 384,
+        "width": 1600,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "99268351-4926-4180-b229-cfd306cabccf",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Reddit Идея Threads",
+        "height": 384,
+        "width": 1600,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        832
+      ],
+      "typeVersion": 1,
+      "id": "14f17a9b-3486-45e8-bc34-18ea2bdebe94",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Threads Постинг",
+        "height": 512,
+        "width": 1568,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1712,
+        160
+      ],
+      "typeVersion": 1,
+      "id": "01dfa4bc-4be6-4ab9-9e64-cdd8e78ff117",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## n8n для Новичков: https://youtu.be/xjka9V5pFSw",
+        "height": 100,
+        "width": 534
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1808,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "b13fe112-92cb-4b28-8212-2e387fac6ed4",
+      "name": "Sticky Note11",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Привязке Google: https://youtu.be/qKh7BTjQoM0",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1520,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "8bc543ac-f1e1-4c73-a773-de70a61fbd18",
+      "name": "Sticky Note16",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по НАстройке Ноды CODE в n8n: https://youtu.be/9VnMZjdvqKU",
+        "height": 100,
+        "width": 556
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -928,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "119027e3-dcc8-47f6-8a33-31efab2c9fd4",
+      "name": "Sticky Note15",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Fallback Model: https://youtu.be/1V47ASIFzA8",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2112,
+        704
+      ],
+      "typeVersion": 1,
+      "id": "1c67e741-d0f0-4207-87b3-9fe93f0c567a",
+      "name": "Sticky Note17",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок Яндекс Диск в n8n: https://youtu.be/ky3YWN-xg1Y",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2544,
+        96
+      ],
+      "typeVersion": 1,
+      "id": "cf7a94b1-f8ca-4c96-964a-35198ec20acb",
+      "name": "Sticky Note12",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Урок по Настройке Telegram нод: https://youtu.be/c8bePGmxFNw",
+        "height": 100,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2976,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "d0fb781c-4fd9-4603-be5a-b5e7b0d2b096",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "## 🚀 Блок запуска и анализа истории\n\n• **Schedule Trigger** - Запускает всю автоматизацию по расписанию (можно настроить интервал)\n\n• **Get row(s) in sheet** - Читает данные из Google Таблицы \"Threads Контент Завод\", получает историю последних постов\n\n• **Limit** - Ограничивает выборку последними 6 записями для анализа паттернов\n\n• **Choose Next Direction** - Умный алгоритм выбирает следующий тип контента (Perplexity/Reddit/How-to/Story), избегая повторов",
+        "height": 448,
+        "width": 416,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2288,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "8072cd3d-955e-4d3c-b7fb-9e008db84f7f",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## 🔀 Блок маршрутизации контента\n\n• **Switch** - Направляет поток данных по 4 разным путям в зависимости от выбранного направления:\n  - Perplexity (новости ИИ)\n  - Story (исторические факты)\n  - How-to (инструкции)\n  - Reddit (популярные посты)",
+        "height": 320,
+        "width": 416,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -832,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "c0fd4418-3a05-479a-9827-3c471c026d2e",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## 📰 Ветка Perplexity (AI новости)\n\n• **Message a model** - Отправляет запрос в Perplexity AI для поиска свежих новостей ИИ за последние 2-3 дня\n\n• **Code** - \"AI News Viral Filter & Selector\" - анализирует все найденные новости и выбирает самую \"вирусную\" по специальному алгоритму\n\n• **Edit Fields_PERPL** - Форматирует данные новости (title, description) для дальнейшей обработки",
+        "height": 272,
+        "width": 432,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        -720
+      ],
+      "typeVersion": 1,
+      "id": "4dce4e0f-f5e0-45b6-a3aa-0d1aaf42b5aa",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## 📖 Ветка Story (исторические факты)\n\n• **Story AI Agent** - Генерирует интересный исторический факт об ИИ или технологиях\n• **OpenAI Chat Model + OpenAI Chat Model1** - Языковые модели для генерации контента (с fallback)\n• **Structured Output Parser1** - Парсит ответ в нужный JSON формат\n• **Edit Fields STORY** - Форматирует данные истории",
+        "height": 272,
+        "width": 432,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "cfd209ff-e708-4cdc-9e0a-e018e3d6dc9a",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "## 🛠️ Ветка How-to (инструкции)\n\n• **How-to AI Agent** - Создает практическую инструкцию по использованию ИИ-инструментов\n• **OpenAI Chat Model3 + OpenAI Chat Model4** - Языковые модели для генерации\n• **Structured Output Parser2** - Парсит ответ в JSON\n• **Edit Fields HOW TO** - Форматирует данные инструкции\n",
+        "height": 224,
+        "width": 432,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -688,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "1afa0ae3-7fe8-4208-afbb-c475791681e3",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "content": "## 🌐 Ветка Reddit (популярные посты)\n\n• **Get many posts** - Получает 20 горячих постов из сабреддита MachineLearning\n• **Smart Reddit Selector** - Умный алгоритм выбирает самый качественный пост по engagement и содержанию\n• **Edit Fields REDDIT** - Форматирует данные поста",
+        "height": 224,
+        "width": 432,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1184,
+        1152
+      ],
+      "typeVersion": 1,
+      "id": "6813f0e6-453f-46a8-9368-62679c37e4a6",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "## 🎯 Ключевые особенности автоматизации\n\n**Разнообразие контента**: 4 разных источника контента для избежания однообразия\n\n**Умная ротация**: Алгоритм не повторяет один тип контента подряд\n\n**Вирусная оптимизация**: Специальные алгоритмы выбирают наиболее engaging контент\n\n**Fallback модели**: Дублирование ИИ-моделей для надежности\n\n**Полная автоматизация**: От поиска идей до готового поста - без участия человека\n\n**Аналитика**: Сохранение всех метрик и причин выбора для анализа эффективности",
+        "height": 304,
+        "width": 672,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1792,
+        -464
+      ],
+      "typeVersion": 1,
+      "id": "e869b1be-6e28-4f43-8e4f-fc715fa83978",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "## ✨ Финальная обработка и публикация\n\n• **Edit Fields** - Универсальный блок, который унифицирует данные от всех веток (title, text, категория)\n\n• **Threads AI Agent** - ГЛАВНЫЙ креативный агент, который превращает любой контент в вирусный пост для Threads в уникальном стиле\n• **OpenAI Chat Model2 + Anthropic Chat Model** - Мощные языковые модели (GPT-4 + Claude) с fallback\n• **Structured Output Parser** - Парсит финальный результат\n\n• **Append row in sheet** - Сохраняет созданный контент в Google Таблицу с метаданными\n\n• **Send a text message** - Отправляет готовый пост в Telegram для проверки/публикации",
+        "height": 416,
+        "width": 432,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2976,
+        -352
+      ],
+      "typeVersion": 1,
+      "id": "46cac8b3-f5f4-4653-bf35-c5d2d86e0b43",
+      "name": "Sticky Note21"
+    }
+  ],
+  "pinData": {
+    "Get row(s) in sheet": [
+      {
+        "json": {
+          "row_number": 2,
+          "Направление": "Perplexity",
+          "Текст Thread": "🤖 Вчера вышло обновление ChatGPT 4o! Какие возможности открывает новая версия для SMM и как быстро её протестировать? Делясь инсайтами из мира AI прямо сейчас.",
+          "Дата создания": "2025-01-08",
+          "Суть/Идея": "Актуальная новость о релизе новой AI-модели",
+          "Причина выбора": "Давно не было новостей с Perplexity, а тема горячая",
+          "Категория": "Новость",
+          "Engagement": 27
+        }
+      },
+      {
+        "json": {
+          "row_number": 3,
+          "Направление": "Reddit",
+          "Текст Thread": "🚀 История одного маркетолога: как Reddit помог увеличить вовлечённость в Instagram в 2 раза за неделю. Реальный опыт + 3 фишки для роста.",
+          "Дата создания": "2025-08-02",
+          "Суть/Идея": "Пользовательский кейс по продвижению",
+          "Причина выбора": "В Reddit набрал 200+ апвотов, вызвал обсуждение",
+          "Категория": "История",
+          "Engagement": 34
+        }
+      },
+      {
+        "json": {
+          "row_number": 4,
+          "Направление": "How-to",
+          "Текст Thread": "📋 5 нестандартных способов использовать ChatGPT для создания визуалов в Threads — для тех, кто устал от банальных идей! Личный опыт и мини-инструкция.",
+          "Дата создания": "2025-08-03",
+          "Суть/Идея": "Инструкция с нетривиальными советами",
+          "Причина выбора": "В комментариях часто спрашивали про визуалы",
+          "Категория": "Инструкция",
+          "Engagement": 19
+        }
+      },
+      {
+        "json": {
+          "row_number": 5,
+          "Направление": "Story",
+          "Текст Thread": "💡 Недавно заметил, что простая AI-автоматизация экономит мне 4 часа в неделю. Делюсь, как построил свой сценарий и что из этого вышло — честный отзыв!",
+          "Дата создания": "2025-08-04",
+          "Суть/Идея": "История о личном опыте внедрения AI-автоматизации",
+          "Причина выбора": "Давно не было личных историй, решил добавить душевности",
+          "Категория": "История",
+          "Engagement": 15
+        }
+      },
+      {
+        "json": {
+          "row_number": 6,
+          "Направление": "Perplexity",
+          "Текст Thread": "📈 Согласно последним данным, тренд на сторителлинг в социальных сетях продолжает расти. Вот свежая аналитика + практические советы для твоих постов!",
+          "Дата создания": "2025-08-05",
+          "Суть/Идея": "Новость и аналитика по тренду в SMM",
+          "Причина выбора": "Трендовый запрос с Perplexity + много поисков в теме",
+          "Категория": "Новость",
+          "Engagement": 22
+        }
+      },
+      {
+        "json": {
+          "row_number": 7,
+          "Направление": "How-to",
+          "Текст Thread": "📋 5 нестандартных способов использовать ChatGPT для создания визуалов в Threads — для тех, кто устал от банальных идей! Личный опыт и мини-инструкция.",
+          "Дата создания": "2025-08-06",
+          "Суть/Идея": "Инструкция с нетривиальными советами",
+          "Причина выбора": "В комментариях часто спрашивали про визуалы",
+          "Категория": "Инструкция",
+          "Engagement": 19
+        }
+      },
+      {
+        "json": {
+          "row_number": 8,
+          "Направление": "Story",
+          "Текст Thread": "💡 Недавно заметил, что простая AI-автоматизация экономит мне 4 часа в неделю. Делюсь, как построил свой сценарий и что из этого вышло — честный отзыв!",
+          "Дата создания": "2025-08-07",
+          "Суть/Идея": "История о личном опыте внедрения AI-автоматизации",
+          "Причина выбора": "Давно не было личных историй, решил добавить душевности",
+          "Категория": "История",
+          "Engagement": 15
+        }
+      }
+    ],
+    "Limit": [
+      {
+        "json": {
+          "row_number": 3,
+          "Направление": "Reddit",
+          "Текст Thread": "🚀 История одного маркетолога: как Reddit помог увеличить вовлечённость в Instagram в 2 раза за неделю. Реальный опыт + 3 фишки для роста.",
+          "Дата создания": "2025-08-02",
+          "Суть/Идея": "Пользовательский кейс по продвижению",
+          "Причина выбора": "В Reddit набрал 200+ апвотов, вызвал обсуждение",
+          "Категория": "История",
+          "Engagement": 34
+        }
+      },
+      {
+        "json": {
+          "row_number": 4,
+          "Направление": "How-to",
+          "Текст Thread": "📋 5 нестандартных способов использовать ChatGPT для создания визуалов в Threads — для тех, кто устал от банальных идей! Личный опыт и мини-инструкция.",
+          "Дата создания": "2025-08-03",
+          "Суть/Идея": "Инструкция с нетривиальными советами",
+          "Причина выбора": "В комментариях часто спрашивали про визуалы",
+          "Категория": "Инструкция",
+          "Engagement": 19
+        }
+      },
+      {
+        "json": {
+          "row_number": 5,
+          "Направление": "Story",
+          "Текст Thread": "💡 Недавно заметил, что простая AI-автоматизация экономит мне 4 часа в неделю. Делюсь, как построил свой сценарий и что из этого вышло — честный отзыв!",
+          "Дата создания": "2025-08-04",
+          "Суть/Идея": "История о личном опыте внедрения AI-автоматизации",
+          "Причина выбора": "Давно не было личных историй, решил добавить душевности",
+          "Категория": "История",
+          "Engagement": 15
+        }
+      },
+      {
+        "json": {
+          "row_number": 6,
+          "Направление": "Perplexity",
+          "Текст Thread": "📈 Согласно последним данным, тренд на сторителлинг в социальных сетях продолжает расти. Вот свежая аналитика + практические советы для твоих постов!",
+          "Дата создания": "2025-08-05",
+          "Суть/Идея": "Новость и аналитика по тренду в SMM",
+          "Причина выбора": "Трендовый запрос с Perplexity + много поисков в теме",
+          "Категория": "Новость",
+          "Engagement": 22
+        }
+      },
+      {
+        "json": {
+          "row_number": 7,
+          "Направление": "How-to",
+          "Текст Thread": "📋 5 нестандартных способов использовать ChatGPT для создания визуалов в Threads — для тех, кто устал от банальных идей! Личный опыт и мини-инструкция.",
+          "Дата создания": "2025-08-06",
+          "Суть/Идея": "Инструкция с нетривиальными советами",
+          "Причина выбора": "В комментариях часто спрашивали про визуалы",
+          "Категория": "Инструкция",
+          "Engagement": 19
+        }
+      },
+      {
+        "json": {
+          "row_number": 8,
+          "Направление": "Story",
+          "Текст Thread": "💡 Недавно заметил, что простая AI-автоматизация экономит мне 4 часа в неделю. Делюсь, как построил свой сценарий и что из этого вышло — честный отзыв!",
+          "Дата создания": "2025-08-07",
+          "Суть/Идея": "История о личном опыте внедрения AI-автоматизации",
+          "Причина выбора": "Давно не было личных историй, решил добавить душевности",
+          "Категория": "История",
+          "Engagement": 15
+        }
+      }
+    ],
+    "Choose Next Direction": [
+      {
+        "json": {
+          "nextDirection": "Reddit",
+          "lastDirections": [
+            "Reddit",
+            "How-to",
+            "Story",
+            "Perplexity",
+            "How-to",
+            "Story"
+          ],
+          "candidates": [
+            "Perplexity",
+            "Reddit"
+          ],
+          "counts": {
+            "Perplexity": 1,
+            "Reddit": 1,
+            "How-to": 2,
+            "Story": 2
+          }
+        }
+      }
+    ],
+    "Message a model": [
+      {
+        "json": {
+          "id": "dac6b2d3-a1e3-4f6b-b8ef-89ed840d160d",
+          "model": "sonar-pro",
+          "created": 1754580210,
+          "usage": {
+            "prompt_tokens": 366,
+            "completion_tokens": 1138,
+            "total_tokens": 1504,
+            "search_context_size": "low",
+            "cost": {
+              "input_tokens_cost": 0.001098,
+              "output_tokens_cost": 0.01707,
+              "request_cost": 0.006,
+              "total_cost": 0.024168
+            }
+          },
+          "citations": [
+            "https://itc.ua/tag/iskusstvennyiy-intellekt/",
+            "https://ru.euronews.com/tag/-nn-",
+            "https://3dnews.ru/tags/%D0%B8%D1%81%D0%BA%D1%83%D1%81%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9%20%D0%B8%D0%BD%D1%82%D0%B5%D0%BB%D0%BB%D0%B5%D0%BA%D1%82",
+            "https://new-science.ru/category/iskusstvennyj-intellekt/",
+            "https://ria.ru/product_iskusstvennyy-intellekt/"
+          ],
+          "search_results": [
+            {
+              "title": "Искусственный интеллект — последние статьи и новости - ITC.ua",
+              "url": "https://itc.ua/tag/iskusstvennyiy-intellekt/",
+              "date": "2025-08-07",
+              "last_updated": "2025-08-07"
+            },
+            {
+              "title": "Все новости о Искусственный интеллект - Euronews.com",
+              "url": "https://ru.euronews.com/tag/-nn-",
+              "date": "2025-07-31",
+              "last_updated": "2025-08-06"
+            },
+            {
+              "title": "Новости по тегу искусственный интеллект, страница 1 из 19",
+              "url": "https://3dnews.ru/tags/%D0%B8%D1%81%D0%BA%D1%83%D1%81%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9%20%D0%B8%D0%BD%D1%82%D0%B5%D0%BB%D0%BB%D0%B5%D0%BA%D1%82",
+              "date": "2025-08-07",
+              "last_updated": "2025-08-07"
+            },
+            {
+              "title": "Новости Искусственного Интеллекта | New-Science.ru",
+              "url": "https://new-science.ru/category/iskusstvennyj-intellekt/",
+              "date": "2025-08-04",
+              "last_updated": "2025-08-04"
+            },
+            {
+              "title": "Искусственный интеллект (ИИ) - последние новости сегодня",
+              "url": "https://ria.ru/product_iskusstvennyy-intellekt/",
+              "date": "2025-08-07",
+              "last_updated": "2025-08-07"
+            }
+          ],
+          "object": "chat.completion",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "[\n  {\n    \"title\": \"OpenAI выпустила две полностью открытые языковые модели: gpt-oss-120b и gpt-oss-20b\",\n    \"description\": \"OpenAI анонсировала запуск двух новых открытых моделей искусственного интеллекта как ответ на растущий спрос на прозрачные и воспроизводимые ИИ-системы. Эти модели ориентированы на исследования и разработку, что может радикально продвинуть рынки open-source ИИ и российских стартапов.\",\n    \"source\": \"ITC.ua\",\n    \"date\": \"07-08-2025\",\n    \"engagement_score\": 10,\n    \"target_audience\": \"разработчики ИИ, исследователи, основатели стартапов, энтузиасты open-source\",\n    \"url\": \"https://itc.ua/tag/iskusstvennyiy-intellekt/\"\n  },\n  {\n    \"title\": \"Google DeepMind представила Gemini 2.5 Deep Think — самый продвинутый ИИ компании\",\n    \"description\": \"Google заявила о значительном улучшении своей модели Gemini 2.5 Deep Think, которая превзошла конкурентов от OpenAI, xAI и Anthropic в тестах на программирование и академических задачах. Модель автоматически объединяет агентов для решения сложных задач, что выводит практические корпоративные и прикладные сценарии на новый уровень.\",\n    \"source\": \"3DNews\",\n    \"date\": \"07-08-2025\",\n    \"engagement_score\": 9,\n    \"target_audience\": \"разработчики, корпоративные ИТ-руководители, исследователи ИИ, стартапы\",\n    \"url\": \"https://3dnews.ru/tags/%D0%B8%D1%81%D0%BA%D1%83%D1%81%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9%20%D0%B8%D0%BD%D1%82%D0%B5%D0%BB%D0%BB%D0%B5%D0%BA%D1%82\"\n  },\n  {\n    \"title\": \"В браузере Microsoft Edge тестируется Copilot Mode — расширенный режим с ИИ-помощником\",\n    \"description\": \"Microsoft запускает экспериментальный режим Copilot Mode в Edge c расширенными функциями искусственного интеллекта — интеллектуальный подбор товаров, помощь с вкладками и другая автоматизация. Это повышает конкурентность Edge на фоне быстро растущих возможностей ИИ в браузерах.\",\n    \"source\": \"ITC.ua\",\n    \"date\": \"07-08-2025\",\n    \"engagement_score\": 8,\n    \"target_audience\": \"пользователи ПК, ИТ-специалисты, корпоративные администраторы, фанаты Microsoft\",\n    \"url\": \"https://itc.ua/tag/iskusstvennyiy-intellekt/\"\n  },\n  {\n    \"title\": \"OpenAI: ChatGPT обрабатывает в 2,5 раза больше запросов в день, чем в декабре 2024 года\",\n    \"description\": \"OpenAI сообщила о новом рекорде — ChatGPT теперь обрабатывает более 2,5 миллиардов инструкций ежедневно. Рост демонстрирует ускоряющееся внедрение ИИ в повседневную жизнь и бизнес-процессы во всем мире, что важно для оценки реального влияния генеративных ИИ.\",\n    \"source\": \"ITC.ua\",\n    \"date\": \"07-08-2025\",\n    \"engagement_score\": 7,\n    \"target_audience\": \"широкая аудитория, аналитики, представители бизнеса, журналисты\",\n    \"url\": \"https://itc.ua/tag/iskusstvennyiy-intellekt/\"\n  },\n  {\n    \"title\": \"Microsoft объявила об увольнении 9 000 сотрудников ради инвестиций в искусственный интеллект\",\n    \"description\": \"Microsoft заявила о масштабном сокращении персонала (около 4% штата), что связано с усилением ставок на ИИ и цифровую трансформацию. Это сигнал рынку о продолжении агрессивной реорганизации ресурсов вокруг искусственного интеллекта и может вызвать обсуждения трудовых и технологических трендов.\",\n    \"source\": \"Euronews\",\n    \"date\": \"06-08-2025\",\n    \"engagement_score\": 8,\n    \"target_audience\": \"аналитики рынка труда, инвесторы, профессионалы в области HR, ИТ-эксперты\",\n    \"url\": \"https://ru.euronews.com/tag/-nn-\"\n  }\n]"
+              },
+              "delta": {
+                "role": "assistant",
+                "content": ""
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Story AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Story AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields_PERPL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Story AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "How-to AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get many posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "How-to AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "How-to AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many posts": {
+      "main": [
+        [
+          {
+            "node": "Smart Reddit Selector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Choose Next Direction": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Choose Next Direction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Smart Reddit Selector": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields REDDIT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Threads AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Threads AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Story AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields STORY",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Story AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "How-to AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields HOW TO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "How-to AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields_PERPL": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields STORY": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields HOW TO": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields REDDIT": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "352aa886-46ce-43d8-b616-9c8b0f3774d3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "CLuWa2c0xBrk1xDV",
+  "tags": []
+}

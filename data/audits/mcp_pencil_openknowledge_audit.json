@@ -1,0 +1,98 @@
+{
+  "audit": "pencil_openknowledge_mcp_recovery",
+  "deny_by_default": true,
+  "host_mcp_is_not_product_runtime": true,
+  "pencil": {
+    "found": true,
+    "cursor_registered": false,
+    "role_decision": "B_internal_operator_design_tool_recommended",
+    "classification_options": {
+      "A": "Developer-only design MCP",
+      "B": "Internal operator design tool (recommended initial)",
+      "C": "Product-runtime design service",
+      "D": "Hybrid"
+    },
+    "host_registrations": [
+      "Claude Desktop stdio",
+      "Codex mcp_servers.pencil",
+      "VS Code / Kiro (extension binary)",
+      "Not registered in Cursor mcp.json"
+    ],
+    "server_command_safe": "Pencil Desktop mcp-server-windows-x64.exe --app desktop",
+    "binary_present": true,
+    "binary_location_class": "local_desktop_app_resources",
+    "transport": "stdio",
+    "tools_documented": [
+      "get_editor_state",
+      "batch_get",
+      "batch_design",
+      "get_screenshot",
+      "get_guidelines"
+    ],
+    "allowed_workspace": "approved design workspace only (to be designated)",
+    "smoke_status": "not_run_cursor_unregistered",
+    "limitation": "Requires local Pencil app/editor; unsuitable as unrestricted SaaS browser MCP without dedicated deployment.",
+    "recommended_allowlist": [
+      "get_editor_state",
+      "batch_get",
+      "batch_design",
+      "get_screenshot"
+    ],
+    "forbidden": [
+      "arbitrary filesystem outside approved .pen roots",
+      "secret/config directories",
+      "unrestricted spawn_agents without approval"
+    ]
+  },
+  "openknowledge": {
+    "found": false,
+    "cursor_registered": false,
+    "role_decision": "not_present_recommend_hybrid_authoring_later",
+    "classification_options": {
+      "A": "Developer documentation/knowledge editor",
+      "B": "Operator interface for governed knowledge drafting",
+      "C": "Runtime retrieval source",
+      "D": "Hybrid (recommended when restored)"
+    },
+    "searched": [
+      ".ok/",
+      ".okignore",
+      ".mcp.json",
+      ".cursor/mcp.json",
+      "user Cursor mcp.json",
+      "Claude Desktop config",
+      "repo knowledge/ knowledge_import/"
+    ],
+    "smoke_status": "not_applicable_missing",
+    "limitation": "No install/config/.ok root found. Do not invent OpenKnowledge as Runtime SoT.",
+    "recommended_bridge_when_restored": "OpenKnowledge doc → Knowledge Candidate → human review → KG publication → Runtime Snapshot",
+    "forbidden": [
+      "direct runtime publish",
+      "auto-index secrets/workflows/raw/tenant data",
+      "disk-wide indexing"
+    ]
+  },
+  "cursor_mcp_json": {
+    "path_class": "user_global_cursor_mcp_json",
+    "valid_json": false,
+    "servers_observed": ["Tavily Expert (URL transport)"],
+    "pencil_present": false,
+    "openknowledge_present": false,
+    "security_note": "File contains trailing non-JSON text and a URL that may embed a credential — rotate if exposed; do not commit."
+  },
+  "admission_policy": {
+    "default": "deny",
+    "required_fields": [
+      "server_identity",
+      "allowed_tools",
+      "allowed_paths",
+      "read_write_class",
+      "approval_needed",
+      "secret_access",
+      "network_access",
+      "audit_events",
+      "timeout",
+      "output_size_limits"
+    ]
+  }
+}

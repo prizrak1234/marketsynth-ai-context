@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.marketsynth.ai/workflow-patterns/0.1.0/workflow-pattern.schema.json",
+  "title": "WorkflowPattern",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "pattern_id": {
+      "type": "string"
+    },
+    "pattern_name": {
+      "type": "string"
+    },
+    "pattern_category": {
+      "type": "string"
+    },
+    "objective": {
+      "type": "string"
+    },
+    "problem_context": {
+      "type": "string"
+    },
+    "capability_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_skill_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "input_contract": {
+      "type": "object"
+    },
+    "output_contract": {
+      "type": "object"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "$ref": "workflow-pattern-step.schema.json"
+      },
+      "minItems": 1
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "workflow-pattern-edge.schema.json"
+      }
+    },
+    "required_connectors": {
+      "type": "array",
+      "items": {
+        "$ref": "connector-requirement.schema.json"
+      }
+    },
+    "required_tools": {
+      "type": "array",
+      "items": {
+        "$ref": "tool-requirement.schema.json"
+      }
+    },
+    "approval_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "human_approval_required": {
+          "type": "boolean"
+        },
+        "approval_gates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "before_write",
+              "before_publication",
+              "before_spend",
+              "before_activation",
+              "before_destructive_action",
+              "before_external_action"
+            ]
+          }
+        },
+        "auto_approval_allowed": {
+          "type": "boolean"
+        },
+        "spend_approval_required": {
+          "type": "boolean"
+        },
+        "publication_approval_required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "human_approval_required",
+        "auto_approval_allowed"
+      ]
+    },
+    "evidence_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "evidence_classes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_reference",
+              "execution_log",
+              "approval_record",
+              "test_result",
+              "audit_finding",
+              "user_statement"
+            ]
+          }
+        },
+        "minimum_evidence_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "required"
+      ]
+    },
+    "idempotency_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "policy": {
+          "type": "string",
+          "enum": [
+            "none",
+            "dedupe_by_event_id",
+            "dedupe_by_content_hash",
+            "at_least_once_with_compensation",
+            "manual_reconciliation"
+          ]
+        },
+        "unknown_outcome_auto_retry": {
+          "type": "boolean"
+        },
+        "duplicate_event_prevention": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "required",
+        "policy",
+        "unknown_outcome_auto_retry"
+      ]
+    },
+    "retry_policy": {
+      "type": "string"
+    },
+    "timeout_policy": {
+      "type": "string"
+    },
+    "rate_limit_policy": {
+      "type": "string"
+    },
+    "error_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rollback_or_recovery": {
+      "type": "string"
+    },
+    "security_class": {
+      "type": "string",
+      "enum": [
+        "read_only",
+        "write_internal",
+        "publication",
+        "billing",
+        "destructive",
+        "elevated_review"
+      ]
+    },
+    "tenant_scope": {
+      "type": "string"
+    },
+    "personal_data_class": {
+      "type": "string",
+      "enum": [
+        "none",
+        "low",
+        "elevated",
+        "high",
+        "unknown"
+      ]
+    },
+    "publication_sensitive": {
+      "type": "boolean"
+    },
+    "billing_sensitive": {
+      "type": "boolean"
+    },
+    "destructive": {
+      "type": "boolean"
+    },
+    "implementation_variants": {
+      "type": "array",
+      "items": {
+        "$ref": "provider-constraint.schema.json"
+      }
+    },
+    "source_workflow_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_practice_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "quality_gates": {
+      "type": "array",
+      "items": {
+        "$ref": "quality-gate.schema.json"
+      }
+    },
+    "maturity": {
+      "type": "string",
+      "enum": [
+        "extracted",
+        "normalized",
+        "reviewed",
+        "regression_tested",
+        "platform_adapted",
+        "deprecated",
+        "rejected"
+      ]
+    },
+    "provenance": {
+      "$ref": "provenance.schema.json"
+    }
+  },
+  "required": [
+    "pattern_id",
+    "pattern_name",
+    "pattern_category",
+    "objective",
+    "capability_ids",
+    "steps",
+    "approval_requirements",
+    "evidence_requirements",
+    "idempotency_requirements",
+    "security_class",
+    "tenant_scope",
+    "publication_sensitive",
+    "billing_sensitive",
+    "destructive",
+    "maturity",
+    "provenance"
+  ]
+}

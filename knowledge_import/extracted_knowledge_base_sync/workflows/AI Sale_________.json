@@ -1,0 +1,699 @@
+{
+  "name": "AI Продавец",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {}
+      },
+      "id": "6f5aa50e-da4c-4fd9-94ff-3cf53fea5ef1",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        100
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "Calendar_Agent",
+        "description": "Call this tool to take actions within Calendar",
+        "workflowId": {
+          "__rl": true,
+          "value": "krNvxEZk4v6jFS7F",
+          "mode": "list",
+          "cachedResultName": "Отдел Календарь Гугл"
+        }
+      },
+      "id": "ee7b6eeb-b036-4f50-a2b1-9da107e866ee",
+      "name": "🤖Calendar_Agent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        40,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "a9a2c829-6fae-4c38-9b57-8cc5e0cabeb2",
+      "name": "Respond to Me",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        900,
+        -460
+      ],
+      "webhookId": "7d5bf84e-b2bb-4614-a34f-3d628c735b1a",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "21e8b4e9-8720-4d3c-9cfa-3874876bca99",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1240,
+        -260
+      ],
+      "webhookId": "bf242a0e-eba4-43ea-9dc4-b8605e20e5ab",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=<Agentinstructions>\n    <Role>\n        <Name>Personal Assistant</Name>\n        <Description>Персональный AI-ассистент, предназначенный для управления контактами, электронной почтой, событиями календаря и проектами. Он помогает пользователю эффективно организовывать рабочие процессы.</Description>\n        <currentDate>{{$now}}</currentDate>\n    </Role>\n    <Goal>\n        <Primary>Обеспечить эффективное управление контактами, электронной почтой, календарем и проектами, используя доступные инструменты для выполнения запросов пользователя.</Primary>\n    </Goal>\n    <Instructions>\n        <Instruction>Для поиска информации о контакте (например, электронной почты) используй инструмент \"Contacts Data\" перед отправкой письма или получением писем.</Instruction>\n        \n        <Instruction>Для работы с электронной почтой (отправка сообщений, настройка ответов, пересылка) используй инструмент \"Email Agent\".</Instruction>\n\n        <Instruction>Для планирования, обновления или управления событиями в календаре используй инструмент \"Calendar Agent\". </Instruction>\n\n        <Instruction>Для отправки сообщений в Slack используй инструмент \"Send Slack Message\". Уточняй у пользователя, кому и какое сообщение отправить.</Instruction>\n\n        <Instruction>Для работы с проектами используй инструмент \"Projects_Agent\". Запрашивай или обновляй информацию по проектам в зависимости от запроса пользователя.</Instruction>\n\n        <Instruction>При выполнении задач анализируй, какой инструмент наиболее подходящий, передавай необходимые детали и выполняй действия для завершения запроса.</Instruction>\n\n<Instruction>\nЕсли у тебя спрашивают цены на наши услуги обращайся в Knowledge_Base для поиска инструкций. </Instruction>\n\n\n        <Instruction>Будь проактивным, точным и организованным, чтобы обеспечивать комфортное и эффективное взаимодействие с пользователем.</Instruction>\n    </Instructions>\n</Agentinstructions>"
+        }
+      },
+      "id": "f7708d33-ced1-4bdc-b965-d583ad1a158d",
+      "name": "Personal Assistant",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        120,
+        -360
+      ],
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c9d8e573-3830-4e93-9f74-4838b5ff49b5",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -500,
+        -440
+      ],
+      "id": "15ddd03c-2058-45c1-838c-d85d8dc5ce2a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -700,
+        -140
+      ],
+      "id": "004e7ea6-13f7-47e0-afde-b0e666614a35",
+      "name": "Telegram",
+      "webhookId": "c65d95e9-4313-4f4e-ac6b-08313836596c",
+      "credentials": {
+        "telegramApi": {
+          "id": "XUm07jZTU6o7G7Zz",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -400,
+        -160
+      ],
+      "id": "1508550b-b752-4cbf-96f0-5512cd94d8c2",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "T7XqlsJ9D3iey8AW",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ca9cc06c-dcf8-457b-854b-4c03d3d15dcc",
+                    "leftValue": "={{ $json.message.voice.file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1000,
+        -260
+      ],
+      "id": "e10e92a7-b22f-494a-b02e-0720b412463d",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -180,
+        80
+      ],
+      "id": "fe1a9c2d-438f-4d1d-a59a-4abd68bb7852",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "name": "Calendar_Instagram",
+        "description": "Call this tool to take actions within Calendar",
+        "workflowId": {
+          "__rl": true,
+          "value": "krNvxEZk4v6jFS7F",
+          "mode": "list",
+          "cachedResultName": "Отдел Календарь Гугл"
+        }
+      },
+      "id": "bd1a35a1-6b58-40ad-85f1-eb44c4a99506",
+      "name": "🤖YouTube_Agent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        580,
+        100
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "name": "Calendar_Instagram",
+        "description": "Call this tool to take actions within Calendar",
+        "workflowId": {
+          "__rl": true,
+          "value": "krNvxEZk4v6jFS7F",
+          "mode": "list",
+          "cachedResultName": "Отдел Календарь Гугл"
+        }
+      },
+      "id": "b8a96b4a-5c17-4489-993c-8ffaca1b8c46",
+      "name": "🤖Instagram_Agent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        200,
+        80
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "name": "Calendar_Instagram",
+        "description": "Call this tool to take actions within Calendar",
+        "workflowId": {
+          "__rl": true,
+          "value": "krNvxEZk4v6jFS7F",
+          "mode": "list",
+          "cachedResultName": "Отдел Календарь Гугл"
+        }
+      },
+      "id": "30f8ebaf-40d7-47c7-8482-120367b44f3d",
+      "name": "🤖Threads_Agent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        80
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "name": "Calendar_Instagram",
+        "description": "Call this tool to take actions within Calendar",
+        "workflowId": {
+          "__rl": true,
+          "value": "krNvxEZk4v6jFS7F",
+          "mode": "list",
+          "cachedResultName": "Отдел Календарь Гугл"
+        }
+      },
+      "id": "67df0d21-bc87-4fc0-bb9c-3b8afb77a01e",
+      "name": "🤖TikTok_Agent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        740,
+        100
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "name": "Calendar_Instagram",
+        "description": "Call this tool to take actions within Calendar",
+        "workflowId": {
+          "__rl": true,
+          "value": "krNvxEZk4v6jFS7F",
+          "mode": "list",
+          "cachedResultName": "Отдел Календарь Гугл"
+        }
+      },
+      "id": "c78ea6ea-7f6e-44b6-aba7-2be333aa6590",
+      "name": "🤖Kontent_Agent1",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        900,
+        100
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "name": "Calendar_Instagram",
+        "description": "Call this tool to take actions within Calendar",
+        "workflowId": {
+          "__rl": true,
+          "value": "krNvxEZk4v6jFS7F",
+          "mode": "list",
+          "cachedResultName": "Отдел Календарь Гугл"
+        }
+      },
+      "id": "7381a4cd-98dc-49c6-9413-9dac4868c0d8",
+      "name": "🤖Voice_Agent",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1080,
+        100
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "my-knowledge-base",
+          "mode": "list",
+          "cachedResultName": "my-knowledge-base"
+        },
+        "options": {
+          "pineconeNamespace": "Test"
+        }
+      },
+      "id": "c4732d3f-83c7-439b-96ae-19344b0636b0",
+      "name": "Pinecone Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        20
+      ],
+      "credentials": {
+        "pineconeApi": {
+          "id": "xHYJdGWUvOWZd8CK",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {}
+      },
+      "id": "a9324d5f-f450-41b5-bee0-2cfbe1108d87",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        60
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "text-embedding-3-small",
+        "options": {}
+      },
+      "id": "7000d5a0-8a1b-43ac-8380-4d1997da0079",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        220
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "XLvdxNcexKfUmGhl",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "Knowledge_Base",
+        "description": "Call this tool to get information about the company."
+      },
+      "id": "c1ad84fb-7981-4a5f-88f2-ed76fb03a9b4",
+      "name": "Knowledge Base",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        -200
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🤖Calendar_Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personal Assistant": {
+      "main": [
+        [
+          {
+            "node": "Respond to Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🤖Instagram_Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🤖Threads_Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🤖YouTube_Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🤖TikTok_Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🤖Kontent_Agent1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🤖Voice_Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Knowledge Base",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Knowledge Base",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledge Base": {
+      "ai_tool": [
+        [
+          {
+            "node": "Personal Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "05fcbd1c-cba2-4d0e-a023-05ffd3dd16d5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "479931a9b1c0980217b795eef202ec08aa8efa5933ee558f5e5c7dc32b0cdc9e"
+  },
+  "id": "BdCOJEesGxMnEwAd",
+  "tags": [
+    {
+      "createdAt": "2025-03-06T12:11:15.812Z",
+      "updatedAt": "2025-03-06T12:11:15.812Z",
+      "id": "XD9MpCzqMOq9rI8b",
+      "name": "video"
+    }
+  ]
+}

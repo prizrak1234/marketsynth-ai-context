@@ -1,0 +1,75 @@
+{
+  "skill_id": "ms.skill.market_validation",
+  "skill_version": "0.1.0",
+  "verdict": "proceed_with_conditions",
+  "verdict_confidence": "medium",
+  "executive_summary": "Demand signals from founder interviews and one regional report support a pilot, but competitor pricing and unit economics remain unverified.",
+  "supporting_evidence": [
+    {
+      "statement": "9 of 12 interviewed remote workers skip lunch or order fast food.",
+      "trace_type": "evidence",
+      "evidence_class": "user_statement",
+      "confidence": "medium"
+    }
+  ],
+  "contradictory_evidence": [],
+  "assumptions": [
+    {
+      "statement": "990 RUB per lunch is acceptable for target segment.",
+      "trace_type": "assumption",
+      "evidence_class": "assumption",
+      "confidence": "low"
+    }
+  ],
+  "evidence_gaps": [
+    "Independent competitor pricing in Novosibirsk",
+    "Kitchen partner availability and margin structure"
+  ],
+  "market_signals": [
+    {
+      "statement": "Prepared meal delivery growing in Siberia per fictional regional report.",
+      "trace_type": "evidence",
+      "evidence_class": "market_source",
+      "source_ref": "https://example.invalid/reports/siberia-meals-2026",
+      "confidence": "medium"
+    }
+  ],
+  "customer_fit_findings": [
+    {
+      "statement": "Remote professionals with limited lunch prep time are plausible early adopters.",
+      "trace_type": "inference",
+      "evidence_class": "inference",
+      "confidence": "medium"
+    }
+  ],
+  "competitor_findings": [],
+  "commercial_risks": [
+    {
+      "title": "Unverified unit economics",
+      "description": "Subscription price may not cover kitchen and delivery costs.",
+      "linked_trace_types": ["assumption"]
+    }
+  ],
+  "operational_risks": [
+    {
+      "title": "Founder-operated delivery scale",
+      "description": "Pilot delivery may not scale without operational partners."
+    }
+  ],
+  "recommended_action": "Run a constrained pilot with 20 subscribers before launch pack preparation.",
+  "required_changes": [
+    "Validate competitor pricing",
+    "Confirm kitchen partner terms"
+  ],
+  "next_validation_steps": [
+    "Collect 3 independent competitor price points",
+    "Sign LOI with one kitchen partner"
+  ],
+  "approval_required": true,
+  "provenance": {
+    "skill_id": "ms.skill.market_validation",
+    "skill_version": "0.1.0",
+    "generated_at": "2026-07-23T14:00:00Z",
+    "methodology_ref": "platform_native_skeleton"
+  }
+}

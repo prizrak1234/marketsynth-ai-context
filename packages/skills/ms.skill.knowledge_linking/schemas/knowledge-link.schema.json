@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "knowledge-link.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "link_id": { "type": "string" },
+    "source_artifact_id": { "type": "string" },
+    "target_artifact_id": { "type": "string" },
+    "relation_type": { "type": "string" },
+    "direction": { "type": "string", "enum": ["forward", "reverse", "bidirectional"] },
+    "reason": { "type": "string", "minLength": 1 },
+    "supporting_evidence": { "type": "array", "items": { "type": "object" } },
+    "confidence": { "type": "string", "enum": ["high", "medium", "low", "unknown"] },
+    "tenant_scope": { "type": "string" },
+    "project_scope": { "type": "string" },
+    "human_review_required": { "type": "boolean" },
+    "conflict_status": { "type": "string" },
+    "provenance": { "type": "object" }
+  },
+  "required": [
+    "link_id", "source_artifact_id", "target_artifact_id", "relation_type",
+    "direction", "reason", "supporting_evidence", "confidence", "tenant_scope",
+    "human_review_required", "conflict_status", "provenance"
+  ]
+}

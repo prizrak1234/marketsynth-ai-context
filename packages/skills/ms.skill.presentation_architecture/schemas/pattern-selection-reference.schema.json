@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pattern-selection-reference.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "pattern_id": { "type": "string" },
+    "library_version": { "type": "string" },
+    "library_semantic_hash": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "selection_reason": { "type": "string", "minLength": 1 },
+    "applicability": { "type": "string" },
+    "maturity": { "type": "string", "const": "reviewed" },
+    "runtime_authorized": { "type": "boolean", "const": false }
+  },
+  "required": [
+    "pattern_id", "library_version", "library_semantic_hash",
+    "selection_reason", "maturity", "runtime_authorized"
+  ]
+}
